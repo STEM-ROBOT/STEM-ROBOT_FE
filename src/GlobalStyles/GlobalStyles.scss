@@ -1,0 +1,108 @@
+.confirmation-modal {
+  font-family: Arial, Helvetica, sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(179, 160, 128, 0.545); /* Màu nền với độ mờ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+.popup-modal {
+  font-family: Arial, Helvetica, sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(179, 160, 128, 0.545); /* Màu nền với độ mờ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+}
+.author_modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(179, 160, 128, 0.545); /* Màu nền với độ mờ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+.button_Cancel {
+  background-color: rgb(177, 157, 134);
+  color: white;
+  border: 2px solid #5a3306;
+  padding: 5px 30px;
+  border-radius: 5px;
+  font-size: 17px;
+  margin-right: 10px;
+  cursor: pointer;
+  &:hover {
+    scale: 1.05;
+  }
+}
+.button_Submit {
+  background-color: #208d10;
+  border: 2px solid #126319;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 17px;
+  
+  cursor: pointer;
+  &:hover {
+    scale: 1.05;
+  }
+  .text_max {
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+}
+.button_viewCart {
+  background-color: #7e4905;
+  border: 2px solid #69440b;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 17px;
+  margin-right: 10px;
+  cursor: pointer;
+  &:hover {
+    scale: 1.05;
+  }
+  .text_max {
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+}
+.text_max {
+  word-wrap: break-word;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+.txt_resp{
+  font-family: TrajanPro3;
+  color: #381803;
+}
