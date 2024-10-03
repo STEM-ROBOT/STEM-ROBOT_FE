@@ -1,0 +1,94 @@
+.banner_outer {
+    background-image: url('../../../../assets/images/banner-background.png'); /* The background for banner_outer */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 120vh;
+    position: relative; /* Required for the absolute positioning of overlay */
+}
+
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; 
+}
+
+.overlay-image {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    opacity: 0.9; 
+}
+.bottom-left-image-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  
+}
+
+.bottom-left-image {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    opacity: 0.9; 
+}
+
+.text-section {
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+    max-width: 800px;
+    margin: 0 auto; /* Center the text-section */
+}
+
+.text-section h1 {
+    font-size: 48px; /* Adjust size as necessary */
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.text-section h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.text-section p {
+    font-size: 18px;
+    margin-bottom: 40px;
+    color: #cccccc; /* Slightly dimmed text for description */
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Space between buttons */
+}
+
+.primary-button, .secondary-button {
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.primary-button {
+    background: linear-gradient(90deg, #00c9ff, #001f3f);
+    color: white;
+}
+
+.primary-button:hover {
+    background: linear-gradient(90deg, #00a3cc, #00173f);
+}
+
+.secondary-button {
+    background: linear-gradient(90deg, #001f3f, #00c9ff);
+    color: white;
+}
+
+.secondary-button:hover {
+    background: linear-gradient(90deg, #00173f, #00a3cc);
+}
+
