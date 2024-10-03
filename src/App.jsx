@@ -1,12 +1,10 @@
 
-import Home from './pages/system-ui/layout/Home/Home'
+import AppRouter from './router/AppRouter'
 
 function App() {
- 
-
   return (
     <>
-     <Home/>
+      <AppRouter />
     </>
   )
 }
