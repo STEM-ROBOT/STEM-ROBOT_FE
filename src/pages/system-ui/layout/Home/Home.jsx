@@ -1,10 +1,7 @@
-<<<<<<< HEAD
+
 import { useEffect, useState } from 'react';
 import Benefits from '../../component/Benefits/Benefits';
 import Footer from '../../component/Footer/Footer';
-=======
-
->>>>>>> b9cd94e8a3fb99f4958436d3f6ca6161f3113136
 import Header from '../../component/Header/Header';
 import TournamentFormats from '../../component/TournamentFormats/TournamentFormats';
 import TournamentSteps from '../../component/TournamentSteps/TournamentSteps';
