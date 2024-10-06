@@ -1,8 +1,9 @@
-import HomePage from "../pages/system-ui/layout/Home/Home";
-
+import { Navigate } from "react-router-dom";
+import Home from "../pages/system-ui/layout/Home/Home";
 
 const systemRoutes = [
-  { path: '/home', element: <HomePage /> },
+  { path: '/', element:  <Navigate to="/home" /> },
+  { path: '/home', element: <Home /> },
  
 ];
 
