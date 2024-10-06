@@ -1,11 +1,13 @@
 .banner_outer {
-    background-image: url('../../../../assets/images/banner-background.png'); /* The background for banner_outer */
+    background-image: url('../../../../assets/images/banner-background.png'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 120vh;
-    position: relative; /* Required for the absolute positioning of overlay */
+    height: 100vh;
+    position: relative; 
 }
+
+
 
 .overlay-container {
     position: absolute;
@@ -20,11 +22,11 @@
     object-fit: cover; 
     opacity: 0.9; 
 }
+
 .bottom-left-image-container {
     position: absolute;
     bottom: 0;
     left: 0;
-  
 }
 
 .bottom-left-image {
@@ -34,61 +36,80 @@
     opacity: 0.9; 
 }
 
-.text-section {
-    color: white;
-    text-align: center;
-    padding: 60px 20px;
-    max-width: 800px;
-    margin: 0 auto; /* Center the text-section */
+.bottom-right-image-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
-.text-section h1 {
-    font-size: 48px; /* Adjust size as necessary */
-    font-weight: bold;
-    margin-bottom: 20px;
+.bottom-right-image {
+    width: 80%;
+    height: auto;
+    object-fit: contain; 
 }
 
-.text-section h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
-}
-
-.text-section p {
-    font-size: 18px;
-    margin-bottom: 40px;
-    color: #cccccc; /* Slightly dimmed text for description */
-}
-
-.buttons {
+.content-wrapper {
     display: flex;
-    justify-content: center;
-    gap: 20px; /* Space between buttons */
+    justify-content: space-between;
+    align-items: center;
+    max-width: 80%;
+    margin: 0 auto;
+    height: calc(80vh - 120px);
 }
 
-.primary-button, .secondary-button {
-    padding: 15px 30px;
-    border-radius: 30px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.primary-button {
-    background: linear-gradient(90deg, #00c9ff, #001f3f);
+.text-section {
+    padding-top: 200px;
+    max-width: 600px;
     color: white;
 }
 
-.primary-button:hover {
-    background: linear-gradient(90deg, #00a3cc, #00173f);
+.main-text {
+    font-size: 42px;
+    font-weight: bold;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 30px;
 }
 
-.secondary-button {
-    background: linear-gradient(90deg, #001f3f, #00c9ff);
-    color: white;
+.animated-text {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 10px;
+    position: relative;
 }
 
-.secondary-button:hover {
-    background: linear-gradient(90deg, #00173f, #00a3cc);
+.letters {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+    animation: animateLetters 6s infinite; 
+    letter-spacing: 2px;
 }
 
+.gear-icon {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    animation: spin 4s linear infinite;
+}
+
+@keyframes animateLetters {
+    0%, 100% {
+        width: 0;
+        opacity: 0;
+    }
+    25%, 75% {
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

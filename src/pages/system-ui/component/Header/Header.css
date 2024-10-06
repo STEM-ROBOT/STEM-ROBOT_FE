@@ -1,11 +1,27 @@
+.header-outer {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    transition: top 0.3s ease-in-out, background 0.3s ease-in-out;
+}
+
+.header-visible {
+    background-image: url('../../../../assets/images/header.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 .header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-   
-    max-width: 1280px;
+    max-width: 85%;
     margin: 0 auto;
-    padding: 1.5rem;
+    padding: 0.5rem;
+    width: 100%;
+    position: relative;
 }
 
 .logo-container {
@@ -78,38 +94,38 @@
 .cta-buttons {
     display: flex;
     align-items: center;
-    gap: 10px; /* Reduced space between Đăng Nhập and Đăng Kí buttons */
+    gap: 10px; 
 }
 
 .styled-button {
     background: linear-gradient(90deg, #001f3f, #00c9ff);
     border: none;
-    padding: 12px 20px; /* Reduced padding for smaller buttons */
-    border-radius: 20px 40px 40px 20px; /* Slightly smaller rounded corners */
+    padding: 12px 20px; 
+    border-radius: 20px 40px 40px 20px; 
     color: white;
-    font-size: 16px; /* Reduced font size */
+    font-size: 16px; 
     font-family: 'Poppins', sans-serif;
     display: flex;
-    justify-content: space-between; /* Ensure the text and icon are spaced evenly */
+    justify-content: space-between;
     align-items: center;
     cursor: pointer;
     position: relative;
     overflow: hidden;
     transition: background 0.3s ease;
-    width: 130px; /* Fixed width to make both buttons equal in length */
+    width: 130px; 
 }
 
 .styled-button:hover, .register-button:hover {
-    background: linear-gradient(90deg, #001f3f, #00a3cc); /* Same hover gradient for both buttons */
+    background: linear-gradient(90deg, #001f3f, #00a3cc); 
 }
 
 .register-button {
-    background: linear-gradient(90deg, #00c9ff, #001f3f); /* Initial gradient for Đăng Kí */
+    background: linear-gradient(90deg, #00c9ff, #001f3f); 
 }
 
 .arrow-container {
-    margin-left: 10px; /* Reduced space between text and arrow */
-    width: 30px; /* Smaller circle */
+    margin-left: 10px; 
+    width: 30px;
     height: 30px;
     background-color: white;
     border-radius: 50%;
