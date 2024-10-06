@@ -1,6 +1,6 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
 import systemRoutes from './SystemRouter';
 
 function AppRouter  () {
