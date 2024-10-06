@@ -1,7 +1,13 @@
 /* League Page Styles */
 .league_page {
-     padding: 20px;
-     background-image: linear-gradient(to right , #022f4d 0%,#023150 41%,  #084e7c 71%, #077dcc 100%);
+     /* padding: 20px;
+     background-image: linear-gradient(to right , #022f4d 0%,#023150 41%,  #084e7c 71%, #077dcc 100%); */
+     background-image: url('../../../../assets/images/banner-background.png'); /* The background for banner_outer */
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     height: 120vh;
+     position: relative;
    }
    
    /* Search and Filter Section */
@@ -73,7 +79,7 @@
    }
    
    .league_card:hover {
-     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+     box-shadow: 0 8px 16px rgba(245, 246, 247, 0.2);
    }
    
    .league_image_container {
