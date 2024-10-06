@@ -1,10 +1,10 @@
 .banner_outer {
-    background-image: url('../../../../assets/images/banner-background.png'); /* The background for banner_outer */
+    background-image: url('../../../../assets/images/banner-background.png'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     height: 100vh;
-    position: relative; /* Required for the absolute positioning of overlay */
+    position: relative; 
 }
 
 
@@ -52,7 +52,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    max-width: 80%;
     margin: 0 auto;
     height: calc(80vh - 120px);
 }

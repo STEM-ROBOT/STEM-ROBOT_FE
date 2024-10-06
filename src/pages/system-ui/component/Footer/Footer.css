@@ -13,7 +13,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    max-width: 1280px; /* Limit content width */
+    max-width: 85%; /* Limit content width */
     margin: 0 auto; /* Center the content */
     padding: 0 20px; /* Side padding for smaller screens */
     flex-wrap: wrap; /* Ensure responsiveness */
