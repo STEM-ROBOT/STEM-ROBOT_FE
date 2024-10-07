@@ -1,230 +1,148 @@
 /* League Page Styles */
 .league_page {
-     /* padding: 20px;
-     background-image: linear-gradient(to right , #022f4d 0%,#023150 41%,  #084e7c 71%, #077dcc 100%); */
-     background-image: url('../../../../assets/images/banner-background.png'); /* The background for banner_outer */
-     background-size: cover;
-     background-position: center;
-     background-repeat: no-repeat;
-     height: 120vh;
-     position: relative;
-   }
-   
-   /* Search and Filter Section */
-  /* Search and Filter Section */
-.search_filter {
-     display: flex;
-     gap: 10px;
-     margin-bottom: 20px;
-     flex-wrap: wrap; /* Allows wrapping on smaller screens */
-   }
-   
-   .search_input {
-     flex-grow: 2;
-     padding: 5px;
-     border: 1px solid #ccc;
-     border-radius: 5px;
-     font-size: 14px;
-   }
-   
-   .filter_select_1 {
-     padding: 5px;
-     border: 1px solid #ccc;
-     border-radius: 5px;
-     font-size: 14px;
-     min-width: 150px;
-   }
-   .filter_select_2 {
-     padding: 10px;
-     border: 1px solid #ccc;
-     border-radius: 5px;
-     font-size: 14px;
-     min-width: 150px;
-   }
-   .filter_select_3 {
-     padding: 10px;
-     border: 1px solid #ccc;
-     border-radius: 5px;
-     font-size: 14px;
-     min-width: 150px;
-   }
-   .filter_select_4 {
-     padding: 10px;
-     border: 1px solid #ccc;
-     border-radius: 5px;
-     font-size: 14px;
-     min-width: 150px;
-   }
-   .filter_select_5 {
-     padding: 10px;
-     border: 1px solid #ccc;
-     border-radius: 5px;
-     font-size: 14px;
-     min-width: 150px;
-   }
-   .league_grid {
-     display: grid;
-     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-     gap: 20px;
-   }
-   
-   .league_card {
-     background-color: #fff;
-     border-radius: 10px;
-     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-     overflow: hidden;
-     padding: 15px;
-     text-align: center;
-     transition: box-shadow 0.3s ease;
-   }
-   
-   .league_card:hover {
-     box-shadow: 0 8px 16px rgba(245, 246, 247, 0.2);
-   }
-   
-   .league_image_container {
-     width: 100%;
-     height: auto;
-     border-radius: 10px;
-   }
-   
-   .league_image {
-     width: 100%;
-     height: auto;
-     border-radius: 10px;
-   }
-   
-   .league_title span {
-     color: #2be0f7;
-     font-size: 18px;
-     display: block;
-     margin: 10px 0;
-     font-weight: bold;
-   }
-   
-   .league_details span {
-     color: #555;
-     font-size: 14px;
-     display: block;
-     margin-bottom: 10px;
-   }
-   
-   .league_stats {
-     display: flex;
-     justify-content: space-around;
-     margin-top: 10px;
-   }
-   
-   .league_stats span {
-     font-size: 14px;
-     color: #888;
-     display: flex;
-     align-items: center;
-   }
-   
-   /* Tooltip Styles */
-   .tooltip {
-     position: relative;
-     display: inline-block;
-     cursor: pointer;
-   }
-   
-   .tooltip_text {
-     visibility: hidden;
-     background-color: #555;
-     color: #fff;
-     text-align: center;
-     padding: 5px 10px;
-     border-radius: 5px;
-     position: absolute;
-     z-index: 1;
-     bottom: 125%; /* Position the tooltip above the icon */
-     left: 50%;
-     transform: translateX(-50%);
-     opacity: 0;
-     transition: opacity 0.3s;
-     width: max-content; /* Adjust width for better fit */
-     font-size: 12px;
-   }
-   
-   /* Tooltip Arrow */
-   .tooltip_text::after {
-     content: "";
-     position: absolute;
-     top: 100%; /* Arrow below the tooltip */
-     left: 50%;
-     margin-left: -5px;
-     border-width: 5px;
-     border-style: solid;
-     border-color: #555 transparent transparent transparent;
-   }
-   
-   /* Show the tooltip on hover */
-   .tooltip:hover .tooltip_text {
-     visibility: visible;
-     opacity: 1;
-   }
-   
-   /* For tablets and smaller screens */
-   @media (max-width: 1024px) {
-     .league_grid {
-       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-       gap: 15px;
-     }
-   
-     .search_input, .filter_select {
-       font-size: 12px;
-       padding: 8px;
-     }
-   
-     .league_card {
-       padding: 10px;
-     }
-   
-     .league_title span {
-       font-size: 16px;
-     }
-   
-     .league_details span {
-       font-size: 12px;
-     }
-   
-     .league_stats span {
-       font-size: 12px;
-     }
-   }
-   
-   /* For mobile screens */
-   @media (max-width: 768px) {
-     .league_grid {
-       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-       gap: 10px;
-     }
-   
-     .search_input, .filter_select {
-       width: 100%;
-       margin-bottom: 10px;
-     }
-   
-     .league_card {
-       padding: 8px;
-     }
-   
-     .league_title span {
-       font-size: 14px;
-     }
-   
-     .league_details span {
-       font-size: 10px;
-     }
-   
-     .league_stats {
-       flex-direction: column;
-       align-items: center;
-     }
-   
-     .league_stats span {
-       margin-bottom: 5px;
-     }
-   }
-   
+  /* padding: 20px;*/
+  /* background-image: url("../../../../assets/images/banner-background.png"); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 120vh;
+  position: relative;
+  width: 100%;
+}
+.league_container {
+  width: 100%;
+  z-index: 1000;
+  position: absolute;
+  padding-top: 100px;
+  background-image: linear-gradient(
+    to left top,
+    #0990eb 0%,
+    #084e7c 21%,
+    #094872 41%,
+    #0f659e 61%,
+    #084e7c 81%,
+    #0d99f7 100%
+  );
+  min-height: 100vh;
+}
+/* Option view */
+.view_toggle {
+  margin: 0 8% 20px 8%;
+  display: flex;
+  justify-content: flex-end;
+}
+.btn_option {
+  width: auto;
+  border-radius: 7px;
+  padding: 1px;
+  border: 1px solid #4b4e4e;
+  display: flex;
+  justify-content: space-between;
+  background-color: #bfdbee;
+}
+.option_view.active {
+  display: flex;
+  justify-content: center;
+  background-image: linear-gradient(
+    to right,
+    #022f4d 0%,
+    #023150 41%,
+    #084e7c 71%,
+    #077dcc 100%
+  );
+  border-radius: 7px;
+  padding: 5px 20px;
+  border: none;
+}
+.option_view {
+  display: flex;
+  justify-content: center;
+  background-color: #bfdbee;
+  border-radius: 7px;
+  padding: 5px 20px;
+  border: none;
+  cursor: pointer;
+}
+.icon_option_view {
+  width: 30px;
+  height: 30px;
+  color: #fff;
+}
+/* View League */
+
+.league_grid.grid {
+  margin: 0 8% 20px 8%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 2fr));
+  gap: 20px;
+}
+.league_grid.list {
+  margin: 0 8% 20px 8%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+/* For tablets and smaller screens */
+@media (max-width: 1024px) {
+  .league_grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+
+  .search_input,
+  .filter_select {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .league_card {
+    padding: 10px;
+  }
+
+  .league_title span {
+    font-size: 16px;
+  }
+
+  .league_details span {
+    font-size: 12px;
+  }
+
+  .league_stats span {
+    font-size: 12px;
+  }
+}
+
+/* For mobile screens */
+@media (max-width: 768px) {
+  .league_grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  .search_input,
+  .filter_select {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .league_card {
+    padding: 8px;
+  }
+
+  .league_title span {
+    font-size: 14px;
+  }
+
+  .league_details span {
+    font-size: 10px;
+  }
+
+  .league_stats {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .league_stats span {
+    margin-bottom: 5px;
+  }
+}

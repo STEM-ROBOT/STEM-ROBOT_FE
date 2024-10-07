@@ -1,297 +1,46 @@
+import { useState } from "react";
 import Header from "../../../system-ui/component/Header/Header";
 import "./League.css";
+import { IoAppsSharp, IoGrid, IoListSharp, IoSearch } from "react-icons/io5";
+import LeagueView from "../../component/LeagueView/LeagueView";
+import SearchFilter from "../../component/SearchFilter/SearchFilter";
+import { useNavigate } from "react-router-dom";
 const League = () => {
+  const navigate = useNavigate()
+  const [viewMode, setViewMode] = useState("grid");
   return (
     <div className="league_page">
       <Header />
-      {/* Search and Filter section */}
-      <div>
-        <div className="search_filter">
-          <input
-            type="text"
-            placeholder="Search for name of leagues or managers"
-            className="search_input"
-          />
-          <select className="filter_select_1">
-            <option>Loại giải</option>
-          </select>
-          <select className="filter_select_2">
-            <option>Nội Dung Thi</option>
-          </select>
-          <select className="filter_select_3">
-            <option>Hình Thức</option>
-          </select>
-          <select className="filter_select_4">
-            <option>Trạng Thái</option>
-          </select>
-          <select className="filter_select_5">
-            <option>Xắp Xếp</option>
-          </select>
+
+      <div className="league_container">
+        {/* Search and Filter section */}
+        <SearchFilter />
+        <div className="view_toggle">
+          <div className="btn_option">
+            <button
+              onClick={() => setViewMode("list")}
+              className={
+                viewMode === "list" ? "option_view active" : "option_view"
+              }
+            >
+              <IoListSharp className="icon_option_view" />
+            </button>
+            <button
+              onClick={() => setViewMode("grid")}
+              className={
+                viewMode === "grid" ? "option_view active" : "option_view"
+              }
+            >
+              <IoGrid className="icon_option_view" />
+            </button>
+          </div>
         </div>
-
-        {/* Grid for league cards */}
-        <div className="league_grid">
-          <div className="league_card">
-            <div className="league_image_container">
-              <img
-                src="https://th.bing.com/th/id/OIP.7HSEMd30tk4S_tCOunvBXAHaEK?w=331&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7"
-                alt="League Image"
-                className="league_image"
-              />
-            </div>
-            <div className="league_title">
-              <span>ANH EM SHIGA Lần IV - 2024</span>
-            </div>
-            <div className="league_details">
-              <span>
-                Group Stage || 7 A Side || Thực Phẩm Việt Shiga - Shiga
-              </span>
-            </div>
-            <div className="league_stats">
-              <div className="tooltip">
-                <span>👥 14</span>
-                <div className="tooltip_text">
-                  Number of teams in the league
-                </div>
-              </div>
-
-              {/* Tooltip for views */}
-              <div className="tooltip">
-                <span>👁️ 191</span>
-                <div className="tooltip_text">Number of views</div>
-              </div>
-
-              {/* Tooltip for time left */}
-              <div className="tooltip">
-                <span>⏱️ 11 days left</span>
-                <div className="tooltip_text">Time left to register</div>
-              </div>
-            </div>
-          </div>
-          <div className="league_card">
-            <div className="league_image_container">
-              <img
-                src="https://th.bing.com/th/id/OIP.7HSEMd30tk4S_tCOunvBXAHaEK?w=331&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7"
-                alt="League Image"
-                className="league_image"
-              />
-            </div>
-            <div className="league_title">
-              <span>ANH EM SHIGA Lần IV - 2024</span>
-            </div>
-            <div className="league_details">
-              <span>
-                Group Stage || 7 A Side || Thực Phẩm Việt Shiga - Shiga
-              </span>
-            </div>
-            <div className="league_stats">
-              <div className="tooltip">
-                <span>👥 14</span>
-                <div className="tooltip_text">
-                  Number of teams in the league
-                </div>
-              </div>
-
-              {/* Tooltip for views */}
-              <div className="tooltip">
-                <span>👁️ 191</span>
-                <div className="tooltip_text">Number of views</div>
-              </div>
-
-              {/* Tooltip for time left */}
-              <div className="tooltip">
-                <span>⏱️ 11 days left</span>
-                <div className="tooltip_text">Time left to register</div>
-              </div>
-            </div>
-          </div>
-          <div className="league_card">
-            <div className="league_image_container">
-              <img
-                src="https://th.bing.com/th/id/OIP.7HSEMd30tk4S_tCOunvBXAHaEK?w=331&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7"
-                alt="League Image"
-                className="league_image"
-              />
-            </div>
-            <div className="league_title">
-              <span>ANH EM SHIGA Lần IV - 2024</span>
-            </div>
-            <div className="league_details">
-              <span>
-                Group Stage || 7 A Side || Thực Phẩm Việt Shiga - Shiga
-              </span>
-            </div>
-            <div className="league_stats">
-              <div className="tooltip">
-                <span>👥 14</span>
-                <div className="tooltip_text">
-                  Number of teams in the league
-                </div>
-              </div>
-
-              {/* Tooltip for views */}
-              <div className="tooltip">
-                <span>👁️ 191</span>
-                <div className="tooltip_text">Number of views</div>
-              </div>
-
-              {/* Tooltip for time left */}
-              <div className="tooltip">
-                <span>⏱️ 11 days left</span>
-                <div className="tooltip_text">Time left to register</div>
-              </div>
-            </div>
-          </div>
-          <div className="league_card">
-            <div className="league_image_container">
-              <img
-                src="https://th.bing.com/th/id/OIP.7HSEMd30tk4S_tCOunvBXAHaEK?w=331&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7"
-                alt="League Image"
-                className="league_image"
-              />
-            </div>
-            <div className="league_title">
-              <span>ANH EM SHIGA Lần IV - 2024</span>
-            </div>
-            <div className="league_details">
-              <span>
-                Group Stage || 7 A Side || Thực Phẩm Việt Shiga - Shiga
-              </span>
-            </div>
-            <div className="league_stats">
-              <div className="tooltip">
-                <span>👥 14</span>
-                <div className="tooltip_text">
-                  Number of teams in the league
-                </div>
-              </div>
-
-              {/* Tooltip for views */}
-              <div className="tooltip">
-                <span>👁️ 191</span>
-                <div className="tooltip_text">Number of views</div>
-              </div>
-
-              {/* Tooltip for time left */}
-              <div className="tooltip">
-                <span>⏱️ 11 days left</span>
-                <div className="tooltip_text">Time left to register</div>
-              </div>
-            </div>
-          </div>
-          <div className="league_card">
-            <div className="league_image_container">
-              <img
-                src="https://th.bing.com/th/id/OIP.7HSEMd30tk4S_tCOunvBXAHaEK?w=331&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7"
-                alt="League Image"
-                className="league_image"
-              />
-            </div>
-            <div className="league_title">
-              <span>ANH EM SHIGA Lần IV - 2024</span>
-            </div>
-            <div className="league_details">
-              <span>
-                Group Stage || 7 A Side || Thực Phẩm Việt Shiga - Shiga
-              </span>
-            </div>
-            <div className="league_stats">
-              <div className="tooltip">
-                <span>👥 14</span>
-                <div className="tooltip_text">
-                  Number of teams in the league
-                </div>
-              </div>
-
-              {/* Tooltip for views */}
-              <div className="tooltip">
-                <span>👁️ 191</span>
-                <div className="tooltip_text">Number of views</div>
-              </div>
-
-              {/* Tooltip for time left */}
-              <div className="tooltip">
-                <span>⏱️ 11 days left</span>
-                <div className="tooltip_text">Time left to register</div>
-              </div>
-            </div>
-          </div>
-          <div className="league_card">
-            <div className="league_image_container">
-              <img
-                src="https://th.bing.com/th/id/OIP.7HSEMd30tk4S_tCOunvBXAHaEK?w=331&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7"
-                alt="League Image"
-                className="league_image"
-              />
-            </div>
-            <div className="league_title">
-              <span>ANH EM SHIGA Lần IV - 2024</span>
-            </div>
-            <div className="league_details">
-              <span>
-                Group Stage || 7 A Side || Thực Phẩm Việt Shiga - Shiga
-              </span>
-            </div>
-            <div className="league_stats">
-              <div className="tooltip">
-                <span>👥 14</span>
-                <div className="tooltip_text">
-                  Number of teams in the league
-                </div>
-              </div>
-
-              {/* Tooltip for views */}
-              <div className="tooltip">
-                <span>👁️ 191</span>
-                <div className="tooltip_text">Number of views</div>
-              </div>
-
-              {/* Tooltip for time left */}
-              <div className="tooltip">
-                <span>⏱️ 11 days left</span>
-                <div className="tooltip_text">Time left to register</div>
-              </div>
-            </div>
-          </div>
-          <div className="league_card">
-            <div className="league_image_container">
-              <img
-                src="https://th.bing.com/th/id/OIP.7HSEMd30tk4S_tCOunvBXAHaEK?w=331&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7"
-                alt="League Image"
-                className="league_image"
-              />
-            </div>
-            <div className="league_title">
-              <span>ANH EM SHIGA Lần IV - 2024</span>
-            </div>
-            <div className="league_details">
-              <span>
-                Group Stage || 7 A Side || Thực Phẩm Việt Shiga - Shiga
-              </span>
-            </div>
-            <div className="league_stats">
-              <div className="tooltip">
-                <span>👥 14</span>
-                <div className="tooltip_text">
-                  Number of teams in the league
-                </div>
-              </div>
-
-              {/* Tooltip for views */}
-              <div className="tooltip">
-                <span>👁️ 191</span>
-                <div className="tooltip_text">Number of views</div>
-              </div>
-
-              {/* Tooltip for time left */}
-              <div className="tooltip">
-                <span>⏱️ 11 days left</span>
-                <div className="tooltip_text">Time left to register</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Repeat the league_card for other leagues */}
+        {/* View League - List View */}
+        <div className={`league_grid ${viewMode}`}>
+          <LeagueView viewMode={viewMode}    />
+          <LeagueView viewMode={viewMode} />
+          <LeagueView viewMode={viewMode} />
+          <LeagueView viewMode={viewMode} />
         </div>
       </div>
     </div>
