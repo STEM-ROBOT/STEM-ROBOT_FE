@@ -70,7 +70,7 @@ const Header = () => {
                         </button>
                         {tournamentDropdownOpen && (
                             <div className="dropdown-content">
-                                <a href="/home-sub1" className="dropdown-item">Tìm Giải Đấu</a>
+                                <a href="/league" className="dropdown-item">Tìm Giải Đấu</a>
                                 <a href="/home-sub2" className="dropdown-item">Tạo Giải Đấu</a>
                             </div>
                         )}
