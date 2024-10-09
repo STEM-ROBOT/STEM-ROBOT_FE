@@ -1,0 +1,58 @@
+.introduction_container {
+  border: 1px dashed #ccc;
+  border-radius: 13px;
+  padding: 15px;
+  background-color: #f7f7f7;
+}
+
+.introduction_header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.icon_competition {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  width: 35px;
+  height: 35px;
+  color: #2c709e;
+}
+
+.header_text {
+  color: #2c709e;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+}
+
+.introduction_content {
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+
+.introduction_content p {
+  white-space: pre-wrap;
+  font-size: 14px;
+  color: #555;
+}
+
+.toggle_button {
+  background-color: #e9ecef;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-top: 10px;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.toggle_button:hover {
+  background-color: #ddd;
+}

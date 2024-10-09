@@ -1,18 +1,33 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import "./DetailBar.css";
 import Countdown from "../Countdown/Countdown";
+import TeamList from "../TeamList/TeamList";
+import CompetitionList from "../CompetitionList/CompetitionList";
 const DetailBar = ({ setPageView }) => {
+  const [activeTab, setActiveTab] = useState("register");
+  const endDate = Date("2024-10-13T23:59:59");
   const tabs = [
-    { name: "ĐĂNG KÝ THI ĐẤU", key: "register", component: <Countdown endDate="2024-10-13T23:59:59" /> },
-    { name: "NỘI DUNG THI ĐẤU", key: "competitions", component: <Countdown endDate="2024-10-13T23:59:59" /> },
+    {
+      name: "ĐĂNG KÝ THI ĐẤU",
+      key: "register",
+      component: <Countdown endDate={endDate} />,
+    },
+    {
+      name: "NỘI DUNG THI ĐẤU",
+      key: "competitions",
+      component: <CompetitionList endDate={endDate} />
+    },
     {
       name: "DANH SÁCH ĐĂNG KÝ",
       key: "participants",
-      component: <Countdown endDate="2024-10-13T23:59:59"/>,
+      component: <TeamList isPublic={false} />,
     },
   ];
-  const [activeTab, setActiveTab] = useState("register");
-
+  useEffect(() => {
+    if (activeTab == "register") {
+      setPageView(<Countdown endDate="2024-10-13T23:59:59" />);
+    }
+  }, [activeTab]);
   // Function to handle tab click
   const handleTabClick = (tab) => {
     setActiveTab(tab.key);
@@ -51,11 +66,11 @@ const DetailBar = ({ setPageView }) => {
                 <div className="tooltip_text">Lượt xem</div>
               </div>
 
-              {/* Tooltip for time left */}
+              {/* Tooltip for time left
               <div className="tooltip">
                 <span>⏱️ Còn lại 11 ngày</span>
                 <div className="tooltip_text">Thời gian đăng ký</div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
