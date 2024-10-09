@@ -1,9 +1,11 @@
 import React from 'react';
 import './Pricing.css';
-import { FaCheckCircle } from 'react-icons/fa'; // Thêm icon cho dấu tích
-
+import { FaCheckCircle } from 'react-icons/fa'; 
+import Payments from '../Payments/Payments';
+import { useState } from 'react';
 const packages = [
     {
+        id:"1",
         name: ' Giải đấu hoàn toàn Miễn phí',
         type: 'Dưới 5 trận đấu',
         price: '0',
@@ -21,6 +23,7 @@ const packages = [
         icon: '🆓',
     },
     {
+        id:"2",
         name: 'Giải đấu đồng đội Cơ bản',
         type: 'Từ 5 - 19 trận đấu',
         price: '199,000',
@@ -38,6 +41,7 @@ const packages = [
         icon: '💰',
     },
     {
+        id:"3",
         name: 'Giải đấu đồng đội Tiêu chuẩn',
         type: 'Từ 20 - 49 trận đấu',
         price: '499,000',
@@ -55,6 +59,7 @@ const packages = [
         icon: '💎',
     },
     {
+        id:"4",
         name: 'Giải đấu đồng đội Nâng cao',
         type: 'Từ 50 trận đấu trở lên',
         price: '999,000',
@@ -74,14 +79,23 @@ const packages = [
 ];
 
 const Pricing = () => {
+    const [selectedPackage, setSelectedPackage] = useState(null);
+
+    const handleBuyClick = (pkg) => {
+        setSelectedPackage(pkg);
+    };
+
+    const handleClose = () => {
+        setSelectedPackage(null);
+    };
     return (
         <div className="pricing-outer-container">
             <div className="pricing-container">
                 <h2>Bảng Giá</h2>
                 <div className="pricing-cards">
-                    {packages.map((pkg, index) => (
+                    {packages.map((pkg, id) => (
                         <div
-                            key={index}
+                            key={id}
                             className={`pricing-card ${pkg.highlighted ? 'highlighted' : ''}`}
                         >
                             <div className="icon">{pkg.icon}</div>
@@ -89,20 +103,21 @@ const Pricing = () => {
                             <p className="type">{pkg.type}</p>
                             <ul>
                                 {pkg.features.map((feature, idx) => (
-                                    <li key={idx}>
-                                        <FaCheckCircle className="check-icon" /> {feature}
-                                    </li>
+                                    <li key={idx}>✔️ {feature}</li>
                                 ))}
                             </ul>
                             <div className="price-section">
                                 <span className="price">{pkg.price}đ</span>
-                                <span className="currency">  / giải đấu</span>
+                                <span className="currency"> / giải đấu</span>
                             </div>
-                            <button className="buy-button">Mua ngay</button>
+                            <button className="buy-button" onClick={() => handleBuyClick(pkg)}>
+                                Mua ngay
+                            </button>
                         </div>
                     ))}
                 </div>
             </div>
+            <Payments isOpen={!!selectedPackage} onClose={handleClose} packageDetails={selectedPackage} />
         </div>
     );
 };
