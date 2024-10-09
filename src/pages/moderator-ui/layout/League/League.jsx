@@ -1,17 +1,18 @@
 import { useState } from "react";
 import Header from "../../../system-ui/component/Header/Header";
+import Footer from "../../../system-ui/component/Footer/Footer";
 import "./League.css";
 import { IoAppsSharp, IoGrid, IoListSharp, IoSearch } from "react-icons/io5";
 import LeagueView from "../../component/LeagueView/LeagueView";
 import SearchFilter from "../../component/SearchFilter/SearchFilter";
 import { useNavigate } from "react-router-dom";
+
 const League = () => {
   const navigate = useNavigate()
   const [viewMode, setViewMode] = useState("grid");
   return (
     <div className="league_page">
       <Header />
-
       <div className="league_container">
         {/* Search and Filter section */}
         <SearchFilter />
@@ -41,8 +42,12 @@ const League = () => {
           <LeagueView viewMode={viewMode} />
           <LeagueView viewMode={viewMode} />
           <LeagueView viewMode={viewMode} />
+          <LeagueView viewMode={viewMode} />
+ 
         </div>
+        
       </div>
+      <Footer/>
     </div>
   );
 };

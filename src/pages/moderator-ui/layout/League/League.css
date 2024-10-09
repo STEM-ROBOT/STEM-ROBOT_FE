@@ -5,23 +5,26 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 120vh;
-  position: relative;
+
   width: 100%;
 }
 .league_container {
+  /* background-image: url("../../../../assets/images/banner-background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; */
   width: 100%;
-  z-index: 1000;
-  position: absolute;
-  padding-top: 100px;
+  /* z-index: 1000; */
+ 
+  padding: 100px 0 20px 0 ;
   background-image: linear-gradient(
-    to left top,
-    #0990eb 0%,
-    #084e7c 21%,
-    #094872 41%,
-    #0f659e 61%,
-    #084e7c 81%,
-    #0d99f7 100%
+    to left, 
+    #022233 0%,
+    #033f60 21%,
+    #03344e 41%,
+    #022233 61%,
+    #00121c 81%,
+    #000f16 100%
   );
   min-height: 100vh;
 }

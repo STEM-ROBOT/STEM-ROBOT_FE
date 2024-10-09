@@ -15,6 +15,7 @@
   box-shadow: 0 8px 16px rgba(250, 250, 250, 0.2);
   scale: 1.01;
   cursor: pointer;
+  background-color: #ffffffd2;
 }
 
 .league_image_container.grid {
@@ -110,6 +111,82 @@
   visibility: visible;
   opacity: 1;
 }
+
+/* Progress Bar Container */
+.progress_bar_container.grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 10px;
+  position: relative;
+}
+
+/* Progress Bar */
+.progress_bar.grid {
+  width: 70%;
+
+  height: 20px;
+  background-color: #b9c0c6;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Progress Fill */
+.progress_fill.grid {
+  height: 100%;
+  background: linear-gradient(to right, #0c76e8, #032d68);
+  border-radius: 10px;
+  transition: width 0.4s ease-in-out;
+}
+
+/* Progress Text */
+.progress_text.grid {
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: bold;
+  position: absolute;
+  z-index: 1;
+  left: 44%;
+  bottom: 0;
+  top: 0;
+}
+
+.progress_detail.grid {
+  visibility: hidden;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 5;
+  bottom: 125%; /* Position the tooltip above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  width: max-content;
+  font-size: 12px;
+}
+
+.progress_detail.grid::after {
+  content: "";
+  position: absolute;
+  top: 100%; /* Arrow below the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip on hover for list view */
+.progress_bar_container.grid:hover .progress_detail.grid {
+  visibility: visible;
+  opacity: 1;
+}
 /* Custom View List */
 
 .league_card.list {
@@ -144,7 +221,9 @@
   box-shadow: 0 8px 16px rgba(245, 246, 247, 0.2);
   scale: 1.01;
 }
-
+.league_card.list:hover .league_card_overlay {
+  background-color: rgba(0, 0, 0, 0.234);
+}
 .league_image_container.list {
   z-index: 2;
   height: auto;
@@ -163,7 +242,7 @@
 }
 
 .league_content.list {
-  flex-grow: 1; /* Allow content to take up remaining space */
+  width: 70%;
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -210,8 +289,8 @@
 
 .tooltip_text.list {
   visibility: hidden;
-  background-color: #555;
-  color: #fff;
+  background-color: #edf6fa;
+  color: #021d42;
   text-align: center;
   padding: 5px 10px;
   border-radius: 5px;
@@ -234,11 +313,88 @@
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: #555 transparent transparent transparent;
+  border-color: #edf6fa transparent transparent transparent;
 }
 
 /* Show the tooltip on hover for list view */
 .tooltip.list:hover .tooltip_text.list {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Progress Bar Container */
+.progress_bar_container.list {
+  flex: 1;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 10px;
+  position: relative;
+}
+
+/* Progress Bar */
+.progress_bar.list {
+  width: 70%;
+  height: 20px;
+  background-color: #b9c0c6;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Progress Fill */
+.progress_fill.list {
+  height: 100%;
+  background: linear-gradient(to right, #0c76e8, #032d68);
+  border-radius: 10px;
+  transition: width 0.4s ease-in-out;
+}
+
+/* Progress Text */
+.progress_text.list {
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: bold;
+  position: absolute;
+  z-index: 2;
+  left: 39%;
+  bottom: 0;
+  top: 0;
+}
+
+.progress_detail.list {
+  visibility: hidden;
+  background-color: #edf6fa;
+  color: #021d42;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 5000;
+  bottom: 65%; /* Position the tooltip above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  width: max-content;
+  font-size: 12px;
+}
+
+.progress_detail.list::after {
+  content: "";
+  position: absolute;
+  top: 100%; /* Arrow below the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #edf6fa transparent transparent transparent;
+}
+
+/* Show the tooltip on hover for list view */
+.progress_bar_container.list:hover .progress_detail.list {
   visibility: visible;
   opacity: 1;
 }
