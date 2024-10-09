@@ -1,0 +1,162 @@
+.pricing-outer-container {
+    background-image: url('../../../../assets/images/banner-background.png');
+    background-size: cover;
+    background-position: center;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    color: #fff;
+}
+.type{
+    color: #000;
+}
+
+.pricing-container {
+    max-width: 85%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 1.5rem 0;
+}
+
+.pricing-container h2 {
+    font-size: 36px;
+    padding-bottom: 20px;
+    color: #fff;
+}
+
+.pricing-cards {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 1.2rem 0;
+}
+
+.pricing-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    max-width: 300px;
+    transition: transform 0.3s ease;
+    position: relative;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    height: 600px; /* Đặt chiều cao cố định cho card */
+}
+
+.pricing-card.highlighted {
+    transform: scale(1.1);
+    z-index: 1;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background: #f0f0f0;
+}
+
+.pricing-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.pricing-card .price {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin: 1rem 0;
+    color: #e60000;
+}
+
+.pricing-card .price-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pricing-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    text-align: left;
+    color: #555;
+    flex: 1;
+    overflow-y: auto; /* Thêm scroll y */
+    max-height: 500px; /* Đặt chiều cao tối đa để kích hoạt scroll y */
+}
+
+.pricing-card ul li {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.currency {
+    color: #000;
+}
+
+.check-icon {
+    color: #00b14f;
+    width: 20px;
+    margin-right: 0.5rem;
+}
+
+.pricing-card .buy-button {
+    background: linear-gradient(90deg, #001f3f, #00a3cc);
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+.pricing-card .buy-button:hover {
+    background-color: #004080;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .pricing-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pricing-card {
+        max-width: 90%;
+        margin-bottom: 1.5rem;
+    }
+
+    .pricing-card.highlighted {
+        transform: scale(1.05);
+    }
+}
+
+@media (max-width: 480px) {
+    .pricing-card {
+        padding: 1rem;
+        height: auto; /* Bỏ chiều cao cố định cho màn hình nhỏ */
+    }
+
+    .pricing-card h3 {
+        font-size: 1.4rem;
+    }
+
+    .pricing-card .price {
+        font-size: 1.8rem;
+    }
+
+    .pricing-card ul li {
+        font-size: 0.8rem;
+    }
+
+    .pricing-card .buy-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}

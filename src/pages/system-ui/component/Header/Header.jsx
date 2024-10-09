@@ -1,7 +1,7 @@
 import './Header.css';
 import { useState, useEffect, useRef } from 'react';
 
-// eslint-disable-next-line react/prop-types
+
 const Header = () => {
     const [isVisible, setIsVisible] = useState(false); // State to track scroll position for background
     const [tournamentDropdownOpen, setTournamentDropdownOpen] = useState(false);
@@ -41,7 +41,7 @@ const Header = () => {
     
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > window.innerHeight * 0.1) {
+            if (window.scrollY > window.innerHeight * 0.01) {
                 setIsVisible(true);  
             } else {
                 setIsVisible(false);  
@@ -88,7 +88,7 @@ const Header = () => {
                         )}
                     </div>
 
-                    <a href="/services" className="nav-link">Bảng Giá</a>
+                    <a href="/pricing" className="nav-link">Bảng Giá</a>
                     <a href="/contact" className="nav-link">Liên Hệ</a>
                 </nav>
 
