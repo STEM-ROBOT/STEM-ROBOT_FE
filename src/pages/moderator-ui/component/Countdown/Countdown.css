@@ -1,0 +1,64 @@
+.countdown_container {
+  background: linear-gradient(to right, #29689c, #006482);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: #fff;
+  max-width: 600px;
+}
+
+.countdown_container h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.countdown_container h2 span {
+  color: #ffd700;
+}
+
+.countdown_container p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #e0e0e0;
+}
+
+.countdown_timer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.time_block {
+  background-color: #1a1a1a;
+  padding: 10px 15px;
+  border-radius: 8px;
+  width: 60px;
+  text-align: center;
+}
+
+.time_value {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.time_label {
+  font-size: 14px;
+  color: #bbb;
+}
+
+.register_button {
+  background: linear-gradient(to right, #3294cd, #224c8b);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.register_button:hover {
+  background: linear-gradient(to right, #224c8b, #3294cd);
+}
