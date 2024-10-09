@@ -5,22 +5,25 @@
   background-position: center;
   background-repeat: no-repeat;
   height: 120vh;
-  position: relative;
   width: 100%;
 }
 .league_detail_container {
   width: 100%;
   z-index: 1000;
-  position: absolute;
   padding-top: 100px;
   background-image: linear-gradient(
-    to left top,
-    #0990eb 0%,
-    #084e7c 21%,
-    #094872 41%,
-    #0f659e 61%,
-    #084e7c 81%,
-    #0d99f7 100%
+    to left,
+    #022233 0%,
+    #033f60 21%,
+    #03344e 41%,
+    #022233 61%,
+    #00121c 81%,
+    #000f16 100%
   );
   min-height: 100vh;
+}
+.league_detail_option {
+  background-color: #ffffffde;
+  display: flex;
+  justify-content: center;
 }
