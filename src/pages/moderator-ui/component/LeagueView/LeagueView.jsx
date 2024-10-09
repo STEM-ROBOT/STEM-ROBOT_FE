@@ -19,6 +19,10 @@ const LeagueView = ({ viewMode }) => {
 
     return () => clearInterval(intervalId); // Clean up the interval
   }, [images.length]);
+  const matchesPlayed = 21;
+  const totalMatches = 42;
+  const progressPercentage = (matchesPlayed / totalMatches) * 100;
+
   return (
     <div
       onClick={() => navigate(`/league/t1001`)}
@@ -71,6 +75,23 @@ const LeagueView = ({ viewMode }) => {
               Time left to register
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Progress Bar Section */}
+      <div className={`progress_bar_container ${viewMode}`}>
+        <div className={`progress_bar ${viewMode}`}>
+          <div
+            className={`progress_fill ${viewMode}`}
+            style={{ width: `${progressPercentage}%` }}
+          ></div>
+
+          <div className={`progress_text ${viewMode}`}>
+            {matchesPlayed} / {totalMatches}
+          </div>
+        </div>
+        <div className={`progress_detail ${viewMode}`}>
+          Số trận đã hoàn thành
         </div>
       </div>
     </div>

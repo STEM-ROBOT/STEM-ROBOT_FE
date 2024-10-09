@@ -40,10 +40,10 @@
 .btn_search {
   background-image: linear-gradient(
     to right top,
-    #1691e4 0%,
-    #0a578a 31%,
-    #084e7c 71%,
-    #0e92eb 100%
+    #00ccff 0%,
+    #01233a 31%,
+    #01233a 71%,
+    #00ccff 100%
   );
   display: flex;
   justify-content: center;
@@ -63,10 +63,10 @@
   cursor: pointer;
   background-image: linear-gradient(
     to left top,
-    #1691e4 0%,
-    #0a578a 31%,
-    #084e7c 71%,
-    #0e92eb 100%
+    #00ccff 0%,
+    #01233a 31%,
+    #01233a 71%,
+    #00ccff 100%
   );
 }
 .filter_select_container {
@@ -78,10 +78,10 @@
   margin-left: 15px;
   background-image: linear-gradient(
     to right,
-    #1d5a83 0%,
-    #053e64 31%,
-    #084e7c 71%,
-    #077dcc 100%
+    #063479 0%,
+    #074d7b 31%,
+    #01233a 71%,
+    #054656 100%
   );
   padding: 9px;
   border: 1px solid #ccc;
