@@ -22,7 +22,23 @@ const LeagueView = ({ viewMode }) => {
   const matchesPlayed = 21;
   const totalMatches = 42;
   const progressPercentage = (matchesPlayed / totalMatches) * 100;
+  const calculateDaysLeft = (endDate) => {
+    // Lấy thời gian hiện tại
+    const now = new Date();
+    // Lấy thời gian hết hạn
+    const end = new Date(endDate);
+    // Tính chênh lệch thời gian (đơn vị: milliseconds)
+    const difference = end - now;
 
+    // Tính số ngày còn lại
+    const daysLeft = Math.floor(difference / (1000 * 60 * 60 * 24));
+
+    // Nếu đã qua hạn, trả về 0
+    return daysLeft > 0 ? daysLeft : 0;
+  };
+
+  // Sử dụng hàm
+  const endDate = "2024-10-13T23:59:59";
   return (
     <div
       onClick={() => navigate(`/league/t1001`)}
@@ -57,24 +73,24 @@ const LeagueView = ({ viewMode }) => {
         <div className={`league_stats ${viewMode}`}>
           <div className={`tooltip ${viewMode}`}>
             <span>👥 14</span>
-            <div className={`tooltip_text ${viewMode}`}>
-              Number of teams in the league
-            </div>
+            <div className={`tooltip_text ${viewMode}`}>Số đội trong giải</div>
           </div>
 
           {/* Tooltip for views */}
           <div className={`tooltip ${viewMode}`}>
             <span>👁️ 191</span>
-            <div className={`tooltip_text ${viewMode}`}>Number of views</div>
+            <div className={`tooltip_text ${viewMode}`}>Lượt xem</div>
           </div>
 
           {/* Tooltip for time left */}
-          <div className={`tooltip ${viewMode}`}>
-            <span>⏱️ 11 days left</span>
-            <div className={`tooltip_text ${viewMode}`}>
-              Time left to register
+          {calculateDaysLeft(endDate) > 0 && (
+            <div className={`tooltip ${viewMode}`}>
+              <span>⏱️Còn lại {calculateDaysLeft(endDate)} ngày </span>
+              <div className={`tooltip_text ${viewMode}`}>
+                Thời gian đăng kí
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
