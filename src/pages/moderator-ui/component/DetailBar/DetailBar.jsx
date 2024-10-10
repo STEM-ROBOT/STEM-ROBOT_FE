@@ -1,37 +1,27 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./DetailBar.css";
-import Countdown from "../Countdown/Countdown";
-import TeamList from "../TeamList/TeamList";
-import CompetitionList from "../CompetitionList/CompetitionList";
-const DetailBar = ({ setPageView }) => {
-  const [activeTab, setActiveTab] = useState("register");
-  const endDate = Date("2024-10-13T23:59:59");
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+const DetailBar = () => {
+  const endDate = new Date("2024-10-13T23:59:59");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentSubPath = location.pathname.split("/").pop();
   const tabs = [
     {
       name: "ĐĂNG KÝ THI ĐẤU",
-      key: "register",
-      component: <Countdown endDate={endDate} />,
+      path: "register-time",
     },
     {
       name: "NỘI DUNG THI ĐẤU",
-      key: "competitions",
-      component: <CompetitionList endDate={endDate} />
+      path: "competition",
     },
     {
-      name: "DANH SÁCH ĐĂNG KÝ",
-      key: "participants",
-      component: <TeamList isPublic={false} />,
+      name: "DANH SÁCH THAM GIA",
+      path: "team-list",
     },
   ];
-  useEffect(() => {
-    if (activeTab == "register") {
-      setPageView(<Countdown endDate="2024-10-13T23:59:59" />);
-    }
-  }, [activeTab]);
-  // Function to handle tab click
   const handleTabClick = (tab) => {
-    setActiveTab(tab.key);
-    setPageView(tab.component);
+    navigate(`/league/t1001/${tab.path}`, { state: { endDate } });
   };
   return (
     <div className="detail_bar">
@@ -65,12 +55,6 @@ const DetailBar = ({ setPageView }) => {
                 <span>👁️ 191</span>
                 <div className="tooltip_text">Lượt xem</div>
               </div>
-
-              {/* Tooltip for time left
-              <div className="tooltip">
-                <span>⏱️ Còn lại 11 ngày</span>
-                <div className="tooltip_text">Thời gian đăng ký</div>
-              </div> */}
             </div>
           </div>
         </div>
@@ -79,11 +63,13 @@ const DetailBar = ({ setPageView }) => {
         {tabs.map((tab) => (
           <div
             key={tab.key}
-            className={`tab_item ${activeTab === tab.key ? "active" : ""}`}
+            className={`tab_item ${
+              currentSubPath === tab.path ? "active" : ""
+            }`}
             onClick={() => handleTabClick(tab)}
           >
             {tab.name}
-            {activeTab === tab.key && <div className="indicator"></div>}
+            {currentSubPath === tab.path && <div className="indicator"></div>}
           </div>
         ))}
       </div>
