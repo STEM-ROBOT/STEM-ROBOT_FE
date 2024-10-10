@@ -10,7 +10,7 @@
 .league_detail_container {
   width: 100%;
   z-index: 1000;
-  padding-top: 100px;
+  padding: 81.66px 0 20px 0;
   background-image: linear-gradient(
     to left,
     #022233 0%,

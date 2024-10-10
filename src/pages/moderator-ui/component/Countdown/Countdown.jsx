@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import "./Countdown.css";
 import Introduction from "../Introduction/Introduction";
 const introduction = `🏆 Lâu lâu không tạo giải cho anh em, anh em hỏi nhiều quá. Tiện đây chào mừng 70 năm giải phóng thủ đô, Rùa Billiards xin tổ chức 1 giải nho nhỏ cho các em học sinh nhé. 🎓
@@ -15,7 +16,9 @@ Thời gian đăng kí bắt đầu từ ngày hôm nay đến hết ngày 10-10
 Về game 2 mạng thì anh em có thể đọc ở bài viết sau.
 Rùa Billiards xin cảm ơn!
 Mọi chi tiết xin liên hệ qua sdt 0387598791 (Mạnh Quân) hoặc nhắn tin trực tiếp qua Facebook Quân Mạnh.`;
-const Countdown = ({ endDate }) => {
+const Countdown = () => {
+  const location = useLocation();
+  const { endDate } = location.state || {};
   const calculateTimeLeft = () => {
     const difference = new Date(endDate) - new Date();
     let timeLeft = {};

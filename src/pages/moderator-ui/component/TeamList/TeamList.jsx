@@ -56,10 +56,6 @@ const TeamList = ({ isPublic }) => {
         return "status invited";
       case "Từ chối lời mời":
         return "status declined";
-      case "Được mời":
-        return "status invited";
-      case "Từ chối lời mời":
-        return "Từ chối lời mời";
       default:
         return "";
     }
