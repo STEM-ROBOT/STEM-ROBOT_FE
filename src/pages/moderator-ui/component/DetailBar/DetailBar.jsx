@@ -1,22 +1,27 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import "./DetailBar.css";
-import Countdown from "../Countdown/Countdown";
-const DetailBar = ({ setPageView }) => {
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+const DetailBar = () => {
+  const endDate = new Date("2024-10-13T23:59:59");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentSubPath = location.pathname.split("/").pop();
   const tabs = [
-    { name: "ĐĂNG KÝ THI ĐẤU", key: "register", component: <Countdown endDate="2024-10-13T23:59:59" /> },
-    { name: "NỘI DUNG THI ĐẤU", key: "competitions", component: <Countdown endDate="2024-10-13T23:59:59" /> },
     {
-      name: "DANH SÁCH ĐĂNG KÝ",
-      key: "participants",
-      component: <Countdown endDate="2024-10-13T23:59:59"/>,
+      name: "ĐĂNG KÝ THI ĐẤU",
+      path: "register-time",
+    },
+    {
+      name: "NỘI DUNG THI ĐẤU",
+      path: "competition",
+    },
+    {
+      name: "DANH SÁCH THAM GIA",
+      path: "team-list",
     },
   ];
-  const [activeTab, setActiveTab] = useState("register");
-
-  // Function to handle tab click
   const handleTabClick = (tab) => {
-    setActiveTab(tab.key);
-    setPageView(tab.component);
+    navigate(`/league/t1001/${tab.path}`, { state: { endDate } });
   };
   return (
     <div className="detail_bar">
@@ -50,12 +55,6 @@ const DetailBar = ({ setPageView }) => {
                 <span>👁️ 191</span>
                 <div className="tooltip_text">Lượt xem</div>
               </div>
-
-              {/* Tooltip for time left */}
-              <div className="tooltip">
-                <span>⏱️ Còn lại 11 ngày</span>
-                <div className="tooltip_text">Thời gian đăng ký</div>
-              </div>
             </div>
           </div>
         </div>
@@ -64,11 +63,13 @@ const DetailBar = ({ setPageView }) => {
         {tabs.map((tab) => (
           <div
             key={tab.key}
-            className={`tab_item ${activeTab === tab.key ? "active" : ""}`}
+            className={`tab_item ${
+              currentSubPath === tab.path ? "active" : ""
+            }`}
             onClick={() => handleTabClick(tab)}
           >
             {tab.name}
-            {activeTab === tab.key && <div className="indicator"></div>}
+            {currentSubPath === tab.path && <div className="indicator"></div>}
           </div>
         ))}
       </div>

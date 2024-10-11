@@ -1,21 +1,26 @@
+.countdown_page {
+  margin: 0 8% 0 8%;
+  width: 100%;
+}
 .countdown_container {
   background: linear-gradient(to right, #29689c, #006482);
-  padding: 20px;
-  border-radius: 10px;
+  padding: 60px 0 20px 0;
+  border-radius: 13px;
   text-align: center;
   color: #fff;
-  max-width: 600px;
+  width: 100%;
+
+  min-height: 35vh;
 }
 
-.countdown_container h2 {
+.countdown_title {
   font-size: 18px;
   margin-bottom: 10px;
 }
 
-.countdown_container h2 span {
+.countdown_title .highlight {
   color: #ffd700;
 }
-
 .countdown_container p {
   font-size: 16px;
   margin-bottom: 20px;
