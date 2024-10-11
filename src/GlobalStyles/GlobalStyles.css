@@ -30,7 +30,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(179, 160, 128, 0.545); /* Màu nền với độ mờ */
+  background-color: rgba(128, 156, 179, 0.545); /* Màu nền với độ mờ */
   display: flex;
   justify-content: center;
   align-items: center;
