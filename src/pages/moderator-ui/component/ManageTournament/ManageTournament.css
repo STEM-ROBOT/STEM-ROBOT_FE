@@ -1,0 +1,75 @@
+.manage-tournament-container {
+    padding: 20px 0;
+    display: flex;
+   min-height: 600px;
+}
+
+.sidebar {
+    background-color: #4a5568;
+    width: 250px;
+    transition: width 0.3s;
+    position: relative;
+    border-radius: 8px 0 0 8px;
+}
+
+.sidebar.open {
+    width: 250px;
+}
+
+.sidebar.closed {
+    width: 60px;
+}
+
+.sidebar-toggle {
+    position: absolute;
+    top: 20px;
+    right: -15px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 8px;
+}
+
+.sidebar ul {
+    list-style: none;
+    margin-top: 50px;
+    color: #fff;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.sidebar li:hover {
+    background-color: #6c757d;
+}
+
+.sidebar li.active {
+    background-color: #6c757d;
+    font-weight: bold;
+}
+
+.sidebar-title {
+    margin-left: 15px;
+    transition: opacity 0.3s, margin-left 0.3s;
+    opacity: 1;
+    white-space: nowrap;
+    visibility: visible;
+}
+
+.sidebar.closed .sidebar-title {
+    opacity: 0; 
+    margin-left: 0;
+    visibility: hidden; 
+}
+
+.sidebar li .icon {
+    font-size: 1.2rem;
+}
