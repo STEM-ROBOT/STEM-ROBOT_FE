@@ -1,0 +1,66 @@
+.game_rule_container {
+  display: flex;
+  min-height: 70vh;
+  background-color: #f9f9f9;
+  border-radius: 13px;
+}
+
+.game_rule_sidebar {
+  width: 220px;
+  background-color: #556080;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 13px 0 0 13px;
+}
+
+.rule_list {
+  display: flex;
+  flex-direction: column;
+}
+
+.rule_item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.rule_item:hover {
+  background-color: #6b7a8b;
+}
+
+.rule_item.active {
+  background-color: #394a6d;
+  border-left: 4px solid #ffffff;
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+.label {
+  font-size: 16px;
+}
+
+.game_rule_content {
+  flex: 1;
+  padding: 10px;
+  background-color: #ffffff;
+  border-left: 1px solid #ddd;
+  border-radius: 0 13px 13px 0;
+}
+
+.rule_title {
+  background-color: #e0f7fa;
+  padding: 10px;
+  border-radius: 13px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.rule_description {
+}

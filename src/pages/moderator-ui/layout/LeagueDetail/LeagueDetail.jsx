@@ -7,10 +7,11 @@ import Footer from "../../../system-ui/component/Footer/Footer";
 import CompetitionList from "../../component/CompetitionList/CompetitionList";
 import Countdown from "../../component/Countdown/Countdown";
 import TeamList from "../../component/TeamList/TeamList";
-import { children } from "../../../../router/ModeratorRouter";
+import { league_detail } from "../../../../router/ModeratorRouter";
 
 const LeagueDetail = () => {
   const id = useParams();
+
   const renderRoutes = (routes) =>
     routes.map((route, index) => {
       return <Route key={index} path={route.path} element={route.element} />;
@@ -21,7 +22,7 @@ const LeagueDetail = () => {
       <div className="league_detail_container">
         <DetailBar />
         <div className="league_detail_option">
-          <Routes>{renderRoutes(children)}</Routes>
+          <Routes>{renderRoutes(league_detail)}</Routes>
         </div>
       </div>
       <Footer />
