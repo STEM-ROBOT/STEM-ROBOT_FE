@@ -91,7 +91,7 @@ const Header = () => {
                 <a href="/league" className="dropdown-item">
                   Tìm Giải Đấu
                 </a>
-                <a href="/home-sub2" className="dropdown-item">
+                <a href="/league/create-tournament" className="dropdown-item">
                   Tạo Giải Đấu
                 </a>
               </div>

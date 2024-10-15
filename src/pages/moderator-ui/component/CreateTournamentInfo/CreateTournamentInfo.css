@@ -1,0 +1,109 @@
+.container_create_info_tournament {
+  width: 100%;
+}
+.label_create {
+  padding: 15px 20px;
+  font-size: 25px;
+  font-weight: 600;
+  color: rgb(7, 53, 97);
+  border-radius: 13px 13px 0 0;
+  border-bottom: 2px solid #a8b4c5;
+}
+.info_create {
+  padding: 20px 10% 10px 10%;
+  display: flex;
+}
+
+/* Input Image Tournament */
+.avatar_tournament {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 7px;
+  border-top: 1px dashed #a4c1cf;
+  border-left: 1px dashed #a4c1cf;
+  border-bottom: 1px dashed #a4c1cf;
+  padding: 5px 20px;
+  width: 350px;
+}
+.label_avatar {
+  width: 220px;
+  font-size: 17px;
+  color: #5e6a7c;
+  font-weight: 500;
+  padding: 3px 0;
+}
+.avatar_view {
+  cursor: pointer;
+  width: 200px;
+  height: 200px;
+  object-fit: scale-down;
+  padding: 10px;
+  border-radius: 7px;
+  border: 1px solid #a4c1cf;
+}
+/* Input Info Tournament */
+.info_tournament {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 70%;
+  border-radius: 7px;
+  border: 1px dashed #a4c1cf;
+  padding: 5px 20px;
+}
+.name_tournament {
+  width: 100%;
+}
+.phone_tournament {
+  width: 65%;
+}
+.status_tournament {
+  width: 33.5%;
+}
+.label_info {
+  flex: 1;
+  font-size: 17px;
+  color: #5e6a7c;
+  font-weight: 500;
+  padding: 3px 0;
+}
+.input_tournament {
+  width: 97.5%;
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 7px;
+  font-size: 17px;
+  color: #186fc0;
+  align-items: center;
+  border: 1px solid #a4c1cf;
+}
+.option_tournament {
+  width: 96%;
+  background-color: #fff;
+  padding: 6px;
+
+  border-radius: 7px;
+  font-size: 17px;
+  color: #186fc0;
+  align-items: center;
+  border: 1px solid #a4c1cf;
+}
+.option_tournament:focus {
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #6eafeb;
+}
+.input_tournament:focus {
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #6eafeb;
+}
+.phone_status_tournament {
+  width: 100%;
+  justify-content: space-between;
+  display: flex;
+}

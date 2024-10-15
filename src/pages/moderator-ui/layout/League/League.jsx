@@ -8,7 +8,7 @@ import SearchFilter from "../../component/SearchFilter/SearchFilter";
 import { useNavigate } from "react-router-dom";
 
 const League = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState("grid");
   return (
     <div className="league_page">
@@ -38,16 +38,14 @@ const League = () => {
         </div>
         {/* View League - List View */}
         <div className={`league_grid ${viewMode}`}>
-          <LeagueView viewMode={viewMode}    />
           <LeagueView viewMode={viewMode} />
           <LeagueView viewMode={viewMode} />
           <LeagueView viewMode={viewMode} />
           <LeagueView viewMode={viewMode} />
- 
+          <LeagueView viewMode={viewMode} />
         </div>
-        
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

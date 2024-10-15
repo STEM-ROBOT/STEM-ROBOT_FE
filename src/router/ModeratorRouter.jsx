@@ -1,4 +1,3 @@
-
 import Account from "../pages/moderator-ui/layout/Account/Account";
 import { Navigate } from "react-router-dom";
 import CompetitionList from "../pages/moderator-ui/component/CompetitionList/CompetitionList";
@@ -11,6 +10,7 @@ import CompetitionDetail from "../pages/moderator-ui/layout/CompetitionDetail/Co
 import GameRuleComponent from "../pages/moderator-ui/component/GameRule/GameRuleComponent";
 import TeamCompetition from "../pages/moderator-ui/component/TeamCompetition/TeamCompetition";
 import RoundCompetition from "../pages/moderator-ui/component/RoundCompetition/RoundCompetition";
+import CreateTournament from "../pages/moderator-ui/layout/CreateTournament/CreateTournament";
 
 export const league_detail = [
   { path: "", element: <Navigate to="register-time" /> },
@@ -27,10 +27,10 @@ export const competition_detail_router = [
   { path: "stage-group", element: <RoundCompetition /> },
   { path: "knockout", element: <RoundCompetition /> },
 ];
+
 const moderatorRouter = [
-
-  { path: '/account/mytournament', element: <Account /> },
-
+  { path: "/account/mytournament", element: <Account /> },
+  { path: "/league/create-tournament", element: <CreateTournament /> },
   { path: "/league", element: <League /> },
   {
     path: "/league/:league_id/*",

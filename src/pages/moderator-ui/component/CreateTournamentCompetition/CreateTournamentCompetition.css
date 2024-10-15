@@ -1,0 +1,57 @@
+.container_create_competition_tournament {
+  width: 100%;
+}
+.competition_create {
+  padding: 10px 10%;
+}
+.competition_list {
+  background-color: #fff;
+  border-radius: 7px;
+  border: 1px dashed #a4c1cf;
+  padding: 5px 20px;
+}
+.competition_select {
+  padding: 10px;
+  border: 1px solid #a4c1cf;
+  background-color: #fff;
+  border-radius: 7px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.competition_option_choice {
+  cursor: pointer;
+  margin: 10px;
+  width: 137.5px;
+  height: 215px;
+  border-radius: 7px;
+  border: 1px solid #a4c1cf;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.competition_null {
+  cursor: pointer;
+  margin: 10px;
+  width: 137.5px;
+  height: 215px;
+  border-radius: 7px;
+  border: 1px solid #a4c1cf;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.competition_null_icon {
+  width: 50%;
+  height: 50%;
+  color: #a4c1cf;
+}
+
+@media (min-width: 1905px) {
+  .competition_null {
+    width: 151.5px;
+  }
+  .competition_choice {
+    width: 151.5px;
+  }
+}
