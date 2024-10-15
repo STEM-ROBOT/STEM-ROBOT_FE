@@ -1,0 +1,25 @@
+.create_tournament_page {
+  width: 100%;
+  padding: 81.66px 0 20px 0;
+  background-image: linear-gradient(
+    to left,
+    #022233 0%,
+    #033f60 21%,
+    #03344e 41%,
+    #022233 61%,
+    #00121c 81%,
+    #000f16 100%
+  );
+}
+.create_container {
+  background-color: #ffffffde;
+  padding: 10px 0 10px 0;
+}
+.create_info_container {
+  margin: 0 8% 20px 8%;
+  background-color: #fff;
+  min-height: 70vh;
+  border: 1px dashed #ccc;
+  border-radius: 13px;
+  background-color: #f7f7f7;
+}
