@@ -1,0 +1,70 @@
+.match-round-container {
+  padding: 20px;
+  background-color: #fff;
+}
+
+.round-selection {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.round-selection button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ccc;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.round-selection button.active {
+  background-color: green;
+  color: white;
+}
+
+.rounds-display {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.round-group {
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.group-title {
+  background-color: #5d5ddc;
+  color: white;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.match-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.match-table th,
+.match-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.match-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.match-table td {
+  background-color: white;
+}
