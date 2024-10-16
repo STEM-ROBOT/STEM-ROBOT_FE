@@ -13,7 +13,11 @@ import TournamentConfiguration from "../pages/moderator-ui/layout/TournamentConf
 import Tournament from "../pages/moderator-ui/layout/Tournament/Tournament";
 import ManageCompetition from "../pages/moderator-ui/component/ManageCompetition/ManageCompetition";
 import ListContestant from "../pages/moderator-ui/ListContestant/ListContestant";
-
+import CompetitionDetail from "../pages/moderator-ui/layout/CompetitionDetail/CompetitionDetail";
+import GameRuleComponent from "../pages/moderator-ui/component/GameRule/GameRuleComponent";
+import TeamCompetition from "../pages/moderator-ui/component/TeamCompetition/TeamCompetition";
+import RoundCompetition from "../pages/moderator-ui/component/RoundCompetition/RoundCompetition";
+import CreateTournament from "../pages/moderator-ui/layout/CreateTournament/CreateTournament";
 
 export const tournamentRoutes = [
   { path: "mycompetition", element: <ManageCompetition/> },
@@ -28,11 +32,21 @@ export const competitionChildren = [
   { path: "customize", element: <TournamentConfiguration/> },             
 ];
 
-export const children = [
+
+export const league_detail = [
   { path: "", element: <Navigate to="register-time" /> },
   { path: "register-time", element: <Countdown /> },
-  { path: "competition", element: <CompetitionList /> },
   { path: "team-list", element: <TeamList /> },
+  { path: "competition", element: <CompetitionList /> },
+  { path: "competition/:competitionId/*", element: <CompetitionDetail /> },
+];
+export const competition_detail_router = [
+  { path: "", element: <Navigate to="game-rule" /> },
+  { path: "game-rule", element: <GameRuleComponent /> },
+  { path: "team-competition-list", element: <TeamCompetition /> },
+  { path: "match-schedule", element: <RoundCompetition /> },
+  { path: "stage-group", element: <RoundCompetition /> },
+  { path: "knockout", element: <RoundCompetition /> },
 ];
 
 export const profileChildren = [
@@ -42,19 +56,18 @@ export const profileChildren = [
   { path: "myinvoice", element: <></> },
 ];
 
+
 const moderatorRouter = [
   { path: '/account/*', element: <Account /> },
   {
     path: '/account/*/:id',
     element: <Account />
   },
+  { path: "/account/mytournament", element: <Account /> },
+  { path: "/league/create-tournament", element: <CreateTournament /> },
   { path: "/league", element: <League /> },
   {
-    path: "/league/:id/*",
-    element: <LeagueDetail />,
-  },
-  {
-    path: "/league/:id",
+    path: "/league/:league_id/*",
     element: <LeagueDetail />,
   },
   {

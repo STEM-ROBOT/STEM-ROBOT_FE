@@ -1,0 +1,66 @@
+.game_round_container {
+  display: flex;
+  min-height: 70vh;
+  background-color: #f9f9f9;
+  border-radius: 13px;
+}
+
+.game_round_sidebar {
+  width: 180px;
+  background-color: #556080;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 13px 0 0 13px;
+}
+
+.round_list {
+  display: flex;
+  flex-direction: column;
+}
+
+.round_item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.round_item:hover {
+  background-color: #6b7a8b;
+}
+
+.round_item.active {
+  background-color: #394a6d;
+  border-left: 4px solid #ffffff;
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+.label {
+  font-size: 16px;
+}
+
+.game_round_content {
+  flex: 1;
+  padding: 10px;
+  background-color: #ffffff;
+  border-left: 1px solid #ddd;
+  border-radius: 0 13px 13px 0;
+}
+
+.round_title {
+  background-color: #e0f7fa;
+  padding: 10px;
+  border-radius: 13px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.round_description {
+}
