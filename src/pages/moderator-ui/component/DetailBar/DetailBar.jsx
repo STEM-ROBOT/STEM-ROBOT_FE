@@ -60,9 +60,9 @@ const DetailBar = () => {
         </div>
       </div>
       <div className="tab_navigation">
-        {tabs.map((tab) => (
+        {tabs.map((tab, i) => (
           <div
-            key={tab.key}
+            key={i}
             className={`tab_item ${
               currentSubPath === tab.path ? "active" : ""
             }`}

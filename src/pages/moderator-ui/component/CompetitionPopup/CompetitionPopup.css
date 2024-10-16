@@ -1,0 +1,170 @@
+/* competition list view */
+.competition_list_view {
+  width: 50%;
+  background-color: #ebf5fa;
+  border-radius: 7px;
+  padding: 20px;
+}
+.competition_layout_close {
+  display: flex;
+  justify-content: flex-end;
+}
+.competition_layout {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+.search_competition_container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.search_competition_input {
+  background-color: #fff;
+  width: 75%;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
+  font-size: 17px;
+  color: #186fc0;
+  align-items: center;
+  border: 2px solid #fff;
+}
+
+.search_competition_input:focus {
+  background-color: #fff;
+  border: 2px solid #0a76db;
+}
+.search_competition_input::placeholder {
+  color: #9aa2ac;
+}
+.btn_search_competition {
+  background-image: linear-gradient(
+    to right top,
+    #00ccff 0%,
+    #01233a 31%,
+    #01233a 71%,
+    #00ccff 100%
+  );
+  display: flex;
+  justify-content: center;
+  width: 10%;
+  align-items: center;
+  border-radius: 0 5px 5px 0;
+}
+.btn_search_competition:hover {
+  cursor: pointer;
+  background-image: linear-gradient(
+    to left top,
+    #00ccff 0%,
+    #01233a 31%,
+    #01233a 71%,
+    #00ccff 100%
+  );
+}
+.competition_select_option {
+  padding: 10px;
+  border: 1px solid #a4c1cf;
+  background-color: #fff;
+  border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-height: 400px;
+  overflow-y: scroll;
+}
+.competition_select_option::-webkit-scrollbar {
+  display: none;
+}
+.competition_select_option {
+  scrollbar-width: none;
+}
+.competition_choice {
+  cursor: pointer;
+  margin: 10px;
+  width: 150px;
+  height: 215px;
+  border-radius: 7px;
+  position: relative;
+}
+
+.img_competition {
+  width: 100%;
+  height: 85%;
+  border-radius: 7px;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+.img_competition.active {
+  scale: 0.95;
+  border: 3px solid #0b8df8;
+}
+@keyframes bounce {
+  0% {
+    transform: translateY(0); /* Ban đầu vị trí là không dịch chuyển */
+  }
+  15% {
+    transform: translateY(-10px); /* Nhảy lên 10px */
+  }
+  35% {
+    transform: translateY(0px); /* Nhảy lên 10px */
+  }
+  50% {
+    transform: translateY(-5px); /* Quay lại vị trí ban đầu */
+  }
+  75% {
+    transform: translateY(); /* Nhảy lên 5px */
+  }
+  100% {
+    transform: translateY(0); /* Quay lại vị trí ban đầu */
+  }
+}
+
+.competition_choice:hover .img_competition {
+  animation: bounce 3s ease-in-out infinite;
+  /* Hiệu ứng sẽ lặp lại mỗi khi hover */
+}
+.competition_name_option {
+  text-align: center;
+}
+
+.btn_cf_competition {
+  background-image: linear-gradient(
+    to right top,
+    #00ccff 0%,
+    #01233a 31%,
+    #01233a 71%,
+    #00ccff 100%
+  );
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  padding: 7px 20px;
+  align-items: center;
+  border-radius: 7px;
+  color: #fff;
+}
+.btn_cf_competition:hover {
+  background-image: linear-gradient(
+    to left top,
+    #00ccff 0%,
+    #01233a 31%,
+    #01233a 71%,
+    #00ccff 100%
+  );
+  cursor: pointer;
+}
+@media (min-width: 1905px) {
+  .competition_list_view {
+    width: 46%;
+    height: 600px;
+    background-color: #ebf5fa;
+    border-radius: 7px;
+    padding: 20px;
+  }
+  .competition_choice {
+    width: 170px;
+    height: 225px;
+  }
+}
