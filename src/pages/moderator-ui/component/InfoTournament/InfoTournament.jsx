@@ -29,7 +29,7 @@ const InfoTournament = () => {
     };
 
     return (
-        <div className="info_tournament">
+        <div className="info_tournaments">
             <div className='info_tournament_container'>
                 <div className="info_tournament_content">
                     <div className="tournament_bar">

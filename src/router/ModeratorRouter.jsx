@@ -63,7 +63,6 @@ const moderatorRouter = [
     path: '/account/*/:id',
     element: <Account />
   },
-  { path: "/account/mytournament", element: <Account /> },
   { path: "/league/create-tournament", element: <CreateTournament /> },
   { path: "/league", element: <League /> },
   {
