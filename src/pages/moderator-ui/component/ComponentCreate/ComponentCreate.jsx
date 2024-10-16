@@ -2,6 +2,7 @@ import React from "react";
 import "./ComponentCreate.css";
 import CreateTournamentInfo from "../CreateTournamentInfo/CreateTournamentInfo";
 import CreateTournamentCompetition from "../CreateTournamentCompetition/CreateTournamentCompetition";
+import CreateTournamentFormat from "../CreateTournamentFormat/CreateTournamentFormat";
 
 const ComponentCreate = () => {
   return (
@@ -10,6 +11,7 @@ const ComponentCreate = () => {
         <div className="create_info_container">
           <CreateTournamentInfo />
           <CreateTournamentCompetition />
+          <CreateTournamentFormat />
         </div>
       </div>
     </div>

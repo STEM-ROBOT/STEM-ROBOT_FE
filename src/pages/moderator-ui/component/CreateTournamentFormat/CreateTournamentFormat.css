@@ -1,0 +1,142 @@
+.container_create_format_tournament {
+  width: 100%;
+}
+.format_create {
+  padding: 10px 10%;
+}
+.format_create_move {
+  padding: 0 10%;
+}
+.format_create_move.active {
+  padding: 10px 10%;
+}
+.competition_format {
+  background-color: #fff;
+  border-radius: 7px;
+  border: 1px dashed #a4c1cf;
+  padding: 5px 20px;
+}
+.competition_format_setup {
+  background-color: #fff;
+  border-radius: 7px;
+  overflow: hidden;
+  transition: max-height 1s ease;
+}
+.competition_format_option {
+  border: 1px solid #a4c1cf;
+  background-color: #fff;
+  border-radius: 7px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+.format_option {
+  width: 110px;
+  border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.format_option.active {
+  padding: 0;
+  border-radius: 7px;
+  height: 80px;
+}
+.format_option_view {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  width: 60%;
+  height: 70%;
+  background-color: #a4c1cf;
+}
+.format_option_view.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #a4c1cf;
+}
+.format_option_img {
+  width: 80%;
+  height: 80%;
+}
+.format_option_img.active {
+  width: 50%;
+  height: 50%;
+}
+.format_option_name {
+  display: none;
+}
+.format_option_name.active {
+  display: flex;
+  justify-content: center;
+  color: #fff;
+}
+.input_number_team {
+  width: 98%;
+  background-color: #fff;
+  padding: 5px 10px;
+  border-radius: 7px;
+  font-size: 17px;
+  color: #186fc0;
+  align-items: center;
+  border: 1px solid #a4c1cf;
+}
+.input_number_team:focus {
+  background-color: #fff;
+  padding: 5px 10px;
+  border: 1px solid #6eafeb;
+}
+.format_tournament {
+  width: 100%;
+  background-color: #fff;
+  padding: 6px;
+  border-radius: 7px;
+  font-size: 17px;
+  color: #186fc0;
+  align-items: center;
+  border: 1px solid #a4c1cf;
+}
+.format_tournament:focus {
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #6eafeb;
+}
+.format_score {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.format_score_setup {
+  width: 25%;
+}
+.input_score_format {
+  width: 93%;
+  background-color: #fff;
+  padding: 5px 10px;
+  border-radius: 7px;
+  font-size: 17px;
+  color: #186fc0;
+  align-items: center;
+  border: 1px solid #a4c1cf;
+}
+.total_match {
+  display: flex;
+  align-items: center;
+  padding: 5px 20px;
+  background-color: #d9edf7;
+  border-radius: 7px;
+  color: #31708f;
+  font-size: 17px;
+  font-weight: 500;
+}
+.icon_total_match {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+}
