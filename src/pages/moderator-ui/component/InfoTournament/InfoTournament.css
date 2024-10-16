@@ -1,0 +1,158 @@
+/* Container for the info tournament section */
+.info_tournament {
+    background-image: linear-gradient(
+        to left, 
+        #022233 0%,
+        #033f60 21%,
+        #03344e 41%,
+        #022233 61%,
+        #00121c 81%,
+        #000f16 100%
+      );
+    padding-top: 90px;
+}
+.info_tournament_container{
+    width: 100%;
+    background-color: #050505c0;
+}
+.info_tournament_content {
+    padding-top: 20px;
+    max-width: 85%;
+    margin: 0 auto;
+}
+
+.bar_content{
+    padding-bottom: 20px
+}
+.bar_content_img {
+    width: 10%;
+}
+
+.bar_img {
+    width: 120px;
+    height: 120px;
+    border-radius: 7px;
+    box-shadow: 3px 3px 4px rgba(248, 248, 248, 0.3);
+}
+
+.bar_content_info {
+    flex: 1;
+    color: #fff;
+    
+}
+
+.bar_title {
+    text-align: start;
+    margin-bottom: 5px;
+}
+
+.bar_title span {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.bar_detail span {
+    font-size: 17;
+    font-size: 17px;
+    color: #9ca4a4;
+    font-weight: 500;
+}
+
+.bar_detail {
+    margin-bottom: 20px;
+}
+
+.bar_stats {
+    font-weight: 500;
+    width: 25%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.tooltip span {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tooltip_text {
+    visibility: hidden;
+    background-color: #377ba6;
+    color: #fff;
+    text-align: center;
+    padding: 7px 15px;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 5000;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    width: max-content;
+    font-size: 14px;
+}
+
+.tooltip_text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #bfdbee transparent transparent transparent;
+}
+
+.tooltip:hover .tooltip_text {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.tab_navigation {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.tab_item {
+    color: #9ca4a4;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 15px 15px;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.tab_item:hover {
+    color: #ffffff;
+}
+
+.tab_item.active {
+    color: #fff;
+}
+
+.indicator {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 8px solid #ffffffde;
+    transition: opacity 0.3s;
+}
+
+.tab_item+.tab_item {
+    margin-left: 20px;
+}

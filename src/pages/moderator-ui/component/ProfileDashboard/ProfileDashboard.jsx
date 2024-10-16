@@ -1,27 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './ProfileDashboard.css';
-import Countdown from '../Countdown/Countdown';
-import Pricing from '../../../system-ui/component/Pricing/Pricing';
-import ManageTournament from '../ManageTournament/ManageTournament';
 
 const ProfileDashboard = () => {
     const tabs = [
-        { name: "QUẢN LÍ GIẢI ĐẤU", key: "mytournament", component: <ManageTournament endDate="2024-10-13T23:59:59" /> },
-        { name: "QUẢN LÝ ĐỘI", key: "mycompetitor", component: <Pricing /> },
-        { name: "QUẢN LÝ ĐƠN HÀNG", key: "myinvoice" },
+        { name: "QUẢN LÍ GIẢI ĐẤU", key: "mytournament" },
+        { name: "QUẢN LÝ GÓI", key: "myinvoice" },
     ];
 
-    const [activeTab, setActiveTab] = useState("mytournament");
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [activeTab, setActiveTab] = useState("");
+
+    useEffect(() => {
+        const currentPath = location.pathname.split("/").pop();
+        const matchedTab = tabs.find(tab => tab.key === currentPath);
+        if (matchedTab) {
+            setActiveTab(matchedTab.key);
+        } else {
+           
+        }
+    }, [location.pathname, navigate]);
 
     const handleTabClick = (tab) => {
         setActiveTab(tab.key);
+        navigate(`/account/${tab.key}`);
     };
 
     return (
         <div className="profile-dashboard-outer">
             <div className="profile-dashboard">
                 <div className='profile-dashboard-content'>
-                    <div className="profile-info">
+                <div className="profile-info">
                         <div className="profile-avatar">
                             <span className="avatar-initial">T</span>
                         </div>
@@ -50,19 +60,8 @@ const ProfileDashboard = () => {
                         ))}
                     </div>
                 </div>
-
-
             </div>
-            <div className="content-area-outer">
-                <div className="content-area">
-                    <div className="tab-content">
-                        {tabs.find((tab) => tab.key === activeTab).component}
-                    </div>
-                </div>
-            </div>
-
         </div>
-
     );
 };
 

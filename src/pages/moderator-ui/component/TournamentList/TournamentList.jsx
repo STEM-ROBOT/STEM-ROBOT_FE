@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { FaTableTennis, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { FaTableTennis, FaArrowLeft, FaArrowRight, FaTrophy } from 'react-icons/fa'; // Import FaTrophy for the icon
+import { useNavigate } from 'react-router-dom'; 
 import './TournamentList.css';
 
 const TournamentList = () => {
+    const navigate = useNavigate();
+
     const tournaments = [
         {
+            id: 1,
             name: "World Cup 2024",
             type: "Loại Trực Tiếp || Bóng Bàn || Thành Lê Đình || Qatar",
             status: "Chưa kích hoạt",
@@ -12,6 +16,7 @@ const TournamentList = () => {
             participants: "0 / 2"
         },
         {
+            id: 2,
             name: "Euro Cup 2024",
             type: "Loại Trực Tiếp || Bóng Đá || Thành Lê Đình || France",
             status: "Chưa kích hoạt",
@@ -19,6 +24,7 @@ const TournamentList = () => {
             participants: "0 / 4"
         },
         {
+            id: 3,
             name: "Asia Cup 2024",
             type: "Loại Trực Tiếp || Bóng Chuyền || Thành Lê Đình || Japan",
             status: "Chưa kích hoạt",
@@ -26,6 +32,7 @@ const TournamentList = () => {
             participants: "0 / 6"
         },
         {
+            id: 4,
             name: "Copa America 2024",
             type: "Loại Trực Tiếp || Bóng Đá || Thành Lê Đình || Brazil",
             status: "Chưa kích hoạt",
@@ -33,6 +40,7 @@ const TournamentList = () => {
             participants: "0 / 2"
         },
         {
+            id: 5,
             name: "Olympics 2024",
             type: "Loại Trực Tiếp || Điền Kinh || Thành Lê Đình || USA",
             status: "Chưa kích hoạt",
@@ -52,16 +60,27 @@ const TournamentList = () => {
 
     const totalPages = Math.ceil(tournaments.length / tournamentsPerPage);
 
+    const handleTournamentClick = (id) => {
+        navigate(`/mytournament/${id}/mycompetition`);
+    };
+
     return (
         <div className="tournament-container">
             <div className="tournament-header">
-                <h2>Giải đấu đã tạo</h2>
+                <h2>
+                    <FaTrophy className="trophy-icon" /> {/* Add the trophy icon here */}
+                    Giải đấu đã tạo
+                </h2>
                 <button className="create-tournament-btn">Tạo Giải Đấu</button>
             </div>
 
             <div className="tournament-list">
                 {currentTournaments.map((tournament, index) => (
-                    <div key={index} className="tournament-card">
+                    <div 
+                        key={index} 
+                        className="tournament-card" 
+                        onClick={() => handleTournamentClick(tournament.id)} 
+                    >
                         <div className="tournament-icon">{tournament.icon}</div>
                         <div className="tournament-info">
                             <h3>{tournament.name}</h3>
