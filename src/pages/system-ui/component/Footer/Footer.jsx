@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import './Footer.css';
-import qrCode from '/src/assets/images/app-qr.png'; // Replace with your QR code image path
-import appleStore from '/src/assets/images/apple.png'; // Replace with your Apple Store image path
-import googlePlay from '/src/assets/images/google-play.png'; // Replace with your Google Play image path
+import qrCode from '/src/assets/images/app-qr.png'; 
+import appleStore from '/src/assets/images/apple.png'; 
+import googlePlay from '/src/assets/images/google-play.png'; 
 
 const Footer = () => {
     return (
