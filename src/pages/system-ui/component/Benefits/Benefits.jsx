@@ -10,7 +10,7 @@ const Benefits = () => {
     return (
         <div className="benefits-container">
             <div className="benefits-content">
-                <div className="text-section">
+                <div className="text-sections">
                     <h3>STEM</h3>
                     <h2>Lợi ích STEM mang lại</h2>
                     <p>Số hóa thể thao không chỉ là một xu hướng phát triển tất yếu mà còn là bước chuyển mình mạnh mẽ giúp cải thiện toàn diện quá trình tổ chức, quản lý và vận hành các giải đấu. </p>

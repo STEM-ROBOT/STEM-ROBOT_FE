@@ -1,0 +1,47 @@
+.group-stage-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  
+  .group-container {
+    margin-bottom: 20px;
+  }
+  
+  h3 {
+    text-align: center;
+  }
+  
+  .group-teams {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .team-name {
+    font-size: 16px;
+  }
+  
+  .group-matches {
+    margin-top: 10px;
+  }
+  
+  .match-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    margin-bottom: 5px;
+  }
+  

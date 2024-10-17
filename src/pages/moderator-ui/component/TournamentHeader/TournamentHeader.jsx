@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; // Import useParams to get tournament ID
+import { useNavigate, useParams } from 'react-router-dom'; 
 import { FaUsers, FaEye, FaHeart } from 'react-icons/fa';
 import './TournamentHeader.css';
 
 const TournamentHeader = () => {
-  const { id } = useParams(); // Get the tournament ID from URL params
+  const { tournamentId, competitionId } = useParams(); 
   const tabs = [
     { name: "TIN CHUNG", key: "dashboard" },
     { name: "LỊCH THI ĐẤU", key: "schedule" },
@@ -17,21 +17,21 @@ const TournamentHeader = () => {
 
   const handleTabClick = (tab) => {
     setActiveTab(tab.key);
-    navigate(`/competition/${id}/${tab.key}`);
+    navigate(`/mytournament/${tournamentId}/mycompetition/${competitionId}/${tab.key}`); 
   };
 
   return (
-    <div className="tournament-header-outer">
-      <div className="tournament-header-container">
-        <div className='tournament-header-content'>
-          <div className="tournament-header">
-            <div className="tournament-image">
-              <img src="your-image-url" alt="Tournament" />
+    <div className="tournaments-header-outer">
+      <div className="tournaments-header-container">
+        <div className='tournaments-header-content'>
+          <div className="tournaments-headers">
+            <div className="tournaments-image">
+              <img src="https://cdn.ketnoibongda.vn/upload/images/z2375109156954_20640964dfc1fcec8273197669fdc5c4(2)(1).jpg" alt="Tournament" />
             </div>
-            <div className="tournament-details">
+            <div className="tournaments-detail">
               <h2>World Cup 2024</h2>
               <p>Loại Trực Tiếp || Bóng Bàn || Thành Lê Đình || Qatar</p>
-              <div className="tournament-stats">
+              <div className="tournaments-stats">
                 <span><FaUsers /> 3 Đội</span>
                 <span><FaEye /> 0 lượt xem</span>
                 <FaHeart className="favorite-icon" />

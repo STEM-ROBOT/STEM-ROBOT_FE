@@ -1,0 +1,131 @@
+.edit-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+}
+.popup-content h3{
+  padding-bottom: 10px;
+}
+
+.popup-main-content {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.edit-logo-section {
+  margin-right: 20px;
+}
+
+.edit-logo-section img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.edit-logo-section input {
+  display: block;
+  margin: 0 auto;
+}
+
+.edit-info-section {
+  flex: 1;
+}
+
+.popup-content label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.popup-content input {
+  width: 90%;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.save-button,
+.cancel-button {
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-button {
+  background-color: #28a745;
+}
+
+.cancel-button {
+  background-color: #dc3545;
+}
+
+.team-members-section {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.members-scroll {
+  padding: 0 20px;
+  max-height: 150px;
+  overflow-y: auto;
+  padding-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.team-members-section .member-input {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.team-members-section .member-input input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.remove-member-btn {
+  cursor: pointer;
+  color: red;
+}
+
+.add-member-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.add-member-btn svg {
+  margin-right: 5px;
+}
