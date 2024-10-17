@@ -5,13 +5,16 @@ import ConfigTournament from '../../component/ConfigTournament/ConfigTournament'
 import ManageTeam from '../../component/ManageTeam/ManageTeam';
 import RoleAssignment from '../../component/RoleAssignment/RoleAssignment';
 import KnockoutTournament from '../../component/KnockoutTournament/KnockoutTournament';
-import GroupStage from '../../component/GroupStage/GroupStage';
-
+import GroupAllocation from '../../component/GroupAllocation/GroupAllocation';
+import GroupMatchDraw from '../../component/GroupMatchDraw/GroupMatch';
+import GroupMatch from '../../component/GroupMatchDraw/GroupMatch';
 
 const TournamentConfiguration = () => {
-
+    const [tournamentFormat, setTournamentFormat] = useState("vòng bảng");  
     const [activeItem, setActiveItem] = useState("config");
 
+    
+    const isGroupStage = tournamentFormat === "vòng bảng";
 
     const renderComponent = () => {
         switch (activeItem) {
@@ -20,17 +23,19 @@ const TournamentConfiguration = () => {
             case 'status':
                 return <></>;
             case 'permissions':
-                return <RoleAssignment/>;
+                return <RoleAssignment />;
             case 'teams':
-                return <ManageTeam/>;
+                return <ManageTeam />;
             case 'matchups':
-                return <GroupStage/>;
+                return isGroupStage ? <GroupMatch /> : <KnockoutTournament />;  
             case 'schedule':
                 return <></>;
             case 'organizers':
                 return <></>;
             case 'sponsors':
                 return <></>;
+            case 'groupstage':
+                return isGroupStage ? <GroupAllocation /> : null;
             default:
                 return <></>;
         }
@@ -38,8 +43,7 @@ const TournamentConfiguration = () => {
 
     return (
         <div className="tournament-configuration">
-
-            <Sidebar activeItem={activeItem} onMenuClick={setActiveItem} />
+            <Sidebar activeItem={activeItem} onMenuClick={setActiveItem} isGroupStage={isGroupStage} />
             <div className="config-content">
                 {renderComponent()}
             </div>
