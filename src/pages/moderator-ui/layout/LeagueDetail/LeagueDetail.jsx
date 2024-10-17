@@ -11,6 +11,7 @@ import { league_detail } from "../../../../router/ModeratorRouter";
 
 const LeagueDetail = () => {
   const id = useParams();
+  console.log(id);
 
   const renderRoutes = (routes) =>
     routes.map((route, index) => {
@@ -20,7 +21,7 @@ const LeagueDetail = () => {
     <div className="league_detail_page">
       <Header />
       <div className="league_detail_container">
-        <DetailBar />
+        <DetailBar id={id.league_id} />
         <div className="league_detail_option">
           <Routes>{renderRoutes(league_detail)}</Routes>
         </div>

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./LeagueView.css";
 import { useNavigate } from "react-router-dom";
-const LeagueView = ({ viewMode }) => {
+const LeagueView = ({ viewMode, league }) => {
   const navigate = useNavigate();
+
   const images = [
     "https://istema.vn/wp-content/uploads/2023/03/p.png",
     "https://th.bing.com/th/id/OIP.7HSEMd30tk4S_tCOunvBXAHaEK?w=331&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7",
@@ -13,15 +14,13 @@ const LeagueView = ({ viewMode }) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
-        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+        prevIndex === league.images.length - 1 ? 0 : prevIndex + 1
       );
     }, 3000); // 2000ms = 2 seconds
 
     return () => clearInterval(intervalId); // Clean up the interval
   }, [images.length]);
-  const matchesPlayed = 21;
-  const totalMatches = 42;
-  const progressPercentage = (matchesPlayed / totalMatches) * 100;
+  const progressPercentage = (league.matchesPlayed / league.totalMatches) * 100;
   const calculateDaysLeft = (endDate) => {
     // Lấy thời gian hiện tại
     const now = new Date();
@@ -41,7 +40,7 @@ const LeagueView = ({ viewMode }) => {
   const endDate = "2024-10-13T23:59:59";
   return (
     <div
-      onClick={() => navigate(`/league/t1001`)}
+      onClick={() =>( navigate(`/league/${league.id}`))}
       className={`league_card ${viewMode}`}
       style={{
         "--background-image": `url(${images[currentImageIndex]})`,
@@ -62,30 +61,27 @@ const LeagueView = ({ viewMode }) => {
       </div>
       <div className={`league_content ${viewMode}`}>
         <div className={`league_title ${viewMode}`}>
-          <span>ROBOCON THPT VIP PRO - 2024</span>
+          <span>{league.name}</span>
         </div>
         <div className={`league_detail ${viewMode}`}>
-          <span>
-            Chia bảng đấu || Khu công nghiệp Quốc tế Protrade, Đường tỉnh 744,
-            An Tây, Bến Cát, Bình Dương, Việt Nam
-          </span>
+          <span>{league.location}</span>
         </div>
         <div className={`league_stats ${viewMode}`}>
           <div className={`tooltip ${viewMode}`}>
-            <span>👥 14</span>
+            <span>👥 {league.teams}</span>
             <div className={`tooltip_text ${viewMode}`}>Số đội trong giải</div>
           </div>
 
           {/* Tooltip for views */}
           <div className={`tooltip ${viewMode}`}>
-            <span>👁️ 191</span>
+            <span>👁️ {league.views}</span>
             <div className={`tooltip_text ${viewMode}`}>Lượt xem</div>
           </div>
 
           {/* Tooltip for time left */}
-          {calculateDaysLeft(endDate) > 0 && (
+          {calculateDaysLeft(league.endDate) > 0 && (
             <div className={`tooltip ${viewMode}`}>
-              <span>⏱️Còn lại {calculateDaysLeft(endDate)} ngày </span>
+              <span>⏱️Còn lại {calculateDaysLeft(league.endDate)} ngày </span>
               <div className={`tooltip_text ${viewMode}`}>
                 Thời gian đăng kí
               </div>
@@ -103,11 +99,11 @@ const LeagueView = ({ viewMode }) => {
           ></div>
 
           <div className={`progress_text ${viewMode}`}>
-            {matchesPlayed} / {totalMatches}
+            {league.matchesPlayed} / {league.totalMatches}
           </div>
         </div>
         <div className={`progress_detail ${viewMode}`}>
-          Số trận đã hoàn thành
+          Số nội dung thi đấu đã kích hoạt
         </div>
       </div>
     </div>

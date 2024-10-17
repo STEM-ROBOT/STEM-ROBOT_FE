@@ -7,49 +7,20 @@ const competitions = [
     id: 1,
     name: "Bóng Đá",
     image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
+      "https://image-cdn.essentiallysports.com/wp-content/uploads/imago0241552301h.jpg?width=600",
+    endDate: "2024-10-20T23:59:59",
   },
   {
     id: 2,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
+    name: "Giải Mê Cung",
+    image: "https://ohstem.vn/wp-content/uploads/2021/12/Lap-thuc-te-2.png",
+    endDate: "2024-10-30T23:59:59",
   },
   {
     id: 3,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-  },
-  {
-    id: 4,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-  },
-  {
-    id: 5,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-  },
-  {
-    id: 6,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-  },
-  {
-    id: 7,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-  },
-  {
-    id: 8,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
+    name: "Di chuyển đồ vật",
+    image: "https://tuyensinh.hueic.edu.vn/wp-content/uploads/2021/03/ro1.jpg",
+    endDate: "2024-11-13T23:59:59",
   },
 ];
 
@@ -73,12 +44,19 @@ const CompetitionList = () => {
           <div
             key={competition.id}
             className="competition_item"
-            onClick={() =>
-              navigate(
-                `/league/${path.league_id}/competition/${competition.id}`,
-                { state: { names: competition.name } }
-              )
-            }
+            onClick={() => {
+              localStorage.setItem("competitionName", competition.name),
+              localStorage.setItem("competitionEndDate", competition.endDate),
+                navigate(
+                  `/league/${path.league_id}/competition/${competition.id}`,
+                  {
+                    state: {
+                      names: competition.name,
+                      endDate: competition.endDate,
+                    },
+                  }
+                );
+            }}
           >
             <img
               src={competition.image}

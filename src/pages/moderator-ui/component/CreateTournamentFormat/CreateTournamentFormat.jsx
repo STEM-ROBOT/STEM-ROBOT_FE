@@ -46,7 +46,7 @@ const CreateTournamentFormat = () => {
   const selectFormat = (format) => {
     if (format.id == 2) {
       setIsExpanded(true);
-      setShowSetupTable(true)
+      setShowSetupTable(true);
       const groups = Math.ceil(teamNumber / 4); // Ví dụ: mỗi bảng có tối đa 4 đội
 
       const options = Array.from({ length: groups }, (_, i) => i + 2); // tạo danh sách bảng từ 2 trở lên
@@ -54,7 +54,7 @@ const CreateTournamentFormat = () => {
 
       setGroupOptions(options);
     } else {
-      setShowSetupTable(false)
+      setShowSetupTable(false);
       setIsExpanded(false);
     }
     setFormatCompetition(format);
@@ -114,7 +114,11 @@ const CreateTournamentFormat = () => {
           />
         </div>
       </div>
-      <div className={showSetupTable?`format_create_move active`:`format_create_move`}>
+      <div
+        className={
+          showSetupTable ? `format_create_move active` : `format_create_move`
+        }
+      >
         <div
           className="competition_format_setup"
           style={{

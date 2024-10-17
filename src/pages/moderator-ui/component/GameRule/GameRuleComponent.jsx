@@ -6,7 +6,6 @@ import { TiWarning } from "react-icons/ti";
 import { GrScorecard } from "react-icons/gr";
 import { RiTeamFill } from "react-icons/ri";
 
-
 // Create Document Component
 
 const GameRuleComponent = () => {
@@ -47,12 +46,21 @@ const GameRuleComponent = () => {
         </div>
       </div>
       <div className="game_rule_content">
-        <div className="rule_title">
+        {/* <div className="rule_title">
           {rules.find((rule) => rule.key === selectedRule)?.label}
-        </div>
+        </div> */}
         <div className="rule_description">
-      
-        
+          <div
+            className="view_contract"
+            style={{ width: "100%", height: "70vh" }}
+          >
+            <embed
+              src={"https://storage.cloud.google.com/stem-system-storage/mau-hop-dong-dat-coc.pdf?authuser=1"}
+              type="application/pdf"
+              width="100%"
+              height="100%"
+            />
+          </div>
           {/* <PDFViewer fileUrl={"/signed_document.pdf"} /> */}
         </div>
       </div>
