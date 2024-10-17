@@ -1,18 +1,26 @@
 import React from 'react';
-import { FaCogs, FaShieldAlt, FaUsers, FaLayerGroup, FaCalendarAlt, FaSitemap, FaMoneyBill } from 'react-icons/fa';
+import { FaCogs, FaShieldAlt, FaUsers, FaLayerGroup, FaCalendarAlt, FaSitemap, FaMoneyBill, FaTable } from 'react-icons/fa';
 import './Sidebar.css';
 
-const Sidebar = ({ activeItem, onMenuClick }) => {
+const Sidebar = ({ activeItem, onMenuClick, isGroupStage }) => {
     const menuItems = [
         { key: "config", label: "Cấu hình giải đấu", icon: <FaCogs /> },
         { key: "status", label: "Trạng thái", icon: <FaShieldAlt /> },
         { key: "permissions", label: "Phân quyền", icon: <FaUsers /> },
-        { key: "teams", label: "Quản lý đội", icon: <FaLayerGroup /> },
+        { key: "teams", label: "Quản lý đội", icon: <FaLayerGroup /> }, 
+    ];
+
+  
+    if (isGroupStage) {
+        menuItems.push({ key: "groupstage", label: "Quản lý bảng đấu", icon: <FaTable /> });
+    }
+
+    menuItems.push(
         { key: "matchups", label: "Sắp xếp cặp đấu", icon: <FaLayerGroup /> },
         { key: "schedule", label: "Quản lý lịch đấu", icon: <FaCalendarAlt /> },
         { key: "organizers", label: "Ban tổ chức", icon: <FaSitemap /> },
-        { key: "sponsors", label: "Nhà tài trợ", icon: <FaMoneyBill /> },
-    ];
+        { key: "sponsors", label: "Nhà tài trợ", icon: <FaMoneyBill /> }
+    );
 
     return (
         <div className="sidebar">

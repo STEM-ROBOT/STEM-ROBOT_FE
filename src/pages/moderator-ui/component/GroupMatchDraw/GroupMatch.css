@@ -1,0 +1,147 @@
+
+.group-match-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.group-match-description {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.navbar button {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    margin: 0 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar button.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.navbar button:hover {
+    background-color: #ddd;
+}
+
+.round-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.round-tabs button {
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    margin: 0 5px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.round-tabs button.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.round-tabs button:hover {
+    background-color: #ddd;
+}
+
+.group-matches {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.group-container {
+    width: 45%;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+.button-container{
+    flex: 0;
+}
+.group-container h3 {
+    text-align: center;
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 4px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.match-pair {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.match-pair select {
+    width: 45%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+}
+
+.match-pair span {
+    font-weight: bold;
+    color: #555;
+}
+
+.save-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 40px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+    background-color: #45a049;
+}
+
+.random-btn {
+    
+    margin: 0 auto 20px auto;
+    padding: 10px 30px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+
