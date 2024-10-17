@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import './ConfigTournament.css';
 import logo from '../../../../assets/images/header.png'
 import TournamentForm from '../TournamentForm/TournamentForm';
+import CreateTournamentInfo from '../CreateTournamentInfo/CreateTournamentInfo';
+import CreateTournamentCompetition from '../CreateTournamentCompetition/CreateTournamentCompetition';
 const sections = [
-    { title: "Thông tin cơ bản", content: <TournamentForm/> },
-    { title: "Thể thức và môn thi đấu", content: "Nội dung về thể thức và môn thi đấu..." },
+    { title: "Thông tin cơ bản", content: <CreateTournamentInfo/> },
+    { title: "Thể thức và môn thi đấu", content: <CreateTournamentCompetition/> },
     { title: "Tranh hạng ba và đóng / mở đăng ký", content: "Nội dung về tranh hạng ba..." },
     { title: "Đường dẫn tới giải đấu", content: "Nội dung về đường dẫn..." },
 ];

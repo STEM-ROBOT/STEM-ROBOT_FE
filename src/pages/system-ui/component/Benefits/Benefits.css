@@ -15,25 +15,27 @@
   }
   
   /* Text Section */
-  .text-section {
-    padding-bottom: 40px;
+  .text-sections {
+    padding-top: 40px;
     text-align: left;
   }
   
-  .text-section h3 {
+  .text-sections h3 {
+    text-align: left;
     font-size: 16px;
     color: #00c9ff; 
     text-transform: uppercase;
   }
   
-  .text-section h2 {
+  .text-sections h2 {
+    text-align: left;
     font-size: 36px;
     font-weight: bold;
     margin-bottom: 20px;
     color: #333; 
   }
   
-  .text-section p {
+  .text-sections p {
     font-size: 16px;
     color: #666;
     margin-bottom: 20px;

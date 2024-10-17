@@ -1,0 +1,75 @@
+.role-assignment-container {
+    margin: 20px;
+  }
+  
+  .role-assignment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .role-assignment-header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .header-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .import-button, .create-button {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .import-button:hover, .create-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .role-assignment-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .role-assignment-table th, .role-assignment-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .role-assignment-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .role-assignment-table td {
+    background-color: #f9f9f9;
+  }
+  
+  .role-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .confirm-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .confirm-button:hover {
+    background-color: #218838;
+  }
+  
