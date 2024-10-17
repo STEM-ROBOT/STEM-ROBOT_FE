@@ -1,5 +1,6 @@
 .competition_container {
   border: 1px dashed #ccc;
+  min-height: 55vh;
   border-radius: 13px;
   padding: 17px;
   background-color: #f7f7f7;

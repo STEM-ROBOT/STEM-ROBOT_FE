@@ -65,7 +65,7 @@ const CreateTournamentInfo = () => {
             </div>
           </div>
           <div className="name_tournament">
-            <div className="label_info">Địa diểm</div>
+            <div className="label_info">Địa điểm chi tiết</div>
             <input type="text" className="input_tournament" />
           </div>
         </div>

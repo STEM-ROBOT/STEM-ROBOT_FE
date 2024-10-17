@@ -20,7 +20,7 @@
   cursor: pointer;
 }
 
-.team-logo img {
+.team-avatar-competition {
   width: 80px;
   height: 80px;
   border-radius: 7px;
@@ -66,11 +66,23 @@
   background-color: #f44336;
   color: white;
 }
-
-.team-link {
-  margin-top: 10px;
+.team-member-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
+.team-link {
+  display: flex;
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.member_view {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 3px;
+}
 .link-button {
   background-color: #00bfa5;
   color: white;
@@ -116,11 +128,36 @@
   width: 0;
   background: linear-gradient(50deg, rgb(74, 240, 240), rgb(77, 0, 128), blue);
   transition: width 0.4s ease, left 0.4s ease;
-
 }
 
 .team-card:hover .hover-line {
   width: 100%;
   left: 0;
+}
 
+/* popup */
+.team-member-detail {
+  max-width: 60%;
+  padding: 20px;
+  border-radius: 7px;
+  background-color: #e5e5e5;
+}
+.member_list_show {
+  display: flex;
+}
+.member_view_item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-radius: 7px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.671);
+  margin-right: 5px;
+  margin-top: 10px;
+}
+.member_avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
 }

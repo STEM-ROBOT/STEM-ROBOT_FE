@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "stem-system",
+  "private_key_id": "e784be97f3800b8d863e1d4611c23a3d48a1c2ba",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDB9QepG/Qezu1M\nbjbhLJW5G9PQt0RpYk/F9nJYSxUPUuAK8tODSfh+3rpdnpRe/kTC53fKbyP9S98r\nqmTrVRbfix+CLBy7yRHGkUvVBzJZrihOmv71QLjLCg/nMOlq+dur456AXfe1bFfW\nz1YMatvoC2WBHAbHta3YTm80orprtmjERBE895r4M6MxP6OaxqSHP/g6HaRhoDPM\nNVX3NOPXsIHGkwd3Q8DlPXCGUSlYhn9qsrVxFDiTS5sTOQ9HrOzEC7sRuNxGwT7r\nmi/eG0I930SBjpoTWSqWSl6ThKN3qTaOCt6Vr9n/Gx3oEkYLRgRWL19NPvdUTwVS\nh8xIDidHAgMBAAECggEAGuPbwghMGhFaOOR221URFO7UuPUPmQS2Rp3aUH9oVg2J\nXjs4M9WHjB9Y+y3HKDxcUCFDLF+oP6/LKwSepTnQyAFDxwpSmX5Q5pSyTMCIrIJG\nuE8o1du5Qv0MI2NWmSw21mfiS627b/2rV+664VHXVx5tXi8CiaGYjoqhREzjR5du\np2NRJJYKuEXZYneQz5lkmwiDluof+DNubS+tLE5aJZteGjiUAe1bhvVyRYsG/GLd\nNmuafxiN612lpgdlUDK/otHLL0cZC624ACLH+RZRy9rbilK4npiZlNdPbpIBbcFy\nsrPdfdgEPEATSLoa3CaGeCOS+oWfVh/O0Y8wzdrqgQKBgQDpw/86WovlyeJdIZUP\n6cuXLGv7hysf4j2BYVaNdpQK5o+3WzaSvXUv5mvcv7l81gG1bp8Cm/0rXaB6aQZC\nifNrtHtedPx8mfDagHdOxhdjTRaxZ5pB713nhQWbDhkM/8AnQnRs2kXLcrNIOAUU\nygcEVjbG9IOMitg5//aLuU4tIQKBgQDUZ7qnNvgnDmg3y65Q/vbDhhLbTJ99DNeM\n0HeYb5+1KRkFxJnfGeb7Q20R3DHHAtU2XeDYOrdz4eM5Wv8lHCqMOvhFl1F3xWrq\nB4sDBT3/5pDOArsQ0fUO9YTiApcljIKLqAr4sxaZgEgQ8hyIBv9ADTZS3SOAGDWu\n07jposMfZwKBgDq9eWDcZ9LyC+ODEMXS5cmy699kc72rR/E+2FTruv+SOALG9Mui\nt9O1ft0VgDKSRBOnHGW3dMJ04GJiCaSmrXge/fEaTGey9wawyUoOFMprEIy7j9OJ\npnsKvgHcZQcTLOGwnTjNEESzKcG38e7rZR/92f3ca0HhkbvhSb6Kbc6BAoGBAIxo\nDVCf26Ylteq8L3zHLePN6wUgP4VwScSBwaz4jMA6bJoNfhGmk7OgvKbDwfvl+X84\ny3rkRYTK22N8rZCgb9fG23tVLbtYuvX9Cn1yp6tThIFJ+NKDl9TNo4urXrKpkVo0\nORxxdgz+aaUaBpY82dpDYZehKuhwGHx65I880nMdAoGBANoNRKjf+0IC/I6cVbbV\nXRkIvu4vLwHsPsDvd0ngOXXL/Yyr9oGaCEhpbfnqNaSVBi/kRTGCHSxNTUeHLeDV\nLvA7KVXV8STmTnlfXVRE2oT3KN8V1mPiVGAQtGjX5XAKyAADAzyLpHTvaLa8Pegg\nUhBzo9e8Zfkb5M1OA+Aa0vu2\n-----END PRIVATE KEY-----\n",
+  "client_email": "stemrobotowithstorage@stem-system.iam.gserviceaccount.com",
+  "client_id": "109231737150618781726",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/stemrobotowithstorage%40stem-system.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
