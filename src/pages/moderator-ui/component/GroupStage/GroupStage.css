@@ -1,0 +1,64 @@
+.group-stage-container {
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.group-header {
+  background-color: #4c6ef5;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  border-radius: 5px;
+}
+
+.round-container {
+  margin: 10px 0;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  padding: 10px;
+  border: 1px solid #dee2e6;
+}
+
+
+.match-container {
+  margin-top: 10px;
+}
+
+.match-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.match-row span {
+  font-size: 14px;
+  color: #333;
+}
+
+.vs {
+  font-weight: bold;
+}
+
+.status {
+  background-color: #28a745;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.group-teams {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.team-name {
+  padding: 5px 0;
+  color: #4c6ef5;
+}

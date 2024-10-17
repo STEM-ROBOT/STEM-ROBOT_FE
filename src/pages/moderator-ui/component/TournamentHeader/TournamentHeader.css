@@ -1,4 +1,4 @@
-.tournament-header-outer{
+.tournaments-header-outer{
     background-image: linear-gradient(
         to left, 
         #022233 0%,
@@ -12,54 +12,55 @@
 }
 
 
-.tournament-header-container {
+.tournaments-header-container {
     width: 100%;
     background-color: #050505c0;
     color: #fff;
 }
-.tournament-header-content{
+.tournaments-header-content{
     max-width: 85%;
     padding-top: 20px;
     margin: 0 auto;
 }
-.tournament-header {
+.tournaments-headers {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
 }
 
-.tournament-image img {
+.tournaments-image img {
     width: 80px;
     height: 80px;
     border-radius: 8px;
     object-fit: cover;
 }
 
-.tournament-details {
+.tournaments-detail {
     flex: 1;
     margin-left: 20px;
 }
 
-.tournament-details h2 {
+.tournaments-detail h2 {
+    text-align: left;
     margin: 0;
     font-size: 1.8rem;
     color: #fff;
 }
 
-.tournament-details p {
+.tournaments-detail p {
     margin: 5px 0;
     font-size: 0.9rem;
     color: #aaa;
 }
 
-.tournament-stats {
+.tournaments-stats {
     display: flex;
     gap: 15px;
     margin-top: 10px;
 }
 
-.tournament-stats span {
+.tournaments-stats span {
     display: flex;
     align-items: center;
     gap: 5px;

@@ -1,0 +1,65 @@
+
+.random-draw-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  float: right;
+}
+
+.knockout-tournament-content{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.save-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.round {
+  margin-bottom: 20px;
+  border: 1px dashed #ccc; /* Dashed border */
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.match-round {
+  max-height: 300px; /* Set a height to make it scrollable */
+  overflow-y: auto; /* Enable vertical scroll */
+}
+
+.match {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  justify-content: center; /* Center the match items */
+}
+
+.match select {
+  padding: 10px; /* Increase padding for larger input */
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 200px; /* Increase width for larger input boxes */
+  font-size: 16px; /* Increase font size */
+}
+
+.match span {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.save-btn {
+  display: block;
+  margin: 20px auto 0;
+}

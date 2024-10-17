@@ -1,7 +1,7 @@
 import React from "react";
 import "./ManageCompetition.css";
 import { IoLogoGameControllerB } from "react-icons/io";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate, useParams } from "react-router-dom"; // Import useParams to get tournament ID
 
 const competitions = [
   {
@@ -49,11 +49,12 @@ const competitions = [
 ];
 
 const ManageCompetition = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-  const handleCompetitionClick = (id) => {
-  
-    navigate(`/competition/${id}/dashboard`);
+  const handleCompetitionClick = (competitionId) => {
+   
+    navigate(`/mytournament/${id}/mycompetition/${competitionId}/customize`);
   };
 
   return (
@@ -73,7 +74,7 @@ const ManageCompetition = () => {
           <div
             key={competition.id}
             className="manage_competition_item"
-            onClick={() => handleCompetitionClick(competition.id)} 
+            onClick={() => handleCompetitionClick(competition.id)} // Navigate to the specific competition's customize page
           >
             <img
               src={competition.image}

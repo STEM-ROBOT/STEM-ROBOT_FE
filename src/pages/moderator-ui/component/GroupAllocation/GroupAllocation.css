@@ -1,0 +1,169 @@
+.custom-group-allocation-container {
+    max-width: 100%;
+    margin: auto;  
+}
+
+.custom-h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.custom-info-box {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: #555;
+    font-size: 14px;
+}
+
+.custom-form-group {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.custom-label {
+    font-size: 16px;
+    color: #333;
+}
+
+.custom-select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.custom-randomize-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.custom-randomize-btn:hover {
+    background-color: #45a049;
+}
+
+.custom-groups-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Space between groups */
+}
+
+.custom-group {
+    width: calc(50% - 10px);
+    padding: 15px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.custom-group h3 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 15px;
+    background-color: #eee;
+    padding: 8px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.custom-group-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+.custom-team-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #e8e8e8;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.custom-team-controls {
+    display: flex;
+    align-items: center;
+}
+
+.custom-team-controls svg {
+    margin-left: 10px;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.custom-team-controls svg:hover {
+    color: #4CAF50; /* Highlight icon on hover */
+}
+
+.custom-save-btn {
+    display: block;
+    margin: 30px auto;
+    padding: 10px 30px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.custom-save-btn:hover {
+    background-color: #45a049;
+}
+.custom-form-group {
+    margin: 20px 0;
+  }
+  
+  .custom-form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .custom-form-group small {
+    display: block;
+    color: #888;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  
+  .custom-form-group select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+  }
+  
+  .required {
+    color: red;
+    margin-left: 5px;
+  }
+  .custom-error-message {
+    color: red;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: bold;
+  }

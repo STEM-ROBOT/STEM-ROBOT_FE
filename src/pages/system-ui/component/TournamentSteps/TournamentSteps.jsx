@@ -24,7 +24,7 @@ const TournamentSteps = () => {
                 </div>
 
                 <div className="tournament-step tournament-step-2">
-                    <div className="image-container">
+                    <div className="image-containers">
                         <img src={robotImage} alt="Robot" className="robot-image" />
                     </div>
                     <div className="step-content">
