@@ -7,7 +7,7 @@ const CreateTournament = () => {
   return (
     <>
       <Header />
-      <ComponentCreate />
+      <ComponentCreate  />
       <Footer />
     </>
   );

@@ -107,7 +107,6 @@ const MatchRoundComponent = () => {
       ? roundsData
       : roundsData.filter((round) => round.round === selectedRound);
   useEffect(() => {
-
     const targetPosition = 245;
     const startPosition = window.scrollY;
     const distance = targetPosition - startPosition;

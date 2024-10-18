@@ -4,7 +4,7 @@ import CreateTournamentInfo from "../CreateTournamentInfo/CreateTournamentInfo";
 import CreateTournamentCompetition from "../CreateTournamentCompetition/CreateTournamentCompetition";
 import CreateTournamentFormat from "../CreateTournamentFormat/CreateTournamentFormat";
 import logo from "/src/assets/images/logo.png";
-const ComponentCreate = () => {
+const ComponentCreate = ({}) => {
   //info Tournament
   const [avatarInput, setAvatarInput] = useState(logo);
   const [nameTournament, setNameTournament] = useState();
