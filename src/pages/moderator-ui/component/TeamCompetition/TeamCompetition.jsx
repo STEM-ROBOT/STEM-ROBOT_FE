@@ -145,7 +145,7 @@ const TeamCompetition = () => {
           <div className="team-member-label">Thành viên</div>
           <div className="team-link">
             {team.members.map((member, i) => (
-              <img className="member_view" src={member.avatar} alt="" />
+              <img key={i} className="member_view" src={member.avatar} alt="" />
             ))}
           </div>
         </div>

@@ -9,7 +9,7 @@ import { RiTeamFill } from "react-icons/ri";
 // Create Document Component
 
 const GameRuleComponent = () => {
-  const [selectedRule, setSelectedRule] = useState("Process");
+  const [selectedRule, setSelectedRule] = useState("Score");
 
   const rules = [
     {
@@ -43,22 +43,25 @@ const GameRuleComponent = () => {
         </div>
       </div>
       <div className="game_rule_content">
-        <div
-          className="rule_description"
-          style={{ width: "100%", height: "70vh" }}
-        >
-          <embed
-            src={
-              "https://storage.cloud.google.com/stem-system-storage/mau-hop-dong-dat-coc.pdf?authuser=1"
-            }
-            type="application/pdf"
-            width="100%"
-            height="100%"
-          />
-        </div>
-        <div className="game_rule_score">
-              
-        </div>
+        {selectedRule == "Process" ? (
+          <div
+            className="rule_description"
+            style={{ width: "100%", height: "70vh" }}
+          >
+            <embed
+              src={
+                "https://storage.cloud.google.com/stem-system-storage/mau-hop-dong-dat-coc.pdf?authuser=1"
+              }
+              type="application/pdf"
+              width="100%"
+              height="100%"
+            />
+          </div>
+        ) : (
+          <div className="game_rule_score">
+            <div></div>
+          </div>
+        )}
       </div>
     </div>
   );

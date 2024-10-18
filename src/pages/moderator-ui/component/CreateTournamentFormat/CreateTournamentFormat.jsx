@@ -232,7 +232,7 @@ const CreateTournamentFormat = ({ handleSubmit }) => {
       <div className="format_create">
         <div className="apply_create_tournament">
           <div className="btn_create_tournament" onClick={() => handleSubmit()}>
-            Tạo Giải
+            Hoàn Tất 
           </div>
         </div>
       </div>

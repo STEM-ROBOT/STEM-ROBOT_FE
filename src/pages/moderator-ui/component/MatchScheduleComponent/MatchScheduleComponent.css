@@ -1,0 +1,170 @@
+.schedule_match_component {
+  background-color: #fff;
+  border-radius: 7px;
+  padding: 10px;
+  min-height: 65vh;
+}
+.schedule_match_intro {
+  font-size: 17px;
+  font-weight: 500;
+  margin: 5px 0;
+  color: #052641;
+}
+.schedule_match_layout_mode {
+  display: flex;
+  justify-content: center;
+}
+.match_mode {
+  text-align: center;
+  padding: 5px 20px;
+  width: 100px;
+  border-radius: 3px;
+  background-color: #00728f;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 14px;
+}
+.match_mode:hover {
+  background-color: #01ccff;
+  color: #0e748d;
+  cursor: pointer;
+}
+.match_mode.active {
+  background-color: #01ccff;
+  color: #0e748d;
+  cursor: pointer;
+}
+.view_match_option {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  color: #797d81;
+  margin: 10px 0;
+}
+.match_mode_option {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0 5px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 100px;
+  font-weight: 700;
+  color: #01223d;
+}
+.match_mode_option:hover {
+  cursor: pointer;
+  background-color: #0f8cbd;
+}
+.match_mode_option.active {
+  background-color: #0f8cbd;
+  color: #fff;
+}
+.view_match_to_option {
+  margin: 10px 0;
+}
+.match_option_item {
+  margin-bottom: 20px;
+}
+
+.match_to_option_head {
+  border-radius: 7px 7px 0 0;
+  text-align: center;
+  background-color: #00728f;
+  font-size: 23px;
+  font-weight: 700;
+  color: #ffffff;
+  padding: 7px;
+}
+.match_to_option_body {
+  border: 1px solid #00728f;
+  border-radius: 0 0 7px 7px;
+}
+.match_item {
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+}
+@keyframes bounceMatchItem {
+  0% {
+    transform: translateY(0); /* Ban đầu vị trí là không dịch chuyển */
+  }
+  15% {
+    transform: translateX(10px); /* Nhảy lên 10px */
+  }
+  35% {
+    transform: translateX(0px); /* Nhảy lên 10px */
+  }
+  50% {
+    transform: translateX(5px); /* Quay lại vị trí ban đầu */
+  }
+  75% {
+    transform: translateX(2px); /* Nhảy lên 5px */
+  }
+  100% {
+    transform: translateX(0); /* Quay lại vị trí ban đầu */
+  }
+}
+.match_item:hover {
+  cursor: pointer;
+  animation: bounceMatchItem 1s ease-in-out;
+}
+.match_item_layer {
+  width: 45%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.match_item_stt {
+  margin-left: 10px;
+  width: 20px;
+  border-radius: 100px;
+  color: #fff;
+  padding-right: 1px;
+  font-size: 13px;
+  height: 20px;
+  text-align: center;
+  background-color: #797d81;
+}
+.match_item_team_left {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 70%;
+  height: 40px;
+}
+.match_item_team_right {
+  display: flex;
+  align-items: center;
+  width: 70%;
+  height: 40px;
+}
+.item_team_img {
+  height: 25px;
+  width: 25px;
+  margin: 0 10px;
+  border-radius: 7px;
+}
+.match_item_score {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+}
+.item_score {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 500;
+  border-radius: 13px;
+
+  text-align: center;
+  width: 95px;
+  background-color: #2581a5;
+}
+.match_item_time {
+  text-align: right;
+  padding-right: 20px;
+  width: 300px;
+}
