@@ -46,7 +46,27 @@
   height: 50%;
   color: #a4c1cf;
 }
-
+.competition_delete {
+  position: absolute;
+  right: 0;
+  top: -8px;
+  padding: 4px;
+  border-radius: 50%;
+  background-color: #eaf0f3e1;
+  color: #e98989;
+  width: 20px;
+  height: 20px;
+  z-index: 1000;
+}
+.competition_delete:hover {
+  background-color: #ffffffe1;
+  color: #ff0000;
+}
+.delete_icon_click {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+}
 @media (min-width: 1905px) {
   .competition_null {
     width: 151.5px;

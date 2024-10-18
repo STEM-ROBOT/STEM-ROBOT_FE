@@ -14,13 +14,10 @@ const GameRuleComponent = () => {
   const rules = [
     {
       key: "Process",
-      label: "Quy trình thi đấu",
+      label: "Quy định giải đấu",
       icon: <AiOutlineDeliveredProcedure />,
     },
-    { key: "Violations", label: "Các lỗi vi phạm", icon: <TiWarning /> },
     { key: "Score", label: "Điểm số", icon: <GrScorecard /> },
-    { key: "Team", label: "Đội thi đấu", icon: <RiTeamFill /> },
-    { key: "Robot", label: "Robot thi đấu", icon: <FaRobot /> },
   ];
 
   const handleRuleClick = (key) => {
@@ -46,22 +43,21 @@ const GameRuleComponent = () => {
         </div>
       </div>
       <div className="game_rule_content">
-        {/* <div className="rule_title">
-          {rules.find((rule) => rule.key === selectedRule)?.label}
-        </div> */}
-        <div className="rule_description">
-          <div
-            className="view_contract"
-            style={{ width: "100%", height: "70vh" }}
-          >
-            <embed
-              src={"https://storage.cloud.google.com/stem-system-storage/mau-hop-dong-dat-coc.pdf?authuser=1"}
-              type="application/pdf"
-              width="100%"
-              height="100%"
-            />
-          </div>
-          {/* <PDFViewer fileUrl={"/signed_document.pdf"} /> */}
+        <div
+          className="rule_description"
+          style={{ width: "100%", height: "70vh" }}
+        >
+          <embed
+            src={
+              "https://storage.cloud.google.com/stem-system-storage/mau-hop-dong-dat-coc.pdf?authuser=1"
+            }
+            type="application/pdf"
+            width="100%"
+            height="100%"
+          />
+        </div>
+        <div className="game_rule_score">
+              
         </div>
       </div>
     </div>
