@@ -126,7 +126,7 @@ const TeamCompetition = () => {
           className="team-card"
           onClick={() => ViewMember(team.members)}
         >
-          <div className="team-logo">
+          <div className="team-logo-competition">
             <img
               className="team-avatar-competition"
               src={team.logo}
