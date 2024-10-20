@@ -7,6 +7,7 @@ const InfoTournament = () => {
     const tabs = [
         { name: "QUẢN LÍ NỘI DUNG", key: "mycompetition" },
         { name: "DANH SÁCH THÍ SINH", key: "contestant" },
+        { name: "TÙY CHỈNH", key: "settings" },
     ];
 
     const navigate = useNavigate();

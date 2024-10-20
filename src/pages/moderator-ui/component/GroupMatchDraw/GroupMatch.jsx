@@ -5,8 +5,8 @@ import KnockoutStage from '../KnockoutStage/KnockoutStage';
 
 // Initial teams for groups, can be modified dynamically
 const initialGroups = {
-    A: ['Đội #1', 'Đội #2', 'Đội #3', 'Đội #4'],
-    B: ['Đội #5', 'Đội #6', 'Đội #7'],
+    A: ['Đội #1', 'Đội #2', 'Đội #7'],
+    B: ['Đội #5', 'Đội #6'],
 };
 
 // Round-robin scheduling function
@@ -76,14 +76,24 @@ const GroupMatch = () => {
 
     // Render matches for the current round
     const renderMatchesForRound = (group) => {
-        const matchesInRound = groupSchedules[group][currentRound - 1]; // Get matches for the current round
+        const matchesInRound = groupSchedules[group] && groupSchedules[group][currentRound - 1]; // Check if rounds exist
+        if (!matchesInRound) return <p>Không có trận đấu</p>; // Return message if no matches
+
         return matchesInRound.map((match, index) => (
             <div key={index} className="match-pair">
-                <select className="match-team-select" value={match[0]}>
+                <select
+                    className="match-team-select"
+                    value={match[0]}
+                    onChange={(e) => console.log(`Selected team ${e.target.value} for match`)}
+                >
                     <option>{match[0]}</option>
                 </select>
                 <span className="match-vs"> - </span>
-                <select className="match-team-select" value={match[1]}>
+                <select
+                    className="match-team-select"
+                    value={match[1]}
+                    onChange={(e) => console.log(`Selected team ${e.target.value} for match`)}
+                >
                     <option>{match[1]}</option>
                 </select>
             </div>
@@ -108,8 +118,6 @@ const GroupMatch = () => {
             <div className="button-container">
                 <button className="random-btn" onClick={handleRandomDraw}>Bốc thăm ngẫu nhiên</button>
             </div>
-
-           
 
             {currentStage === 'group' && (
                 <div className="group-stage">
@@ -140,7 +148,6 @@ const GroupMatch = () => {
 
             <button className="save-btn">Lưu</button>
 
-           
             {showPopup && <CountdownPopup onComplete={handleCountdownComplete} />}
         </div>
     );

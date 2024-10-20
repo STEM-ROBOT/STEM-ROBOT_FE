@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaCogs, FaShieldAlt, FaUsers, FaLayerGroup, FaCalendarAlt, FaSitemap, FaMoneyBill, FaTable } from 'react-icons/fa';
+import { FaCogs, FaShieldAlt, FaUsers, FaLayerGroup, FaCalendarAlt, FaSitemap, FaMoneyBill, FaTable  } from 'react-icons/fa';
 import './Sidebar.css';
 
 const Sidebar = ({ activeItem, onMenuClick, isGroupStage }) => {
@@ -17,6 +17,7 @@ const Sidebar = ({ activeItem, onMenuClick, isGroupStage }) => {
 
     menuItems.push(
         { key: "matchups", label: "Sắp xếp cặp đấu", icon: <FaLayerGroup /> },
+        { key: "referee", label: "Sắp xếp trọng tài", icon: <FaLayerGroup /> },
         { key: "schedule", label: "Quản lý lịch đấu", icon: <FaCalendarAlt /> },
         { key: "organizers", label: "Ban tổ chức", icon: <FaSitemap /> },
         { key: "sponsors", label: "Nhà tài trợ", icon: <FaMoneyBill /> }
