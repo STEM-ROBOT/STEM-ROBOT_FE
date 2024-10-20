@@ -19,11 +19,14 @@ import TeamCompetition from "../pages/moderator-ui/component/TeamCompetition/Tea
 import RoundCompetition from "../pages/moderator-ui/component/RoundCompetition/RoundCompetition";
 import CreateTournament from "../pages/moderator-ui/layout/CreateTournament/CreateTournament";
 import MatchScheduleComponent from "../pages/moderator-ui/component/MatchScheduleComponent/MatchScheduleComponent";
+import CreateTournamentCompetition from "../pages/moderator-ui/component/CreateTournamentCompetition/CreateTournamentCompetition";
 import RegisterContestant from "../pages/moderator-ui/component/RegisterContestant/RegisterContestant";
+
 
 export const tournamentRoutes = [
   { path: "mycompetition", element: <ManageCompetition /> },
   { path: "contestant", element: <ListContestant /> },
+  { path: "settings", element: <CreateTournament/> },
 ];
 
 export const competitionChildren = [

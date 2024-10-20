@@ -1,0 +1,70 @@
+
+
+/* File input style */
+.excel-upload-container-input-file {
+    display: block;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #000;
+    background-color: #fff;
+    font-size: 16px;
+}
+
+/* Data display section */
+.excel-upload-container-data-display {
+    margin-top: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* Heading */
+.excel-upload-container-heading {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Table */
+.excel-upload-container-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Table headers */
+.excel-upload-container-table-header {
+    background-color: #081e36;
+    color: white;
+    padding: 8px;
+    text-align: left;
+}
+
+/* Table rows */
+.excel-upload-container-table-row:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Table data */
+.excel-upload-container-table-data {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+/* Save button */
+.excel-upload-container-save-button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #28a745;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.excel-upload-container-save-button:hover {
+    background-color: #218838;
+}
