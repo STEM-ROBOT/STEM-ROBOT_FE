@@ -19,6 +19,7 @@ import TeamCompetition from "../pages/moderator-ui/component/TeamCompetition/Tea
 import RoundCompetition from "../pages/moderator-ui/component/RoundCompetition/RoundCompetition";
 import CreateTournament from "../pages/moderator-ui/layout/CreateTournament/CreateTournament";
 import MatchScheduleComponent from "../pages/moderator-ui/component/MatchScheduleComponent/MatchScheduleComponent";
+import RegisterContestant from "../pages/moderator-ui/component/RegisterContestant/RegisterContestant";
 
 export const tournamentRoutes = [
   { path: "mycompetition", element: <ManageCompetition /> },
@@ -36,6 +37,7 @@ export const league_detail = [
   { path: "", element: <Navigate to="competition" /> },
   { path: "team-list", element: <TeamList /> },
   { path: "competition", element: <CompetitionList /> },
+  { path: "register-contestant", element: <RegisterContestant /> },
   { path: "competition/:competitionId/*", element: <CompetitionDetail /> },
 ];
 export const competition_detail_router = [
@@ -45,7 +47,7 @@ export const competition_detail_router = [
   { path: "team-competition-list", element: <TeamCompetition /> },
   { path: "match-schedule", element: <MatchScheduleComponent /> },
   { path: "stage-group", element: <RoundCompetition /> },
-  { path: "knockout", element: <RoundCompetition /> },
+  { path: "knockout", element: <MatchScheduleComponent /> },
 ];
 
 export const profileChildren = [
@@ -68,7 +70,8 @@ const moderatorRouter = [
     element: <LeagueDetail />,
   },
   {
-    path: "/mytournament/:tournamentId/mycompetition/:competitionId/*", element: <Competition />
+    path: "/mytournament/:tournamentId/mycompetition/:competitionId/*",
+    element: <Competition />,
   },
   {
     path: "/mytournament/:id/*",
