@@ -12,6 +12,7 @@ const initialTeams = [
     { id: 6, name: 'Đội #6' },
     { id: 7, name: 'Đội #7' },
     { id: 8, name: 'Đội #8' },
+  
 ];
 
 const GroupAllocation = () => {
