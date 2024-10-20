@@ -12,6 +12,10 @@ const DetailBar = ({ id }) => {
       path: "competition",
     },
     {
+      name: "ĐĂNG KÝ THÍ SINH",
+      path: "register-contestant",
+    },
+    {
       name: "DANH SÁCH THAM GIA",
       path: "team-list",
     },
