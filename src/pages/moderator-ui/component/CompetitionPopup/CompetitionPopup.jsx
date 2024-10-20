@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoClose, IoSearch } from "react-icons/io5";
 import "./CompetitionPopup.css";
 import { TbLayoutGridAdd } from "react-icons/tb";
@@ -34,11 +34,38 @@ const games = [
       "https://image-cdn.essentiallysports.com/wp-content/uploads/imago0241552301h.jpg?width=600",
   },
 ];
-const CompetitionPopup = ({ setShowCompetition }) => {
+const CompetitionPopup = ({
+  setShowCompetition,
+  competitionList,
+  setCompetitionList,
+  setCompetitionError,
+}) => {
+  const [selectedCompetitions, setSelectedCompetitions] =
+    useState(competitionList);
   const CloseCompetitionPopup = () => {
     setShowCompetition(false);
   };
+
+  const toggleSelection = (game) => {
+    const isAlreadySelected = selectedCompetitions.some(
+      (selected) => selected.id === game.id
+    );
+    if (isAlreadySelected) {
+      setSelectedCompetitions(
+        selectedCompetitions.filter((selected) => selected.id !== game.id)
+      );
+
+    } else {
+      setSelectedCompetitions([...selectedCompetitions, game]);
+      setCompetitionError("");
+    }
+  };
+  const isGameSelected = (gameId) => {
+    return selectedCompetitions.some((selected) => selected.id === gameId);
+  };
   const ConfirmCompetition = () => {
+    setCompetitionList(selectedCompetitions);
+   
     setShowCompetition(false);
   };
   return (
@@ -65,10 +92,16 @@ const CompetitionPopup = ({ setShowCompetition }) => {
         <div className="competition_layout">
           <div className="competition_select_option">
             {games.map((game) => (
-              <div key={game.id} className="competition_choice">
+              <div
+                key={game.id}
+                className="competition_choice"
+                onClick={() => toggleSelection(game)}
+              >
                 <img
                   className={
-                    game.id == 1 ? `img_competition active` : `img_competition `
+                    isGameSelected(game.id)
+                      ? `img_competition active`
+                      : `img_competition `
                   }
                   src={game.image}
                   alt={game.name}

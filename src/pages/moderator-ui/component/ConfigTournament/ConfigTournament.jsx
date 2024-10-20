@@ -4,11 +4,13 @@ import logo from '../../../../assets/images/header.png'
 import TournamentForm from '../TournamentForm/TournamentForm';
 import CreateTournamentInfo from '../CreateTournamentInfo/CreateTournamentInfo';
 import CreateTournamentCompetition from '../CreateTournamentCompetition/CreateTournamentCompetition';
+import ExcelUploadComponent from '../ExcelUploadComponent/ExcelUploadComponent';
+import ImportRule from '../ImportRule/ImportRule';
 const sections = [
-    { title: "Thông tin cơ bản", content: <CreateTournamentInfo/> },
-    { title: "Thể thức và môn thi đấu", content: <CreateTournamentCompetition/> },
-    { title: "Tranh hạng ba và đóng / mở đăng ký", content: "Nội dung về tranh hạng ba..." },
-    { title: "Đường dẫn tới giải đấu", content: "Nội dung về đường dẫn..." },
+    // { title: "Thông tin cơ bản", content: <CreateTournamentInfo/> },
+    // { title: "Thể thức và môn thi đấu", content: <CreateTournamentCompetition/> },
+    { title: "Thêm luật lệ", content: <ImportRule/>},
+    { title: "Thêm bảng điểm", content: <ExcelUploadComponent/>},
 ];
 
 const ConfigTournament = () => {
@@ -20,9 +22,9 @@ const ConfigTournament = () => {
 
     return (
         <div className="config-tournament">
-            <div className="image-container">
+            {/* <div className="image-container">
                 <img src={logo} alt="Cấu hình giải đấu" />              
-            </div>
+            </div> */}
 
             <div className="accordion">
                 {sections.map((section, index) => (

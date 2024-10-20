@@ -1,0 +1,39 @@
+/* Main container for the ImportRule component */
+.import-rule-container {
+    padding: 20px;
+}
+
+/* Input styling for URL */
+.import-rule-input-url {
+    width: 80%;
+    padding: 10px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+    transition: border 0.3s ease;
+    margin-right: 20px;
+}
+
+/* Input focus styling */
+.import-rule-input-url:focus {
+    border-color: #007bff;
+}
+
+/* Button styling */
+.import-rule-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.import-rule-button:hover {
+    background-color: #218838;
+}

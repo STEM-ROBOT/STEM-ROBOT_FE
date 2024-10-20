@@ -18,33 +18,34 @@ import GameRuleComponent from "../pages/moderator-ui/component/GameRule/GameRule
 import TeamCompetition from "../pages/moderator-ui/component/TeamCompetition/TeamCompetition";
 import RoundCompetition from "../pages/moderator-ui/component/RoundCompetition/RoundCompetition";
 import CreateTournament from "../pages/moderator-ui/layout/CreateTournament/CreateTournament";
+import MatchScheduleComponent from "../pages/moderator-ui/component/MatchScheduleComponent/MatchScheduleComponent";
+import CreateTournamentCompetition from "../pages/moderator-ui/component/CreateTournamentCompetition/CreateTournamentCompetition";
 
 export const tournamentRoutes = [
-  { path: "mycompetition", element: <ManageCompetition/> },
-  { path: "contestant", element: <ListContestant/> },
+  { path: "mycompetition", element: <ManageCompetition /> },
+  { path: "contestant", element: <ListContestant /> },
+  { path: "settings", element: <CreateTournament/> },
 ];
-
 
 export const competitionChildren = [
-  { path: "dashboard", element: <div>Tournament Dashboard</div> },  
-  { path: "schedule", element: <div>Lịch Thi Đấu</div> },           
-  { path: "ranking", element: <div>Bảng Xếp Hạng</div> },           
-  { path: "customize", element: <TournamentConfiguration/> },             
+  { path: "dashboard", element: <div>Tournament Dashboard</div> },
+  { path: "schedule", element: <div>Lịch Thi Đấu</div> },
+  { path: "ranking", element: <div>Bảng Xếp Hạng</div> },
+  { path: "customize", element: <TournamentConfiguration /> },
 ];
 
-
 export const league_detail = [
-  { path: "", element: <Navigate to="register-time" /> },
-  { path: "register-time", element: <Countdown /> },
+  { path: "", element: <Navigate to="competition" /> },
   { path: "team-list", element: <TeamList /> },
   { path: "competition", element: <CompetitionList /> },
   { path: "competition/:competitionId/*", element: <CompetitionDetail /> },
 ];
 export const competition_detail_router = [
   { path: "", element: <Navigate to="game-rule" /> },
+  { path: "register-time", element: <Countdown /> },
   { path: "game-rule", element: <GameRuleComponent /> },
   { path: "team-competition-list", element: <TeamCompetition /> },
-  { path: "match-schedule", element: <RoundCompetition /> },
+  { path: "match-schedule", element: <MatchScheduleComponent /> },
   { path: "stage-group", element: <RoundCompetition /> },
   { path: "knockout", element: <RoundCompetition /> },
 ];
@@ -56,12 +57,11 @@ export const profileChildren = [
   { path: "myinvoice", element: <></> },
 ];
 
-
 const moderatorRouter = [
-  { path: '/account/*', element: <Account /> },
+  { path: "/account/*", element: <Account /> },
   {
-    path: '/account/*/:id',
-    element: <Account />
+    path: "/account/*/:id",
+    element: <Account />,
   },
   { path: "/league/create-tournament", element: <CreateTournament /> },
   { path: "/league", element: <League /> },
@@ -73,8 +73,9 @@ const moderatorRouter = [
     path: "/mytournament/:tournamentId/mycompetition/:competitionId/*", element: <Competition />
   },
   {
-    path: "/mytournament/:id/*", element: <Tournament />
-  }
+    path: "/mytournament/:id/*",
+    element: <Tournament />,
+  },
 ];
 
 export default moderatorRouter;

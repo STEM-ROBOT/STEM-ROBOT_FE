@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import "./DetailBar.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-const DetailBar = () => {
+const DetailBar = ({ id }) => {
   const endDate = new Date("2024-10-13T23:59:59");
   const navigate = useNavigate();
   const location = useLocation();
   const currentSubPath = location.pathname.split("/").pop();
   const tabs = [
-    {
-      name: "ĐĂNG KÝ THI ĐẤU",
-      path: "register-time",
-    },
     {
       name: "NỘI DUNG THI ĐẤU",
       path: "competition",
@@ -21,7 +17,7 @@ const DetailBar = () => {
     },
   ];
   const handleTabClick = (tab) => {
-    navigate(`/league/t1001/${tab.path}`, { state: { endDate } });
+    navigate(`/league/${id}/${tab.path}`, { state: { endDate } });
   };
   return (
     <div className="detail_bar">

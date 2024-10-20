@@ -18,7 +18,11 @@ Rùa Billiards xin cảm ơn!
 Mọi chi tiết xin liên hệ qua sdt 0387598791 (Mạnh Quân) hoặc nhắn tin trực tiếp qua Facebook Quân Mạnh.`;
 const Countdown = () => {
   const location = useLocation();
-  const { endDate } = location.state || {};
+  const endDate =
+    location.state?.endDate || localStorage.getItem("competitionRgEndDate");
+
+  console.log("End Date:", endDate);
+
   const calculateTimeLeft = () => {
     const difference = new Date(endDate) - new Date();
     let timeLeft = {};

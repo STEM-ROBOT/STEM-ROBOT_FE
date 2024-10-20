@@ -13,6 +13,10 @@ import { IoLogoGameControllerB } from "react-icons/io";
 import "./CompetitionDetail.css";
 const tabs = [
   {
+    name: "ĐĂNG KÝ THI ĐẤU",
+    path: "register-time",
+  },
+  {
     name: "LUẬT THI ĐẤU",
     path: "game-rule",
   },
@@ -38,17 +42,18 @@ const CompetitionDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentSubPath = location.pathname.split("/").pop();
-  const name = location.state?.names;
+  const name = location.state?.names || localStorage.getItem("competitionName");
+  const endDate =
+    location.state?.endDate || localStorage.getItem("competitionEndDate");
   console.log(name);
+  console.log(endDate);
 
   useEffect(() => {
-    // Tạo hiệu ứng scroll chậm
     const targetPosition = 245;
     const startPosition = window.scrollY;
     const distance = targetPosition - startPosition;
-    const duration = 500; // Thời gian (ms) cho hiệu ứng scroll, bạn có thể tăng để làm chậm hơn
+    const duration = 500;
     let start = null;
-
     const step = (timestamp) => {
       if (!start) start = timestamp;
       const progress = timestamp - start;
@@ -70,9 +75,13 @@ const CompetitionDetail = () => {
       return <Route key={index} path={route.path} element={route.element} />;
     });
   const handleTabClick = (tab) => {
-    navigate(
-      `/league/${path.league_id}/competition/${path.competitionId}/${tab.path}`
-    );
+    localStorage.setItem("competitionRgEndDate", endDate),
+      navigate(
+        `/league/${path.league_id}/competition/${path.competitionId}/${tab.path}`,
+        {
+          state: {endDate},
+        }
+      );
   };
   return (
     <div className="competition_container">
