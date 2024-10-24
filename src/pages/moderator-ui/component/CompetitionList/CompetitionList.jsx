@@ -68,7 +68,7 @@ const CompetitionList = () => {
             key={competition.id}
             className="competition_item"
             onClick={() => {
-              localStorage.setItem("competitionName", competition.name),
+             { localStorage.setItem("competitionName", competition.name),
                 localStorage.setItem("competitionEndDate", competition.endDate),
                 navigate(
                   `/league/${path.league_id}/competition/${competition.id}`,
@@ -78,7 +78,7 @@ const CompetitionList = () => {
                       endDate: competition.endDate,
                     },
                   }
-                );
+                );}
             }}
           >
             <div className={activeStatuses(competition)}>

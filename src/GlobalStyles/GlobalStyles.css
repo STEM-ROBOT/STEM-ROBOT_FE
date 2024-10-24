@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 3000;
+  z-index: 5000;
 }
 .popup-modal {
   font-family: Arial, Helvetica, sans-serif;
@@ -34,7 +34,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 3000;
+  z-index: 5000;
 }
 .button_Cancel {
   background-color: rgb(177, 157, 134);
@@ -56,7 +56,7 @@
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 17px;
-  
+
   cursor: pointer;
   &:hover {
     scale: 1.05;
@@ -102,11 +102,11 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
 }
-.txt_resp{
+.txt_resp {
   font-family: TrajanPro3;
   color: #381803;
 }
-.error_message{
+.error_message {
   font-size: 12.5px;
   color: red;
 }

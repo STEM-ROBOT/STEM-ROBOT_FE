@@ -21,7 +21,7 @@ const DetailBar = ({ id }) => {
     },
   ];
   const handleTabClick = (tab) => {
-    navigate(`/league/${id}/${tab.path}`, { state: { endDate } });
+    navigate(`/league/${id}/${tab.path}`, { status: true });
   };
   return (
     <div className="detail_bar">

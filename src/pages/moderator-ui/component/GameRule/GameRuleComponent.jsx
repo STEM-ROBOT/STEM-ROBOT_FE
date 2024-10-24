@@ -130,7 +130,7 @@ const GameRuleComponent = () => {
             />
           </div>
         ) : (
-          <GameRuleScore data={scoreCompetitions} type={"setup"} />
+          <GameRuleScore data={scoreCompetitions} type={"view"} />
         )}
       </div>
     </div>
