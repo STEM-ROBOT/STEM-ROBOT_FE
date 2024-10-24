@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./MatchScheduleComponent.css";
+import MatchDetailView from "../MatchDetailView/MatchDetailView";
 // vong 1/8
 const roundMatch = [
   {
@@ -7,59 +8,107 @@ const roundMatch = [
     matches: [
       {
         homeTeam: "FC NHƯ THANH",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC TRIỆU SƠN",
         homeScore: 4,
         awayScore: 7,
         time: "16:00 15/09/2024",
+        location: "Sân 1",
       },
       {
         homeTeam: "FC THIỆU HÓA",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC NÔNG CỐNG",
         homeScore: 1,
         awayScore: 1,
         time: "17:30 15/09/2024",
+        location: "Sân 1",
       },
       {
         homeTeam: "FC THIỆU HÓA",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC NHƯ THANH",
         homeScore: 3,
         awayScore: 0,
         time: "16:00 22/09/2024",
+        location: "Sân 1",
       },
       {
         homeTeam: "FC TRIỆU SƠN",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC NÔNG CỐNG",
         homeScore: 4,
         awayScore: 3,
         time: "17:30 22/09/2024",
+        location: "Sân 1",
       },
       {
         homeTeam: "FC TRIỆU SƠN",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC THIỆU HÓA",
         homeScore: 1,
         awayScore: 2,
         time: "16:00 29/09/2024",
+        location: "Sân 1",
       },
       {
         homeTeam: "FC NÔNG CỐNG",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC NHƯ THANH",
         homeScore: 8,
         awayScore: 1,
         time: "16:00 29/09/2024",
+        location: "Sân 1",
       },
       {
         homeTeam: "FC NÔNG CỐNG",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC NHƯ THANH",
         homeScore: 8,
         awayScore: 1,
         time: "16:00 29/09/2024",
+        location: "Sân 1",
       },
       {
         homeTeam: "FC NÔNG CỐNG",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC NHƯ THANH",
         homeScore: 8,
         awayScore: 1,
         time: "",
+        location: "Sân 1",
       },
     ],
   },
@@ -69,31 +118,55 @@ const roundMatch = [
     matches: [
       {
         homeTeam: "FC NHƯ THANH",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC TRIỆU SƠN",
         homeScore: 4,
         awayScore: 7,
         time: "16:00 15/09/2024",
+        location: "Sân 1",
       },
       {
         homeTeam: "FC THIỆU HÓA",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC NÔNG CỐNG",
         homeScore: 1,
         awayScore: 1,
         time: "17:30 15/09/2024",
+        location: "Sân 1",
       },
       {
         homeTeam: "FC THIỆU HÓA",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC NHƯ THANH",
         homeScore: 3,
         awayScore: 0,
         time: "16:00 22/09/2024",
+        location: "Sân 1",
       },
       {
         homeTeam: "FC TRIỆU SƠN",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC NÔNG CỐNG",
         homeScore: 4,
         awayScore: 3,
         time: "17:30 22/09/2024",
+        location: "Sân 1",
       },
     ],
   },
@@ -102,17 +175,29 @@ const roundMatch = [
     matches: [
       {
         homeTeam: "FC NHƯ THANH",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC TRIỆU SƠN",
         homeScore: 4,
         awayScore: 7,
         time: "16:00 15/09/2024",
+        location: "Sân 1",
       },
       {
         homeTeam: "FC THIỆU HÓA",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC NÔNG CỐNG",
         homeScore: 1,
         awayScore: 1,
         time: "17:30 15/09/2024",
+        location: "Sân 1",
       },
     ],
   },
@@ -121,17 +206,29 @@ const roundMatch = [
     matches: [
       {
         homeTeam: "FC THIỆU HÓA",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC NHƯ THANH",
         homeScore: 3,
         awayScore: 0,
         time: "16:00 22/09/2024",
+        location: "Sân 1",
       },
       {
         homeTeam: "FC TRIỆU SƠN",
+        homeTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+        awayTeamLogo:
+          "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
+
         awayTeam: "FC NÔNG CỐNG",
         homeScore: 4,
         awayScore: 3,
         time: "17:30 22/09/2024",
+        location: "Sân 1",
       },
     ],
   },
@@ -146,7 +243,8 @@ const MatchScheduleComponent = () => {
   const [matchView, setMatchView] = useState([]);
   const [optionViewMode, setOptionViewMode] = useState([]);
   const [optionViewModeDefault, setOptionViewModeDefault] = useState("TẤT");
-
+  const [showMatchDetail, setShowMatchDetail] = useState(false);
+  const [matchDetailData, setMatchDetailData] = useState();
   useEffect(() => {
     setMatchApi(roundMatch);
     setMatchView(roundMatch);
@@ -178,8 +276,18 @@ const MatchScheduleComponent = () => {
     }
     setOptionViewModeDefault(viewMode.mode);
   };
+  const ViewMatch = (data) => {
+    setMatchDetailData(data);
+    setShowMatchDetail(true);
+  };
   return (
     <div className="schedule_match_component">
+      {showMatchDetail && (
+        <MatchDetailView
+          setShowMatchDetail={setShowMatchDetail}
+          matchData={matchDetailData}
+        />
+      )}
       <div className="schedule_match_layout_info">
         <div className="schedule_match_intro">
           {`Có ${matchApi?.length} và `}
@@ -223,14 +331,18 @@ const MatchScheduleComponent = () => {
               <div className="match_to_option_head">Vòng {matchData.round}</div>
               <div className="match_to_option_body">
                 {matchData.matches.map((match, i) => (
-                  <div key={i} className={"match_item"}>
+                  <div
+                    key={i}
+                    className={"match_item"}
+                    onClick={() => ViewMatch(match)}
+                  >
                     <div className="match_item_layer">
                       <div className="match_item_stt">{i + 1}</div>
                       <div className="match_item_team_left">
                         <div className="item_team_name">{match.homeTeam}</div>
                         <img
                           className="item_team_img"
-                          src="https://tse3.mm.bing.net/th?id=OIP.hPyNI8PW91vjiuEZwyPq0gHaHa&pid=Api&P=0&h=220"
+                          src={match.homeTeamLogo}
                           alt=""
                         />
                       </div>
@@ -244,7 +356,7 @@ const MatchScheduleComponent = () => {
                       <div className="match_item_team_right">
                         <img
                           className="item_team_img"
-                          src="https://tse3.mm.bing.net/th?id=OIP.hPyNI8PW91vjiuEZwyPq0gHaHa&pid=Api&P=0&h=220"
+                          src={match.awayTeamLogo}
                           alt=""
                         />
                         <div className="item_team_name">{match.awayTeam}</div>

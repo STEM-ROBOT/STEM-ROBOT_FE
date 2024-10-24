@@ -1,0 +1,246 @@
+import React, { useEffect, useState } from "react";
+import "./MatchDetailView.css";
+import { IoClose, IoLocationOutline } from "react-icons/io5";
+import { MdAccessTime } from "react-icons/md";
+import { GrMapLocation } from "react-icons/gr";
+const scoreTeamDetail = [
+  {
+    haftMatch: "1",
+    activity: [
+      {
+        teamName: "Đội #7",
+        teamType: "home",
+        type: "Điểm Trừ",
+        description: "Robot bị bẫy búa đập trúng",
+        point: 1,
+        timeScore: "2",
+      },
+      {
+        teamName: "Đội #8",
+        teamType: "away",
+        type: "Điểm Cộng",
+        description:
+          "Tấn công có chủ đích làm đối thủ văng ra khoảng cách lớn hơn 0,5 m.",
+        point: 1,
+        timeScore: "7",
+      },
+      {
+        teamName: "Đội #8",
+        teamType: "away",
+        type: "Điểm Cộng",
+        description: "làm đối thủ lật ngửa",
+        point: 2,
+        timeScore: "9",
+      },
+      {
+        teamName: "Đội #8",
+        teamType: "away",
+        type: "Điểm Cộng",
+        description: "Làm đối thủ văng ra khỏi khu vực thi đấu",
+        point: 2,
+        timeScore: "15",
+      },
+      {
+        teamName: "Đội #7",
+        teamType: "home",
+        type: "Điểm Cộng",
+        description: "Làm đối thủ văng ra khỏi khu vực thi đấu",
+        point: 2,
+        timeScore: "19",
+      },
+    ],
+  },
+  {
+    haftMatch: "2",
+    activity: [
+      {
+        teamName: "Đội #7",
+        teamType: "home",
+        type: "Điểm Trừ",
+        description: "Robot bị bẫy búa đập trúng",
+        point: 1,
+        timeScore: "30",
+      },
+      {
+        teamName: "Đội #8",
+        teamType: "away",
+        type: "Điểm Cộng",
+        description:
+          "Tấn công có chủ đích làm đối thủ văng ra khoảng cách lớn hơn 0,5 m.",
+        point: 1,
+        timeScore: "33",
+      },
+      {
+        teamName: "Đội #8",
+        teamType: "away",
+        type: "Điểm Cộng",
+        description: "làm đối thủ lật ngửa",
+        point: 2,
+        timeScore: "34",
+      },
+      {
+        teamName: "Đội #8",
+        teamType: "away",
+        type: "Điểm Cộng",
+        description: "Làm đối thủ văng ra khỏi khu vực thi đấu",
+        point: 2,
+        timeScore: "40",
+      },
+      {
+        teamName: "Đội #7",
+        teamType: "home",
+        type: "Điểm Cộng",
+        description: "Làm đối thủ văng ra khỏi khu vực thi đấu",
+        point: 2,
+        timeScore: "45",
+      },
+    ],
+  },
+];
+const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
+  const [popupActive, setActive] = useState(false);
+  const [scoreTeamDetailApi, setScoreTeamDetailApi] = useState([]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setScoreTeamDetailApi(scoreTeamDetail);
+    }, 2000);
+    setActive(true);
+    return () => clearTimeout(timer);
+  }, [scoreTeamDetailApi]);
+  const CloseMatchDetail = () => {
+    setActive(false);
+    const timer = setTimeout(() => {
+      setShowMatchDetail(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  };
+  return (
+    <div
+      className={
+        popupActive
+          ? "match_detail_container_popup active"
+          : "match_detail_container_popup"
+      }
+    >
+      <div className="match_detail_container">
+        <div className="match_head_detail">
+          <div className="match_head_content">Tóm Tắt Trận Đấu </div>
+          <div className="match_head_close">
+            <IoClose
+              className="close_head_close"
+              onClick={() => CloseMatchDetail()}
+            />
+          </div>
+        </div>
+        <div className="match_body_detail">
+          <div className="match_detail_item">
+            <div className="match_time_location_view">
+              <MdAccessTime className="icon_match_time" />
+              {matchData.time || "Chưa có lịch thi đấu"}
+            </div>
+            <div className="match_time_location_view">
+              <IoLocationOutline className="icon_match_time" />
+              {matchData.location || "Chưa cập nhật"}
+            </div>
+          </div>
+          <div className="match_detail_item">
+            <div className="match_team_item">
+              <img
+                className="item_team_logo"
+                src={matchData.homeTeamLogo}
+                alt={`Logo ${matchData.homeTeam}`}
+              />
+              <div>{matchData.homeTeam}</div>
+            </div>
+            <div className="match_team_item_score">
+              {`${matchData.homeScore || "0"} - ${matchData.awayScore || "0"}`}
+            </div>
+            <div className="match_team_item">
+              <img
+                className="item_team_logo"
+                src={matchData.awayTeamLogo}
+                alt={`Logo ${matchData.awayTeam}`}
+              />
+              <div>{matchData.awayTeam}</div>
+            </div>
+          </div>
+        </div>
+        {scoreTeamDetailApi.length < 1 ? (
+          <img
+            className="match_score_team_detail_load"
+            src="https://i.gifer.com/embedded/download/PG23.gif"
+          />
+        ) : (
+          <div className="match_score_team_detail">
+            {scoreTeamDetailApi.map((scoreTeam, i) => (
+              <div key={i} className="haft_match">
+                <div className="info_haft_match">
+                  {`HIỆP ${scoreTeam.haftMatch}`}
+                </div>
+                {scoreTeam.activity.map((activity, i) => (
+                  <div
+                    className={
+                      activity.teamType == "home"
+                        ? "match_score_team_item home"
+                        : "match_score_team_item away"
+                    }
+                  >
+                    {activity.teamType == "home" ? (
+                      <div className="match_score_team_item_detail">
+                        <div className="match_score_description">
+                          {activity.description}
+                        </div>
+                        <div className="score_team_item_time">
+                          {activity.timeScore + "'"}
+                        </div>
+                        <div className="score_team_item_info">
+                          <div className="score_team_name">
+                            {activity.teamName}
+                          </div>
+                          <div
+                            className={
+                              activity.type == "Điểm Cộng"
+                                ? "score_team_point bonus"
+                                : "score_team_point"
+                            }
+                          >
+                            {activity.point}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="match_score_team_item_detail">
+                        <div className="match_score_description">
+                          {activity.description}
+                        </div>
+                        <div className="score_team_item_info_away">
+                          <div
+                            className={
+                              activity.type == "Điểm Cộng"
+                                ? "score_team_point bonus"
+                                : "score_team_point"
+                            }
+                          >
+                            {activity.point}
+                          </div>
+                          <div className="score_team_name_away">
+                            {activity.teamName}
+                          </div>
+                        </div>
+                        <div className="score_team_item_time_away">
+                          {activity.timeScore + "'"}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default MatchDetailView;

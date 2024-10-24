@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import logo from "/src/assets/images/logo.png";
+import { useLocation } from "react-router-dom";
 const RegisterContestant = () => {
+  const location = useLocation();
+  console.log(location);
+
   const [contestantList, setContestant] = useState([]);
   return (
     <div className="competition_container">
@@ -59,6 +63,7 @@ const RegisterContestant = () => {
               >
                 <option value="Private">Nữ</option>
                 <option value="Public">Nam</option>
+                <option value="Public">Bê đê</option>
               </select>
             </div>
           </div>
@@ -81,7 +86,6 @@ const RegisterContestant = () => {
       </div>
       <div className="label_create">Danh sách thí sinh của bạn</div>
       <div style={{ padding: " 20px 10% 10px 10%" }}>
-        {" "}
         <div className="team_table">
           <div className="table_header">
             <div className="column_header">#</div>

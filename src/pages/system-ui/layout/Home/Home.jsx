@@ -55,7 +55,7 @@ const Home = () => {
             </div>
           </div>
           <div className="bottom-right-image-container">
-            <img src="/src/assets/images/banner-image.png" alt="Bottom Right Image" className="bottom-right-image" />
+            <img src="/src/assets/images/banner-image.png" alt="Bottom Right Image" className="banner_error" />
           </div>
         </div>
       </div>

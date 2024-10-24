@@ -20,6 +20,7 @@ import RoundCompetition from "../pages/moderator-ui/component/RoundCompetition/R
 import CreateTournament from "../pages/moderator-ui/layout/CreateTournament/CreateTournament";
 import MatchScheduleComponent from "../pages/moderator-ui/component/MatchScheduleComponent/MatchScheduleComponent";
 import RegisterContestant from "../pages/moderator-ui/component/RegisterContestant/RegisterContestant";
+import MatchGroupStageComponent from "../pages/moderator-ui/component/MatchGroupStageComponent/MatchGroupStageComponent";
 
 export const tournamentRoutes = [
   { path: "mycompetition", element: <ManageCompetition /> },
@@ -46,7 +47,7 @@ export const competition_detail_router = [
   { path: "game-rule", element: <GameRuleComponent /> },
   { path: "team-competition-list", element: <TeamCompetition /> },
   { path: "match-schedule", element: <MatchScheduleComponent /> },
-  { path: "stage-group", element: <RoundCompetition /> },
+  { path: "stage-group", element: <MatchGroupStageComponent /> },
   { path: "knockout", element: <MatchScheduleComponent /> },
 ];
 
