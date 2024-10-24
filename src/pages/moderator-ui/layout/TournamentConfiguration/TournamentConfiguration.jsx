@@ -8,12 +8,14 @@ import KnockoutTournament from '../../component/KnockoutTournament/KnockoutTourn
 import GroupAllocation from '../../component/GroupAllocation/GroupAllocation';
 import GroupMatchDraw from '../../component/GroupMatchDraw/GroupMatch';
 import GroupMatch from '../../component/GroupMatchDraw/GroupMatch';
+import MatchManagement from '../../component/MatchManagement/MatchManagement';
+import RefereeAssignment from '../../component/RefereeAssignment/RefereeAssignment';
 
 const TournamentConfiguration = () => {
-    const [tournamentFormat, setTournamentFormat] = useState("vòng bảng");  
+    const [tournamentFormat, setTournamentFormat] = useState("vòng bảng");
     const [activeItem, setActiveItem] = useState("config");
 
-    
+
     const isGroupStage = tournamentFormat === "vòng bảng";
 
     const renderComponent = () => {
@@ -27,9 +29,11 @@ const TournamentConfiguration = () => {
             case 'teams':
                 return <ManageTeam />;
             case 'matchups':
-                return isGroupStage ? <GroupMatch /> : <KnockoutTournament />;  
+                return isGroupStage ? <GroupMatch /> : <KnockoutTournament />;
             case 'schedule':
-                return <></>;
+                return <MatchManagement />;
+            case 'referee':
+                return <RefereeAssignment />;
             case 'organizers':
                 return <></>;
             case 'sponsors':
@@ -40,7 +44,6 @@ const TournamentConfiguration = () => {
                 return <></>;
         }
     };
-
     return (
         <div className="tournament-configuration">
             <Sidebar activeItem={activeItem} onMenuClick={setActiveItem} isGroupStage={isGroupStage} />
