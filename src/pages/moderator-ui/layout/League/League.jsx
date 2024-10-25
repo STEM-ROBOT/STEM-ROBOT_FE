@@ -73,10 +73,8 @@ const League = () => {
         {/* View League - List View */}
         <div className={`league_grid ${viewMode}`}>
           {leagueData.map((leagues, i) => (
-            <LeagueView viewMode={viewMode} league={leagues} />
+            <LeagueView key={i} viewMode={viewMode} league={leagues} />
           ))}
-
-         
         </div>
       </div>
       <Footer />
