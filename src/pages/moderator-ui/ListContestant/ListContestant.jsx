@@ -48,17 +48,17 @@ const ListContestant = () => {
     const currentContestants = contestants.slice(indexOfFirstContestant, indexOfLastContestant);
     const totalPages = Math.ceil(contestants.length / contestantsPerPage);
 
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(prevPage => prevPage + 1);
-        }
-    };
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
 
-    const handlePreviousPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(prevPage => prevPage - 1);
-        }
-    };
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
+    }
+  };
 
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
