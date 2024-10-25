@@ -1,52 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaArrowLeft, FaArrowRight, FaDownload, FaFileImport } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx'; // Import XLSX for reading Excel files
 import './ListContestant.css';
 import AddContestant from '../component/AddContestant/AddContestant';
+import { useDispatch, useSelector } from 'react-redux';
+import { getListContestant } from '../../../redux/actions/ContestantAction';
 
 const ListContestant = () => {
-    // Fake Vietnamese contestants data
-    const initialContestants = [
-        {
-            id: 1,
-            name: "Nguyễn Văn A",
-            email: "nguyenvana@example.com",
-            gender: "Nam",
-            phone: "0912345678",
-            image: "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-            school: "THPT Hà Nội",
-        },
-        {
-            id: 2,
-            name: "Trần Thị B",
-            email: "tranthib@example.com",
-            gender: "Nữ",
-            phone: "0987654321",
-            image: "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-            school: "THPT Hồ Chí Minh",
-        },
-        {
-            id: 3,
-            name: "Lê Văn C",
-            email: "levanc@example.com",
-            gender: "Nam",
-            phone: "0912123456",
-            image: "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-            school: "THPT Đà Nẵng",
-        },
-        // Add more contestants here if needed
-    ];
+    const dispatch =useDispatch();
+    useEffect(()=>{
+      dispatch(getListContestant())
+    },[dispatch])
+    
+    // const listContestant = useSelector((state) => state.getOrder.listOrders);
 
-    const [contestants, setContestants] = useState(initialContestants);
+
+    const [contestants, setContestants] = useState();
     const [currentPage, setCurrentPage] = useState(1);
     const contestantsPerPage = 3;
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const indexOfLastContestant = currentPage * contestantsPerPage;
     const indexOfFirstContestant = indexOfLastContestant - contestantsPerPage;
-    const currentContestants = contestants.slice(indexOfFirstContestant, indexOfLastContestant);
-    const totalPages = Math.ceil(contestants.length / contestantsPerPage);
+    const currentContestants = contestants?.slice(indexOfFirstContestant, indexOfLastContestant);
+    const totalPages = Math.ceil(contestants?.length / contestantsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -69,7 +47,7 @@ const ListContestant = () => {
         // Map data from contestants to Excel format (without status)
         const templateData = [
             ["ID", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại", "Trường"],
-            ...contestants.map(contestant => [
+            ...contestants?.map(contestant => [
                 contestant.id, 
                 contestant.name, 
                 contestant.email, 
@@ -145,7 +123,7 @@ const ListContestant = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentContestants.map((contestant) => (
+                    {currentContestants?.map((contestant) => (
                         <tr key={contestant.id}>
                             <td>{contestant.id}</td>
                             <td>

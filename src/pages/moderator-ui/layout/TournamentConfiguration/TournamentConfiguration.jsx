@@ -31,9 +31,9 @@ const TournamentConfiguration = () => {
               teams_bye: [{ id: 11, name: "Đội 11" }, { id: 12, name: "Đội 12" }, { id: 13, name: "Đội 13" }],
               matches: [
                 { id: 1, team1Id: 1, team2Id: 2 },
-                { id: 6, team1Id: 3, team2Id: 4 },
+                { id: 2, team1Id: 3, team2Id: 4 },
                 { id: 3, team1Id: 5, team2Id: 6 },
-                { id: 10, team1Id: 7, team2Id: 8 },
+                { id: 4, team1Id: 7, team2Id: 8 },
                 { id: 5, team1Id: 9, team2Id: 10 }
               ]
             },
