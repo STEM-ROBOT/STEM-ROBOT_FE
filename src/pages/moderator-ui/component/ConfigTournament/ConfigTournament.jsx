@@ -6,8 +6,9 @@ import CreateTournamentInfo from '../CreateTournamentInfo/CreateTournamentInfo';
 import CreateTournamentCompetition from '../CreateTournamentCompetition/CreateTournamentCompetition';
 import ExcelUploadComponent from '../ExcelUploadComponent/ExcelUploadComponent';
 import ImportRule from '../ImportRule/ImportRule';
+import CreateTournamentFormat from '../CreateTournamentFormat/CreateTournamentFormat';
 const sections = [
-    // { title: "Thông tin cơ bản", content: <CreateTournamentInfo/> },
+    { title: "Tạo Hình Thức", content: <CreateTournamentFormat/> },
     // { title: "Thể thức và môn thi đấu", content: <CreateTournamentCompetition/> },
     { title: "Thêm luật lệ", content: <ImportRule/>},
     { title: "Thêm bảng điểm", content: <ExcelUploadComponent/>},

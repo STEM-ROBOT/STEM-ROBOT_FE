@@ -6,9 +6,9 @@ import './TournamentHeader.css';
 const TournamentHeader = () => {
   const { tournamentId, competitionId } = useParams(); 
   const tabs = [
-    { name: "TIN CHUNG", key: "dashboard" },
-    { name: "LỊCH THI ĐẤU", key: "schedule" },
-    { name: "BẢNG XẾP HẠNG", key: "ranking" },
+    // { name: "TIN CHUNG", key: "dashboard" },
+    // { name: "LỊCH THI ĐẤU", key: "schedule" },
+    // { name: "ĐỘI THI ĐẤU", key: "teammatch" },
     { name: "TÙY CHỈNH", key: "customize" },
   ];
 

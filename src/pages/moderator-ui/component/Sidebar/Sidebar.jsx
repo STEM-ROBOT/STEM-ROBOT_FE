@@ -5,8 +5,8 @@ import './Sidebar.css';
 const Sidebar = ({ activeItem, onMenuClick, isGroupStage }) => {
     const menuItems = [
         { key: "config", label: "Cấu hình giải đấu", icon: <FaCogs /> },
-        { key: "status", label: "Trạng thái", icon: <FaShieldAlt /> },
-        { key: "permissions", label: "Phân quyền", icon: <FaUsers /> },
+        // { key: "status", label: "Trạng thái", icon: <FaShieldAlt /> },
+        { key: "permissions", label: "Quản lí trọng tài", icon: <FaUsers /> },
         { key: "teams", label: "Quản lý đội", icon: <FaLayerGroup /> }, 
     ];
 
@@ -17,8 +17,9 @@ const Sidebar = ({ activeItem, onMenuClick, isGroupStage }) => {
 
     menuItems.push(
         { key: "matchups", label: "Sắp xếp cặp đấu", icon: <FaLayerGroup /> },
+        { key: "schedule", label: "Sắp xếp lịch đấu", icon: <FaCalendarAlt /> },
         { key: "referee", label: "Sắp xếp trọng tài", icon: <FaLayerGroup /> },
-        { key: "schedule", label: "Quản lý lịch đấu", icon: <FaCalendarAlt /> },
+     
         { key: "organizers", label: "Ban tổ chức", icon: <FaSitemap /> },
         { key: "sponsors", label: "Nhà tài trợ", icon: <FaMoneyBill /> }
     );

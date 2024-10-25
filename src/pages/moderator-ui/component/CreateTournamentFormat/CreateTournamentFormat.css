@@ -2,13 +2,13 @@
   width: 100%;
 }
 .format_create {
-  padding: 10px 10%;
+  padding: 10px 2%;
 }
 .format_create_move {
-  padding: 0 10%;
+  padding: 0 2%;
 }
 .format_create_move.active {
-  padding: 10px 10%;
+  padding: 10px 2%;
 }
 .competition_format {
   background-color: #fff;

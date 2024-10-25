@@ -1,97 +1,114 @@
 import React, { useState } from 'react';
 import './KnockoutTournament.css';
+import CountdownPopup from '../CountdownPopup/CountdownPopup';
 
-const initialTeams = Array.from({ length: 5 }, (_, i) => `Team #${i + 1}`); // You can set this to any number of teams
 
-const KnockoutTournament = () => {
-  const [matches, setMatches] = useState([]);
-  const [isDrawn, setIsDrawn] = useState(false);
+const KnockoutTournament = ({ tournamentData }) => {
+  const [rounds, setRounds] = useState(tournamentData.rounds); 
+  const [showPopup, setShowPopup] = useState(false); 
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isSaving, setIsSaving] = useState(false); // To handle saving state
 
-  // Function to generate empty rounds based on the number of teams
-  const generateEmptyRounds = (teamCount) => {
-    let rounds = [];
-    let matchCount = teamCount / 2;
-
-    while (matchCount >= 1) {
-      const round = Array.from({ length: matchCount }, () => [null, null]);
-      rounds.push(round);
-      matchCount = Math.floor(matchCount / 2);
-    }
-
-    return rounds;
+  // Lấy tên đội dựa trên ID
+  const getTeamName = (teamId) => {
+    const team = tournamentData.teams.find((t) => t.id === teamId);
+    return team ? team.name : teamId; 
   };
 
-  // Function to generate matches with teams randomly assigned and winners for the next rounds
-  const generateRoundsWithTeamsAndRandomWinners = (teams) => {
-    let currentTeams = [...teams];
-    let rounds = [];
+  const randomizeMatches = () => {
+    const updatedRounds = { ...rounds };
 
-    while (currentTeams.length > 1) {
-      const round = [];
-      for (let i = 0; i < currentTeams.length; i += 2) {
-        round.push([currentTeams[i], currentTeams[i + 1]]);
-      }
-      rounds.push(round);
+    Object.keys(updatedRounds).forEach((roundKey) => {
+      let currentRound = { ...updatedRounds[roundKey] };
 
-      // Shuffle the winners for the next round
-      const winnersInRound = round.map((match, index) => `W#${index + 1} (Vòng ${rounds.length})`);
-      currentTeams = winnersInRound.sort(() => Math.random() - 0.5); // Randomize the winners for the next round
-    }
+      let availableTeams = currentRound.matches
+        .flatMap((match) => [match.team1Id, match.team2Id])
+        .filter((teamId) => !teamId.toString().includes("w#"));
 
-    return rounds;
+      availableTeams = availableTeams.sort(() => Math.random() - 0.5);
+
+      currentRound.matches.forEach((match) => {
+        if (!match.team1Id.toString().includes("w#")) {
+          match.team1Id = availableTeams.pop(); 
+        }
+        if (!match.team2Id.toString().includes("w#")) {
+          match.team2Id = availableTeams.pop();
+        }
+      });
+
+      updatedRounds[roundKey] = currentRound;
+    });
+
+    setRounds(updatedRounds); 
+    setSuccessMessage('Cập nhật thành công!');
   };
 
   const handleRandomDraw = () => {
-    const shuffledTeams = initialTeams.sort(() => Math.random() - 0.5);
-    const generatedMatches = generateRoundsWithTeamsAndRandomWinners(shuffledTeams);
-    setMatches(generatedMatches);
-    setIsDrawn(true);
+    setShowPopup(true); 
   };
 
-  // Initialize empty matches at the start
-  React.useEffect(() => {
-    setMatches(generateEmptyRounds(initialTeams.length)); // Generate empty rounds
-  }, []);
+  const handleCountdownComplete = () => {
+    setShowPopup(false);
+    randomizeMatches();  
+  };
+
+  // Function to handle saving rounds to the database
+  const saveMatchesToDB = async () => {
+    setIsSaving(true); // Mark as saving
+    
+     
+      const dataToSave = {
+        tournamentId: tournamentData.id, 
+        rounds: rounds,
+      };
+      console.log(dataToSave)
+
+     
+  };
 
   return (
-    <div className="knockout-tournament-container">
-      <div className="knockout-tournament-content">
-        <h2>Sắp xếp cặp đấu - Hình thức loại trực tiếp</h2>
-        {!isDrawn && (
-          <button className="random-draw-btn" onClick={handleRandomDraw}>
-            Bốc thăm ngẫu nhiên
+    <div className="knockout-tournament-container-custom">
+      <div className="knockout-tournament-content-custom">
+        <h2 className="tournament-title-custom">Sắp xếp cặp đấu - Hình thức loại trực tiếp</h2>
+        
+        {!tournamentData.status && (
+          <button className="random-draw-button-custom" onClick={handleRandomDraw}>
+            Bốc thăm ngẫu nhiên 
           </button>
         )}
+
+        {successMessage && <p className="success-message">{successMessage}</p>}
       </div>
 
-      {matches.map((round, roundIndex) => (
-        <div key={roundIndex} className="round">
-          <h3>
-            {`Vòng ${roundIndex + 1}`}{" "}
-            <span className="match-count">({round.length} trận đấu)</span>
+      {/* Hiển thị các vòng đấu */}
+      {Object.keys(rounds).map((roundKey, roundIndex) => (
+        <div key={roundIndex} className="round-container-custom">
+          <h3 className="round-title-custom">
+            {`Vòng ${roundKey}`}{" "}
+            <span className="match-count-custom">({rounds[roundKey].matches.length} trận đấu)</span>
           </h3>
-          <div className="match-round">
-            {round.map((match, matchIndex) => (
-              <div key={matchIndex} className="match">
-                <span className="match-number">#{matchIndex + 1}</span> {/* Add match number */}
-                <select value={match[0] || ''}>
-                  <option value="">{match[0] || 'Chọn đội'}</option>
-                </select>
-                <span> - </span>
-                <select value={match[1] || ''}>
-                  <option value="">{match[1] || 'Chọn đội'}</option>
-                </select>
+          <div className="match-round-container-custom">
+            {rounds[roundKey].matches.map((match, matchIndex) => (
+              <div key={matchIndex} className={`match-container-custom match-number-${matchIndex + 1}`}>
+                <span className="match-number-custom"># {matchIndex + 1}</span>
+                <div className="team-selection-container-custom">
+                  <span className="team-name-custom">{getTeamName(match.team1Id)}</span>
+                </div>
+                <span className="vs-custom"> - </span>
+                <div className="team-selection-container-custom">
+                  <span className="team-name-custom">{getTeamName(match.team2Id)}</span>
+                </div>
               </div>
             ))}
           </div>
         </div>
       ))}
 
-      {isDrawn && (
-        <button className="save-btn">
-          Lưu
-        </button>
-      )}
+      <button className="save-button-custom" onClick={saveMatchesToDB} disabled={isSaving}>
+        {isSaving ? 'Đang lưu...' : 'Lưu'}
+      </button>
+
+      {showPopup && <CountdownPopup onComplete={handleCountdownComplete} />}
     </div>
   );
 };
