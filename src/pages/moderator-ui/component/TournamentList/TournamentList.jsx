@@ -10,45 +10,51 @@ const TournamentList = () => {
         {
             id: 1,
             name: "World Cup 2024",
-            type: "Loại Trực Tiếp || Bóng Bàn || Thành Lê Đình || Qatar",
-            status: "Chưa kích hoạt",
-            icon: <FaTableTennis />,
+            genre: "Bóng Bàn",
+            location:"Quater",
+            status: "Private",
+            image:"https://th.bing.com/th/id/R.e3ac59766e285f0fbcae869b1f65c555?rik=AKlFpX0Q%2femKQA&pid=ImgRaw&r=0",
             participants: "0 / 2"
         },
         {
             id: 2,
-            name: "Euro Cup 2024",
-            type: "Loại Trực Tiếp || Bóng Đá || Thành Lê Đình || France",
-            status: "Chưa kích hoạt",
-            icon: <FaTableTennis />,
-            participants: "0 / 4"
+            name: "World Cup 2024",
+            genre: "Bóng Bàn",
+            location:"Quater",
+            status: "Private",
+            image:"https://th.bing.com/th/id/R.e3ac59766e285f0fbcae869b1f65c555?rik=AKlFpX0Q%2femKQA&pid=ImgRaw&r=0",
+            participants: "0 / 2"
         },
         {
             id: 3,
-            name: "Asia Cup 2024",
-            type: "Loại Trực Tiếp || Bóng Chuyền || Thành Lê Đình || Japan",
-            status: "Chưa kích hoạt",
-            icon: <FaTableTennis />,
-            participants: "0 / 6"
+            name: "World Cup 2024",
+            genre: "Bóng Bàn",
+            location:"Quater",
+            status: "Public",
+            image:"https://th.bing.com/th/id/R.e3ac59766e285f0fbcae869b1f65c555?rik=AKlFpX0Q%2femKQA&pid=ImgRaw&r=0",
+            participants: "0 / 2"
         },
         {
             id: 4,
-            name: "Copa America 2024",
-            type: "Loại Trực Tiếp || Bóng Đá || Thành Lê Đình || Brazil",
-            status: "Chưa kích hoạt",
-            icon: <FaTableTennis />,
+            name: "World Cup 2024",
+            genre: "Bóng Bàn",
+            location:"Quater",
+            status: "Private",
+            image:"https://th.bing.com/th/id/R.e3ac59766e285f0fbcae869b1f65c555?rik=AKlFpX0Q%2femKQA&pid=ImgRaw&r=0",
             participants: "0 / 2"
         },
         {
             id: 5,
-            name: "Olympics 2024",
-            type: "Loại Trực Tiếp || Điền Kinh || Thành Lê Đình || USA",
-            status: "Chưa kích hoạt",
-            icon: <FaTableTennis />,
-            participants: "0 / 5"
+            name: "World Cup 2024",
+            genre: "Bóng Bàn",
+            location:"Quater",
+            status: "Public",
+            image:"https://th.bing.com/th/id/R.e3ac59766e285f0fbcae869b1f65c555?rik=AKlFpX0Q%2femKQA&pid=ImgRaw&r=0",
+            participants: "0 / 2"
         }
     ];
 
+  
     const [currentPage, setCurrentPage] = useState(1);
     const tournamentsPerPage = 3;
 
@@ -68,24 +74,29 @@ const TournamentList = () => {
         <div className="tournament-container">
             <div className="tournament-header">
                 <h2>
-                    <FaTrophy className="trophy-icon" /> {/* Add the trophy icon here */}
-                    Giải đấu đã tạo
+                    <FaTrophy className="trophy-icon" /> Giải đấu đã tạo
                 </h2>
                 <button className="create-tournament-btn">Tạo Giải Đấu</button>
             </div>
 
             <div className="tournament-list">
-                {currentTournaments.map((tournament, index) => (
+                {currentTournaments.map((tournament) => (
                     <div 
-                        key={index} 
+                        key={tournament.id} 
                         className="tournament-card" 
                         onClick={() => handleTournamentClick(tournament.id)} 
                     >
-                        <div className="tournament-icon">{tournament.icon}</div>
+                        <img 
+                            src={tournament.image} 
+                            alt={tournament.name} 
+                            className="tournament-image" 
+                        />
                         <div className="tournament-info">
                             <h3>{tournament.name}</h3>
-                            <p>{tournament.type}</p>
-                            <span className="tournament-status">{tournament.status}</span>
+                            <p>{tournament.genre} || {tournament.location}</p>
+                            <div className={`tournament-status ${tournament.status === "Public" ? "status-public" : "status-private"}`}>
+                                {tournament.status}
+                            </div>
                         </div>
                         <div className="tournament-participants">
                             <div className="participants-bar">
