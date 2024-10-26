@@ -127,7 +127,6 @@
 /* Progress Bar */
 .progress_bar.grid {
   width: 70%;
-
   height: 20px;
   background-color: #b9c0c6;
   border-radius: 10px;
@@ -149,10 +148,10 @@
   color: #ffffff;
   font-weight: bold;
   position: absolute;
-  z-index: 1;
   left: 44%;
   bottom: 0;
   top: 0;
+  z-index: 1;
 }
 
 .progress_detail.grid {
@@ -163,7 +162,7 @@
   padding: 5px 10px;
   border-radius: 5px;
   position: absolute;
-  z-index: 5;
+  z-index: 1;
   bottom: 125%; /* Position the tooltip above the icon */
   left: 50%;
   transform: translateX(-50%);

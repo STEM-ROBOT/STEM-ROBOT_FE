@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import systemRoutes from "./SystemRouter";
 import moderatorRouter from "./ModeratorRouter";
-
+import refereeMainRouter from "./RefereeMainRouter";
 function AppRouter() {
   const renderRoutes = (routes) =>
     routes.map((route, index) => {
@@ -13,6 +13,7 @@ function AppRouter() {
   return (
     <Router>
       <Routes>
+        {renderRoutes(refereeMainRouter)}
         {renderRoutes(systemRoutes)}
         {renderRoutes(moderatorRouter)}
       </Routes>
