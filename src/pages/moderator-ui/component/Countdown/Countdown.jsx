@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./Countdown.css";
 import Introduction from "../Introduction/Introduction";
 import RegisterTeam from "../RegisterTeam/RegisterTeam";
@@ -28,6 +28,7 @@ const registerConfig = {
 };
 const Countdown = () => {
   const navigate = useNavigate();
+  const pram = useParams();
   const [registerConfigApi, setRegisterConfigApi] = useState(registerConfig);
   const calculateTimeLeft = () => {
     const difference = new Date(registerConfigApi?.timeConfig) - new Date();

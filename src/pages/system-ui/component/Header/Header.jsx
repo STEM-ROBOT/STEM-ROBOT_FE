@@ -3,16 +3,25 @@ import SignIn from "../Author/SignIn/SignIn";
 import SignUp from "../Author/SignUp/SignUp";
 import "./Header.css";
 import { useState, useEffect, useRef } from "react";
-
+import { MdNotificationsActive } from "react-icons/md";
+const user = {
+  accountId: "2",
+  moderatorName: "Hoàng Dương",
+  image:
+    "https://static-images.vnncdn.net/files/publish/2023/5/5/mmw-4-956.jpg",
+};
 const Header = () => {
   const [isVisible, setIsVisible] = useState(false); // State to track scroll position for background
   const [tournamentDropdownOpen, setTournamentDropdownOpen] = useState(false);
+  const [auInfo, setAuInfo] = useState(user);
   const [pagesDropdownOpen, setPagesDropdownOpen] = useState(false);
   const [signIn, setSignIn] = useState(false);
   const [signUp, setSignUp] = useState(false);
+  const [shake, setShake] = useState(true);
   const tournamentRef = useRef(null);
   const pagesRef = useRef(null);
   const navigate = useNavigate();
+
   const toggleTournamentDropdown = () => {
     setTournamentDropdownOpen(!tournamentDropdownOpen);
     setPagesDropdownOpen(false);
@@ -22,8 +31,11 @@ const Header = () => {
     setPagesDropdownOpen(!pagesDropdownOpen);
     setTournamentDropdownOpen(false);
   };
-
+  const numberNotifications = 2;
   useEffect(() => {
+    if (numberNotifications > 0) {
+      setShake(true);
+    }
     const handleClickOutside = (event) => {
       if (
         tournamentRef.current &&
@@ -39,7 +51,7 @@ const Header = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [numberNotifications]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,11 +67,19 @@ const Header = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   const OpenSignIn = () => {
     setSignIn(true);
   };
   const OpenSignUp = () => {
     setSignUp(true);
+  };
+  const filterName = (name) => {
+    if (name && name.length > 0) {
+      return name[0].toUpperCase();
+    } else {
+      return null;
+    }
   };
   return (
     <div className={`header-outer ${isVisible ? "header-visible" : ""}`}>
@@ -97,7 +117,7 @@ const Header = () => {
               </div>
             )}
           </div>
-
+          {/* 
           <div className="nav-dropdown" ref={pagesRef}>
             <button
               className="nav-link dropdown-button"
@@ -115,7 +135,7 @@ const Header = () => {
                 </a>
               </div>
             )}
-          </div>
+          </div> */}
 
           <a href="/pricing" className="nav-link">
             Bảng Giá
@@ -124,18 +144,60 @@ const Header = () => {
             Liên Hệ
           </a>
         </nav>
-
-        <div className="cta-buttons">
-          <button className="styled-button" onClick={OpenSignUp}>
-            Đăng Kí
-          </button>
-          <button
-            className="styled-button register-button"
-            onClick={OpenSignIn}
-          >
-            Đăng Nhập
-          </button>
-        </div>
+        {auInfo ? (
+          <div className="cta-buttons">
+            <div ref={pagesRef} className="account_action_header">
+              <img
+                src={auInfo.image}
+                alt={auInfo.moderatorName}
+                className="account_avatar"
+                onClick={togglePagesDropdown}
+              />
+              <div
+                className="account_name_moderator"
+                onClick={togglePagesDropdown}
+              >
+                {auInfo.moderatorName}▾
+              </div>
+              {pagesDropdownOpen && (
+                <div className="dropdown-account-content">
+                  <a href="/account/profile" className="dropdown-item">
+                    Thông Tin Tài Khoản
+                  </a>
+                  <a href="/account/mytournament" className="dropdown-item">
+                    Quản Lí Giải Đấu
+                  </a>
+                  <a href="" className="dropdown-item">
+                    Quản Lý Đơn hàng
+                  </a>
+                  <a href="" className="dropdown-item">
+                    Đăng Xuất
+                  </a>
+                </div>
+              )}
+            </div>
+            <div className="notification_action_header">
+              <MdNotificationsActive
+                className={`notification_action_icon ${shake ? "shake" : ""}`}
+              />
+              <div className="notification_action_number">
+                {numberNotifications}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="cta-buttons">
+            <button className="styled-button" onClick={OpenSignUp}>
+              Đăng Kí
+            </button>
+            <button
+              className="styled-button register-button"
+              onClick={OpenSignIn}
+            >
+              Đăng Nhập
+            </button>
+          </div>
+        )}
       </div>
       {signIn === true && <SignIn setSignIn={setSignIn} />}
       {signUp === true && <SignUp setSignUp={setSignUp} />}
