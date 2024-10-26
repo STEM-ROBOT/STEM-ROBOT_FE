@@ -1,13 +1,13 @@
-/* Container and Outer Styles */
+/* Tournament Container Styles */
 .tournament-container {
     margin: 20px 0;
-    border: 1px dashed #ccc; /* Border matching ManageCompetition */
-    border-radius: 13px;      /* Rounded corners */
-    padding: 17px;            /* Padding inside */
-    background-color: #f7f7f7; /* Light background for outer container */
+    border: 1px dashed #ccc; 
+    border-radius: 13px;      
+    padding: 17px;            
+    background-color: #f7f7f7;
 }
 
-/* Header Styling */
+/* Tournament Header Styles */
 .tournament-header {
     display: flex;
     justify-content: space-between;
@@ -16,7 +16,7 @@
 }
 
 .create-tournament-btn {
-    background-color: #4caf50;  /* Primary button color */
+    background-color: #186fc0;  
     border: none;
     color: #fff;
     padding: 10px 20px;
@@ -26,40 +26,42 @@
 }
 
 .create-tournament-btn:hover {
-    background-color: #45a049; /* Darken on hover */
+    background-color: #0f4f8b;
 }
 
-/* List of Tournaments */
+/* Tournament List Styles */
 .tournament-list {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Gap between tournament cards */
+    gap: 20px;
 }
 
-/* Tournament Card Styling */
+/* Tournament Card Styles */
 .tournament-card {
     display: flex;
     align-items: center;
-    background-color: #f8f8f8;   /* Light gray background */
-    border-radius: 10px;         /* Rounded corners */
+    background-color: #f8f8f8;   
+    border-radius: 10px;         
     padding: 15px;
-    box-shadow: rgba(3, 34, 73, 0.2) 0px 2px 8px 0px; /* Soft shadow */
-    transition: transform 0.3s ease;  /* Hover effect transition */
+    box-shadow: rgba(3, 34, 73, 0.2) 0px 2px 8px 0px; 
+    transition: transform 0.3s ease;  
     cursor: pointer;
 }
 
 .tournament-card:hover {
-    transform: scale(1.05);  /* Slight zoom effect on hover */
+    transform: scale(1.01);
 }
 
-/* Tournament Icon */
-.tournament-icon {
-    font-size: 24px;
+/* Tournament Image */
+.tournament-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
     margin-right: 15px;
-    color: #007bff; /* Consistent blue color for icons */
 }
 
-/* Tournament Info */
+/* Tournament Info Styles */
 .tournament-info h3 {
     margin: 0;
     font-size: 1.2rem;
@@ -72,15 +74,30 @@
     font-size: 0.9rem;
 }
 
-.tournament-status {
-    display: inline-block;
-    background-color: #6c757d;  /* Muted dark color */
+/* Status for Public Tournaments */
+.status-public {
+    background-color: #0d7d91d8 ;  /* Màu cam cho Public */
     color: #fff;
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 0.8rem;
     margin-top: 5px;
+    width: 50px;
+    text-align: center;
 }
+
+/* Status for Private Tournaments */
+.status-private {
+    background-color:  #d1c523ec;  /* Màu tím cho Private */
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    width: 50px;
+    text-align: center;
+}
+
 
 /* Participants Bar */
 .tournament-participants {
@@ -89,7 +106,7 @@
 }
 
 .participants-bar {
-    background-color: #e0e0e0;  /* Neutral gray for the bar */
+    background-color: #e0e0e0;  
     border-radius: 5px;
     padding: 5px;
     width: 100px;
@@ -100,7 +117,7 @@
     font-size: 0.8rem;
 }
 
-/* Pagination */
+/* Pagination Styles */
 .pagination {
     display: flex;
     justify-content: center;
@@ -113,7 +130,7 @@
     padding: 8px;
     border: none;
     background-color: transparent;
-    color: #007bff; /* Consistent with icon color */
+    color: #007bff; 
     cursor: pointer;
     border-radius: 5px;
     margin: 0 5px;

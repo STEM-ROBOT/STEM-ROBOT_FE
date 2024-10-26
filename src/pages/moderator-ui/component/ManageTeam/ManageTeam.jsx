@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { FaDownload, FaEdit, FaArrowLeft, FaArrowRight } from 'react-icons/fa'; // Import arrow icons
+import { FaDownload, FaEdit, FaArrowLeft, FaArrowRight, FaFileExport, FaFileUpload } from 'react-icons/fa';
+import * as XLSX from 'xlsx'; // Import thư viện để xuất/nhập Excel
 import './ManageTeam.css';
 import EditTeamPopup from '../EditTeamPopup/EditTeamPopup';
 
-const teamsData = [
+const initialTeamsData = [
   {
     id: 1,
     name: "Đội #1",
@@ -23,9 +24,9 @@ const teamsData = [
 ];
 
 const ManageTeam = () => {
-  const [teams] = useState(teamsData);
+  const [teams, setTeams] = useState(initialTeamsData);
   const [currentPage, setCurrentPage] = useState(1);
-  const [teamsPerPage] = useState(3);
+  const [teamsPerPage] = useState(6);
   const [isEditing, setIsEditing] = useState(false);
   const [editTeam, setEditTeam] = useState(null);
 
@@ -48,13 +49,82 @@ const ManageTeam = () => {
     setEditTeam(null);
   };
 
+  // Function to export teams data to Excel
+  const exportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(
+      teams.map((team) => ({
+        "#": team.id, // Cột ID
+        'Tên đội': team.name,
+        'SĐT Liên hệ': team.contactPhone,
+        'Người liên hệ': team.contactPerson,
+        'Thành viên': team.members.join(', '),
+      }))
+    );
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Danh sách đội');
+    XLSX.writeFile(wb, 'DanhSachDoi.xlsx');
+  };
+
+  // Function to handle file upload and merging data
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const binaryStr = event.target.result;
+      const workbook = XLSX.read(binaryStr, { type: 'binary' });
+
+      const firstSheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[firstSheetName];
+
+      const importedData = XLSX.utils.sheet_to_json(worksheet, { defval: '' }); 
+
+      const formattedImportedData = importedData.map((row) => ({
+        id: row['#'],
+        name: row['Tên đội'],
+        contactPhone: row['SĐT Liên hệ'],
+        contactPerson: row['Người liên hệ'],
+        members: row['Thành viên'] ? row['Thành viên'].split(', ') : [],
+        logo: 'https://t3.ftcdn.net/jpg/07/68/91/92/360_F_768919266_4OfllVFjsr99DPeFCATa0jrTOjKnUshK.jpg', // Đặt logo mặc định
+      }));
+
+      
+      const updatedTeams = [...teams];
+      formattedImportedData.forEach((importedTeam) => {
+        console.log(updatedTeams)
+        const existingIndex = updatedTeams.findIndex((team) => team.id === importedTeam.id);
+        if (existingIndex !== -1) {
+          updatedTeams[existingIndex] = importedTeam; 
+        } else {
+          updatedTeams.push(importedTeam); 
+        }
+      });
+
+      setTeams(updatedTeams); // Cập nhật state
+    };
+
+    reader.readAsBinaryString(file); // Đọc file Excel
+  };
+
   return (
     <div className="team-list-container">
       <div className="team-list-header">
         <span>Có {teams.length} đội và {teams.reduce((acc, team) => acc + team.members.length, 0)} người chơi tham gia giải</span>
-        <button className="download-button">
-          <FaDownload /> Danh sách
-        </button>
+        <div className="header-buttons">
+          <button className="import-button-team" onClick={() => document.getElementById('hidden-file-input').click()}>
+            <FaFileUpload /> Nhập tệp tin
+          </button>
+          <input
+            type="file"
+            id="hidden-file-input"
+            accept=".xlsx, .xls"
+            onChange={handleFileUpload}
+            style={{ display: 'none' }} // Hides the file input
+          />
+          <button className="export-button-team" onClick={exportToExcel}>
+            <FaFileExport /> Xuất ra file Excel
+          </button>
+        </div>
       </div>
       <div className="team-list-grid">
         {currentTeams.map((team) => (
