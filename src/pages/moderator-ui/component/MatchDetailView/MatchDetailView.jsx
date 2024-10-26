@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./MatchDetailView.css";
 import { IoClose, IoLocationOutline } from "react-icons/io5";
 import { MdAccessTime } from "react-icons/md";
 import { GrMapLocation } from "react-icons/gr";
+import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 const scoreTeamDetail = [
   {
     haftMatch: "1",
@@ -100,19 +101,50 @@ const scoreTeamDetail = [
 const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
   const [popupActive, setActive] = useState(false);
   const [scoreTeamDetailApi, setScoreTeamDetailApi] = useState([]);
+  const [showScrollArrow, setShowScrollArrow] = useState("down");
+  const containerRef = useRef(null);
   useEffect(() => {
     const timer = setTimeout(() => {
       setScoreTeamDetailApi(scoreTeamDetail);
     }, 2000);
     setActive(true);
-    return () => clearTimeout(timer);
+
+    const container = containerRef.current;
+
+    // Hàm kiểm tra vị trí cuộn trang của view_data_match_container
+    const handleScroll = () => {
+      if (container.scrollTop === 0) {
+        setShowScrollArrow("down"); // Khi người dùng ở đầu container
+      } else if (
+        container.scrollHeight - container.scrollTop <=
+        container.clientHeight + 5
+      ) {
+        setShowScrollArrow("up"); // Khi người dùng cuộn đến cuối container (thêm sai số nhỏ)
+      }
+    };
+
+    container.addEventListener("scroll", handleScroll);
+
+    return () => {
+      clearTimeout(timer);
+      container.removeEventListener("scroll", handleScroll);
+    };
   }, [scoreTeamDetailApi]);
+
   const CloseMatchDetail = () => {
     setActive(false);
     const timer = setTimeout(() => {
       setShowMatchDetail(false);
     }, 500);
     return () => clearTimeout(timer);
+  };
+  const handleArrowClick = () => {
+    const container = containerRef.current;
+    if (showScrollArrow === "down") {
+      container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+    } else if (showScrollArrow === "up") {
+      container.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
   return (
     <div
@@ -165,79 +197,90 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
             </div>
           </div>
         </div>
-        {scoreTeamDetailApi.length < 1 ? (
-          <img
-            className="match_score_team_detail_load"
-            src="https://i.gifer.com/embedded/download/PG23.gif"
-          />
-        ) : (
-          <div className="match_score_team_detail">
-            {scoreTeamDetailApi.map((scoreTeam, i) => (
-              <div key={i} className="haft_match">
-                <div className="info_haft_match">
-                  {`HIỆP ${scoreTeam.haftMatch}`}
-                </div>
-                {scoreTeam.activity.map((activity, i) => (
-                  <div
-                    className={
-                      activity.teamType == "home"
-                        ? "match_score_team_item home"
-                        : "match_score_team_item away"
-                    }
-                  >
-                    {activity.teamType == "home" ? (
-                      <div className="match_score_team_item_detail">
-                        <div className="match_score_description">
-                          {activity.description}
-                        </div>
-                        <div className="score_team_item_time">
-                          {activity.timeScore + "'"}
-                        </div>
-                        <div className="score_team_item_info">
-                          <div className="score_team_name">
-                            {activity.teamName}
-                          </div>
-                          <div
-                            className={
-                              activity.type == "Điểm Cộng"
-                                ? "score_team_point bonus"
-                                : "score_team_point"
-                            }
-                          >
-                            {activity.point}
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="match_score_team_item_detail">
-                        <div className="match_score_description">
-                          {activity.description}
-                        </div>
-                        <div className="score_team_item_info_away">
-                          <div
-                            className={
-                              activity.type == "Điểm Cộng"
-                                ? "score_team_point bonus"
-                                : "score_team_point"
-                            }
-                          >
-                            {activity.point}
-                          </div>
-                          <div className="score_team_name_away">
-                            {activity.teamName}
-                          </div>
-                        </div>
-                        <div className="score_team_item_time_away">
-                          {activity.timeScore + "'"}
-                        </div>
-                      </div>
-                    )}
+        <div className="view_data_match_container" ref={containerRef}>
+          {scoreTeamDetailApi.length < 1 ? (
+            <img
+              className="match_score_team_detail_load"
+              src="https://i.gifer.com/embedded/download/PG23.gif"
+            />
+          ) : (
+            <div className="match_score_team_detail">
+              {scoreTeamDetailApi.map((scoreTeam, i) => (
+                <div key={i} className="haft_match">
+                  <div className="info_haft_match">
+                    {`HIỆP ${scoreTeam.haftMatch}`}
                   </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        )}
+                  {scoreTeam.activity.map((activity, i) => (
+                    <div
+                      className={
+                        activity.teamType == "home"
+                          ? "match_score_team_item home"
+                          : "match_score_team_item away"
+                      }
+                    >
+                      {activity.teamType == "home" ? (
+                        <div className="match_score_team_item_detail">
+                          <div className="match_score_description">
+                            {activity.description}
+                          </div>
+                          <div className="score_team_item_time">
+                            {activity.timeScore + "'"}
+                          </div>
+                          <div className="score_team_item_info">
+                            <div className="score_team_name">
+                              {activity.teamName}
+                            </div>
+                            <div
+                              className={
+                                activity.type == "Điểm Cộng"
+                                  ? "score_team_point bonus"
+                                  : "score_team_point"
+                              }
+                            >
+                              {activity.point}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="match_score_team_item_detail">
+                          <div className="match_score_description">
+                            {activity.description}
+                          </div>
+                          <div className="score_team_item_info_away">
+                            <div
+                              className={
+                                activity.type == "Điểm Cộng"
+                                  ? "score_team_point bonus"
+                                  : "score_team_point"
+                              }
+                            >
+                              {activity.point}
+                            </div>
+                            <div className="score_team_name_away">
+                              {activity.teamName}
+                            </div>
+                          </div>
+                          <div className="score_team_item_time_away">
+                            {activity.timeScore + "'"}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
+          {showScrollArrow && (
+            <div className="scroll-arrow" onClick={handleArrowClick}>
+              {showScrollArrow === "down" ? (
+                <FaArrowDown className="icon_scroll_arrow" />
+              ) : (
+                <FaArrowUp className="icon_scroll_arrow" />
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

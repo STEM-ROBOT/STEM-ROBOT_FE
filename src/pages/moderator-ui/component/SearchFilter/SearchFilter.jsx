@@ -24,12 +24,6 @@ const SearchFilter = () => {
             <option>Nội Dung Thi</option>
           </select>
           <select className="filter_select">
-            <option>Hình Thức</option>
-          </select>
-          <select className="filter_select">
-            <option>Trạng Thái</option>
-          </select>
-          <select className="filter_select">
             <option>Xắp Xếp</option>
           </select>
         </div>

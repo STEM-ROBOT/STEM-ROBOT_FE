@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./LeagueDetail.css";
-import { Navigate, Route, Routes, useParams } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import Header from "../../../system-ui/component/Header/Header";
 import DetailBar from "../../component/DetailBar/DetailBar";
 import Footer from "../../../system-ui/component/Footer/Footer";
@@ -11,7 +17,17 @@ import { league_detail } from "../../../../router/ModeratorRouter";
 
 const LeagueDetail = () => {
   const id = useParams();
-  console.log(id);
+  const storedLeague = sessionStorage.getItem("leagueData");
+  const [league, setLeague] = useState(JSON.parse(storedLeague));
+  // useEffect(() => {
+  //   if (!league) {
+  //     const storedLeague = sessionStorage.getItem("leagueData");
+  //     if (storedLeague) {
+  //       setLeague(JSON.parse(storedLeague));
+  //     }
+  //   }
+  // }, [league]);
+  // console.log(league);
 
   const renderRoutes = (routes) =>
     routes.map((route, index) => {
@@ -21,7 +37,7 @@ const LeagueDetail = () => {
     <div className="league_detail_page">
       <Header />
       <div className="league_detail_container">
-        <DetailBar id={id.league_id} />
+        <DetailBar league={league} />
         <div className="league_detail_option">
           <Routes>{renderRoutes(league_detail)}</Routes>
         </div>
