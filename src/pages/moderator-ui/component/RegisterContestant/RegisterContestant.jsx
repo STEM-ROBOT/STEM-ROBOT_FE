@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import logo from "/src/assets/images/logo.png";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 const RegisterContestant = () => {
   const location = useLocation();
-  console.log(location);
+  const pram = useParams();
+  console.log(location, pram);
 
   const [contestantList, setContestant] = useState([]);
   return (

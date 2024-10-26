@@ -14,13 +14,14 @@ const LeagueView = ({ viewMode, league }) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
-        prevIndex === league.images.length - 1 ? 0 : prevIndex + 1
+        prevIndex === league.imagesCompetition.length - 1 ? 0 : prevIndex + 1
       );
     }, 3000); // 2000ms = 2 seconds
 
     return () => clearInterval(intervalId); // Clean up the interval
-  }, [images.length]);
-  const progressPercentage = (league.matchesPlayed / league.totalMatches) * 100;
+  }, [league.imagesCompetition.length]);
+  const progressPercentage =
+    (league.competitionActivateNumber / league.competitionNumber) * 100;
   const calculateDaysLeft = (endDate) => {
     // Lấy thời gian hiện tại
     const now = new Date();
@@ -35,26 +36,31 @@ const LeagueView = ({ viewMode, league }) => {
     // Nếu đã qua hạn, trả về 0
     return daysLeft > 0 ? daysLeft : 0;
   };
-
-  // Sử dụng hàm
-  const endDate = "2024-10-13T23:59:59";
+  const GoLeague = () => {
+    if (league) {
+      sessionStorage.setItem("leagueData", JSON.stringify(league));
+      navigate(`/league/${league.id}`);
+    } else {
+      console.error("league is undefined or null");
+    }
+  };
   return (
     <div
-      onClick={() =>( navigate(`/league/${league.id}`))}
+      onClick={() => GoLeague()}
       className={`league_card ${viewMode}`}
       style={{
-        "--background-image": `url(${images[currentImageIndex]})`,
+        "--background-image": `url(${league.imagesCompetition[currentImageIndex]})`,
       }}
     >
       {viewMode == "list" && <div className="league_card_overlay"></div>}
       <div
         className={`league_image_container ${viewMode}`}
         style={{
-          "--background-image": `url(${images[currentImageIndex]})`,
+          "--background-image": `url(${league.imagesCompetition[currentImageIndex]})`,
         }}
       >
         <img
-          src="https://th.bing.com/th/id/OIP.7HSEMd30tk4S_tCOunvBXAHaEK?w=331&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+          src="https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png"
           alt="League Image"
           className={`league_thumbnail ${viewMode}`}
         />
@@ -64,12 +70,14 @@ const LeagueView = ({ viewMode, league }) => {
           <span>{league.name}</span>
         </div>
         <div className={`league_detail ${viewMode}`}>
-          <span>{league.location}</span>
+          <span>{league.address}</span>
         </div>
         <div className={`league_stats ${viewMode}`}>
           <div className={`tooltip ${viewMode}`}>
-            <span>👥 {league.teams}</span>
-            <div className={`tooltip_text ${viewMode}`}>Số đội trong giải</div>
+            <span>👥 {league.contestant}</span>
+            <div className={`tooltip_text ${viewMode}`}>
+              Số thí sinh trong giải
+            </div>
           </div>
 
           {/* Tooltip for views */}
@@ -79,14 +87,14 @@ const LeagueView = ({ viewMode, league }) => {
           </div>
 
           {/* Tooltip for time left */}
-          {calculateDaysLeft(league.endDate) > 0 && (
+          {/* {calculateDaysLeft(league.endDate) > 0 && (
             <div className={`tooltip ${viewMode}`}>
               <span>⏱️Còn lại {calculateDaysLeft(league.endDate)} ngày </span>
               <div className={`tooltip_text ${viewMode}`}>
                 Thời gian đăng kí
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
 
@@ -99,7 +107,7 @@ const LeagueView = ({ viewMode, league }) => {
           ></div>
 
           <div className={`progress_text ${viewMode}`}>
-            {league.matchesPlayed} / {league.totalMatches}
+            {league.competitionActivateNumber} / {league.competitionNumber}
           </div>
         </div>
         <div className={`progress_detail ${viewMode}`}>

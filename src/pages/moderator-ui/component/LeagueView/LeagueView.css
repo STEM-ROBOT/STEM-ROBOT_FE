@@ -34,10 +34,12 @@
   position: absolute;
   width: 90px;
   height: 90px;
+  padding: 3px;
   left: 38%;
   bottom: -20px;
   border-radius: 13px;
   border: 1px solid #fff;
+  background-color: #010a16c6;
   box-shadow: 3px 3px 4px rgba(9, 40, 75, 0.3);
 }
 

@@ -22,6 +22,18 @@
   background-color: #fff;
   padding: 10px 15px;
   border-radius: 7px;
+  position: relative;
+}
+.view_data_match_container {
+  overflow-y: auto;
+  max-height: 400px;
+  border-radius: 7px;
+}
+.view_data_match_container::-webkit-scrollbar {
+  display: none;
+}
+.view_data_match_container {
+  scrollbar-width: none;
 }
 .match_detail_container.active {
   background-color: #fff;
@@ -112,8 +124,9 @@
   background-color: #020202da;
   color: #fff;
   border-radius: 7px;
-  padding: 0 10px;
+  padding: 0px 20px;
 }
+
 .match_score_team_detail_load {
   width: 100%;
   height: 200px;
@@ -144,30 +157,32 @@
   justify-content: right;
 }
 .match_score_team_item_detail {
-  box-shadow: 0 0 10px rgba(0, 128, 255, 0.5), 0 0 10px rgba(255, 0, 255, 0.3);
+  box-shadow: 0 0 10px rgba(27, 140, 253, 0.5), 0 0 10px rgba(245, 51, 245, 0.3);
   border-radius: 7px;
   width: 50%;
   display: flex;
   justify-content: space-between;
   padding: 5px 0px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   position: relative;
   cursor: pointer;
 }
 
 .match_score_description {
   position: absolute;
-  padding: 5px 10px;
+  padding: 10px 15px;
   background-color: #2d6594;
   border-radius: 50px;
   top: -30px;
+  scale: 0.7;
   z-index: 1;
   opacity: 0; /* Ẩn phần tử ban đầu */
-  transition: opacity 0.3s ease; /* Thêm hiệu ứng chuyển đổi */
+  transition: all 0.5s ease; /* Thêm hiệu ứng chuyển đổi */
 }
 
 .match_score_team_item_detail:hover .match_score_description {
   opacity: 1; /* Hiển thị phần tử khi hover */
+  scale: 1;
 }
 .score_team_item_time {
   margin-left: 180px;
@@ -217,4 +232,31 @@
   align-items: center;
   justify-content: center;
   background-color: #02f70f;
+}
+.scroll-arrow {
+  position: absolute;
+  bottom: 13px;
+  right: 18px;
+  background-color: #ffffff50;
+  color: #012c50;
+  padding: 10px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.5s ease-in-out;
+  z-index: 1000;
+}
+
+.scroll-arrow:hover {
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(199, 234, 255, 0.5);
+}
+.icon_scroll_arrow {
+  width: 20px;
+  height: 20px;
 }
