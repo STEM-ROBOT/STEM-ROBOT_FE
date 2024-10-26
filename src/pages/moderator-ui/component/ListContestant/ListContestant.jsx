@@ -3,15 +3,15 @@ import { FaArrowLeft, FaArrowRight, FaDownload, FaFileImport } from 'react-icons
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx'; // Import XLSX for reading Excel files
 import './ListContestant.css';
-import AddContestant from '../component/AddContestant/AddContestant';
+import AddContestant from '../AddContestant/AddContestant';
 import { useDispatch, useSelector } from 'react-redux';
-import { getListContestant } from '../../../redux/actions/ContestantAction';
+import { getListContestant } from '../../../../redux/actions/ContestantAction';
 
 const ListContestant = () => {
     const dispatch =useDispatch();
-    useEffect(()=>{
-      dispatch(getListContestant())
-    },[dispatch])
+    // useEffect(()=>{
+    //   dispatch(getListContestant())
+    // },[dispatch])
     
     // const listContestant = useSelector((state) => state.getOrder.listOrders);
 

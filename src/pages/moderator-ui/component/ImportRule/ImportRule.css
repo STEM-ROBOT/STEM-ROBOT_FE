@@ -34,7 +34,7 @@
 /* Button for importing the file */
 .import-rule-buttons {
     padding: 12px 20px;
-    background-color: #007bff;
+    background: linear-gradient(90deg, #001f3f,#0387ac);
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -45,7 +45,7 @@
 
 /* Change button background on hover */
 .import-rule-button:hover {
-    background-color: #0056b3;
+    background: linear-gradient(90deg, #001f3f,#0387ac);
 }
 
 /* PDF preview container */

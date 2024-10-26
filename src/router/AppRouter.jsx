@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import systemRoutes from "./SystemRouter";
 import moderatorRouter from "./ModeratorRouter";
+import adminRouter from "./AdminRouter";
 
 function AppRouter() {
   const renderRoutes = (routes) =>
@@ -15,6 +16,7 @@ function AppRouter() {
       <Routes>
         {renderRoutes(systemRoutes)}
         {renderRoutes(moderatorRouter)}
+        {renderRoutes(adminRouter)}
       </Routes>
     </Router>
   );
