@@ -25,7 +25,7 @@
   z-index: 5000;
 }
 .author_modal {
-  position: fixed;
+  position: fixed; 
   top: 0;
   left: 0;
   width: 100%;
@@ -34,7 +34,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 5000;
+  z-index: 2;
 }
 .button_Cancel {
   background-color: rgb(177, 157, 134);
