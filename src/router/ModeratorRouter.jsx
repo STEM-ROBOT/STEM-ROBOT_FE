@@ -32,8 +32,8 @@ export const tournamentRoutes = [
 
 export const competitionChildren = [
   { path: "dashboard", element: <div>Tournament Dashboard</div> },
-  { path: "schedule", element: <div>Lịch Thi Đấu</div> },
-  { path: "ranking", element: <div>Bảng Xếp Hạng</div> },
+  { path: "schedule", element: <MatchScheduleComponent/> },
+  { path: "teammatch", element: <TeamCompetition/> },
   { path: "customize", element: <TournamentConfiguration /> },
 ];
 

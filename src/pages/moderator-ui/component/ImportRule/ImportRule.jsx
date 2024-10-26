@@ -2,42 +2,73 @@ import React, { useState } from 'react';
 import './ImportRule.css';
 
 const ImportRule = () => {
-    const [url, setUrl] = useState(''); // State to store the URL input
+    const [file, setFile] = useState(null); // State to store the selected file
+    const [fileUrl, setFileUrl] = useState(null); // State to store the URL of the selected file
 
-    // Function to handle URL input
-    const handleUrlChange = (event) => {
-        setUrl(event.target.value); // Update state with the entered URL
+    // Function to handle file selection
+    const handleFileChange = (event) => {
+        const selectedFile = event.target.files[0]; // Get the selected file
+        if (selectedFile && selectedFile.type === 'application/pdf') {
+            setFile(selectedFile); // Only set file if it is a PDF
+
+            // Create a URL for the selected file
+            const fileUrl = URL.createObjectURL(selectedFile);
+            setFileUrl(fileUrl);
+        } else {
+            alert('Vui lòng chọn một tệp PDF!');
+            setFile(null); // Clear the file if it is not a PDF
+            setFileUrl(null); // Clear the file URL
+        }
     };
 
-    // Function to handle the import process (can be used to fetch data from the URL)
+    // Function to handle the import process (can be used to upload the file)
     const handleImport = () => {
-        if (url) {
-            // Perform your URL handling logic here
-            console.log('URL entered:', url);
-            // You can fetch or send this URL to an API for further processing
-            // Example: axios.post('/api/uploadUrl', { url });
+        if (file) {
+            // Perform your file handling logic here
+            console.log('File selected:', file);
+            // You can upload this file to an API for further processing
+            // Example: 
+            // const formData = new FormData();
+            // formData.append('file', file);
+            // axios.post('/api/uploadFile', formData);
         } else {
-            alert('Vui lòng nhập một URL!');
+            alert('Vui lòng chọn một tệp PDF!');
         }
     };
 
     return (
-        <div className="import-rule-container">       
-            <input
-                type="text"
-                value={url}
-                onChange={handleUrlChange}
-                className="import-rule-input-url"
-                placeholder="Nhập URL của bạn"
-            />
+        <div className="import-rule-container">
+            <div className="import-rule-content" >
+                <input
+                    type="file"
+                    onChange={handleFileChange}
+                    accept=".pdf" // Only allow PDF files
+                    className="import-rule-input-file"
+                />
 
-            {/* Button to trigger import process */}
-            <button
-                onClick={handleImport}
-                className="import-rule-button"
-            >
-                Import
-            </button>
+
+                <div>
+                <button
+                    onClick={handleImport}
+                    className="import-rule-buttons"
+                >
+                    Import
+                </button>
+                </div>
+            </div>
+
+
+            {/* Display PDF preview if file is selected */}
+            {fileUrl && (
+                <div className="pdf-preview">
+                    <iframe
+                        src={fileUrl}
+                        title="PDF Preview"
+                        width="100%"
+                        height="600px"
+                    />
+                </div>
+            )}
         </div>
     );
 };

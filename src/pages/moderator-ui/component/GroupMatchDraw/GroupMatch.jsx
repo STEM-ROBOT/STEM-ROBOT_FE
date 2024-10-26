@@ -5,8 +5,10 @@ import KnockoutStage from '../KnockoutStage/KnockoutStage';
 
 // Initial teams for groups, can be modified dynamically
 const initialGroups = {
-    A: ['Đội #1', 'Đội #2', 'Đội #7'],
-    B: ['Đội #5', 'Đội #6'],
+    A: ['Đội #1', 'Đội #2', 'Đội #3'],
+    B: ['Đội #5', 'Đội #6','Đội #4'],
+    C: ['Đội #7', 'Đội #8','Đội #9'],
+    D: ['Đội #10', 'Đội #11','Đội #12'],
 };
 
 // Round-robin scheduling function
