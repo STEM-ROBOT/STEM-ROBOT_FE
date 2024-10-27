@@ -170,9 +170,9 @@ const Header = () => {
                   <a href="" className="dropdown-item">
                     Quản Lý Đơn hàng
                   </a>
-                  <a href="" className="dropdown-item">
+                  <div className="dropdown-item" onClick={() => setAuInfo()}>
                     Đăng Xuất
-                  </a>
+                  </div>
                 </div>
               )}
             </div>
