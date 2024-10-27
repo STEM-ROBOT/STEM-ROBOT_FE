@@ -9,7 +9,10 @@
   border-radius: 33px;
   box-shadow: rgba(0, 0, 0, 0.45) 0px 2px 10px;
 }
-
+.login_view {
+  position: relative !important;
+  z-index: 6000;
+}
 .close_logo {
   width: 440px;
   display: flex;
