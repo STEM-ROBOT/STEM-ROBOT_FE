@@ -26,7 +26,6 @@
 }
 
 .header-container {
-  padding: 10px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -35,6 +34,7 @@
 }
 
 .logo-container {
+  padding: 10px 0;
   display: flex;
   align-items: center;
 }
@@ -84,7 +84,7 @@
 .dropdown-content {
   display: block;
   position: absolute;
-  top: 52px;
+  top: 53px;
   background-color: white;
   min-width: 160px;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
@@ -158,4 +158,97 @@
 .styled-button:hover .arrow-container,
 .register-button:hover .arrow-container {
   background-color: #001f3f;
+}
+.account_action_header {
+  height: 120%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.account_avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 100px;
+  object-fit: contain;
+  background-color: #fff;
+  padding: 1px;
+  margin-right: 10px;
+}
+.account_name_moderator {
+  color: #f1f1f1;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.account_action_header:hover .account_name_moderator {
+  color: #00c9ff;
+}
+.notification_action_header {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.dropdown-account-content {
+  display: block;
+  position: absolute;
+  top: 63px;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 0 0 5px 5px;
+  padding: 10px 0;
+}
+.notification_action_number {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  width: 10px;
+  height: 10px;
+  padding: 2px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #ff0000;
+}
+@keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-15deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+  75% {
+    transform: rotate(-15deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.notification_action_icon {
+  width: 25px;
+  height: 25px;
+  color: #ffffff;
+  padding: 8.5px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.notification_action_icon.shake {
+  animation: shake 0.5s ease-in-out infinite;
+  color: #f8fc1a;
+}
+
+.notification_action_header:hover .notification_action_icon {
+  background-color: #00a3cc;
 }

@@ -11,6 +11,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { getContestantReducer } from '../reducers/ContestantReducer';
+import { LoginReducer } from '../reducers/AuthenReducer';
 
 const persistConfig = {
     key: 'root',
@@ -20,8 +21,9 @@ const persistConfig = {
 }
 
 const rootReducer = combineReducers({
-   getContestants:getContestantReducer,
- 
+    userLogin: LoginReducer,
+    getContestants: getContestantReducer,
+
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

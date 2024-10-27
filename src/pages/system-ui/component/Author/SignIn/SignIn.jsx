@@ -4,22 +4,42 @@ import { FcGoogle } from "react-icons/fc";
 import { IoClose } from "react-icons/io5";
 import logoImg from "~/assets/images/logo-dask.png";
 import "./SignIn.css";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../../../../redux/actions/AuthenAction";
+
 const SignIn = ({ setSignIn }) => {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [googleInfo, setGoogleInfo] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newUser = {
+      email: Email,
+      password: Password,
+    };
+    console.log(newUser);
+    dispatch(login(newUser, navigate));
+  };
 
   const CloseLogin = () => {
     setSignIn(false);
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
   return (
     <div className="author_modal">
       <div className="login">
         <div className="login_view">
           <div className="close_logo">
             <div className="login_view_logo">
-              <img className="logo_view" src={logoImg} />
+              <img className="logo_view" src={logoImg} alt="Logo" />
             </div>
             <div className="login_view_close" onClick={CloseLogin}>
               <IoClose className="close_click" />
@@ -38,9 +58,7 @@ const SignIn = ({ setSignIn }) => {
                   placeholder="Email"
                   type="email"
                   value={Email}
-                  //    onChange={(e) => {
-                  //      ChangeEmail(e.target.value);
-                  //    }}
+                  onChange={(e) => setEmail(e.target.value)} // Cập nhật state Email
                 />
               </div>
             </div>
@@ -52,11 +70,12 @@ const SignIn = ({ setSignIn }) => {
                   placeholder="Mật Khẩu"
                   type={showPassword ? "text" : "password"}
                   value={Password}
-                  //    onChange={(e) => ChangePassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)} // Cập nhật state Password
                 />
                 <button
+                  type="button"
                   className="password-toggle-icon"
-                  //    onClick={togglePasswordVisibility}
+                  onClick={togglePasswordVisibility} // Chuyển đổi hiển thị mật khẩu
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
@@ -68,11 +87,8 @@ const SignIn = ({ setSignIn }) => {
           <div className="login_btn">
             <button
               className="btn_log_user"
-              // onClick={handleSubmit}
-              //     onClick={handleSubmit}
-              //     disabled={loading}
+              onClick={handleSubmit}
             >
-              {/* {loading ? "Đang Đăng Nhập..." : "Đăng Nhập"} */}
               Đăng nhập
             </button>
           </div>
@@ -81,7 +97,7 @@ const SignIn = ({ setSignIn }) => {
             <button
               type="submit"
               className="btn_log_gg"
-              //     onClick={handleLoginGoogle}
+              // onClick={handleLoginGoogle}
             >
               Đăng nhập với Google
               <FcGoogle className="btn_log_gg_logo" />
