@@ -6,7 +6,7 @@ import { MdManageAccounts } from "react-icons/md";
 import { AiOutlineDeliveredProcedure } from "react-icons/ai";
 import { GrScorecard } from "react-icons/gr";
 import { FaCalendarMinus } from "react-icons/fa";
-
+import audio from "~/assets/tp--theres-no-one-at-all-another-version--karaoke-beat-intrumental--prod-sơn-seven.mp3";
 const competitionSchedule = {
   competitionName: "Trồng Lúa",
   infoReferee: {
@@ -26,30 +26,48 @@ const actionReferee = [
     icon: <FaCalendarMinus className="action_referee_icon" />,
   },
   {
-    key: "Process",
+    key: "Rule",
     label: "Quy định",
-    path: "schedule",
+    path: "rule-competition",
     icon: <AiOutlineDeliveredProcedure className="action_referee_icon" />,
   },
   {
     key: "Score",
-    path: "schedule",
+    path: "score-competition",
     label: "Điểm số",
     icon: <GrScorecard className="action_referee_icon" />,
   },
 ];
 const DashboardBarReferee = () => {
-  const [selectedRule, setSelectedRule] = useState("Schedule");
-
+  const [selectedRule, setSelectedRule] = useState("Rule");
+  const [audioPlaying, setAudioPlaying] = useState(false);
+  const audioRef = React.useRef(null);
   const handleRuleClick = (key) => {
     setSelectedRule(key);
   };
+  const handleAudioPlay = () => {
+    if (audioRef.current) {
+      if (audioPlaying) {
+        audioRef.current.pause(); // Tạm dừng nhạc
+      } else {
+        audioRef.current.play(); // Phát nhạc
+      }
+      setAudioPlaying(!audioPlaying); // Đảo ngược trạng thái audioPlaying
+    }
+  };
   return (
     <div className="sidebar_referee_container">
+      <audio ref={audioRef} loop>
+        <source src={audio} type="audio/mp3" />
+        Your browser does not support the audio element.
+      </audio>
       <div className="sidebar_referee_layout">
         <div className="sidebar_referee_head">
           <img src={logoImg} alt="logo" className="referee_head_logo" />
-          <IoSettingsSharp className="referee_head_icon" />
+          <IoSettingsSharp
+            onClick={handleAudioPlay}
+            className="referee_head_icon"
+          />
           <div className="referee_head_name">
             {competitionSchedule.competitionName}
           </div>
@@ -85,7 +103,7 @@ const DashboardBarReferee = () => {
               onClick={() => handleRuleClick(action.key)}
             >
               <div>{action.icon}</div>
-              <div >{action.label}</div>
+              <div>{action.label}</div>
             </div>
           ))}
         </div>

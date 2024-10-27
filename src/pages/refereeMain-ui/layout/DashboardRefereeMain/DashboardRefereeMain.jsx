@@ -14,7 +14,7 @@ const DashboardRefereeMain = () => {
         <DashboardBarReferee />
       </div>
       <div className="dashboard_referee_content">
-        <Routes>{renderRoutes(refereeMain_dashboard)}</Routes>;
+        <Routes>{renderRoutes(refereeMain_dashboard)}</Routes>
       </div>
     </div>
   );

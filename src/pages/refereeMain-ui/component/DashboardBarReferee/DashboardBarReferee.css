@@ -1,22 +1,25 @@
 .sidebar_referee_container {
   width: 100%;
-  max-height: 99vh;
-  min-height: 99vh;
+  height: 98vh;
   border-radius: 30px 7px 7px 30px;
   background-color: #ecf3fb;
 }
 .sidebar_referee_layout {
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+  max-height: 100%;
+  padding: 0 10px;
 }
 .sidebar_referee_head {
+  height: 5%;
   border-radius: 30px 7px 7px 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 8px;
   background-color: #fff;
-
-  margin-bottom: 10px;
 }
 .referee_head_logo {
   width: 65px;
@@ -36,6 +39,7 @@
   height: 35px;
   color: #01395f;
   animation: rotate 3s linear infinite;
+  cursor: pointer;
 }
 .referee_head_name {
   font-size: 24px;
@@ -43,11 +47,11 @@
   color: #01395f;
 }
 .sidebar_referee_info {
-  margin-bottom: 30px;
+  height: 27%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
 }
 .referee_info_role {
   width: 90%;
@@ -57,7 +61,6 @@
   font-size: 17px;
   font-weight: 600;
   color: #01395f;
-  margin-bottom: 10px;
 }
 .referee_info_role_icon {
   width: 35px;
@@ -68,27 +71,31 @@
   height: 90px;
   border-radius: 100px;
   padding: 5px;
+  background-color: #fff;
   border: 2px solid #0d7eda;
-  margin-bottom: 20px;
+  animation: rotate 3s linear infinite;
 }
 .referee_info_name {
   font-weight: 500;
   color: #4c616e;
-  margin-bottom: 10px;
 }
 .referee_info_email {
   font-weight: 500;
   font-size: 15px;
   color: #b4c5d3;
-  margin-bottom: 10px;
+  margin-bottom: 2%;
 }
 .sidebar_referee_action {
+  height: 60%;
   border-radius: 27px;
   background-color: #b4c5d3;
   padding: 5px;
+  display: grid; /* Thêm display: grid */
+  grid-template-rows: repeat(3, 1fr); /* Chia đều thành 3 hàng bằng nhau */
+  gap: 5px; /* Khoảng cách giữa các hàng */
 }
+
 .action_referee_item {
-  height: 150px;
   border-radius: 7px;
   display: flex;
   flex-direction: column;
@@ -100,17 +107,16 @@
   font-size: 17px;
   font-weight: 600;
 }
+
 .action_referee_item.active {
   color: #ffffff;
   background-color: #01395f;
 }
 .action_referee_item.firstItem {
   border-radius: 27px 27px 7px 7px;
-  margin-bottom: 5px;
 }
 
 .action_referee_item.lastItem {
-  margin-top: 5px;
   border-radius: 7px 7px 27px 27px;
 }
 .action_referee_icon {
