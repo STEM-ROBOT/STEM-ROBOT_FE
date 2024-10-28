@@ -87,14 +87,6 @@ const scoreTeamDetail = [
         point: 2,
         timeScore: "40",
       },
-      {
-        teamName: "Đội #7",
-        teamType: "home",
-        type: "Điểm Cộng",
-        description: "Làm đối thủ văng ra khỏi khu vực thi đấu",
-        point: 2,
-        timeScore: "45",
-      },
     ],
   },
 ];
@@ -237,7 +229,11 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
                                   : "score_team_point"
                               }
                             >
-                              {activity.point}
+                              {activity.type == "Điểm Cộng"
+                                ? `+${activity.point}`
+                                : activity.type == "Điểm Trừ"
+                                ? `-${activity.point}`
+                                : "Xử Thua Trực Tiếp"}
                             </div>
                           </div>
                         </div>
@@ -254,7 +250,11 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
                                   : "score_team_point"
                               }
                             >
-                              {activity.point}
+                              {activity.type == "Điểm Cộng"
+                                ? `+${activity.point}`
+                                : activity.type == "Điểm Trừ"
+                                ? `-${activity.point}`
+                                : "Xử Thua Trực Tiếp"}
                             </div>
                             <div className="score_team_name_away">
                               {activity.teamName}

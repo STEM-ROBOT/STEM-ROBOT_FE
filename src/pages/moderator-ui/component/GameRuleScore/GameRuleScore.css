@@ -4,7 +4,7 @@
 
 .rule_score_head {
   width: 100%;
-  padding: 10px;
+  padding: 20px 10px;
   background-color: #9ecff8;
   color: #022d50;
   font-size: 17px;
@@ -32,7 +32,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.377);
   display: flex;
   align-items: center;
-  padding: 5px;
+  padding: 15px;
   border-radius: 7px;
 }
 .score_item_description {

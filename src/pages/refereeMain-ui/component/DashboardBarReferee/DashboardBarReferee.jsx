@@ -7,6 +7,7 @@ import { AiOutlineDeliveredProcedure } from "react-icons/ai";
 import { GrScorecard } from "react-icons/gr";
 import { FaCalendarMinus } from "react-icons/fa";
 import audio from "~/assets/tp--theres-no-one-at-all-another-version--karaoke-beat-intrumental--prod-sơn-seven.mp3";
+import { useNavigate } from "react-router-dom";
 const competitionSchedule = {
   competitionName: "Trồng Lúa",
   infoReferee: {
@@ -42,8 +43,10 @@ const DashboardBarReferee = () => {
   const [selectedRule, setSelectedRule] = useState("Rule");
   const [audioPlaying, setAudioPlaying] = useState(false);
   const audioRef = React.useRef(null);
+  const navigate = useNavigate();
   const handleRuleClick = (key) => {
-    setSelectedRule(key);
+    setSelectedRule(key.key);
+    navigate(`${key.path}`);
   };
   const handleAudioPlay = () => {
     if (audioRef.current) {
@@ -100,7 +103,7 @@ const DashboardBarReferee = () => {
               } ${index === 0 ? "firstItem" : ""} ${
                 index === actionReferee.length - 1 ? "lastItem" : ""
               }`}
-              onClick={() => handleRuleClick(action.key)}
+              onClick={() => handleRuleClick(action)}
             >
               <div>{action.icon}</div>
               <div>{action.label}</div>
