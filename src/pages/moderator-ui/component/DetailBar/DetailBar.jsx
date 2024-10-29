@@ -20,7 +20,7 @@ const DetailBar = ({ league }) => {
     },
   ];
   const handleTabClick = (tab) => {
-    navigate(`/league/${league.id}/${tab.path}`, { status: true });
+    navigate(`${tab.path}`, { status: true });
   };
   return (
     <div className="detail_bar">
