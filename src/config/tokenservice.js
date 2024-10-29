@@ -23,11 +23,19 @@ const getLocalRefreshToken = () => {
     console.log(JSON.stringify(user));
     localStorage.setItem("user", JSON.stringify(user));
   };
+
+  const setUserName = (user) => {
+    console.log(JSON.stringify(user));
+    localStorage.setItem("username", JSON.stringify(user));
+  };
+
+
   
   const removeUser = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("userId");
     localStorage.removeItem("role");
+    localStorage.removeItem("username");
   };
 
   const setUserId = (userId)=>{
@@ -40,6 +48,9 @@ const getLocalRefreshToken = () => {
 
   const getUserId = () => {
     return JSON.parse(localStorage.getItem("userId"));
+  };
+  const getUserName = () => {
+    return JSON.parse(localStorage.getItem("username"));
   };
   const getUserRole = () => {
     return JSON.parse(localStorage.getItem("role"));
@@ -55,6 +66,8 @@ const getLocalRefreshToken = () => {
     setUserId,
     setUserRole,
     getUserId,
+    getUserName,
+    setUserName,
   };
   
   export default TokenService;

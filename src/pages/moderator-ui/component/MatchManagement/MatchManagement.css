@@ -68,7 +68,7 @@
 }
 
 .save-btn {
-    background-color: #4CAF50;
+    background: linear-gradient(90deg,#0387ac, #001f3f);
     color: white;
     padding: 10px 20px;
     border: none;
@@ -80,7 +80,7 @@
 }
 
 .save-btn:hover {
-    background-color: #45a049;
+    background: linear-gradient(90deg, #001f3f,#0387ac);
 }
 /* Configuration section with dashed border */
 .match-management-config-section-standard {
@@ -120,7 +120,7 @@
     margin-bottom: 15px;
 }
 .match-management-primary-button {
-    background-color: #45a049;
+    background: linear-gradient(90deg,#0387ac, #001f3f);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -131,5 +131,5 @@
 }
 
 .match-management-primary-button:hover {
-    background-color: #45a049;
+    background: linear-gradient(90deg, #001f3f,#0387ac);
 }

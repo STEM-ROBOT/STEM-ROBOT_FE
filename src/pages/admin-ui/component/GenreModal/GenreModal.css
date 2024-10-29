@@ -1,0 +1,85 @@
+.genre_modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .genre_modal {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+  }
+  
+  .genre_modal_title {
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+  
+  .genre_modal_label {
+    font-size: 0.9em;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+    font-weight: bold;
+  }
+  
+  .genre_modal_input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+  
+  .genre_modal_current_image {
+    width: 100px;
+    height: auto;
+    margin-bottom: 15px;
+    border-radius: 5px;
+  }
+  
+  .genre_modal_link {
+    display: block;
+    color: #007bff;
+    margin-bottom: 15px;
+    text-decoration: none;
+  }
+  
+  .genre_modal_link:hover {
+    text-decoration: underline;
+  }
+  
+  .genre_modal_actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  .genre_modal_button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .genre_modal_cancel {
+    background-color: #ccc;
+    color: #fff;
+  }
+  
+  .genre_modal_save {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
