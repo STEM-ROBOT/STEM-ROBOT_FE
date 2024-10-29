@@ -5,6 +5,8 @@ import RenderSchedule from "../../component/RenderSchedule/RenderSchedule";
 import ConfirmPopupReferee from "../../component/ConfirmPopupReferee/ConfirmPopupReferee";
 
 const scheduleData = {
+  refereeId: "123",
+  refereeEmail: "lethanhnhat@gmail.com",
   dateStartCompetition: "2024-10-20",
   dateEndCompetition: "2024-11-10",
   hourStartInDay: "8",
@@ -227,6 +229,8 @@ const ScheduleRefereeMain = () => {
                   <ConfirmPopupReferee
                     match_view={matchView}
                     setShowPopup={setShowPopup}
+                    email={scheduleData.refereeEmail}
+                    refereeId={scheduleData.refereeId}
                   />
                 )}
               </div>
