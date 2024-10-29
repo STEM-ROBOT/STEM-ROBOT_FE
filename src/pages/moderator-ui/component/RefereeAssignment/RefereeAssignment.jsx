@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
-import './RefereeAssignment.css'; // Include your existing CSS file
+import './RefereeAssignment.css'; // Ensure you have this CSS file for styling
 
 const fakeData = {
     referees: ['THÀNH', 'LÂM', 'DƯƠNG', 'NHẬT'],
     matchReferees: ['PHỤ 1', 'PHỤ 2', 'PHỤ 3'],
     rounds: [
         {
-            roundNumber: 1,
+            roundId: 1,
+            roundName: "Tứ kết",
             matches: [
-                { matchId: 1, teamA: 'Team A1', teamB: 'Team B1', mainReferee: '', matchReferees: [] },
-                { matchId: 2, teamA: 'Team A2', teamB: 'Team B2', mainReferee: '', matchReferees: [] },
+                { matchId: 1, teamA: 'Team A1', teamB: 'Team B1', mainReferee: '', matchReferees: [], date: '2023-10-30', timeIn: '14:00', arena: 'Arena 1' },
+                { matchId: 2, teamA: 'Team A2', teamB: 'Team B2', mainReferee: '', matchReferees: [], date: '2023-10-30', timeIn: '15:30', arena: 'Arena 2' },
             ],
         },
         {
-            roundNumber: 2,
+            roundId: 2,
+            roundName: "Bán kết",
             matches: [
-                { matchId: 3, teamA: 'Team A3', teamB: 'Team B3', mainReferee: '', matchReferees: [] },
-                { matchId: 4, teamA: 'Team A4', teamB: 'Team B4', mainReferee: '', matchReferees: [] },
+                { matchId: 3, teamA: 'Team A3', teamB: 'Team B3', mainReferee: '', matchReferees: [], date: '2023-11-01', timeIn: '14:00', arena: 'Arena 3' },
+                { matchId: 4, teamA: 'Team A4', teamB: 'Team B4', mainReferee: '', matchReferees: [], date: '2023-11-01', timeIn: '15:30', arena: 'Arena 4' },
             ],
         },
         {
-            roundNumber: 3,
+            roundId: 3,
+            roundName: "Chung kết",
             matches: [
-                { matchId: 5, teamA: 'Team A5', teamB: 'Team B5', mainReferee: '', matchReferees: [] },
-                { matchId: 6, teamA: 'Team A6', teamB: 'Team B6', mainReferee: '', matchReferees: [] },
+                { matchId: 5, teamA: 'Team A5', teamB: 'Team B5', mainReferee: '', matchReferees: [], date: '2023-11-03', timeIn: '16:00', arena: 'Arena 5' },
             ],
         },
     ],
@@ -31,8 +33,7 @@ const fakeData = {
 
 const RefereeAssignment = () => {
     const [data, setData] = useState(fakeData);
-    const [currentRound, setCurrentRound] = useState(1); // To track the selected round
-    const [numMatchReferees, setNumMatchReferees] = useState(1); // Default number of match referees is 1
+    const [numMatchReferees, setNumMatchReferees] = useState(1); // Default number of match referees
 
     // Fisher-Yates shuffle function to randomize arrays
     const shuffleArray = (array) => {
@@ -43,33 +44,29 @@ const RefereeAssignment = () => {
         return array;
     };
 
-    // Randomly assign referees across all rounds without repetition within a round
+    // Randomly assign referees with unique selections within each round
     const randomizeReferees = () => {
         const updatedData = { ...data };
         let isNotEnoughReferees = false;
 
         updatedData.rounds.forEach((round) => {
-            let availableMainRefs = shuffleArray([...data.referees]); // Shuffle and clone referees
-            let availableMatchRefs = shuffleArray([...data.matchReferees]); // Shuffle and clone match referees
+            let availableMainRefs = shuffleArray([...data.referees]);
+            let availableMatchRefs = shuffleArray([...data.matchReferees]);
 
             round.matches.forEach((match) => {
                 if (availableMainRefs.length === 0) {
                     isNotEnoughReferees = true;
                     return;
                 }
+                match.mainReferee = availableMainRefs.pop();
 
-                match.mainReferee = availableMainRefs.pop(); // Assign and remove from available pool
-
-                // Check if there are enough match referees
                 if (availableMatchRefs.length < numMatchReferees) {
                     isNotEnoughReferees = true;
                     return;
                 }
-
-                // Assign the match referees dynamically based on the number set by the user
                 match.matchReferees = [];
                 for (let i = 0; i < numMatchReferees; i++) {
-                    match.matchReferees.push(availableMatchRefs.pop()); // Assign and remove from available pool
+                    match.matchReferees.push(availableMatchRefs.pop());
                 }
             });
         });
@@ -84,10 +81,8 @@ const RefereeAssignment = () => {
     const handleUpdate = (roundIndex, matchIndex, field, value) => {
         const updatedData = { ...data };
 
-        // Ensure no duplicate referees in the same round
-        const currentRoundMatches = updatedData.rounds[roundIndex].matches;
         const refereesInUse = new Set(
-            currentRoundMatches.flatMap((m, idx) =>
+            updatedData.rounds[roundIndex].matches.flatMap((m, idx) =>
                 idx !== matchIndex ? [m.mainReferee, ...m.matchReferees] : []
             )
         );
@@ -100,25 +95,10 @@ const RefereeAssignment = () => {
         }
     };
 
-    const stageData = data.rounds; // Current stage data
-
     return (
         <div className="referee-assignment-container">
-            <h2 className="referee-assignment-title">Sắp xếp trọng tài</h2>               
-            <div className='referee-assignment-title-detail'>Vòng</div>
-           
-            {/* Round Selector */}
-            <div className="round-selector">
-                {stageData.map((round) => (
-                    <button
-                        key={round.roundNumber}
-                        className={`round-btn ${currentRound === round.roundNumber ? 'active' : ''}`}
-                        onClick={() => setCurrentRound(round.roundNumber)}
-                    >
-                        {round.roundNumber}
-                    </button>
-                ))}
-            </div>
+            <h2 className="referee-assignment-title">Sắp xếp trọng tài</h2>
+
             <div className="num-referees-input">
                 <label className="input-label">Số lượng trọng tài trận:</label>
                 <input
@@ -131,25 +111,51 @@ const RefereeAssignment = () => {
                 />
             </div>
 
-            {/* Button to randomize referees */}
             <button className="random-btn" onClick={randomizeReferees}>Bốc thăm ngẫu nhiên trọng tài</button>
 
-            {/* Show the matches for the selected round */}
-            {stageData
-                .filter((round) => round.roundNumber === currentRound) // Filter to show only the selected round
-                .map((round) => (
-                    <div key={round.roundNumber} className="round">
-                        <h3 className="round-title">{`VÒNG ${round.roundNumber}`}</h3>
-                        {round.matches.map((match, matchIndex) => (
-                            <div key={match.matchId} className="match-row">
-                                <span className="match-info">{`#${match.matchId}: ${match.teamA} - ${match.teamB}`}</span>
+            {data.rounds.map((round, roundIndex) => (
+                <div key={round.roundId} className="round">
+                    <h3 className="round-title">{round.roundName}</h3>
+                    {round.matches.map((match, matchIndex) => (
+                        <div key={match.matchId} className="match-row">
+                            <span className="match-info">{`#${match.matchId} ${match.teamA} - ${match.teamB}`}</span>
 
-                                {/* Dropdown for main referee */}
+                            <input
+                                type="date"
+                                value={match.date}
+                                onChange={(e) =>
+                                    handleUpdate(roundIndex, matchIndex, 'date', e.target.value)
+                                }
+                                className="match-date-input"
+                                placeholder="mm/dd/yyyy"
+                            />
+
+                            <input
+                                type="time"
+                                value={match.timeIn}
+                                onChange={(e) =>
+                                    handleUpdate(roundIndex, matchIndex, 'timeIn', e.target.value)
+                                }
+                                className="match-time-input"
+                                placeholder="--:--"
+                            />
+
+                            <input
+                                type="text"
+                                value={match.arena}
+                                onChange={(e) =>
+                                    handleUpdate(roundIndex, matchIndex, 'arena', e.target.value)
+                                }
+                                className="match-arena-input"
+                                placeholder="Sân"
+                            />
+
+                            <div className="referee-selectors">
                                 <select
                                     className="main-referee-select"
                                     value={match.mainReferee}
                                     onChange={(e) =>
-                                        handleUpdate(currentRound - 1, matchIndex, 'mainReferee', e.target.value)
+                                        handleUpdate(roundIndex, matchIndex, 'mainReferee', e.target.value)
                                     }
                                 >
                                     <option value="">Chọn trọng tài chính</option>
@@ -160,15 +166,14 @@ const RefereeAssignment = () => {
                                     ))}
                                 </select>
 
-                                {/* Dynamic dropdowns for match referees */}
-                                {match.matchReferees.map((matchRef, refIndex) => (
+                                {Array.from({ length: numMatchReferees }).map((_, refIndex) => (
                                     <select
                                         className="match-referee-select"
                                         key={refIndex}
-                                        value={matchRef || ''}
-                                        onChange={(e) => {
-                                            handleUpdate(currentRound - 1, matchIndex, `matchReferees[${refIndex}]`, e.target.value);
-                                        }}
+                                        value={match.matchReferees[refIndex] || ''}
+                                        onChange={(e) =>
+                                            handleUpdate(roundIndex, matchIndex, `matchReferees[${refIndex}]`, e.target.value)
+                                        }
                                     >
                                         <option value="">Chọn trọng tài trận</option>
                                         {data.matchReferees.map((ref, index) => (
@@ -179,10 +184,10 @@ const RefereeAssignment = () => {
                                     </select>
                                 ))}
                             </div>
-                        ))}
-                    </div>
-                ))}
-
+                        </div>
+                    ))}
+                </div>
+            ))}
             <button className="save-btn">Lưu</button>
         </div>
     );

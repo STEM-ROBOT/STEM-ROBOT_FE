@@ -3,11 +3,11 @@ import { GET_CONTESTANT_FAIL, GET_CONTESTANT_REQUEST, GET_CONTESTANT_SUCCESS } f
 
 
 
-export const getListContestant = () => async (dispatch) => {
+export const getListContestant = (tournamentId) => async (dispatch) => {
     try {
       dispatch({ type: GET_CONTESTANT_REQUEST });
   
-      const { data } = await api.get("/api/contestants");
+      const { data } = await api.get(`/api/contestants/tournamentId?tournamentId=${tournamentId}`);
   
       dispatch({ type: GET_CONTESTANT_SUCCESS, payload: data });
     } catch (error) {

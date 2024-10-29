@@ -10,7 +10,7 @@ const competitions = [
     image:
       "https://image-cdn.essentiallysports.com/wp-content/uploads/imago0241552301h.jpg?width=600",
     endDate: "2024-10-20T23:59:59",
-    status: true,
+    isActive: true,
     mode: "public"
   },
   {
@@ -18,7 +18,7 @@ const competitions = [
     name: "Giải Mê Cung",
     image: "https://ohstem.vn/wp-content/uploads/2021/12/Lap-thuc-te-2.png",
     endDate: "",
-    status: false,
+    isActive: false,
     mode: "public"
   },
   {
@@ -26,7 +26,7 @@ const competitions = [
     name: "Di chuyển đồ vật",
     image: "https://tuyensinh.hueic.edu.vn/wp-content/uploads/2021/03/ro1.jpg",
     endDate: "2024-10-22T23:59:59",
-    status: true,
+    isActive: true,
     mode: "public"
   },
 ];
@@ -42,22 +42,22 @@ const ManageCompetition = () => {
   const activeStatuses = (competition) => {
     const now = new Date(); // Lấy thời gian hiện tại
     const endDate = new Date(competition.endDate);
-    if (competition.status === false) {
+    if (competition.isActive === false) {
       return "competition_status_competition";
-    } else if (competition.status === true && now <= endDate && competition.mode === "public") {
+    } else if (competition.isActive === true && now <= endDate && competition.mode === "public") {
       return "competition_status_competition rg";
-    } else if ((competition.status === true && competition.mode === "private") || (competition.status === true && now > endDate && competition.mode === "public")) {
+    } else if ((competition.isActive === true && competition.mode === "private") || (competition.isActive === true && now > endDate && competition.mode === "public")) {
       return "competition_status_competition done";
     }
   };
   const tagStatuses = (competition) => {
     const now = new Date(); // Lấy thời gian hiện tại
     const endDate = new Date(competition.endDate);
-    if (competition.status === false) {
+    if (competition.isActive === false) {
       return "Chưa kích hoạt";
-    } else if (competition.status === true && now <= endDate && competition.mode === "public") {
+    } else if (competition.isActive === true && now <= endDate && competition.mode === "public") {
       return "Đang đăng ký";
-    } else if (competition.status === true) {
+    } else if (competition.isActive === true) {
       return "Đang diển ra";
     }
   };

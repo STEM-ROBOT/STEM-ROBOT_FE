@@ -22,14 +22,17 @@ import CreateTournamentCompetition from "../pages/moderator-ui/component/CreateT
 import RegisterContestant from "../pages/moderator-ui/component/RegisterContestant/RegisterContestant";
 import MatchGroupStageComponent from "../pages/moderator-ui/component/MatchGroupStageComponent/MatchGroupStageComponent";
 import ListContestant from "../pages/moderator-ui/component/ListContestant/ListContestant";
+import ListReferee from "../pages/moderator-ui/component/ListReferee/ListReferee";
+import InfoTournament from "../pages/moderator-ui/component/InfoTournament/InfoTournament";
+import CreateTournamentInfo from "../pages/moderator-ui/component/CreateTournamentInfo/CreateTournamentInfo";
 
 
 export const tournamentRoutes = [
   { path: "mycompetition", element: <ManageCompetition /> },
   { path: "contestant", element: <ListContestant /> },
-  { path: "settings", element: <CreateTournament/> },
+  { path: "refee", element: <ListReferee /> },
+  { path: "settings", element: <CreateTournamentInfo/> },
 ];
-
 export const competitionChildren = [
   { path: "dashboard", element: <div>Tournament Dashboard</div> },
   { path: "schedule", element: <MatchScheduleComponent/> },
