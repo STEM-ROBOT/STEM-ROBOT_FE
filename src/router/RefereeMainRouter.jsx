@@ -4,6 +4,7 @@ import ScheduleRefereeMain from "../pages/refereeMain-ui/layout/ScheduleRefereeM
 import RefereeMain from "../pages/refereeMain-ui/layout/RefereeMain/RefereeMain";
 import GameRuleScore from "../pages/moderator-ui/component/GameRuleScore/GameRuleScore";
 import RuleRefereeMain from "../pages/refereeMain-ui/layout/RuleRefereeMain/RuleRefereeMain";
+import ScoreRefereeMain from "../pages/refereeMain-ui/layout/ScoreRefereeMain/ScoreRefereeMain";
 
 const refereeMainRouter = [
   {
@@ -25,6 +26,6 @@ export const refereeMain_dashboard = [
   },
   { path: "schedule", element: <ScheduleRefereeMain /> },
   { path: "rule-competition", element: <RuleRefereeMain /> },
-  { path: "score-competition", element: <div /> },
+  { path: "score-competition", element: <ScoreRefereeMain /> },
 ];
 export default refereeMainRouter;
