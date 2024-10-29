@@ -21,8 +21,8 @@ const SignIn = ({ setSignIn }) => {
       email: Email,
       password: Password,
     };
-    console.log(newUser);
-    dispatch(login(newUser, navigate));
+   
+    dispatch(login(newUser, navigate, setSignIn));  // Truyền setSignIn để tắt popup
   };
 
   const CloseLogin = () => {
@@ -58,7 +58,7 @@ const SignIn = ({ setSignIn }) => {
                   placeholder="Email"
                   type="email"
                   value={Email}
-                  onChange={(e) => setEmail(e.target.value)} // Cập nhật state Email
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
             </div>
@@ -70,12 +70,12 @@ const SignIn = ({ setSignIn }) => {
                   placeholder="Mật Khẩu"
                   type={showPassword ? "text" : "password"}
                   value={Password}
-                  onChange={(e) => setPassword(e.target.value)} // Cập nhật state Password
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
                   type="button"
                   className="password-toggle-icon"
-                  onClick={togglePasswordVisibility} // Chuyển đổi hiển thị mật khẩu
+                  onClick={togglePasswordVisibility}
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>

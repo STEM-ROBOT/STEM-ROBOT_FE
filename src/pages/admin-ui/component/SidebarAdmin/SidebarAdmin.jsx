@@ -1,173 +1,138 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import {
-  MdOutlineAttachMoney,
-  MdOutlineBarChart,
-  MdOutlineClose,
-  MdOutlineCurrencyExchange,
-  MdOutlineGridView,
-  MdOutlineLogout,
-  MdOutlineMessage,
-  MdOutlinePeople,
-  MdOutlineSettings,
-  MdOutlineShoppingBag,
-} from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
-// import "./Sidebar.scss";
+import React, { useState } from "react";
 
-import { useDispatch } from "react-redux";
+import logoImg from "~/assets/images/logo-dask.png";
+import { IoSettingsSharp } from "react-icons/io5";
+import { MdManageAccounts, MdOutlineDashboard } from "react-icons/md";
+import { AiOutlineDeliveredProcedure, AiOutlineUsergroupAdd } from "react-icons/ai";
+import { GrScorecard } from "react-icons/gr";
+import { FaBox, FaCalendarMinus, FaChartPie, FaShoppingCart, FaSignOutAlt, FaTrophy } from "react-icons/fa";
+import audio from "~/assets/tp--theres-no-one-at-all-another-version--karaoke-beat-intrumental--prod-sơn-seven.mp3";
+import './SidebarAdmin.css'
+import { useNavigate } from "react-router-dom";
+
+
+const actionReferee = [
+  {
+    key: "Dashboard",
+    path: "dashboard",
+    label: "Thống kê",
+    icon: <MdOutlineDashboard className="admin_sidebar_action_icon" />,
+  },
+  {
+    key: "Create-tournament",
+    path: "create-tournament",
+    label: "Quản lý giải đấu",
+    icon: <FaTrophy className="admin_sidebar_action_icon" />,
+  },
+  {
+    key: "Manage-user",
+    path: "manage-user",
+    label: "Quản lý người dùng",
+    icon: <AiOutlineUsergroupAdd className="admin_sidebar_action_icon" />,
+  },
+  {
+    key: "Manage-package",
+    path: "manage-package",
+    label: "Quản lý gói",
+    icon: <FaBox className="admin_sidebar_action_icon" />,
+  },
+  {
+    key: "Manage-order",
+    path: "manage-order",
+    label: "Quản lý đơn hàng",
+    icon: <FaShoppingCart className="admin_sidebar_action_icon" />,
+  },
+  {
+    key: "Manage-genre",
+    path: "manage-genre",
+    label: "Quản lý nội dung thi đấu",
+    icon: <FaChartPie className="admin_sidebar_action_icon" />,
+  },
+  {
+    key: "Logout",
+    path: "logout",
+    label: "Đăng xuất",
+    icon: <FaSignOutAlt className="admin_sidebar_action_icon" />,
+  },
+];
 
 
 const SidebarAdmin = () => {
-  // const [activeLink, setActiveLink] = useState("/admin");
+  const [selectedRule, setSelectedRule] = useState("Dashboard");
+  const [audioPlaying, setAudioPlaying] = useState(false);
+  const audioRef = React.useRef(null);
+  const navigate = useNavigate();
 
-  // const navbarRef = useRef(null);
+  const handleRuleClick = (key,path) => {
+    setSelectedRule(key);
+    navigate(path)
+  };
 
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-
-  // // const handleLogOut = () => {
-  // //   logOut(dispatch, navigate);
-  // // };
-
-  // const handleClickOutside = (event) => {
-  //   console.log("Event target:", event.target);
-  //   if (
-  //     navbarRef.current &&
-  //     !navbarRef.current.contains(event.target) &&
-  //     event.target.className !== "sidebar-open-btn"
-  //   ) {
-  //     closeSidebar();
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // document.addEventListener("mousedown", handleClickOutside);
-  //   // return () => {
-  //   //   document.removeEventListener("mousedown", handleClickOutside);
-  //   // };
-  // }, []);
-
-  // const handleLinkClick = (link) => {
-  //   setActiveLink(link);
-  // };
+  const handleAudioPlay = () => {
+    if (audioRef.current) {
+      if (audioPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setAudioPlaying(!audioPlaying);
+    }
+  };
 
   return (
-    // <nav
-      
-    //   ref={navbarRef}
-    // >
-    //   <div className="sidebar-top">
-    //     <div className="sidebar-brand">
-    //       <img
-    //         src={theme === LIGHT_THEME ? LogoBlue : LogoWhite}
-    //         width={200}
-    //         alt=""
-    //       />
-    //     </div>
-    //     <button className="sidebar-close-btn" onClick={closeSidebar}>
-    //       <MdOutlineClose size={24} />
-    //     </button>
-    //   </div>
-    //   <div className="sidebar-body">
-    //     <div className="sidebar-menu">
-    //       <ul className="menu-list">
-    //         <li className="menu-item">
-    //           <Link
-    //             to="/admin/dashboard"
-    //             className={`menu-link ${
-    //               activeLink === "/admin" ? "active" : ""
-    //             }`}
-    //             onClick={() => handleLinkClick("/admin")}
-    //           >
-    //             <span className="menu-link-icon">
-    //               <MdOutlineGridView size={18} />
-    //             </span>
-    //             <span className="menu-link-text">Thống Kê</span>
-    //           </Link>
-    //         </li>
-    //         <li className="menu-item">
-    //           <Link to="/admin/contract" className="menu-link">
-    //             <span className="menu-link-icon">
-    //               <MdOutlineBarChart size={20} />
-    //             </span>
-    //             <span className="menu-link-text">Hợp đồng</span>
-    //           </Link>
-    //         </li>
-    //         <li className="menu-item">
-    //           <Link
-    //             to="/admin/ManageHR"
-    //             className={`menu-link ${activeLink === "/HR" ? "active" : ""}`}
-    //             onClick={() => handleLinkClick("/HR")}
-    //           >
-    //             <span className="menu-link-icon">
-    //               <MdOutlineShoppingBag size={20} />
-    //             </span>
-    //             <span className="menu-link-text">Danh Sách Quản Lý</span>
-    //           </Link>
-    //         </li>
-    //         <li className="menu-item">
-    //           <Link
-    //             to="/admin/ManageStaff"
-    //             className={`menu-link ${
-    //               activeLink === "/staff" ? "active" : ""
-    //             }`}
-    //             onClick={() => handleLinkClick("/staff")}
-    //           >
-    //             <span className="menu-link-icon">
-    //               <MdOutlineShoppingBag size={20} />
-    //             </span>
-    //             <span className="menu-link-text">Quản lý nhân viên</span>
-    //           </Link>
-    //         </li>
-
-    //         {/* <li className="menu-item">
-    //           <Link
-    //             to="/customer"
-    //             className={`menu-link ${
-    //               activeLink === "/customer" ? "active" : ""
-    //             }`}
-    //             onClick={() => handleLinkClick("/customer")}
-    //           >
-    //             <span className="menu-link-icon">
-    //               <MdOutlinePeople size={20} />
-    //             </span>
-    //             <span className="menu-link-text">Customer</span>
-    //           </Link>
-    //         </li>
-    //         <li className="menu-item">
-    //           <Link to="/" className="menu-link">
-    //             <span className="menu-link-icon">
-    //               <MdOutlineMessage size={18} />
-    //             </span>
-    //             <span className="menu-link-text">Messages</span>
-    //           </Link>
-    //         </li> */}
-    //       </ul>
-    //     </div>
-
-    //     <div className="sidebar-menu sidebar-menu2">
-    //       <ul className="menu-list">
-    //         {/* <li className="menu-item">
-    //                         <Link to="/" className="menu-link">
-    //                             <span className="menu-link-icon">
-    //                                 <MdOutlineSettings size={20} />
-    //                             </span>
-    //                             <span className="menu-link-text">Settings</span>
-    //                         </Link>
-    //                     </li> */}
-    //         <li className="menu-item">
-    //           <Link onClick={handleLogOut} className="menu-link">
-    //             <span className="menu-link-icon">
-    //               <MdOutlineLogout size={20} />
-    //             </span>
-    //             <span className="menu-link-text">Logout</span>
-    //           </Link>
-    //         </li>
-    //       </ul>
-    //     </div>
-    //   </div>
-    // </nav>
-    <></>
+    <div className="admin_sidebar_full_container">
+      <audio ref={audioRef} loop>
+        <source src={audio} type="audio/mp3" />
+        Your browser does not support the audio element.
+      </audio>
+      <div className="admin_sidebar_layout_container">
+        <div className="admin_sidebar_header_section">
+          <img src={logoImg} alt="logo" className="admin_header_logo_image" />
+          <IoSettingsSharp
+            onClick={handleAudioPlay}
+            className="admin_header_settings_icon"
+          />
+          <div className="admin_header_competition_name">
+             ADMIN
+          </div>
+        </div>
+        {/* <div className="admin_sidebar_user_info_section">
+          <div className="admin_user_role_info">
+            <MdManageAccounts className="admin_user_role_icon" />
+            <div className="admin_user_role_name">
+              {competitionSchedule.infoReferee.roleRefereeCompetition}
+            </div>
+          </div>
+          <img
+            src={competitionSchedule.infoReferee.avatar}
+            alt="avatar"
+            className="admin_user_avatar_image"
+          />
+          <div className="admin_user_name_display">
+            {competitionSchedule.infoReferee.name}
+          </div>
+          <div className="admin_user_email_display">
+            {competitionSchedule.infoReferee.email}
+          </div>
+        </div> */}
+        <div className="admin_sidebar_action_section">
+          {actionReferee.map((action, index) => (
+            <div
+              key={action.key}
+              className={`admin_action_item_container ${
+                selectedRule === action.key ? "active" : ""
+              } ${index === 0 ? "first_item" : ""} ${
+                index === actionReferee.length - 1 ? "last_item" : ""
+              }`}
+              onClick={() => handleRuleClick(action.key,action.path)}
+            >
+              <div>{action.icon}</div>
+              <div>{action.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 

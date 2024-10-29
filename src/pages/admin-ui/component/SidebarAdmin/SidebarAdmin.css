@@ -1,22 +1,144 @@
-#sidebar-admin{
-    height: 100vh;
+.admin_sidebar_full_container {
     width: 100%;
-
-}
-/* .icon{
-    font-size: 20px;
-    margin-right: 10px;
-}
-.staff-page{
-    max-width: 1280px;
+    height: 98vh;
+    border-radius: 30px 7px 7px 30px;
+    background-color: #ecf3fb;
+  }
+  
+  .admin_sidebar_layout_container {
     display: flex;
-}
-.staff-page__sidebar{
-    max-width: 100%;
-}
-.content{
-    width: 85%;
-} */
-/* .sidebar-list-item.active{
+    flex-direction: column;
+    justify-content: space-around;
+    /* height: 100%; */
+    max-height: 100%;
+    padding: 0 10px;
+  }
+  
+  .admin_sidebar_header_section {
+    height: 5%;
+    border-radius: 30px 7px 7px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
     background-color: #fff;
-} */
+    margin: 10px 0;
+  }
+  
+  .admin_header_logo_image {
+    width: 65px;
+    height: 35px;
+  }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .admin_header_settings_icon {
+    width: 35px;
+    height: 35px;
+    color: #01395f;
+    animation: rotate 3s linear infinite;
+    cursor: pointer;
+  }
+  
+  .admin_header_competition_name {
+    font-size: 24px;
+    font-weight: 700;
+    color: #01395f;
+  }
+  
+  /* .admin_sidebar_user_info_section {
+    height: 27%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+  }
+  
+  .admin_user_role_info {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 17px;
+    font-weight: 600;
+    color: #01395f;
+  }
+  
+  .admin_user_role_icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .admin_user_avatar_image {
+    width: 90px;
+    height: 90px;
+    border-radius: 100px;
+    padding: 5px;
+    background-color: #fff;
+    border: 2px solid #0d7eda;
+    animation: rotate 3s linear infinite;
+  }
+  
+  .admin_user_name_display {
+    font-weight: 500;
+    color: #4c616e;
+  }
+  
+  .admin_user_email_display {
+    font-weight: 500;
+    font-size: 15px;
+    color: #b4c5d3;
+    margin-bottom: 2%;
+  } */
+  
+  .admin_sidebar_action_section {
+    height: 60%;
+    border-radius: 10px;
+    background-color: #b4c5d3;
+    padding: 5px;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+  }
+  
+  .admin_action_item_container {
+    border-radius: 7px;
+    display: flex;
+    /* flex-direction: column; */
+    /* align-items: center;
+    justify-content: space-evenly; */
+    align-items: center;
+    color: #01395f;
+    background-color: #ffffff;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: 600;
+    gap: 20px;
+    padding: 10px;
+  }
+  
+  .admin_action_item_container.active {
+    color: #ffffff;
+    background-color: #01395f;
+  }
+/*   
+  .admin_action_item_container.first_item {
+    border-radius: 27px 27px 7px 7px;
+  }
+  
+  .admin_action_item_container.last_item {
+    border-radius: 7px 7px 27px 27px;
+  } */
+  
+  .admin_sidebar_action_icon {
+    width: 30px;
+    height: 30px;
+  }
+  

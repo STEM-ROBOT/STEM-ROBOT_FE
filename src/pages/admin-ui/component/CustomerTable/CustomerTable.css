@@ -1,0 +1,103 @@
+.customer_table_container {
+  padding: 20px;
+}
+.customer_table_title{
+  font-size: 24px;
+  font-weight: 500;
+  padding-bottom: 20px;
+}
+
+.customer_table_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.customer_table_search_container {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.customer_table_search_icon {
+  margin-right: 8px;
+  color: #aaa;
+}
+
+.customer_table_search_input {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.customer_table_action_buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.customer_table_export_button,
+.customer_table_add_button {
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.customer_table_export_button {
+  background-color: #fff;
+  color: #666;
+  border: 1px solid #ccc;
+}
+
+.customer_table_add_button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+}
+
+.customer_table_main {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.customer_table_main th, .customer_table_main td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  color: #333;
+}
+
+.customer_table_main thead {
+  background-color: #f8f9fa;
+  color: #666;
+  font-weight: normal;
+}
+
+.customer_table_info {
+  display: flex;
+  align-items: center;
+}
+
+.customer_table_avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.customer_table_email_link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.customer_table_main tbody tr:hover {
+  background-color: #f1f1f1;
+}
