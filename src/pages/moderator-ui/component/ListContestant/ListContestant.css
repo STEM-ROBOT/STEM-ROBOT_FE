@@ -21,11 +21,11 @@
 }
 
 .btn-add {
-    background-color: #4caf50;
+    background: linear-gradient(90deg, #001f3f, #079bc4);
 }
 
 .btn-add:hover {
-    background-color: #45a049;
+    background: linear-gradient(90deg,#00c9ff, #001f3f);
 }
 .input-file-hidden {
     display: none;
@@ -33,7 +33,7 @@
 
 /* Styles for the download and import buttons */
 .btn-import {
-    background-color: #4caf50;
+    background: linear-gradient(90deg, #001f3f, #079bc4);
     color: white;
     border: none;
     padding: 10px 15px;
@@ -43,7 +43,7 @@
 }
 
 .btn-import:hover {
-    background-color: #45a049;
+    background: linear-gradient(90deg,#00c9ff, #001f3f);
 }
 
 .icon-download,

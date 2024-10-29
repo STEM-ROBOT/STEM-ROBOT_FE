@@ -12,7 +12,6 @@ import Competition from "../pages/moderator-ui/layout/Competition/Competition";
 import TournamentConfiguration from "../pages/moderator-ui/layout/TournamentConfiguration/TournamentConfiguration";
 import Tournament from "../pages/moderator-ui/layout/Tournament/Tournament";
 import ManageCompetition from "../pages/moderator-ui/component/ManageCompetition/ManageCompetition";
-import ListContestant from "../pages/moderator-ui/ListContestant/ListContestant";
 import CompetitionDetail from "../pages/moderator-ui/layout/CompetitionDetail/CompetitionDetail";
 import GameRuleComponent from "../pages/moderator-ui/component/GameRule/GameRuleComponent";
 import TeamCompetition from "../pages/moderator-ui/component/TeamCompetition/TeamCompetition";
@@ -22,6 +21,7 @@ import MatchScheduleComponent from "../pages/moderator-ui/component/MatchSchedul
 import CreateTournamentCompetition from "../pages/moderator-ui/component/CreateTournamentCompetition/CreateTournamentCompetition";
 import RegisterContestant from "../pages/moderator-ui/component/RegisterContestant/RegisterContestant";
 import MatchGroupStageComponent from "../pages/moderator-ui/component/MatchGroupStageComponent/MatchGroupStageComponent";
+import ListContestant from "../pages/moderator-ui/component/ListContestant/ListContestant";
 
 
 export const tournamentRoutes = [
