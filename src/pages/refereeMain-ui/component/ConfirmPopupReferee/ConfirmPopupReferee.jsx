@@ -46,7 +46,7 @@ const ConfirmPopupReferee = ({
             Hãy chắc chắn rằng đó là bạn
           </div>
           <div className="match_body_confirm_text">
-            STEM cần đảm bảo bạn là trọng tài chính của nội dung thi đấu này
+            STEM cần đảm bảo bạn là trọng tài chính được phân công vào trận đấu này
           </div>
           <div className="match_body_confirm_key_content">
             <div className="match_body_confirm_key_icon">
