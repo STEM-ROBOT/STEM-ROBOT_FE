@@ -20,8 +20,8 @@ const Sidebar = ({ activeItem, onMenuClick, isGroupStage }) => {
         { key: "schedule", label: "Sắp xếp lịch đấu", icon: <FaCalendarAlt /> },
         { key: "referee", label: "Sắp xếp trọng tài", icon: <FaLayerGroup /> },
      
-        { key: "organizers", label: "Ban tổ chức", icon: <FaSitemap /> },
-        { key: "sponsors", label: "Nhà tài trợ", icon: <FaMoneyBill /> }
+        // { key: "organizers", label: "Ban tổ chức", icon: <FaSitemap /> },
+        // { key: "sponsors", label: "Nhà tài trợ", icon: <FaMoneyBill /> }
     );
 
     return (

@@ -4,22 +4,26 @@ import SignUp from "../Author/SignUp/SignUp";
 import "./Header.css";
 import { useState, useEffect, useRef } from "react";
 import { MdNotificationsActive } from "react-icons/md";
-const user = {
-  accountId: "2",
-  moderatorName: "Hoàng Dương",
-  image:
-    "https://static-images.vnncdn.net/files/publish/2023/5/5/mmw-4-956.jpg",
-};
+import TokenService from "../../../../config/tokenservice";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../../redux/actions/AuthenAction";
+// const user = {
+//   accountId: "2",
+//   moderatorName: "Hoàng Dương",
+//   image:
+//     "https://static-images.vnncdn.net/files/publish/2023/5/5/mmw-4-956.jpg",
+// };
 const Header = () => {
-  const [isVisible, setIsVisible] = useState(false); // State to track scroll position for background
+  const [isVisible, setIsVisible] = useState(false); 
   const [tournamentDropdownOpen, setTournamentDropdownOpen] = useState(false);
-  const [auInfo, setAuInfo] = useState(user);
+  const [auInfo, setAuInfo] = useState(TokenService.getUser());
   const [pagesDropdownOpen, setPagesDropdownOpen] = useState(false);
   const [signIn, setSignIn] = useState(false);
   const [signUp, setSignUp] = useState(false);
   const [shake, setShake] = useState(true);
   const tournamentRef = useRef(null);
   const pagesRef = useRef(null);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const toggleTournamentDropdown = () => {
@@ -81,6 +85,15 @@ const Header = () => {
       return null;
     }
   };
+  const handleLogout = () => {
+    dispatch(logout());
+    setAuInfo(null);
+    setPagesDropdownOpen(false);
+  };
+  useEffect(() => {
+    // Cập nhật thông tin người dùng sau khi đăng nhập
+    setAuInfo(TokenService.getUser());
+  }, [signIn]);
   return (
     <div className={`header-outer ${isVisible ? "header-visible" : ""}`}>
       <div className="header-container">
@@ -148,8 +161,8 @@ const Header = () => {
           <div className="cta-buttons">
             <div ref={pagesRef} className="account_action_header">
               <img
-                src={auInfo.image}
-                alt={auInfo.moderatorName}
+                src="https://static-images.vnncdn.net/files/publish/2023/5/5/mmw-4-956.jpg"
+                alt={TokenService.getUserName()}
                 className="account_avatar"
                 onClick={togglePagesDropdown}
               />
@@ -157,7 +170,7 @@ const Header = () => {
                 className="account_name_moderator"
                 onClick={togglePagesDropdown}
               >
-                {auInfo.moderatorName}▾
+                {TokenService.getUserName()}▾
               </div>
               {pagesDropdownOpen && (
                 <div className="dropdown-account-content">
@@ -170,7 +183,7 @@ const Header = () => {
                   <a href="" className="dropdown-item">
                     Quản Lý Đơn hàng
                   </a>
-                  <div className="dropdown-item" onClick={() => setAuInfo()}>
+                  <div className="dropdown-item" onClick={() => handleLogout()}>
                     Đăng Xuất
                   </div>
                 </div>

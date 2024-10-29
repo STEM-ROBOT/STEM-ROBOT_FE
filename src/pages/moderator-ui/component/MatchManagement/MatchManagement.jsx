@@ -43,44 +43,7 @@ const fakeData = {
                     },
                 ],
             },
-            {
-                round: 'Vòng 3',
-                matchrounds: [
-                    {
-                        tableName: 'Bảng A',
-                        matches: [
-                            { matchId: 9, teamA: 'Đội #1', teamB: 'Đội #8', date: '', time: '', field: '' },
-                            { matchId: 10, teamA: 'Đội #5', teamB: 'Đội #4', date: '', time: '', field: '' },
-                        ],
-                    },
-                    {
-                        tableName: 'Bảng B',
-                        matches: [
-                            { matchId: 11, teamA: 'Đội #7', teamB: 'Đội #2', date: '', time: '', field: '' },
-                            { matchId: 12, teamA: 'Đội #3', teamB: 'Đội #6', date: '', time: '', field: '' },
-                        ],
-                    },
-                ],
-            },
-            {
-                round: 'Vòng 4',
-                matchrounds: [
-                    {
-                        tableName: 'Bảng A',
-                        matches: [
-                            { matchId: 13, teamA: 'Đội #1', teamB: 'Đội #8', date: '', time: '', field: '' },
-                            { matchId: 14, teamA: 'Đội #5', teamB: 'Đội #4', date: '', time: '', field: '' },
-                        ],
-                    },
-                    {
-                        tableName: 'Bảng B',
-                        matches: [
-                            { matchId: 15, teamA: 'Đội #7', teamB: 'Đội #2', date: '', time: '', field: '' },
-                            { matchId: 16, teamA: 'Đội #3', teamB: 'Đội #6', date: '', time: '', field: '' },
-                        ],
-                    },
-                ],
-            },
+           
         ],
     },
     knockout: {
