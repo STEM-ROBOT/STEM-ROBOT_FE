@@ -1,6 +1,6 @@
 /* Search and Filter Section */
 .search_container {
-  background-color: #bfdbee;
+  background-color: #b4c5d3;
   margin: 0 8% 20px 8%;
   border-radius: 7px;
   padding: 3px;
@@ -76,17 +76,11 @@
 }
 .filter_select {
   margin-left: 15px;
-  background-image: linear-gradient(
-    to right,
-    #063479 0%,
-    #074d7b 31%,
-    #01233a 71%,
-    #054656 100%
-  );
+  background-color: #e0eff7;
   padding: 9px;
-  border: 1px solid #ccc;
+  border: 1px solid #05336c;
   border-radius: 5px;
   font-size: 14px;
   min-width: 150px;
-  color: #fff;
+  color: #05336c;
 }

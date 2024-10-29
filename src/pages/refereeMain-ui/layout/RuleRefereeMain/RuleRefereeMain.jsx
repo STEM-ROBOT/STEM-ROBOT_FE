@@ -12,8 +12,8 @@ const RuleRefereeMain = () => {
               Quy định của nội dung thi đấu
             </div>
           </div>
-          <div className="schedule_referee_container">
-            <div className="schedule_referee_view">
+          <div className="rule_score_referee_container">
+            <div className="rule_score_referee_view">
               <div
                 className="rule_description"
                 style={{

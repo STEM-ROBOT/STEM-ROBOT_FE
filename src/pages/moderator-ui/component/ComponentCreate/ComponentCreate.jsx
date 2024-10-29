@@ -55,7 +55,16 @@ const ComponentCreate = ({}) => {
             competitionError={competitionError}
             setCompetitionError={setCompetitionError}
           />
-          <CreateTournamentFormat handleSubmit={handleSubmit} />
+          <div className="format_create">
+            <div className="apply_create_tournament">
+              <div
+                className="btn_create_tournament"
+                onClick={() => handleSubmit()}
+              >
+                Hoàn Tất
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

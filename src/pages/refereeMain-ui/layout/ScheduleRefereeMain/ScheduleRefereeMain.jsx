@@ -5,6 +5,8 @@ import RenderSchedule from "../../component/RenderSchedule/RenderSchedule";
 import ConfirmPopupReferee from "../../component/ConfirmPopupReferee/ConfirmPopupReferee";
 
 const scheduleData = {
+  refereeId: "123",
+  refereeEmail: "lethanhnhat@gmail.com",
   dateStartCompetition: "2024-10-20",
   dateEndCompetition: "2024-11-10",
   hourStartInDay: "8",
@@ -100,7 +102,7 @@ const ScheduleRefereeMain = () => {
   const [currentWeekIndex, setCurrentWeekIndex] = useState(0);
   const [currentWeek, setCurrentWeek] = useState([]);
   const [matchView, setMatchView] = useState();
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
   useEffect(() => {
     const splitIntoWeeks = (start, end) => {
       const startDate = new Date(start);
@@ -171,8 +173,8 @@ const ScheduleRefereeMain = () => {
               Lịch trình điều hành trận đấu
             </div>
           </div>
-          <div className="schedule_referee_container">
-            <div className="schedule_referee_view">
+          <div className="rule_score_referee_container">
+            <div className="rule_score_referee_view">
               <div className="schedule_referee_view_head">
                 {/* <div className="schedule_referee_note"></div> */}
                 {weeks.length > 0 && (
@@ -227,6 +229,8 @@ const ScheduleRefereeMain = () => {
                   <ConfirmPopupReferee
                     match_view={matchView}
                     setShowPopup={setShowPopup}
+                    email={scheduleData.refereeEmail}
+                    refereeId={scheduleData.refereeId}
                   />
                 )}
               </div>
