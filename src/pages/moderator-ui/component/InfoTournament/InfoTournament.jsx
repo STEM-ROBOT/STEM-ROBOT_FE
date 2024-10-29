@@ -1,28 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import './InfoTournament.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { getInfoTournament } from '../../../../redux/actions/TournamentAction';
 
 const InfoTournament = () => {
-    const { id } = useParams(); 
+    const { id } = useParams();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
+    
+    // Tab cấu hình
     const tabs = [
         { name: "QUẢN LÍ NỘI DUNG", key: "mycompetition" },
         { name: "DANH SÁCH THÍ SINH", key: "contestant" },
-        { name: "TÙY CHỈNH", key: "settings" },
+        { name: "DANH SÁCH TRỌNG TÀI", key: "refee" },
+        // { name: "TÙY CHỈNH", key: "settings" },
     ];
-
-    const navigate = useNavigate();
-    const location = useLocation();
+    
     const [activeTab, setActiveTab] = useState("");
+
+  
+    const tournamentInfo = useSelector((state) => state.infoTournament?.tournamentInfo?.data);
+    const loading = useSelector((state) => state.infoTournament.loading);
+    const error = useSelector((state) => state.infoTournament.error);
+   
+    useEffect(() => {
+        if (id) {
+            dispatch(getInfoTournament(id));
+        }
+    }, [id, dispatch]);
 
     useEffect(() => {
         const currentPath = location.pathname.split("/").pop();
         const matchedTab = tabs.find(tab => tab.key === currentPath);
         if (matchedTab) {
             setActiveTab(matchedTab.key);
-        } else {
-          
         }
-    }, [location.pathname, navigate, id]);
+    }, [location.pathname]);
 
     const handleTabClick = (tab) => {
         setActiveTab(tab.key);
@@ -33,28 +48,29 @@ const InfoTournament = () => {
         <div className="info_tournaments">
             <div className='info_tournament_container'>
                 <div className="info_tournament_content">
+                    {/* Thanh chứa thông tin giải đấu */}
                     <div className="tournament_bar">
                         <div className="bar_content">
                             <div className="bar_content_img">
                                 <img
-                                    src="https://th.bing.com/th/id/OIP.7HSEMd30tk4S_tCOunvBXAHaEK?w=331&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7"
-                                    alt="Tournament"
+                                    // src={tournamentInfo?.image || "https://th.bing.com/th/id/OIP.hxGHyd4kfFtlAo7snGkXLgAAAA?rs=1&pid=ImgDetMain"} 
+                                    src="https://th.bing.com/th/id/OIP.hxGHyd4kfFtlAo7snGkXLgAAAA?rs=1&pid=ImgDetMain"
+                                    alt={tournamentInfo?.name || "Tournament"}
                                     className="bar_img"
                                 />
                             </div>
                             <div className="bar_content_info">
                                 <div className="bar_title">
-                                    <span>ROBOCON THPT VIP PRO - 2024</span>
+                                    <span>{tournamentInfo?.name || "Tournament Name"}</span>
                                 </div>
                                 <div className="bar_detail">
                                     <span>
-                                        Chia bảng đấu || Khu công nghiệp Quốc tế Protrade, Đường tỉnh
-                                        744, An Tây, Bến Cát, Bình Dương, Việt Nam
+                                        {tournamentInfo?.location || "Tournament Location"}
                                     </span>
                                 </div>
                                 <div className="bar_stats">
                                     <div className="tooltip">
-                                        <span>👥 14</span>
+                                        <span>👥 {tournamentInfo?.numberTeam || 0}</span>
                                         <div className="tooltip_text">Số đội trong giải</div>
                                     </div>
 
@@ -67,6 +83,7 @@ const InfoTournament = () => {
                         </div>
                     </div>
 
+                    {/* Tab điều hướng */}
                    <div className="tab-navigation">
                         {tabs.map((tab) => (
                             <div

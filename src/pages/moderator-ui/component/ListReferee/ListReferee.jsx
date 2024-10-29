@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FaArrowLeft, FaArrowRight, FaDownload, FaFileImport } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
-import * as XLSX from 'xlsx';
-import './ListContestant.css';
-import AddContestant from '../AddContestant/AddContestant';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios'; // Import axios để gọi API
+import * as XLSX from 'xlsx'; // Import XLSX for reading Excel files
+import './ListReferee.css';
 
-const ListContestant = () => {
-    const dispatch = useDispatch();
-    const [contestants, setContestants] = useState([]);
+const ListReferee = () => {
+    const [referees, setReferees] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const contestantsPerPage = 3;
+    const refereesPerPage = 3;
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const indexOfLastContestant = currentPage * contestantsPerPage;
-    const indexOfFirstContestant = indexOfLastContestant - contestantsPerPage;
-    const currentContestants = contestants.slice(indexOfFirstContestant, indexOfLastContestant);
-    const totalPages = Math.ceil(contestants.length / contestantsPerPage);
+    const indexOfLastReferee = currentPage * refereesPerPage;
+    const indexOfFirstReferee = indexOfLastReferee - refereesPerPage;
+    const currentReferees = referees?.slice(indexOfFirstReferee, indexOfLastReferee);
+    const totalPages = Math.ceil(referees?.length / refereesPerPage);
 
     const handleNextPage = () => {
         if (currentPage < totalPages) {
@@ -35,28 +31,28 @@ const ListContestant = () => {
         setIsModalOpen(!isModalOpen);
     };
 
+    // Function to download the Excel template
     const downloadTemplate = () => {
         const templateData = [
-            ["ID","Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại", "Trường"],
-            ...contestants.map(contestant => [
-                contestant.id,
-                contestant.image, 
-                contestant.name, 
-                contestant.email, 
-                contestant.gender, 
-                contestant.phone, 
-                contestant.school
+            ["ID", "Tên trọng tài", "Email", "Số điện thoại", "Hình ảnh"],
+            ...referees.map(referee => [
+                referee.id, 
+                referee.name, 
+                referee.email, 
+                referee.phone, 
+                referee.image
             ])
         ];
         
         const worksheet = XLSX.utils.aoa_to_sheet(templateData);
         const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Contestants");
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Referees");
         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
         const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
-        saveAs(blob, "contestant_data.xlsx");
+        saveAs(blob, "referee_data.xlsx");
     };
 
+    // Function to handle file input (import Excel)
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         const reader = new FileReader();
@@ -67,40 +63,26 @@ const ListContestant = () => {
             const worksheet = workbook.Sheets[sheetName];
             const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-            const importedContestants = jsonData.map((item, index) => ({
+            const importedReferees = jsonData.map((item, index) => ({
                 id: item["ID"] || index + 1,
-                image: item["Ảnh"],
-                name: item["Tên thí sinh"],
+                name: item["Tên trọng tài"],
                 email: item["Email"],
-                gender: item["Giới tính"],
                 phone: item["Số điện thoại"],
-                school: item["Trường"],
+                image: item["Hình ảnh"] || "https://via.placeholder.com/50" // Placeholder image
             }));
 
-            setContestants(importedContestants);
+            setReferees(importedReferees);
         };
         reader.readAsArrayBuffer(file);
     };
 
-    // Hàm lưu thí sinh xuống database
-    const saveContestantsToDB = async () => {
-        try {
-            // await axios.post('/api/contestants', { contestants });
-            console.log(contestants)
-            alert('Thí sinh đã được lưu thành công!');
-        } catch (error) {
-            console.error('Lỗi khi lưu thí sinh:', error);
-            alert('Lỗi khi lưu thí sinh!');
-        }
-    };
-
     return (
-        <div className="contestant-container">
-            <div className="contestant-header">
-                <div className='contestant-header-left'>
-                    <button className="btn-add" onClick={toggleModal}>Thêm thí sinh</button>
+        <div className="referee-container">
+            <div className="referee-header">
+                <div className='referee-header-left'>
+                    <button className="btn-add" onClick={toggleModal}>Thêm trọng tài</button>
                 </div>
-                <div className='contestant-header-right'>
+                <div className='referee-header-right'>
                     <button className="btn-import" onClick={downloadTemplate}>
                         <FaDownload className="icon-download" /> Tải file Excel
                     </button>
@@ -111,30 +93,26 @@ const ListContestant = () => {
                 </div>
             </div>
 
-            <table className="contestant-table">
+            <table className="referee-table">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Hình ảnh</th>
-                        <th>Tên thí sinh</th>
+                        <th>Tên trọng tài</th>
                         <th>Email</th>
-                        <th>Giới tính</th>
                         <th>Số điện thoại</th>
-                        <th>Trường</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {currentContestants.map((contestant) => (
-                        <tr key={contestant.id}>
-                            <td>{contestant.id}</td>
+                    {currentReferees.map((referee) => (
+                        <tr key={referee.id}>
+                            <td>{referee.id}</td>
                             <td>
-                                <img src={contestant.image} alt={contestant.name} className="contestant-image" />
+                                <img src={referee.image} alt={referee.name} className="referee-image" />
                             </td>
-                            <td>{contestant.name}</td>
-                            <td>{contestant.email}</td>
-                            <td>{contestant.gender}</td>
-                            <td>{contestant.phone}</td>
-                            <td>{contestant.school}</td>
+                            <td>{referee.name}</td>
+                            <td>{referee.email}</td>
+                            <td>{referee.phone}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -150,11 +128,9 @@ const ListContestant = () => {
                 </button>
             </div>
 
-            <button className="btn-save" onClick={saveContestantsToDB}>Lưu thí sinh</button>
-
-            {isModalOpen && <AddContestant onClose={toggleModal} />}
+            {isModalOpen && <AddContestant onClose={toggleModal} />} {/* Placeholder for modal */}
         </div>
     );
 };
 
-export default ListContestant;
+export default ListReferee;

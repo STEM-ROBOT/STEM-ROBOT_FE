@@ -12,6 +12,8 @@ import {
 import storage from 'redux-persist/lib/storage';
 import { getContestantReducer } from '../reducers/ContestantReducer';
 import { LoginReducer } from '../reducers/AuthenReducer';
+import { getTournamentInfoReducer } from '../reducers/TournamentReducer';
+import { getCompetitionInfoReducer } from '../reducers/CompetitionReducer';
 
 const persistConfig = {
     key: 'root',
@@ -23,6 +25,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
     userLogin: LoginReducer,
     getContestants: getContestantReducer,
+    infoTournament:getTournamentInfoReducer,
+    infoCompetition:getCompetitionInfoReducer,
 
 });
 
