@@ -3,13 +3,6 @@ import "./LeagueView.css";
 import { useNavigate } from "react-router-dom";
 const LeagueView = ({ viewMode, league }) => {
   const navigate = useNavigate();
-
-  const images = [
-    "https://istema.vn/wp-content/uploads/2023/03/p.png",
-    "https://th.bing.com/th/id/OIP.7HSEMd30tk4S_tCOunvBXAHaEK?w=331&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7",
-    "https://istema.vn/wp-content/uploads/2023/03/s.png",
-    // Add more image URLs
-  ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -39,7 +32,7 @@ const LeagueView = ({ viewMode, league }) => {
   const GoLeague = () => {
     if (league) {
       sessionStorage.setItem("leagueData", JSON.stringify(league));
-      navigate(`/league/${league.id}`);
+      navigate(`${league.id}`);
     } else {
       console.error("league is undefined or null");
     }
@@ -49,7 +42,7 @@ const LeagueView = ({ viewMode, league }) => {
       onClick={() => GoLeague()}
       className={`league_card ${viewMode}`}
       style={{
-        "--background-image": `url(${league.imagesCompetition[currentImageIndex]})`,
+        "--background-image": `url(${league.imagesCompetition[currentImageIndex]?.imageCompetition})`,
       }}
     >
       {viewMode == "list" && <div className="league_card_overlay"></div>}

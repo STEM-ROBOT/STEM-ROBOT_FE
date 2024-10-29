@@ -4,7 +4,7 @@ import './Sidebar.css';
 
 const Sidebar = ({ activeItem, onMenuClick, isGroupStage }) => {
     const menuItems = [
-        { key: "config", label: "Cấu hình giải đấu", icon: <FaCogs /> },
+        { key: "config", label: "Cấu hình nội dung", icon: <FaCogs /> },
         // { key: "status", label: "Trạng thái", icon: <FaShieldAlt /> },
         { key: "permissions", label: "Quản lí trọng tài", icon: <FaUsers /> },
         { key: "teams", label: "Quản lý đội", icon: <FaLayerGroup /> },

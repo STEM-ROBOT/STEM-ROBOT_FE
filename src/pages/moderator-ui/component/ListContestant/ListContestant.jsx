@@ -5,19 +5,29 @@ import * as XLSX from 'xlsx';
 import './ListContestant.css';
 import AddContestant from '../AddContestant/AddContestant';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios'; // Import axios để gọi API
+import axios from 'axios';
+import { getListContestant } from '../../../../redux/actions/ContestantAction';
+import { useParams } from 'react-router-dom';
 
 const ListContestant = () => {
+    const { id } = useParams();
     const dispatch = useDispatch();
-    const [contestants, setContestants] = useState([]);
+    const contestantData = useSelector((state) => state.getContestants);
+    const contestants = Array.isArray(contestantData?.listContestant?.data?.Ok) ? contestantData.listContestant.data.Ok : [];
+    
+    const [importedContestants, setImportedContestants] = useState([]); // Store newly imported contestants
     const [currentPage, setCurrentPage] = useState(1);
     const contestantsPerPage = 3;
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    useEffect(() => {
+        dispatch(getListContestant(id));
+    }, [dispatch, id]);
+
     const indexOfLastContestant = currentPage * contestantsPerPage;
     const indexOfFirstContestant = indexOfLastContestant - contestantsPerPage;
-    const currentContestants = contestants.slice(indexOfFirstContestant, indexOfLastContestant);
-    const totalPages = Math.ceil(contestants.length / contestantsPerPage);
+    const currentContestants = [...contestants, ...importedContestants].slice(indexOfFirstContestant, indexOfLastContestant);
+    const totalPages = Math.ceil((contestants.length + importedContestants.length) / contestantsPerPage);
 
     const handleNextPage = () => {
         if (currentPage < totalPages) {
@@ -37,7 +47,7 @@ const ListContestant = () => {
 
     const downloadTemplate = () => {
         const templateData = [
-            ["ID","Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại", "Trường"],
+            ["ID", "Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại", "Trường"],
             ...contestants.map(contestant => [
                 contestant.id,
                 contestant.image, 
@@ -48,7 +58,7 @@ const ListContestant = () => {
                 contestant.school
             ])
         ];
-        
+
         const worksheet = XLSX.utils.aoa_to_sheet(templateData);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Contestants");
@@ -65,28 +75,27 @@ const ListContestant = () => {
             const workbook = XLSX.read(data, { type: 'array' });
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
-            const jsonData = XLSX.utils.sheet_to_json(worksheet);
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
 
-            const importedContestants = jsonData.map((item, index) => ({
+            const importedData = jsonData.map((item, index) => ({
                 id: item["ID"] || index + 1,
-                image: item["Ảnh"],
-                name: item["Tên thí sinh"],
-                email: item["Email"],
-                gender: item["Giới tính"],
-                phone: item["Số điện thoại"],
-                school: item["Trường"],
+                image: item["Ảnh"] || "https://via.placeholder.com/100", // Fallback if no image URL provided
+                name: item["Tên thí sinh"] || "N/A",
+                email: item["Email"] || "N/A",
+                gender: item["Giới tính"] || "N/A",
+                phone: item["Số điện thoại"] || "N/A",
+                school: item["Trường"] || "N/A",
             }));
 
-            setContestants(importedContestants);
+            setImportedContestants(importedData); // Set imported data as additional contestants
         };
         reader.readAsArrayBuffer(file);
     };
 
-    // Hàm lưu thí sinh xuống database
     const saveContestantsToDB = async () => {
         try {
-            // await axios.post('/api/contestants', { contestants });
-            console.log(contestants)
+            const allContestants = [...contestants, ...importedContestants];
+            await axios.post('/api/contestants', { contestants: allContestants });
             alert('Thí sinh đã được lưu thành công!');
         } catch (error) {
             console.error('Lỗi khi lưu thí sinh:', error);

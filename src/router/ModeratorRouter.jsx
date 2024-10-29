@@ -33,7 +33,6 @@ export const tournamentRoutes = [
   { path: "refee", element: <ListReferee /> },
   { path: "settings", element: <CreateTournamentInfo/> },
 ];
-
 export const competitionChildren = [
   { path: "dashboard", element: <div>Tournament Dashboard</div> },
   { path: "schedule", element: <MatchScheduleComponent/> },

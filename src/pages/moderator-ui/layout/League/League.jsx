@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../../system-ui/component/Header/Header";
 import Footer from "../../../system-ui/component/Footer/Footer";
 import "./League.css";
@@ -6,6 +6,8 @@ import { IoAppsSharp, IoGrid, IoListSharp, IoSearch } from "react-icons/io5";
 import LeagueView from "../../component/LeagueView/LeagueView";
 import SearchFilter from "../../component/SearchFilter/SearchFilter";
 import { useNavigate } from "react-router-dom";
+import api from "../../../../Config";
+
 const leagueData = [
   {
     id: "t1001",
@@ -43,6 +45,19 @@ const leagueData = [
 const League = () => {
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState("grid");
+    const [leagueData, setLeagueData] = useState([]);
+    useEffect(() => {
+      api
+        .get("/api/tournaments/list-tournament")
+        .then((tournament) => {
+          console.log(tournament);
+          setLeagueData(tournament.data.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      console.log(leagueData);
+    }, []);
   return (
     <div className="league_page">
       <Header />
