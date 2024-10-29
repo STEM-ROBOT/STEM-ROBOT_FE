@@ -102,7 +102,7 @@ const ScheduleRefereeMain = () => {
   const [currentWeekIndex, setCurrentWeekIndex] = useState(0);
   const [currentWeek, setCurrentWeek] = useState([]);
   const [matchView, setMatchView] = useState();
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
   useEffect(() => {
     const splitIntoWeeks = (start, end) => {
       const startDate = new Date(start);
@@ -173,8 +173,8 @@ const ScheduleRefereeMain = () => {
               Lịch trình điều hành trận đấu
             </div>
           </div>
-          <div className="schedule_referee_container">
-            <div className="schedule_referee_view">
+          <div className="rule_score_referee_container">
+            <div className="rule_score_referee_view">
               <div className="schedule_referee_view_head">
                 {/* <div className="schedule_referee_note"></div> */}
                 {weeks.length > 0 && (
