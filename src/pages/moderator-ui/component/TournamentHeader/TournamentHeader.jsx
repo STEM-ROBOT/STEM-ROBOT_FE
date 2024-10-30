@@ -1,19 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'; 
 import { FaUsers, FaEye, FaHeart } from 'react-icons/fa';
 import './TournamentHeader.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCompetitionInfo } from '../../../../redux/actions/CompetitionAction';
 
 const TournamentHeader = () => {
   const { tournamentId, competitionId } = useParams(); 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("dashboard");
+
   const tabs = [
-    // { name: "TIN CHUNG", key: "dashboard" },
-    // { name: "LỊCH THI ĐẤU", key: "schedule" },
-    // { name: "ĐỘI THI ĐẤU", key: "teammatch" },
     { name: "TÙY CHỈNH", key: "customize" },
   ];
 
-  const [activeTab, setActiveTab] = useState("dashboard");
-  const navigate = useNavigate();
+  // Lấy thông tin từ Redux store
+  const competitionInfo = useSelector((state) => state.infoCompetition?.infoCompetition?.data);
+  const loading = useSelector((state) => state.infoTournament.loading);
+  const error = useSelector((state) => state.infoTournament.error);
+
+  useEffect(() => {
+      if (competitionId) {
+          dispatch(getCompetitionInfo(competitionId));
+      }
+  }, [competitionId, dispatch]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab.key);
@@ -26,15 +37,20 @@ const TournamentHeader = () => {
         <div className='tournaments-header-content'>
           <div className="tournaments-headers">
             <div className="tournaments-image">
-              <img src="https://cdn.ketnoibongda.vn/upload/images/z2375109156954_20640964dfc1fcec8273197669fdc5c4(2)(1).jpg" alt="Tournament" />
+              <img
+                src={competitionInfo?.image || "https://ohstem.vn/wp-content/uploads/2022/01/lap-trinh-thi-dau-robot-1024x768.jpg"} // Hiển thị ảnh từ API hoặc ảnh mặc định
+                alt={competitionInfo?.name || "Tournament"}
+              />
             </div>
             <div className="tournaments-detail">
-              <h2>World Cup 2024</h2>
-              <p>Loại Trực Tiếp || Bóng Bàn || Thành Lê Đình || Qatar</p>
+              <h2>{competitionInfo?.tournamentName || "Tournament Name"}</h2>
+              <p>
+                {competitionInfo?.name || "Loại Trực Tiếp"} || {competitionInfo?.location || "Location"}
+              </p>
               <div className="tournaments-stats">
-                <span><FaUsers /> 3 Đội</span>
-                <span><FaEye /> 0 lượt xem</span>
-                <FaHeart className="favorite-icon" />
+                <span><FaUsers /> {competitionInfo?.numberTeam || 0} Đội</span>
+                {/* <span><FaEye /> 0 lượt xem</span>
+                <FaHeart className="favorite-icon" /> */}
               </div>
             </div>
             <div className="activation-section">
@@ -44,6 +60,8 @@ const TournamentHeader = () => {
               </div>
             </div>
           </div>
+
+          {/* Điều hướng Tab */}
           <div className="tab-navigation">
             {tabs.map((tab) => (
               <div

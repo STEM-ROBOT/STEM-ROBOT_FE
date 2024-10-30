@@ -1,8 +1,11 @@
 
 .tournament-configuration {
-    padding: 20px 0;
     gap: 20px;
     display: flex;
+    border-radius: 10px;
+    border: 2px solid black; /* Add a black border */
+    margin: 20px 0;
+   
 }
 
 

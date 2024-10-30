@@ -1,0 +1,120 @@
+.manage-arena-main-container {
+    padding: 20px;
+}
+
+.manage-arena-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Sắp xếp phần input và button */
+.manage-arena-input-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.manage-arena-input-group {
+    display: flex;
+    align-items: center;
+}
+
+.manage-arena-label {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.manage-arena-input-field {
+    padding: 10px;
+    width: 100%;
+    max-width: 150px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.manage-arena-confirm-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(135deg, #0057e7, #001f3f);
+    transition: background 0.3s ease;
+}
+
+.manage-arena-confirm-button:hover {
+    background: linear-gradient(135deg, #0099ff, #0057e7);
+}
+
+.manage-arena-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.manage-arena-individual-container {
+    background: linear-gradient(135deg, #1e88e5, #1565c0);
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    overflow: hidden;
+}
+
+.manage-arena-center-circle {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.manage-arena-name-text {
+    z-index: 2;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.manage-arena-save-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(135deg, #0057e7, #001f3f);
+    transition: background 0.3s ease;
+    display: block;
+    margin: 20px auto;
+}
+.manage-arena-name-input {
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    z-index: 2;
+    width: 100%;
+    outline: none;
+}
+

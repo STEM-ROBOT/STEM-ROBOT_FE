@@ -72,4 +72,27 @@
   .confirm-button:hover {
     background-color: #218838;
   }
+  .role-assignment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .role-assignment-inputs {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+  }
+  
+  .input-group label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .input-group input {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 80px;
+  }
   

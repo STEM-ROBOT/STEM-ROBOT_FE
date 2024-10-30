@@ -2,31 +2,73 @@ import React, { useState } from "react";
 import "./ComponentCreate.css";
 import CreateTournamentInfo from "../CreateTournamentInfo/CreateTournamentInfo";
 import CreateTournamentCompetition from "../CreateTournamentCompetition/CreateTournamentCompetition";
-import CreateTournamentFormat from "../CreateTournamentFormat/CreateTournamentFormat";
 import logo from "/src/assets/images/logo.png";
-const ComponentCreate = ({}) => {
-  //info Tournament
+import { useDispatch } from "react-redux";
+import { createTournament } from "../../../../redux/actions/TournamentAction";
+import { useNavigate } from "react-router-dom";
+
+const ComponentCreate = () => {
+  // Tournament Info
   const [avatarInput, setAvatarInput] = useState(logo);
-  const [nameTournament, setNameTournament] = useState();
-  const [phone, setPhone] = useState();
-  const [address, setAddress] = useState();
+  const [nameTournament, setNameTournament] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const [mode, setMode] = useState("Private");
   const [nameError, setNameError] = useState("");
   const [locationError, setLocationError] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  //Competition
+  // Competition List
   const [competitionList, setCompetitionList] = useState([]);
   const [competitionError, setCompetitionError] = useState("");
 
-  //format Tournament
+  // Validation and API Call
   const handleSubmit = () => {
-    if (!nameTournament) setNameError("Tên giải đấu không được để trống.");
-    if (!address) setLocationError("Địa điểm không được để trống.");
-    if (!phone) setPhoneError("Số điện thoại không được để trống.");
-    if (competitionList.length < 1)
+    let hasError = false;
+
+    // Validate fields
+    if (!nameTournament) {
+      setNameError("Tên giải đấu không được để trống.");
+      hasError = true;
+    }
+    if (!address) {
+      setLocationError("Địa điểm không được để trống.");
+      hasError = true;
+    }
+    if (!phone) {
+      setPhoneError("Số điện thoại không được để trống.");
+      hasError = true;
+    }
+    if (competitionList.length < 1) {
       setCompetitionError("Hãy chọn nội dung thi đấu cho giải");
+      hasError = true;
+    }
+
+    // Stop if validation fails
+    if (hasError) return;
+
+    // Format competition list to match API structure
+    const formattedCompetitions = competitionList.map((competition) => ({
+      genreId: competition.id, // Assuming each competition has an `id` field for genreId
+    }));
+
+    // Tournament data to be sent
+    const tournamentData = {
+      tournamentLevel: "Cấp trường",
+      name: nameTournament,
+      location: address,
+      image: avatarInput,
+      status: mode, // Set status as needed
+      phone,
+      competition: formattedCompetitions,
+    };
+
+    // Dispatch action to create tournament
+    dispatch(createTournament(tournamentData,navigate));
   };
+
   return (
     <div className="create_tournament_page">
       <div className="create_container">

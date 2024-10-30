@@ -5,6 +5,7 @@ const fakeData = {
     group: {
         rounds: [
             {
+                roundId: 1,
                 round: 'Vòng 1',
                 matchrounds: [
                     {
@@ -25,6 +26,7 @@ const fakeData = {
                 ],
             },
             {
+                roundId: 2,
                 round: 'Vòng 2',
                 matchrounds: [
                     {
@@ -43,12 +45,13 @@ const fakeData = {
                     },
                 ],
             },
-           
+
         ],
     },
     knockout: {
         rounds: [
             {
+                roundId: 3,
                 round: 'Tứ kết',
                 matchrounds: [
                     {
@@ -63,6 +66,7 @@ const fakeData = {
                 ],
             },
             {
+                roundId: 4,
                 round: 'Bán kết',
                 matchrounds: [
                     {
@@ -75,6 +79,7 @@ const fakeData = {
                 ],
             },
             {
+                roundId: 5,
                 round: 'Chung kết',
                 matchrounds: [
                     {
@@ -93,7 +98,7 @@ const fakeData = {
 
 const MatchManagement = () => {
     const [data, setData] = useState(fakeData);
-    
+
     const [currentStage, setCurrentStage] = useState('group');
     const [currentRound, setCurrentRound] = useState(fakeData.group.rounds[0].round);
 
@@ -102,7 +107,7 @@ const MatchManagement = () => {
         const year = today.getFullYear();
         const month = String(today.getMonth() + 1).padStart(2, '0'); // Tháng tính từ 0, nên cần +1
         const day = String(today.getDate()).padStart(2, '0');
-    
+
         return `${year}-${month}-${day}`;
     };
     const [config, setConfig] = useState({
