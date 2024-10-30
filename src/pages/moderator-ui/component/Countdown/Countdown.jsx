@@ -9,7 +9,7 @@ const registerConfig = {
   image: "https://tuyensinh.hueic.edu.vn/wp-content/uploads/2021/03/ro1.jpg",
   endDate: "2024-10-13T23:59:59",
   status: false,
-  timeConfig: "2024-10-23T23:59:59",
+  timeConfig: "2024-11-11T23:59:59",
   teamConfig: { minContestant: 2, maxContestant: 4 },
   introduction: `🏆 Lâu lâu không tạo giải cho anh em, anh em hỏi nhiều quá. Tiện đây chào mừng 70 năm giải phóng thủ đô, Rùa Billiards xin tổ chức 1 giải nho nhỏ cho các em học sinh nhé. 🎓
   Lịch thi đấu sẽ vào ngày 11-12 tức thứ 6 tuần tới.

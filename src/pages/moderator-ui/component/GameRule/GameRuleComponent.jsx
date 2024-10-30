@@ -6,8 +6,10 @@ import { TiWarning } from "react-icons/ti";
 import { GrScorecard } from "react-icons/gr";
 import { RiTeamFill } from "react-icons/ri";
 import GameRuleScore from "../GameRuleScore/GameRuleScore";
-const scoreRuleCompetitions = {
-  ruleCompetition:
+import { useParams } from "react-router-dom";
+import api from "../../../../config";
+const scoreRuleCompetitions2 = {
+  regulation:
     "https://storage.cloud.google.com/stem-system-storage/mau-hop-dong-dat-coc.pdf?authuser=1",
   scoreCompetition: [
     {
@@ -85,7 +87,19 @@ const scoreRuleCompetitions = {
 };
 
 const GameRuleComponent = () => {
+  // const path = useParams();
   const [selectedRule, setSelectedRule] = useState("Score");
+  const [scoreRuleCompetitions, setScoreRuleCompetitions] = useState({});
+  useEffect(() => {
+    api
+      .get(`/api/competitions/score-competition?competitionID=${65}`)
+      .then((response) => {
+        setScoreRuleCompetitions(response.data.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   const rules = [
     {
       key: "Process",
@@ -123,19 +137,25 @@ const GameRuleComponent = () => {
             className="rule_description"
             style={{ width: "100%", height: "70vh", borderRadius: "13px" }}
           >
-            <embed
-              src={scoreRuleCompetitions.ruleCompetition}
-              type="application/pdf"
-              border-radius="13px"
-              width="100%"
-              height="100%"
-            />
+            {scoreRuleCompetitions.scoreCompetition?.length > 0 && (
+              <embed
+                src={scoreRuleCompetitions.regulation}
+                type="application/pdf"
+                border-radius="13px"
+                width="100%"
+                height="100%"
+              />
+            )}
           </div>
         ) : (
-          <GameRuleScore
-            data={scoreRuleCompetitions.scoreCompetition}
-            type={"view"}
-          />
+          <>
+            {scoreRuleCompetitions.scoreCompetition?.length > 0 && (
+              <GameRuleScore
+                data={scoreRuleCompetitions.scoreCompetition}
+                type={"view"}
+              />
+            )}
+          </>
         )}
       </div>
     </div>
