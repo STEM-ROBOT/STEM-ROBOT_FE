@@ -5,14 +5,14 @@ const ruleCompetition =
 const RuleRefereeMain = () => {
   return (
     <div className="rule_competition_referee">
-      <div className="rule_competition_referee_layout">
-        <div className="rule_competition_referee_item_layout">
+      <div className="score_competition_referee_layout">
+        <div className="score_competition_referee_item_layout">
           <div className="rule_competition_referee_head">
             <div className="rule_referee_head">
               Quy định của nội dung thi đấu
             </div>
           </div>
-          <div className="rule_score_referee_co ntainer">
+          <div className="rule_score_referee_container">
             <div className="rule_score_referee_view">
               <div
                 className="rule_description"
