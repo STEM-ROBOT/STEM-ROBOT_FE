@@ -98,71 +98,56 @@ const fakeData = {
 
 const MatchManagement = () => {
     const [data, setData] = useState(fakeData);
-
     const [currentStage, setCurrentStage] = useState('group');
     const [currentRound, setCurrentRound] = useState(fakeData.group.rounds[0].round);
 
     const getCurrentDate = () => {
         const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0'); // Tháng tính từ 0, nên cần +1
-        const day = String(today.getDate()).padStart(2, '0');
-
-        return `${year}-${month}-${day}`;
+        return today.toISOString().split('T')[0];
     };
+
     const [config, setConfig] = useState({
-        fieldCount: 2, // Số sân
-        startDate: getCurrentDate(), // Ngày bắt đầu
-        startTime: '06:00', // Thời gian bắt đầu
-        endTime: '18:00', // Thời gian kết thúc
-        matchDuration: 90, // Thời gian cho một trận đấu (phút)
-        breakTime: 60, // Thời gian nghỉ giữa các trận đấu (phút)
+        fieldCount: 4, // Initial number of fields
+        startDate: getCurrentDate(),
+        startTime: '06:00',
+        endTime: '18:00',
+        matchDuration: 90,
+        breakTime: 60,
     });
+
     const handleStageChange = (stage) => {
         setCurrentStage(stage);
-
-        // Khi thay đổi stage, lấy vòng đầu tiên của stage đó
-        if (stage === 'group') {
-            setCurrentRound(data.group.rounds[0].round); // Lấy vòng đầu tiên của group
-        } else if (stage === 'knockout') {
-            setCurrentRound(data.knockout.rounds[0].round); // Lấy vòng đầu tiên của knockout
-        }
+        setCurrentRound(data[stage].rounds[0].round);
     };
-
 
     const handleAutoAssign = () => {
         const updatedData = { ...data };
         const { startDate, startTime, matchDuration, breakTime, fieldCount, endTime } = config;
 
         let currentDate = startDate;
-        let fieldTimes = Array(fieldCount).fill(startTime); // Thời gian bắt đầu cho từng sân
+        let fieldTimes = Array.from({ length: parseInt(fieldCount, 10) }, () => startTime);
+        
 
-        // Hàm thêm phút vào thời gian
         const addTime = (time, minutesToAdd) => {
             let [hours, minutes] = time.split(':').map(Number);
             minutes += minutesToAdd;
-            if (minutes >= 60) {
-                hours += Math.floor(minutes / 60);
-                minutes = minutes % 60;
-            }
+            hours += Math.floor(minutes / 60);
+            minutes %= 60;
             return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
         };
 
-        // Hàm kiểm tra nếu thời gian vượt quá thời gian kết thúc
         const exceedsEndTime = (time, endTime) => {
             const [hours, minutes] = time.split(':').map(Number);
             const [endHours, endMinutes] = endTime.split(':').map(Number);
             return hours > endHours || (hours === endHours && minutes > endMinutes);
         };
 
-        // Hàm tăng ngày
         const incrementDate = (dateString) => {
             const date = new Date(dateString);
             date.setDate(date.getDate() + 1);
             return date.toISOString().split('T')[0];
         };
 
-        // Hàm sắp xếp lịch cho từng vòng đấu
         const assignRoundMatches = (stage) => {
             stage.rounds.forEach((round) => {
                 let currentField = 0;
@@ -187,7 +172,7 @@ const MatchManagement = () => {
                                 assigned = true;
                             } else {
                                 currentDate = incrementDate(currentDate);
-                                fieldTimes = Array(fieldCount).fill(startTime);
+                                fieldTimes = Array.from({ length: parseInt(fieldCount, 10) }, () => startTime);
                                 currentField = 0;
                             }
                         }
@@ -196,13 +181,17 @@ const MatchManagement = () => {
             });
         };
 
-        // Sắp xếp cho vòng bảng
         assignRoundMatches(updatedData.group);
-
-        // Sắp xếp cho vòng loại trực tiếp
         assignRoundMatches(updatedData.knockout);
 
         setData(updatedData);
+    };
+
+    const handleFieldCountChange = (e) => {
+        const value = parseInt(e.target.value, 10);
+        if (value >= 1) {
+            setConfig({ ...config, fieldCount: value });
+        }
     };
 
     const stageData = data[currentStage]?.rounds || [];
@@ -220,7 +209,8 @@ const MatchManagement = () => {
                                 type="number"
                                 placeholder="Số sân"
                                 value={config.fieldCount}
-                                onChange={(e) => setConfig({ ...config, fieldCount: e.target.value })}
+                                min="1"
+                                onChange={handleFieldCountChange}
                                 className="match-management-input-field match-management-field-standard"
                             />
 
@@ -238,7 +228,7 @@ const MatchManagement = () => {
                                 type="number"
                                 placeholder="Thời gian nghỉ giữa các trận đấu (phút)"
                                 value={config.breakTime}
-                                onChange={(e) => setConfig({ ...config, breakTime: e.target.value })}
+                                onChange={(e) => setConfig({ ...config, breakTime: parseInt(e.target.value, 10) })}
                                 className="match-management-input-field match-management-field-standard"
                             />
                         </div>
@@ -267,7 +257,7 @@ const MatchManagement = () => {
                                 type="number"
                                 placeholder="Thời gian một trận đấu (phút)"
                                 value={config.matchDuration}
-                                onChange={(e) => setConfig({ ...config, matchDuration: e.target.value })}
+                                onChange={(e) => setConfig({ ...config, matchDuration: parseInt(e.target.value, 10) })}
                                 className="match-management-input-field match-management-field-standard"
                             />
                         </div>
