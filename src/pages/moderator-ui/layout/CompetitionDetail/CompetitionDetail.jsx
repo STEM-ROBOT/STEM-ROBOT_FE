@@ -80,7 +80,7 @@ const CompetitionDetail = () => {
   const handleTabClick = (tab) => {
     localStorage.setItem("competitionRgEndDate", endDate),
       navigate(
-        `/league/${path.league_id}/competition/${path.competitionId}/${tab.path}`,
+        `${tab.path}`,
         {
           state: { endDate },
         }

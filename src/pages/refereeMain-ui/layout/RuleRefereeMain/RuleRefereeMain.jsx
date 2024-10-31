@@ -1,12 +1,12 @@
 import React from "react";
 import "./RuleRefereeMain.css";
 const ruleCompetition =
-  "https://storage.googleapis.com/stem-system-storage/mhghjgj?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=stem-system-storage-upload%40stem-system.iam.gserviceaccount.com%2F20241028%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20241028T130321Z&X-Goog-Expires=86400&X-Goog-SignedHeaders=host&X-Goog-Signature=851d946971f6fc901350eb53fd2c05f2968683d2bb80346a85ab33c9e0cb1c4ba0cff4393dac982ef7952df72ff4de700e697f10c777e2eb7cf85a45d01580acfc52319ef8bb6947777786e31fa9995fc8e85eae6421e9bef4822c11f93000dd92d625c3bdaf4cfc1bc92109effcb31883030fc9ca50f955ead1fb0f148aafd578c6806a7739ec2009c2351d79ed76601d67331e1f85d9ab8f1d1117c68343da1adda724c819859f0917995457f20e245a16bc94a23f44673aff461ac51876b0b40fa732e09d532589140f7163a921895945d16f69102a2f7070a8f522cf56b3b83e5e35d2097855b04ce98256c25a7dcaa39ccca97787be1ab55184a72508f5";
+  "https://storage.googleapis.com/stem-system-storage/asdasdsa?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=stem-system-storage-upload%40stem-system.iam.gserviceaccount.com%2F20241029%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20241029T115911Z&X-Goog-Expires=86400&X-Goog-SignedHeaders=host&X-Goog-Signature=cf02c3ef1784d560ef3e8c0e4fd493c8029161c4e5d9a5aea01eb8b0ef845ba7588a697294fc3f63344982277361b4cdad2da744095b729d597ff475eceb56d3543856a44b2e9fcea2c8fa43ea32d44ebfe19bd5eb2c1f264758c583d5d340f81731e657754721fb50d75ff52221f76f826026ee653eff4f18bfa9b7bf1872c3c3286bc7bbccb2d35739a799991e31926403fd8412ee947cc336c9c83a67164dca535cea00624c28559c729469f3538a5b78f0f331a088c7b30d12f8f4d88a35ffe931e9a6363e58a7a8884a80b1804046e3c1dc54960360a4bc84a7f14ee5d238ed4f2a74d64f8ee9e9400a4985ac428728654c8588bd5afe9a34bcc2a4e7dd";
 const RuleRefereeMain = () => {
   return (
     <div className="rule_competition_referee">
-      <div className="rule_competition_referee_layout">
-        <div className="rule_competition_referee_item_layout">
+      <div className="score_competition_referee_layout">
+        <div className="score_competition_referee_item_layout">
           <div className="rule_competition_referee_head">
             <div className="rule_referee_head">
               Quy định của nội dung thi đấu
