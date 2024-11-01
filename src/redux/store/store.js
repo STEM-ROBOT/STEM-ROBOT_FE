@@ -10,10 +10,14 @@ import {
     REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { getContestantReducer } from '../reducers/ContestantReducer';
+import { createContestantReducer, getContestantReducer } from '../reducers/ContestantReducer';
 import { LoginReducer } from '../reducers/AuthenReducer';
 import { createTournamentInfoReducer, getTournamentInfoReducer, getTournamentModeratorReducer } from '../reducers/TournamentReducer';
 import { getCompetitionInfoReducer, getCompetitionModeratorReducer } from '../reducers/CompetitionReducer';
+import { createRefereeReducer, getRefereeReducer } from '../reducers/RefereeReducer';
+import { importRuleReducer } from '../reducers/RuleReducer';
+import { addScoreReducer } from '../reducers/ScoreReducer';
+import { getTeamsReducer } from '../reducers/TeamReducer';
 
 const persistConfig = {
     key: 'root',
@@ -30,6 +34,12 @@ const rootReducer = combineReducers({
     createTournamnet:createTournamentInfoReducer,
     getTournamentList:getTournamentModeratorReducer,
     getCompetition:getCompetitionModeratorReducer,
+    getReferee:getRefereeReducer,
+    addContestant:createContestantReducer,
+    addReferee:createRefereeReducer,
+    addRule:importRuleReducer,
+    addScore:addScoreReducer,
+    getTeams:getTeamsReducer,
 
 });
 

@@ -26,7 +26,7 @@ export const getListTournament = () => async (dispatch) => {
 export const getInfoTournament = (tournamentId) => async (dispatch) => {
   try {
     dispatch({ type: GET_TOURNAMENT_INFO_REQUEST });
-    const { data } = await api.get(`/api/tournaments/3`);
+    const { data } = await api.get(`/api/tournaments/${tournamentId}`);
     dispatch({ type: GET_TOURNAMENT_INFO_SUCCESS, payload: data });
   } catch (error) {
     const message =

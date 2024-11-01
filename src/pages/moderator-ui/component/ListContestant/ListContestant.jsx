@@ -1,62 +1,66 @@
 import React, { useEffect, useState } from 'react';
-import { FaArrowLeft, FaArrowRight, FaDownload, FaFileImport } from 'react-icons/fa';
+import { FaDownload, FaFileImport, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { saveAs } from 'file-saver';
 import * as XLSX from 'xlsx';
 import './ListContestant.css';
 import AddContestant from '../AddContestant/AddContestant';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import { getListContestant } from '../../../../redux/actions/ContestantAction';
+import { addContestant, getListContestant } from '../../../../redux/actions/ContestantAction';
 import { useParams } from 'react-router-dom';
 
 const ListContestant = () => {
-    const { id } = useParams();
+    const { id: tournamentId } = useParams();
+    const schoolName = "Trường Di Linh";
+
     const dispatch = useDispatch();
     const contestantData = useSelector((state) => state.getContestants);
-    const contestants = Array.isArray(contestantData?.listContestant?.data?.Ok) ? contestantData.listContestant.data.Ok : [];
-    
-    const [importedContestants, setImportedContestants] = useState([]); // Store newly imported contestants
-    const [currentPage, setCurrentPage] = useState(1);
-    const contestantsPerPage = 3;
+    const contestants = Array.isArray(contestantData?.listContestant?.data?.data) ? contestantData.listContestant.data.data : [];
+    const [updatedContestants, setUpdatedContestants] = useState([]);
+    const [newContestantsToAdd, setNewContestantsToAdd] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const contestantsPerPage = 5;
+    const [hasChanges, setHasChanges] = useState(false);
 
     useEffect(() => {
-        dispatch(getListContestant(id));
-    }, [dispatch, id]);
+        dispatch(getListContestant(tournamentId));
+    }, [dispatch, tournamentId]);
 
+    useEffect(() => {
+        // Only update if contestants array has changed
+        if (JSON.stringify(updatedContestants) !== JSON.stringify(contestants)) {
+            setUpdatedContestants(contestants);
+        }
+    }, [contestants]);
+
+    const uniqueContestantsWithDetails = updatedContestants.map(contestant => ({
+        tournamentId,
+        name: contestant.name,
+        email: contestant.email,
+        gender: contestant.gender,
+        phone: contestant.phone,
+        image: contestant.image,
+        schoolName
+    }));
+
+    const totalPages = Math.ceil(uniqueContestantsWithDetails.length / contestantsPerPage);
     const indexOfLastContestant = currentPage * contestantsPerPage;
     const indexOfFirstContestant = indexOfLastContestant - contestantsPerPage;
-    const currentContestants = [...contestants, ...importedContestants].slice(indexOfFirstContestant, indexOfLastContestant);
-    const totalPages = Math.ceil((contestants.length + importedContestants.length) / contestantsPerPage);
+    const currentContestants = uniqueContestantsWithDetails.slice(indexOfFirstContestant, indexOfLastContestant);
 
     const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage((prevPage) => prevPage + 1);
-        }
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
     };
 
     const handlePreviousPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage((prevPage) => prevPage - 1);
-        }
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
 
-    const toggleModal = () => {
-        setIsModalOpen(!isModalOpen);
-    };
+    const toggleModal = () => setIsModalOpen(!isModalOpen);
 
     const downloadTemplate = () => {
         const templateData = [
-            ["ID", "Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại", "Trường"],
-            ...contestants.map(contestant => [
-                contestant.id,
-                contestant.image, 
-                contestant.name, 
-                contestant.email, 
-                contestant.gender, 
-                contestant.phone, 
-                contestant.school
-            ])
+            ["STT", "Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại"],
         ];
 
         const worksheet = XLSX.utils.aoa_to_sheet(templateData);
@@ -69,38 +73,56 @@ const ListContestant = () => {
 
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
+        if (!file) return;
+
         const reader = new FileReader();
         reader.onload = (e) => {
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: 'array' });
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
 
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
             const importedData = jsonData.map((item, index) => ({
-                id: item["ID"] || index + 1,
-                image: item["Ảnh"] || "https://via.placeholder.com/100", // Fallback if no image URL provided
+                stt: index + 1,
+                image: item["Ảnh"] || "https://via.placeholder.com/100",
                 name: item["Tên thí sinh"] || "N/A",
                 email: item["Email"] || "N/A",
                 gender: item["Giới tính"] || "N/A",
                 phone: item["Số điện thoại"] || "N/A",
-                school: item["Trường"] || "N/A",
+                tournamentId,
+                schoolName
             }));
 
-            setImportedContestants(importedData); // Set imported data as additional contestants
+            const newContestants = importedData.filter(
+                newContestant => !updatedContestants.some(existing => existing.email === newContestant.email)
+            );
+
+            if (newContestants.length > 0) {
+                setUpdatedContestants(prev => [...prev, ...newContestants]);
+                setNewContestantsToAdd(newContestants);
+                setHasChanges(true);
+            }
         };
+
         reader.readAsArrayBuffer(file);
     };
 
-    const saveContestantsToDB = async () => {
-        try {
-            const allContestants = [...contestants, ...importedContestants];
-            await axios.post('/api/contestants', { contestants: allContestants });
-            alert('Thí sinh đã được lưu thành công!');
-        } catch (error) {
-            console.error('Lỗi khi lưu thí sinh:', error);
-            alert('Lỗi khi lưu thí sinh!');
-        }
+    const saveContestantsToDB = () => {
+        const payload = newContestantsToAdd.map(contestant => ({
+            tournamentId: tournamentId.toString(),
+            name: contestant.name,
+            email: contestant.email,
+            gender: contestant.gender,
+            phone: contestant.phone ? String(contestant.phone) : "",
+            image: contestant.image,
+            schoolName: contestant.schoolName,
+        }));
+
+        console.log("Payload sent:", payload);
+        dispatch(addContestant(payload));
+        setHasChanges(false);
+        setNewContestantsToAdd([]);
     };
 
     return (
@@ -123,7 +145,7 @@ const ListContestant = () => {
             <table className="contestant-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>STT</th>
                         <th>Hình ảnh</th>
                         <th>Tên thí sinh</th>
                         <th>Email</th>
@@ -133,9 +155,9 @@ const ListContestant = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentContestants.map((contestant) => (
-                        <tr key={contestant.id}>
-                            <td>{contestant.id}</td>
+                    {currentContestants.map((contestant, index) => (
+                        <tr key={index}>
+                            <td>{indexOfFirstContestant + index + 1}</td>
                             <td>
                                 <img src={contestant.image} alt={contestant.name} className="contestant-image" />
                             </td>
@@ -143,7 +165,7 @@ const ListContestant = () => {
                             <td>{contestant.email}</td>
                             <td>{contestant.gender}</td>
                             <td>{contestant.phone}</td>
-                            <td>{contestant.school}</td>
+                            <td>{contestant.schoolName}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -151,15 +173,17 @@ const ListContestant = () => {
 
             <div className="pagination-controls">
                 <button onClick={handlePreviousPage} disabled={currentPage === 1} className="pagination-btn">
-                    <FaArrowLeft />
+                    <FaArrowLeft /> Trước
                 </button>
-                <span className="page-info">Trang {currentPage} / {totalPages}</span>
+                <span>Trang {currentPage} / {totalPages}</span>
                 <button onClick={handleNextPage} disabled={currentPage === totalPages} className="pagination-btn">
-                    <FaArrowRight />
+                    Tiếp <FaArrowRight />
                 </button>
             </div>
 
-            <button className="btn-save" onClick={saveContestantsToDB}>Lưu thí sinh</button>
+            {hasChanges && (
+                <button className="btn-save" onClick={saveContestantsToDB}>Lưu thí sinh</button>
+            )}
 
             {isModalOpen && <AddContestant onClose={toggleModal} />}
         </div>

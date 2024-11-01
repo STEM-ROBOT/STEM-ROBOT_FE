@@ -1,15 +1,13 @@
 import api from "../../config";
-import { CREATE_CONTESTANT_FAIL, CREATE_CONTESTANT_REQUEST, CREATE_CONTESTANT_SUCCESS, GET_CONTESTANT_FAIL, GET_CONTESTANT_REQUEST, GET_CONTESTANT_SUCCESS } from "../constants/ContestantConstant";
+import { CREATE_REFEREE_FAIL, CREATE_REFEREE_REQUEST, CREATE_REFEREE_SUCCESS, GET_REFEREE_FAIL, GET_REFEREE_REQUEST, GET_REFEREE_SUCCESS } from "../constants/RefereeConstant";
 
-
-
-export const getListContestant = (tournamentId) => async (dispatch) => {
+export const getListReferee = (tournamentId) => async (dispatch) => {
     try {
-      dispatch({ type: GET_CONTESTANT_REQUEST });
+      dispatch({ type: GET_REFEREE_REQUEST });
   
-      const { data } = await api.get(`/api/contestants/tournamentId?tournamentId=${tournamentId}`);
+      const { data } = await api.get(`/api/referees/bytournamentId=${tournamentId}`);
   
-      dispatch({ type: GET_CONTESTANT_SUCCESS, payload: data });
+      dispatch({ type: GET_REFEREE_SUCCESS, payload: data });
     } catch (error) {
       const message =
         error.response && error.response.data.message
@@ -19,21 +17,21 @@ export const getListContestant = (tournamentId) => async (dispatch) => {
         // dispatch(logout());
       }
       dispatch({
-        type: GET_CONTESTANT_FAIL,
+        type: GET_REFEREE_FAIL,
         payload: message,
       });
     }
   };
 
-  export const addContestant = (contestants) => async (dispatch) => {
-    console.log("Payload gửi đi:", contestants); // Kiểm tra cấu trúc payload trước khi gửi
+  export const addReferee = (referee) => async (dispatch) => {
+    console.log("Payload gửi đi:", referee); // Kiểm tra cấu trúc payload trước khi gửi
 
     try {
-        dispatch({ type: CREATE_CONTESTANT_REQUEST });
+        dispatch({ type: CREATE_REFEREE_REQUEST });
 
         const { data } = await api.post(
-            `/api/contestants/list-contestant`,
-            contestants,
+            `/api/referees/list-referee`,
+            referee,
             {
                 headers: {
                     "Content-Type": "application/json", // Đảm bảo định dạng JSON
@@ -41,7 +39,7 @@ export const getListContestant = (tournamentId) => async (dispatch) => {
             }
         );
 
-        dispatch({ type: CREATE_CONTESTANT_SUCCESS, payload: data });
+        dispatch({ type: CREATE_REFEREE_SUCCESS, payload: data });
     } catch (error) {
         const message =
             error.response && error.response.data.message
@@ -51,7 +49,7 @@ export const getListContestant = (tournamentId) => async (dispatch) => {
             // dispatch(logout());
         }
         dispatch({
-            type: CREATE_CONTESTANT_FAIL,
+            type: CREATE_REFEREE_FAIL,
             payload: message,
         });
     }
