@@ -3,6 +3,7 @@ import { IoClose } from "react-icons/io5";
 import "./ConfirmPopupReferee.css";
 import { BsFillKeyFill, BsShieldFillCheck } from "react-icons/bs";
 import { GoPasskeyFill } from "react-icons/go";
+import { SiSimplelogin } from "react-icons/si";
 const ConfirmPopupReferee = ({
   match_view,
   setShowPopup,
@@ -31,7 +32,7 @@ const ConfirmPopupReferee = ({
       <div className="match_confirm_container">
         <div className="match_head_confirm">
           <div className="match_head_confirm_content">
-            <BsShieldFillCheck className="match_head_confirm_content_icon" />
+            <SiSimplelogin className="match_head_confirm_content_icon" />
             Xác thực quyền truy cập
           </div>
           <div

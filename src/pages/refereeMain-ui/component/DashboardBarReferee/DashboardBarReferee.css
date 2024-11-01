@@ -22,9 +22,26 @@
   background-color: #fff;
 }
 .referee_head_logo {
-  width: 65px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
+  color: #01395f;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  padding: 5px;
+  transition: all 0.5s ease-in-out;
 }
+.referee_head_logo:hover {
+  background-color: #01395f;
+  color: #ffffff;
+  width: 35px;
+  height: 35px;
+  scale: 1;
+}
+
 @keyframes rotate {
   0% {
     transform: rotate(0deg);
@@ -67,8 +84,9 @@
   height: 35px;
 }
 .referee_info_avatar {
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
   border-radius: 100px;
   padding: 5px;
   background-color: #fff;
