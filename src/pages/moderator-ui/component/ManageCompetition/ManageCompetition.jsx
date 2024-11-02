@@ -1,60 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./ManageCompetition.css";
 import { IoLogoGameControllerB } from "react-icons/io";
-import { useNavigate, useParams } from "react-router-dom"; // Import useParams to get tournament ID
-
-const competitions = [
-  {
-    id: 1,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-  },
-  {
-    id: 2,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-  },
-  {
-    id: 3,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-  },
-  {
-    id: 4,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-  },
-  {
-    id: 5,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-  },
-  {
-    id: 6,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-  },
-  {
-    id: 7,
-    name: "Bóng Đá",
-    image:
-      "https://5sfashion.vn/storage/upload/images/ckeditor/4KG2VgKFDJWqdtg4UMRqk5CnkJVoCpe5QMd20Pf7.jpg",
-  },
-];
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getCompetitionbyTournament } from "../../../../redux/actions/CompetitionAction";
 
 const ManageCompetition = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const competitionData = useSelector((state) => state.getCompetition.listCompetition);
+  const competitions = Array.isArray(competitionData?.data?.data) ? competitionData.data.data : [];
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCompetitionbyTournament(id));
+  }, [dispatch, id]);
+
   const handleCompetitionClick = (competitionId) => {
-   
     navigate(`/mytournament/${id}/mycompetition/${competitionId}/customize`);
+  };
+
+  const activeStatuses = (competition) => {
+    const now = new Date();
+    const endDate = new Date(competition.endDate);
+
+    if (!competition.isActive) return "competition_status_competition";
+    if (competition.isActive && now <= endDate && competition.mode === "public") return "competition_status_competition rg";
+    if (competition.isActive && (competition.mode === "Private" || now > endDate)) return "competition_status_competition done";
+  };
+
+  const tagStatuses = (competition) => {
+    const now = new Date();
+    const endDate = new Date(competition.endDate);
+
+    if (!competition.isActive) return "Chưa kích hoạt";
+    if (competition.isActive && now <= endDate && competition.mode === "Public") return "Đang đăng ký";
+    return "Đang diễn ra";
   };
 
   return (
@@ -64,27 +47,24 @@ const ManageCompetition = () => {
         <span className="manage_competition_title">Nội dung thi đấu</span>
       </div>
       <div
-        className={
-          competitions.length >= 6
-            ? "manage_competition_grid"
-            : "manage_competition_grid_single"
-        }
+        className="manage_competition_grid"
+        style={{ gridTemplateColumns: `repeat(${Math.min(competitions.length, 5)}, 1fr)` }}
       >
         {competitions.map((competition) => (
           <div
             key={competition.id}
             className="manage_competition_item"
-            onClick={() => handleCompetitionClick(competition.id)} // Navigate to the specific competition's customize page
+            onClick={() => handleCompetitionClick(competition.id)}
           >
+            <div className={activeStatuses(competition)}>{tagStatuses(competition)}</div>
             <img
-              src={competition.image}
+              src={competition.image || "https://via.placeholder.com/230x200"}
               alt={competition.name}
               className="manage_competition_image"
+              onError={(e) => { e.target.src = "https://via.placeholder.com/230x200"; }}
             />
             <div className="manage_competition_name">
-              <div className="manage_competition_name_text">
-                {competition.name}
-              </div>
+              <div className="manage_competition_name_text">{competition.name}</div>
             </div>
           </div>
         ))}

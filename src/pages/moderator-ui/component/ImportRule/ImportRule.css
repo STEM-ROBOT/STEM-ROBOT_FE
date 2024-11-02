@@ -1,0 +1,82 @@
+/* Container for the import section */
+.import-rule-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Content wrapper for file input and button */
+.import-rule-content {
+    display: flex;
+    justify-content: space-between;
+   
+}
+.import-rule-title{
+    font-style: italic; 
+    text-decoration: underline; 
+    cursor: pointer; 
+    padding: 10px 0;
+}
+
+/* Input for file upload */
+.import-rule-input-file {
+    margin-bottom: 15px;
+    padding: 10px;
+    width: 70%;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+/* Change border color when hovering over the input */
+.import-rule-input-file:hover {
+    border-color: #888;
+}
+
+/* Button for importing the file */
+.import-rule-buttons {
+    padding: 12px 20px;
+    background: linear-gradient(90deg, #001f3f,#0387ac);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Change button background on hover */
+.import-rule-button:hover {
+    background: linear-gradient(90deg, #001f3f,#0387ac);
+}
+
+/* PDF preview container */
+.pdf-preview {
+    margin-top: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+/* PDF preview frame */
+.pdf-preview iframe {
+    border: none;
+    width: 100%;
+    height: 600px;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .import-rule-container {
+        padding: 15px;
+    }
+
+    .pdf-preview iframe {
+        height: 400px;
+    }
+}

@@ -12,23 +12,31 @@ import Competition from "../pages/moderator-ui/layout/Competition/Competition";
 import TournamentConfiguration from "../pages/moderator-ui/layout/TournamentConfiguration/TournamentConfiguration";
 import Tournament from "../pages/moderator-ui/layout/Tournament/Tournament";
 import ManageCompetition from "../pages/moderator-ui/component/ManageCompetition/ManageCompetition";
-import ListContestant from "../pages/moderator-ui/ListContestant/ListContestant";
 import CompetitionDetail from "../pages/moderator-ui/layout/CompetitionDetail/CompetitionDetail";
 import GameRuleComponent from "../pages/moderator-ui/component/GameRule/GameRuleComponent";
 import TeamCompetition from "../pages/moderator-ui/component/TeamCompetition/TeamCompetition";
 import RoundCompetition from "../pages/moderator-ui/component/RoundCompetition/RoundCompetition";
 import CreateTournament from "../pages/moderator-ui/layout/CreateTournament/CreateTournament";
 import MatchScheduleComponent from "../pages/moderator-ui/component/MatchScheduleComponent/MatchScheduleComponent";
+import CreateTournamentCompetition from "../pages/moderator-ui/component/CreateTournamentCompetition/CreateTournamentCompetition";
+import RegisterContestant from "../pages/moderator-ui/component/RegisterContestant/RegisterContestant";
+import MatchGroupStageComponent from "../pages/moderator-ui/component/MatchGroupStageComponent/MatchGroupStageComponent";
+import ListContestant from "../pages/moderator-ui/component/ListContestant/ListContestant";
+import ListReferee from "../pages/moderator-ui/component/ListReferee/ListReferee";
+import InfoTournament from "../pages/moderator-ui/component/InfoTournament/InfoTournament";
+import CreateTournamentInfo from "../pages/moderator-ui/component/CreateTournamentInfo/CreateTournamentInfo";
+
 
 export const tournamentRoutes = [
   { path: "mycompetition", element: <ManageCompetition /> },
   { path: "contestant", element: <ListContestant /> },
+  { path: "refee", element: <ListReferee /> },
+  { path: "settings", element: <CreateTournamentInfo/> },
 ];
-
 export const competitionChildren = [
   { path: "dashboard", element: <div>Tournament Dashboard</div> },
-  { path: "schedule", element: <div>Lịch Thi Đấu</div> },
-  { path: "ranking", element: <div>Bảng Xếp Hạng</div> },
+  { path: "schedule", element: <MatchScheduleComponent/> },
+  { path: "teammatch", element: <TeamCompetition/> },
   { path: "customize", element: <TournamentConfiguration /> },
 ];
 
@@ -36,6 +44,7 @@ export const league_detail = [
   { path: "", element: <Navigate to="competition" /> },
   { path: "team-list", element: <TeamList /> },
   { path: "competition", element: <CompetitionList /> },
+  { path: "register-contestant", element: <RegisterContestant /> },
   { path: "competition/:competitionId/*", element: <CompetitionDetail /> },
 ];
 export const competition_detail_router = [
@@ -44,8 +53,8 @@ export const competition_detail_router = [
   { path: "game-rule", element: <GameRuleComponent /> },
   { path: "team-competition-list", element: <TeamCompetition /> },
   { path: "match-schedule", element: <MatchScheduleComponent /> },
-  { path: "stage-group", element: <RoundCompetition /> },
-  { path: "knockout", element: <RoundCompetition /> },
+  { path: "stage-group", element: <MatchGroupStageComponent /> },
+  { path: "knockout", element: <MatchScheduleComponent /> },
 ];
 
 export const profileChildren = [
@@ -68,7 +77,8 @@ const moderatorRouter = [
     element: <LeagueDetail />,
   },
   {
-    path: "/mytournament/:tournamentId/mycompetition/:competitionId/*", element: <Competition />
+    path: "/mytournament/:tournamentId/mycompetition/:competitionId/*",
+    element: <Competition />,
   },
   {
     path: "/mytournament/:id/*",

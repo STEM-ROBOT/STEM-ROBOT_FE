@@ -1,0 +1,138 @@
+.order_table_container {
+    padding: 20px;
+
+}
+
+.order_table_title {
+    font-size: 24px;
+    font-weight: 500;
+    padding-bottom: 20px;
+}
+
+.order_table_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.order_table_search_container {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.order_table_search_input {
+    border: none;
+    outline: none;
+    background: transparent;
+    padding-left: 10px;
+}
+
+.order_table_action_buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.order_table_export_button,
+.order_table_add_button {
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.order_table_export_button {
+    background-color: #fff;
+    color: #666;
+    border: 1px solid #ccc;
+}
+
+.order_table_add_button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+}
+
+.order_table_main {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.order_table_main th,
+.order_table_main td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    color: #333;
+}
+
+.order_table_main thead {
+    background-color: #f8f9fa;
+    color: #666;
+    font-weight: normal;
+}
+
+.order_table_info {
+    display: flex;
+    align-items: center;
+}
+
+.order_table_avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.order_table_order_id {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.status_label {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status_label.completed {
+    background-color: #28a745;
+}
+
+.status_label.pending {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.status_label {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85em;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .status_label.success {
+    background-color: #28a745;
+  }
+  
+  .status_label.failed {
+    background-color: #dc3545;
+  }
+  
+
+.order_table_main tbody tr:hover {
+    background-color: #f1f1f1;
+}

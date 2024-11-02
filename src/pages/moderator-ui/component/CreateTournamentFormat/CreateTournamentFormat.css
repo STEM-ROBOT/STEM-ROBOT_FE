@@ -2,14 +2,15 @@
   width: 100%;
 }
 .format_create {
-  padding: 10px 10%;
+  padding: 10px 2%;
 }
 .format_create_move {
-  padding: 0 10%;
+  padding: 0 2%;
 }
 .format_create_move.active {
-  padding: 10px 10%;
+  padding: 10px 2%;
 }
+
 .competition_format {
   background-color: #fff;
   border-radius: 7px;
@@ -62,6 +63,10 @@
   background-color: #a4c1cf;
 }
 .format_option_img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
   width: 80%;
   height: 80%;
 }

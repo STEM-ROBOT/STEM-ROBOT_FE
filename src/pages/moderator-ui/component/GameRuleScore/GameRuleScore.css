@@ -1,0 +1,112 @@
+.game_rule_score {
+  width: 100%;
+}
+
+.rule_score_head {
+  width: 100%;
+  padding: 20px 10px;
+  background-color: #9ecff8;
+  color: #022d50;
+  font-size: 17px;
+  font-weight: 500;
+  border-radius: 13px;
+  margin-bottom: 10px;
+}
+.rule_score_body {
+  margin: 10px 0;
+}
+.rule_score_title {
+  background-color: #022d50;
+  color: #fff;
+  font-size: 21px;
+  font-weight: 700;
+  padding: 5px;
+  border-radius: 7px 7px 0 0;
+  text-align: center;
+}
+.rule_score_view {
+  border: 1px dashed #022d50;
+  border-radius: 0 0 7px 7px;
+}
+.score_item {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.377);
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 7px;
+}
+.score_item_description {
+  width: 60%;
+  border-right: 2px dashed #022d50;
+  padding: 10px;
+  align-items: center;
+  font-size: 17px;
+  font-weight: 500;
+  color: rgb(5, 150, 160);
+}
+.score_item_point {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+.score_item_point_item {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 100px;
+  color: #fff;
+  background-color: #e91f1f;
+}
+.score_item_point_item.plus {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  background-color: #008106;
+}
+.score_item_point_item.minus {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  background-color: #b6b905;
+}
+/* SETUP Score */
+.score_item_action {
+  border-left: 2px dashed #022d50;
+  padding: 0 10px;
+  width: 8%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.score_item_action_item {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+}
+.action_item {
+  width: 20px;
+  height: 20px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100px;
+  text-align: center;
+}
+.action_item.update {
+  background-color: #0077e6;
+  color: #fff;
+}
+.action_item.delete {
+  background-color: #e60800;
+  color: #fff;
+}
+.action_item:hover {
+  scale: 1.04;
+  cursor: pointer;
+}

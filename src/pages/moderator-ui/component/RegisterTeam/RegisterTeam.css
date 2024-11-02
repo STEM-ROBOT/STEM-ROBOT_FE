@@ -1,0 +1,152 @@
+.register_team_container {
+  background-color: #fff;
+  border-radius: 7px;
+}
+.register_step_container {
+  display: flex;
+  justify-content: center;
+}
+.register_step {
+  width: 25%;
+  padding: 20px 0;
+  height: 100px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.step_regis_number {
+  font-size: 17px;
+  font-weight: 500;
+  color: #043b5b;
+  display: flex;
+  justify-content: center;
+}
+.step_regis_progress {
+  width: 100%;
+}
+.step_regis_view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff00;
+  position: relative;
+}
+.progress_icon_step {
+  width: 35px;
+  height: 35px;
+  color: #3ca3d0;
+  position: absolute;
+  right: 0;
+  right: 45%;
+  z-index: 1;
+}
+.progress_icon_step_2 {
+  position: absolute;
+  right: 0;
+  left: 45%;
+  z-index: 1;
+  width: 35px;
+  height: 35px;
+  color: #b9c6cb;
+}
+.progress_icon_step_2.active {
+  width: 35px;
+  height: 35px;
+  color: #3ca3d0;
+}
+.progress_step {
+  height: 6px;
+  border-radius: 5%;
+  width: 47%;
+  background-color: #b9c6cb;
+  position: absolute;
+  right: 0;
+}
+.progress_step.active {
+  background-color: #3ca3d0;
+}
+
+.progress_step_right {
+  height: 6px;
+  border-radius: 5%;
+  width: 47%;
+  background-color: #b9c6cb;
+  position: absolute;
+  left: 0;
+}
+.progress_step_right.active {
+  background-color: #3ca3d0;
+}
+.register_info_team {
+  padding: 20px;
+  display: flex;
+}
+.register_info_intro_team {
+  padding: 20px;
+}
+
+/* Step 2  */
+.register_contestant_cancel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon_contestant {
+  width: 25px;
+  height: 25px;
+}
+.cancel_register_team {
+  margin: 0 6px;
+  color: #df1818;
+  font-weight: 700;
+  font-size: 17px;
+  transition: scale 0.1s ease-in-out;
+}
+.cancel_register_team:hover {
+  cursor: pointer;
+  margin: 0 8px;
+  scale: 1.03;
+}
+.register_warning {
+  display: flex;
+  align-items: center;
+  padding: 5px 20px;
+  background-color: #d9edf7;
+  border-radius: 7px;
+  color: #31708f;
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+.register_config_team {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.register_action_option {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.btn_register_action {
+  background-color: #3ca3d0;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: 500;
+  width: 160px;
+  height: 30px;
+  border-radius: 7px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+.register_action_icon {
+  width: 15%;
+  height: 65%;
+}
+.btn_register_action:hover {
+  box-shadow: 0 0 10px rgba(112, 173, 235, 0.8);
+}

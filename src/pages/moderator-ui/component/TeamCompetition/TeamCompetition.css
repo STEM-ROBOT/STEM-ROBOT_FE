@@ -1,4 +1,6 @@
 .team-list-container {
+  background-color: white;
+  border-radius: 7px;
   display: flex;
   /* justify-content: space-around; */
   flex-wrap: wrap;
@@ -7,14 +9,15 @@
 }
 
 .team-card {
+
   position: relative;
-  background-color: white;
+  background-color: rgb(216, 235, 247);
   border: 1px solid #e5e5e5;
   border-radius: 7px;
   padding: 13px;
   width: 240px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.418);
   overflow: hidden;
   transition: transform 0.3s ease;
   cursor: pointer;

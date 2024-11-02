@@ -37,6 +37,7 @@ const tabs = [
     path: "knockout",
   },
 ];
+
 const CompetitionDetail = () => {
   const path = useParams();
   const navigate = useNavigate();
@@ -45,10 +46,12 @@ const CompetitionDetail = () => {
   const name = location.state?.names || localStorage.getItem("competitionName");
   const endDate =
     location.state?.endDate || localStorage.getItem("competitionEndDate");
-  console.log(name);
-  console.log(endDate);
+  const now = new Date();
+  const end = new Date(endDate);
+  console.log(path, location);
 
   useEffect(() => {
+  
     const targetPosition = 245;
     const startPosition = window.scrollY;
     const distance = targetPosition - startPosition;
@@ -77,9 +80,9 @@ const CompetitionDetail = () => {
   const handleTabClick = (tab) => {
     localStorage.setItem("competitionRgEndDate", endDate),
       navigate(
-        `/league/${path.league_id}/competition/${path.competitionId}/${tab.path}`,
+        `${tab.path}`,
         {
-          state: {endDate},
+          state: { endDate },
         }
       );
   };

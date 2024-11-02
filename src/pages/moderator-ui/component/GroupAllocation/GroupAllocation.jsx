@@ -12,30 +12,31 @@ const initialTeams = [
     { id: 6, name: 'Đội #6' },
     { id: 7, name: 'Đội #7' },
     { id: 8, name: 'Đội #8' },
+  
 ];
 
 const GroupAllocation = () => {
-    const [groupCount, setGroupCount] = useState(3); // Number of groups
-    const [groups, setGroups] = useState([]); // Empty groups initially
-    const [teamsToNextRound, setTeamsToNextRound] = useState(Array(groupCount).fill(1)); // Teams going to next round
-    const [error, setError] = useState(''); // Error message for validation
-    const [totalTeamsToNextRound, setTotalTeamsToNextRound] = useState(2); // Total teams advancing to next round
+    const [groupCount, setGroupCount] = useState(3); 
+    const [groups, setGroups] = useState([]); 
+    const [teamsToNextRound, setTeamsToNextRound] = useState(Array(groupCount).fill(1)); 
+    const [error, setError] = useState(''); 
+    const [totalTeamsToNextRound, setTotalTeamsToNextRound] = useState(2); 
 
-    // Function to divide teams into groups
+  
     const divideTeamsIntoGroups = (teams, groupCount) => {
-        let shuffledTeams = [...teams].sort(() => Math.random() - 0.5); // Shuffle teams
+        let shuffledTeams = [...teams].sort(() => Math.random() - 0.5); 
         let groupSize = Math.floor(shuffledTeams.length / groupCount); // Base group size
         let extraTeams = shuffledTeams.length % groupCount; // Remaining teams to distribute
         let dividedGroups = [];
         let teamIndex = 0;
 
         for (let i = 0; i < groupCount; i++) {
-            // Distribute the remaining teams across the first few groups
+           
             let currentGroupSize = groupSize + (extraTeams > 0 ? 1 : 0);
             let group = shuffledTeams.slice(teamIndex, teamIndex + currentGroupSize);
             dividedGroups.push(group);
             teamIndex += currentGroupSize;
-            extraTeams--; // Reduce extra teams after assigning
+            extraTeams--; 
         }
         return dividedGroups;
     };

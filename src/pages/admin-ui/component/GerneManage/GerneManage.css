@@ -1,0 +1,107 @@
+.genre_manage_container {
+  padding: 20px;
+}
+
+.genre_manage_container_title {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.genre_manage_container_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.genre_manage_search_container {
+  flex: 1;
+  max-width: 300px;
+}
+
+.genre_manage_search_input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1em;
+}
+
+.genre_manage_action_buttons {
+  margin-left: 10px;
+}
+
+.genre_manage_add_button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.genre_manage_add_button:hover {
+  background-color: #0056b3;
+}
+
+.genre_manage_container_wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  justify-items: center;
+}
+
+.genre_card_wrapper {
+  position: relative;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 250px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.genre_card_wrapper:hover {
+  transform: translateY(-5px);
+}
+
+.genre_card_edit_icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #01395f;
+  color: #fff;
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.genre_card_edit_icon:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.genre_card_image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.genre_card_content_wrapper {
+  padding: 15px;
+}
+
+.genre_card_title_text {
+  font-size: 1.2em;
+  color: #333;
+  margin: 0;
+  font-weight: bold;
+}

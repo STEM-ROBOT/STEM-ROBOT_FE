@@ -35,7 +35,7 @@
 }
 
 .accordion-title {
-    background-color: #558b2f;
+    background-color: #06518f;
     color: white;
     padding: 10px;
     cursor: pointer;
@@ -45,10 +45,10 @@
 }
 
 .accordion-title:hover {
-    background-color: #33691e;
+    background-color: #0e3c61;
 }
 
 .accordion-content {
-    background-color: #aed581;
+    background-color: #f4f4f4;
     padding: 10px;
 }

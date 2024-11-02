@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./CompetitionList.css";
 import { IoLogoGameControllerB } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
+import api from "../../../../config";
 const competitions = [
   {
     id: 1,
@@ -29,7 +30,21 @@ const competitions = [
 
 const CompetitionList = () => {
   const path = useParams();
+  console.log(path);
+
   const navigate = useNavigate();
+  const [competitions, setCompetitions] = useState([]);
+  useEffect(() => {
+    api
+      .get(`/api/competitions/tournament?id=${path.league_id}`)
+      .then((competition) => {
+        console.log(competition);
+        setCompetitions(competition.data.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   const tagStatuses = (competition) => {
     const now = new Date(); // Lấy thời gian hiện tại
     const endDate = new Date(competition.endDate);
@@ -68,17 +83,17 @@ const CompetitionList = () => {
             key={competition.id}
             className="competition_item"
             onClick={() => {
-              localStorage.setItem("competitionName", competition.name),
-                localStorage.setItem("competitionEndDate", competition.endDate),
-                navigate(
-                  `/league/${path.league_id}/competition/${competition.id}`,
-                  {
-                    state: {
-                      names: competition.name,
-                      endDate: competition.endDate,
-                    },
-                  }
-                );
+              {
+                localStorage.setItem("competitionName", competition.name),
+                  localStorage.setItem(
+                    "competitionEndDate",
+                    competition.endDate
+                  ),
+                  navigate(
+                    `${competition.id}`,
+                   
+                  );
+              }
             }}
           >
             <div className={activeStatuses(competition)}>
