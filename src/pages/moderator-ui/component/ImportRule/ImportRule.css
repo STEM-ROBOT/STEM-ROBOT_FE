@@ -11,6 +11,12 @@
     justify-content: space-between;
    
 }
+.import-rule-title{
+    font-style: italic; 
+    text-decoration: underline; 
+    cursor: pointer; 
+    padding: 10px 0;
+}
 
 /* Input for file upload */
 .import-rule-input-file {

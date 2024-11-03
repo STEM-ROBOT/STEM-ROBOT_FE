@@ -13,7 +13,7 @@ import RefereeAssignment from '../../component/RefereeAssignment/RefereeAssignme
 import ManageArena from '../../component/ManageArena/ManageArena';
 
 const TournamentConfiguration = () => {
-  const [tournamentFormat, setTournamentFormat] = useState("knoutourt");
+  const [tournamentFormat, setTournamentFormat] = useState("vòng bảng");
   const [activeItem, setActiveItem] = useState("config");
 
 
@@ -21,45 +21,136 @@ const TournamentConfiguration = () => {
 
   const data = {
     teams: [
-      { id: 1, name: "Đội 1" }, { id: 2, name: "Đội 2" }, { id: 3, name: "Đội 3" },
-      { id: 4, name: "Đội 4" }, { id: 5, name: "Đội 5" }, { id: 6, name: "Đội 6" },
-      { id: 7, name: "Đội 7" }, { id: 8, name: "Đội 8" }, { id: 9, name: "Đội 9" },
-      { id: 10, name: "Đội 10" }, { id: 11, name: "Đội 11" }, { id: 12, name: "Đội 12" },
-      { id: 13, name: "Đội 13" }
+      { teamId: 1, name: "Đội 1" },
+      { teamId: 2, name: "Đội 2" },
+      { teamId: 3, name: "Đội 3" },
+      { teamId: 4, name: "Đội 4" },
+      { teamId: 5, name: "Đội 5" },
+      { teamId: 6, name: "Đội 6" },
+      { teamId: 7, name: "Đội 7" },
+      { teamId: 8, name: "Đội 8" },
+      { teamId: 9, name: "Đội 9" },
+      { teamId: 10, name: "Đội 10" },
+      { teamId: 11, name: "Đội 11" },
+      { teamId: 12, name: "Đội 12" },
+      { teamId: 13, name: "Đội 13" },
     ],
-    rounds: {
-      "1/8": {
-        teams_bye: [{ id: 11, name: "Đội 11" }, { id: 12, name: "Đội 12" }, { id: 13, name: "Đội 13" }],
+    rounds: [
+      {
+        roundId: 1,
+        roundName: "1/8",
         matches: [
-          { id: 1, team1Id: 1, team2Id: 2 },
-          { id: 2, team1Id: 3, team2Id: 4 },
-          { id: 3, team1Id: 5, team2Id: 6 },
-          { id: 4, team1Id: 7, team2Id: 8 },
-          { id: 5, team1Id: 9, team2Id: 10 }
-        ]
+          {
+            matchId: 1,
+            teamsmatch: [
+              { teamMatchId: 1, teamId: "", teamName: "" },
+              { teamMatchId: 2, teamId: "", teamName: "" },
+            ],
+          },
+          {
+            matchId: 2,
+            teamsmatch: [
+              { teamMatchId: 3, teamId: "", teamName: "" },
+              { teamMatchId: 4, teamId: "", teamName: "" },
+            ],
+          },
+          {
+            matchId: 3,
+            teamsmatch: [
+              { teamMatchId: 5, teamId: "", teamName: "" },
+              { teamMatchId: 6, teamId: "", teamName: "" },
+            ],
+          },
+          {
+            matchId: 4,
+            teamsmatch: [
+              { teamMatchId: 7, teamId: "", teamName: "" },
+              { teamMatchId: 8, teamId: "", teamName: "" },
+            ],
+          },
+          {
+            matchId: 5,
+            teamsmatch: [
+              { teamMatchId: 9, teamId: "", teamName: "" },
+              { teamMatchId: 10, teamId: "", teamName: "" },
+            ],
+          },
+        ],
       },
-      "tứ kết": {
+      {
+        roundId: 2,
+        roundName: "Tứ kết",
         matches: [
-          { id: 6, team1Id: 11, team2Id: "w#1" },
-          { id: 7, team1Id: 12, team2Id: "w#2" },
-          { id: 8, team1Id: 13, team2Id: "w#3" },
-          { id: 9, team1Id: "w#4", team2Id: "w#5" }
-        ]
+          {
+            matchId: 6,
+            teamsmatch: [
+              { teamMatchId: 11, teamId: "", teamName: "" },
+              { teamMatchId: 12, teamId: "", teamName: "W#1" },
+            ],
+          },
+          {
+            matchId: 7,
+            teamsmatch: [
+              { teamMatchId: 13, teamId: "", teamName: "" },
+              { teamMatchId: 14, teamId: "", teamName: "W#2" },
+            ],
+          },
+          {
+            matchId: 8,
+            teamsmatch: [
+              { teamMatchId: 15, teamId: "", teamName: "" },
+              { teamMatchId: 16, teamId: "", teamName: "W#3" },
+            ],
+          },
+          {
+            matchId: 9,
+            teamsmatch: [
+              { teamMatchId: 7, teamId: "", teamName: "W#5" },
+              { teamMatchId: 8, teamId: "", teamName: "W#4" },
+            ],
+          },
+        ],
       },
-      "bán kết": {
+      {
+        roundId: 3,
+        roundName: "Bán kết",
         matches: [
-          { id: 10, team1Id: "w#6", team2Id: "w#7" },
-          { id: 11, team1Id: "w#8", team2Id: "w#9" }
-        ]
+          {
+            matchId: 11,
+            teamsmatch: [
+              { teamMatchId: 9, teamId: "", teamName: "W#6" },
+              { teamMatchId: 10, teamId: "", teamName: "W#7" },
+            ],
+          },
+          {
+            matchId: 12,
+            teamsmatch: [
+              { teamMatchId: 11, teamId: "", teamName: "W#8" },
+              { teamMatchId: 12, teamId: "", teamName: "W#9" },
+            ],
+          },
+        ],
       },
-      "chung kết": {
+      {
+        roundId: 4,
+        roundName: "Chung kết",
         matches: [
-          { id: 12, team1Id: "w#10", team2Id: "w#11" }
-        ]
+          {
+            matchId: 7,
+            teamsmatch: [
+              { teamMatchId: 13, teamId: "", teamName: "W#11" },
+              { teamMatchId: 14, teamId: "", teamName: "W#12" },
+            ],
+          },
+        ],
       },
-    },
-    status: false
+    ],
+    status: false,
   };
+  
+
+
+
 
   const renderComponent = () => {
     switch (activeItem) {
@@ -82,9 +173,9 @@ const TournamentConfiguration = () => {
       case 'sponsors':
         return <></>;
       case 'groupstage':
-        return isGroupStage ? <GroupAllocation /> : null; 
+        return isGroupStage ? <GroupAllocation /> : null;
       case 'arena':
-        return <ManageArena />; 
+        return <ManageArena />;
       default:
         return <></>;
     }

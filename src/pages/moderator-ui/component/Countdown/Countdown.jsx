@@ -23,29 +23,6 @@ const introduction = `🏆 Lâu lâu không tạo giải cho anh em, anh em hỏ
 const Countdown = () => {
   const navigate = useNavigate();
   const pram = useParams();
-  const [registerConfigApi, setRegisterConfigApi] = useState();
-  const [showRegisterTeam, setRegisterTeam] = useState(false);
-  useEffect(() => {
-    api
-      .get(`${api_register_time_check + pram.competitionId}`)
-      .then((response) => {
-        setRegisterConfigApi(response.data);
-
-        if (response.data?.status == "") {
-          navigate(`/404error`);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
   const calculateTimeLeft = () => {
     const difference = new Date(registerConfigApi?.registerTime) - new Date();
     let timeLeft = {};
@@ -58,11 +35,32 @@ const Countdown = () => {
         seconds: Math.floor((difference / 1000) % 60),
       };
     }
-
     return timeLeft;
   };
 
+  const [registerConfigApi, setRegisterConfigApi] = useState();
+  const [showRegisterTeam, setRegisterTeam] = useState(false);
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  useEffect(() => {
+    api
+      .get(`${api_register_time_check + pram.competitionId}`)
+      .then((response) => {
+        if (response.data?.status == "") {
+          navigate(`/404error`);
+        }
+        setRegisterConfigApi(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [registerConfigApi]);
+
   return (
     <div className="countdown_page">
       {showRegisterTeam ? (
