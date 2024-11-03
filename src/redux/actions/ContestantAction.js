@@ -25,14 +25,14 @@ export const getListContestant = (tournamentId) => async (dispatch) => {
     }
   };
 
-  export const addContestant = (contestants) => async (dispatch) => {
-    console.log("Payload gửi đi:", contestants); // Kiểm tra cấu trúc payload trước khi gửi
+  export const addContestant = (touramentId,contestants) => async (dispatch) => {
+    console.log(touramentId, contestants);
 
     try {
         dispatch({ type: CREATE_CONTESTANT_REQUEST });
 
         const { data } = await api.post(
-            `/api/contestants/list-contestant`,
+            `api/contestants/list-contestant?tournamentId=${touramentId}`,
             contestants,
             {
                 headers: {

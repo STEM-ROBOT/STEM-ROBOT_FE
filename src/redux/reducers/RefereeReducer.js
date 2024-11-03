@@ -1,4 +1,4 @@
-import { CREATE_REFEREE_FAIL, CREATE_REFEREE_REQUEST, CREATE_REFEREE_RESET, CREATE_REFEREE_SUCCESS, GET_REFEREE_FAIL, GET_REFEREE_REQUEST, GET_REFEREE_RESET, GET_REFEREE_SUCCESS } from "../constants/RefereeConstant";
+import { CREATE_REFEREE_FAIL, CREATE_REFEREE_REQUEST, CREATE_REFEREE_RESET, CREATE_REFEREE_SUCCESS, GET_FREETIME_REFEREE_FAIL, GET_FREETIME_REFEREE_REQUEST, GET_FREETIME_REFEREE_RESET, GET_FREETIME_REFEREE_SUCCESS, GET_REFEREE_FAIL, GET_REFEREE_REQUEST, GET_REFEREE_RESET, GET_REFEREE_SUCCESS } from "../constants/RefereeConstant";
 
 export const getRefereeReducer = (state = { listReferee: [] }, action) => {
     switch (action.type) {
@@ -25,6 +25,21 @@ export const createRefereeReducer = (state = {}, action) => {
         case CREATE_REFEREE_FAIL:
             return { loading: false, error: action.payload };
         case CREATE_REFEREE_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+export const getFreeTimeRefereeReducer = (state = { listRefereefreetime: [] }, action) => {
+    switch (action.type) {
+        case GET_FREETIME_REFEREE_REQUEST:
+            return { loading: true };
+        case GET_FREETIME_REFEREE_SUCCESS:
+            return { loading: false, listRefereefreetime: action.payload };
+        case GET_FREETIME_REFEREE_FAIL:
+            return { loading: false, error: action.payload };
+        case GET_FREETIME_REFEREE_RESET:
             return {};
         default:
             return state;
