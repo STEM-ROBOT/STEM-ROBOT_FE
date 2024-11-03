@@ -1,77 +1,105 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaTrash, FaPlus } from 'react-icons/fa';
 import './GroupAllocation.css';
-
-// Initial teams list as objects
-const initialTeams = [
-    { id: 1, name: 'Đội #1' },
-    { id: 2, name: 'Đội #2' },
-    { id: 3, name: 'Đội #3' },
-    { id: 4, name: 'Đội #4' },
-    { id: 5, name: 'Đội #5' },
-    { id: 6, name: 'Đội #6' },
-    { id: 7, name: 'Đội #7' },
-    { id: 8, name: 'Đội #8' },
-  
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { AddTeamsTable, getTeamsTable } from '../../../../redux/actions/TeamAction';
+import { useParams } from 'react-router-dom';
 
 const GroupAllocation = () => {
-    const [groupCount, setGroupCount] = useState(3); 
-    const [groups, setGroups] = useState([]); 
-    const [teamsToNextRound, setTeamsToNextRound] = useState(Array(groupCount).fill(1)); 
-    const [error, setError] = useState(''); 
-    const [totalTeamsToNextRound, setTotalTeamsToNextRound] = useState(2); 
+    const { competitionId } = useParams();
+    const dispatch = useDispatch();
 
-  
-    const divideTeamsIntoGroups = (teams, groupCount) => {
-        let shuffledTeams = [...teams].sort(() => Math.random() - 0.5); 
-        let groupSize = Math.floor(shuffledTeams.length / groupCount); // Base group size
-        let extraTeams = shuffledTeams.length % groupCount; // Remaining teams to distribute
-        let dividedGroups = [];
-        let teamIndex = 0;
+    const getTeams = useSelector((state) => state.getTeamTable);
+    const data = getTeams?.listTeams?.data;
 
-        for (let i = 0; i < groupCount; i++) {
-           
-            let currentGroupSize = groupSize + (extraTeams > 0 ? 1 : 0);
-            let group = shuffledTeams.slice(teamIndex, teamIndex + currentGroupSize);
-            dividedGroups.push(group);
-            teamIndex += currentGroupSize;
-            extraTeams--; 
+    const [tables, setTables] = useState([]);
+    const [teams, setTeams] = useState([]);
+    const [teamsToNextRound, setTeamsToNextRound] = useState([]);
+    const [totalTeamsToNextRound, setTotalTeamsToNextRound] = useState(2);
+    const [error, setError] = useState('');
+
+    // Tạo các giá trị mảng từ 2 đến 64
+    const teamOptions = Array.from({ length: 6 }, (_, i) => Math.pow(2, i + 1));
+
+    useEffect(() => {
+        dispatch(getTeamsTable(competitionId));
+    }, [competitionId, dispatch]);
+
+    useEffect(() => {
+        if (Array.isArray(data?.tables) && Array.isArray(data?.teams)) {
+            setTables(data.tables);
+            setTeams(data.teams);
+            setTeamsToNextRound(Array(data.tables.length).fill(1));
+
+            // Chia đội ngẫu nhiên sau khi dữ liệu được tải xong
+            randomizeGroups(data.teams, data.tables);
         }
-        return dividedGroups;
+    }, [data]);
+
+    const randomizeGroups = (teams, tables) => {
+        const shuffledTeams = [...teams].sort(() => Math.random() - 0.5);
+        const groupSizes = calculateGroupSizes(shuffledTeams.length, tables.length);
+
+        const newTables = tables.map((table, index) => {
+            const assignedTeams = shuffledTeams.splice(0, groupSizes[index]).map((team) => ({
+                teamId: team.teamId,
+                teamName: team.teamName,
+            }));
+            return { ...table, teams: assignedTeams };
+        });
+
+        setTables(newTables);
     };
 
-    // Function to randomize teams into the empty groups
-    const randomizeGroups = () => {
-        const newGroups = divideTeamsIntoGroups(initialTeams, groupCount);
-        setGroups(newGroups);
+    const calculateGroupSizes = (totalTeams, numGroups) => {
+        const baseSize = Math.floor(totalTeams / numGroups);
+        const extra = totalTeams % numGroups;
+
+        const sizes = Array(numGroups).fill(baseSize);
+        for (let i = 0; i < extra; i++) {
+            sizes[i]++;
+        }
+
+        return sizes;
     };
 
-    // Function to move teams between groups
-    const moveTeam = (team, fromGroupIndex, toGroupIndex) => {
-        const newGroups = [...groups];
-        newGroups[fromGroupIndex] = newGroups[fromGroupIndex].filter(t => t.id !== team.id);
-        newGroups[toGroupIndex].push(team);
-        setGroups(newGroups);
+    const moveTeam = (team, fromTableIndex, toTableIndex) => {
+        setTables((prevTables) => {
+            const newTables = prevTables.map((table, index) => {
+                if (index === fromTableIndex) {
+                    return {
+                        ...table,
+                        teams: table.teams.filter((t) => t.teamId !== team.teamId),
+                    };
+                }
+                if (index === toTableIndex) {
+                    return {
+                        ...table,
+                        teams: [...table.teams, { teamId: team.teamId, teamName: team.teamName }],
+                    };
+                }
+                return table;
+            });
+            return newTables;
+        });
     };
 
-    const handleTeamsToNextRoundChange = (groupIndex, value) => {
+    const handleTeamsToNextRoundChange = (tableIndex, value) => {
         const newTeamsToNextRound = [...teamsToNextRound];
-        newTeamsToNextRound[groupIndex] = parseInt(value, 10);
+        newTeamsToNextRound[tableIndex] = parseInt(value, 10);
         setTeamsToNextRound(newTeamsToNextRound);
     };
 
-    // Validation: Ensure each group has at least 3 teams
     const validateGroups = () => {
-        let totalSelectedTeams = teamsToNextRound.reduce((acc, val) => acc + val, 0);
+        const totalSelectedTeams = teamsToNextRound.reduce((acc, val) => acc + val, 0);
 
         if (totalSelectedTeams > totalTeamsToNextRound) {
             setError(`Số đội đi tiếp không được vượt quá ${totalTeamsToNextRound} đội.`);
             return false;
         }
 
-        for (let group of groups) {
-            if (group.length < 3) {
+        for (let table of tables) {
+            if (table.teams.filter((team) => team.teamId).length < 3) {
                 setError('Mỗi bảng phải có ít nhất 3 đội.');
                 return false;
             }
@@ -81,11 +109,18 @@ const GroupAllocation = () => {
         return true;
     };
 
-    // Handle save button click
     const handleSave = () => {
+      
         if (validateGroups()) {
-            // Proceed with saving if validation passes
-            console.log('Groups are valid, proceed with saving...');
+            const dataToSave = {       
+                tableAssign: tables.map((table) => ({
+                    tableGroupId: table.tableId,
+                    tableGroupName: table.tableName,
+                    teams: table.teams.map((team) => team.teamId)
+                })),
+                teamNextRound:totalTeamsToNextRound,
+            };
+            dispatch(AddTeamsTable(competitionId,dataToSave))
         }
     };
 
@@ -103,66 +138,76 @@ const GroupAllocation = () => {
                     value={totalTeamsToNextRound}
                     onChange={(e) => setTotalTeamsToNextRound(parseInt(e.target.value, 10))}
                 >
-                    <option value="2">2</option>
-                    <option value="4">4</option>
-                    <option value="8">8</option>
+                    {teamOptions.map((value) => (
+                        <option key={value} value={value}>
+                            {value}
+                        </option>
+                    ))}
                 </select>
             </div>
 
-            <div className="custom-info-box">
-                <p>Giải đấu gồm {groupCount} bảng.</p>
-                <p>Bạn có thể thay đổi bảng đấu cho đội bằng cách kéo thả hoặc xóa đấu thủ, hay bạn có thể thay đổi số đội đi tiếp ở vòng đấu loại trực tiếp.</p>
-            </div>
-
-            <button className="custom-randomize-btn" onClick={randomizeGroups}>
+            <button className="custom-randomize-btn" onClick={() => randomizeGroups(teams, tables)}>
                 Chia đội ngẫu nhiên
             </button>
 
-            {error && <div className="custom-error-message">{error}</div>} 
+            {error && <div className="custom-error-message">{error}</div>}
 
             <div className="custom-groups-container">
-                {groups.map((group, groupIndex) => (
-                    <div key={groupIndex} className="custom-group">
-                        <h3>{`Bảng ${String.fromCharCode(65 + groupIndex)}`}</h3>
+                {tables.map((table, tableIndex) => (
+                    <div key={table.tableId} className="custom-group">
+                        <h3>Bảng {table.tableName}</h3>
 
                         <div className="custom-group-header">
                             <label>Chọn</label>
                             <select
-                                value={teamsToNextRound[groupIndex]}
-                                onChange={(e) => handleTeamsToNextRoundChange(groupIndex, e.target.value)}
+                                value={teamsToNextRound[tableIndex]}
+                                onChange={(e) => handleTeamsToNextRoundChange(tableIndex, e.target.value)}
                             >
-                                {[...Array(groups[groupIndex].length).keys()].map(i => (
-                                    <option key={i} value={i + 1}>{i + 1}</option>
+                                {[...Array(table.teams.filter((t) => t.teamId).length).keys()].map((i) => (
+                                    <option key={i} value={i + 1}>
+                                        {i + 1}
+                                    </option>
                                 ))}
                             </select>
                             đội đi tiếp
                         </div>
 
-                        {group.length === 0 ? (
-                            <p>Bảng rỗng</p> // Display "Empty group" text when no teams are assigned
-                        ) : (
-                            group.map((team) => (
-                                <div key={team.id} className="custom-team-item">
-                                    {team.name}
-                                    <div className="custom-team-controls">
-                                        {groupIndex > 0 && (
-                                            <FaPlus onClick={() => moveTeam(team, groupIndex, groupIndex - 1)} />
-                                        )}
-                                        {groupIndex < groups.length - 1 && (
-                                            <FaPlus onClick={() => moveTeam(team, groupIndex, groupIndex + 1)} />
-                                        )}
-                                        <FaTrash onClick={() => setGroups(groups.map((g, idx) =>
-                                            idx === groupIndex ? g.filter(t => t.id !== team.id) : g
-                                        ))} />
-                                    </div>
+                        {table.teams.map((team, teamIndex) => (
+                            <div key={teamIndex} className="custom-team-item">
+                                {team.teamName || 'Chưa có đội'}
+                                <div className="custom-team-controls">
+                                    {tableIndex > 0 && team.teamId && (
+                                        <FaPlus onClick={() => moveTeam(team, tableIndex, tableIndex - 1)} />
+                                    )}
+                                    {tableIndex < tables.length - 1 && team.teamId && (
+                                        <FaPlus onClick={() => moveTeam(team, tableIndex, tableIndex + 1)} />
+                                    )}
+                                    {team.teamId && (
+                                        <FaTrash
+                                            onClick={() =>
+                                                setTables((prevTables) =>
+                                                    prevTables.map((tbl, idx) =>
+                                                        idx === tableIndex
+                                                            ? {
+                                                                  ...tbl,
+                                                                  teams: tbl.teams.filter((_, i) => i !== teamIndex),
+                                                              }
+                                                            : tbl
+                                                    )
+                                                )
+                                            }
+                                        />
+                                    )}
                                 </div>
-                            ))
-                        )}
+                            </div>
+                        ))}
                     </div>
                 ))}
             </div>
 
-            <button className="custom-save-btn" onClick={handleSave}>Lưu</button>
+            <button className="custom-save-btn" onClick={handleSave}>
+                Lưu
+            </button>
         </div>
     );
 };

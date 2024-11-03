@@ -1,11 +1,11 @@
 import api from "../../config";
-import { CREATE_REFEREE_FAIL, CREATE_REFEREE_REQUEST, CREATE_REFEREE_SUCCESS, GET_REFEREE_FAIL, GET_REFEREE_REQUEST, GET_REFEREE_SUCCESS } from "../constants/RefereeConstant";
+import { CREATE_REFEREE_FAIL, CREATE_REFEREE_REQUEST, CREATE_REFEREE_SUCCESS, GET_FREETIME_REFEREE_FAIL, GET_FREETIME_REFEREE_REQUEST, GET_FREETIME_REFEREE_SUCCESS, GET_REFEREE_FAIL, GET_REFEREE_REQUEST, GET_REFEREE_SUCCESS } from "../constants/RefereeConstant";
 
 export const getListReferee = (tournamentId) => async (dispatch) => {
     try {
       dispatch({ type: GET_REFEREE_REQUEST });
   
-      const { data } = await api.get(`/api/referees/bytournamentId=${tournamentId}`);
+      const { data } = await api.get(`api/referees/byTournamnet/${tournamentId}`);
   
       dispatch({ type: GET_REFEREE_SUCCESS, payload: data });
     } catch (error) {
@@ -53,4 +53,26 @@ export const getListReferee = (tournamentId) => async (dispatch) => {
             payload: message,
         });
     }
+};
+
+export const getListRefereeFreeTime = (tournamentId) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_FREETIME_REFEREE_REQUEST });
+
+    const { data } = await api.get(`/api/referees/free-referee?tournamentId=${tournamentId}`);
+
+    dispatch({ type: GET_FREETIME_REFEREE_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      // dispatch(logout());
+    }
+    dispatch({
+      type: GET_FREETIME_REFEREE_FAIL,
+      payload: message,
+    });
+  }
 };

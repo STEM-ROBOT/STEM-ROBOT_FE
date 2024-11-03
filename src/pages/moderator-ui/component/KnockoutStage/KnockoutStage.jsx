@@ -9,7 +9,7 @@ const advancingTeams = [
     { id: 4, name: 'Nhất Bảng D = Chưa xác định' },
 ];
 
-// Function to generate matches based on advancing teams
+
 const generateKnockoutRounds = (teams) => {
     const rounds = [];
     let currentRoundTeams = [...teams];

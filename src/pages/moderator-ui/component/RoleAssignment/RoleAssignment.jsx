@@ -1,43 +1,66 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './RoleAssignment.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getListRefereeFreeTime } from '../../../../redux/actions/RefereeAction';
 
 const RoleAssignment = () => {
-  const [chiefReferees, setChiefReferees] = useState(1); // Fixed at 1
-  const [referees, setReferees] = useState(2); // Number of regular referees
-  const [simultaneousReferees, setSimultaneousReferees] = useState(3); // Total referees needed at the same time
-  const [selectAll, setSelectAll] = useState(false); // State to track select all checkbox
+  const { competitionId } = useParams();
+  const dispatch = useDispatch();
 
-  const [refereeList, setRefereeList] = useState([
-    { id: 1, name: "Nguyễn Văn A", email: "nguyenvana@example.com", role: "Trọng tài chính", selected: false, image: "https://i.pravatar.cc/100?img=1" },
-    { id: 2, name: "Trần Thị B", email: "tranthib@example.com", role: "Trọng tài viên", selected: false, image: "https://i.pravatar.cc/100?img=2" },
-    { id: 3, name: "Lê Văn C", email: "levanc@example.com", role: "Trọng tài viên", selected: false, image: "https://i.pravatar.cc/100?img=3" },
-    { id: 4, name: "Hoàng Thị D", email: "hoangthid@example.com", role: "Trọng tài chính", selected: false, image: "https://i.pravatar.cc/100?img=4" },
-    { id: 5, name: "Phạm Văn E", email: "phamvane@example.com", role: "Trọng tài viên", selected: false, image: "https://i.pravatar.cc/100?img=5" },
-  ]);
+  const [chiefReferees, setChiefReferees] = useState(1); 
+  const [referees, setReferees] = useState(2); 
+  const [simultaneousReferees, setSimultaneousReferees] = useState(3); 
+  const [selectAll, setSelectAll] = useState(false);
+
+  const getRefereesFreeTimes = useSelector((state) => state.getFreetimeReferee);
+  const refereeList = Array.isArray(getRefereesFreeTimes?.listRefereefreetime?.data)
+    ? getRefereesFreeTimes.listRefereefreetime.data
+    : [];
+
+  const [updatedRefereeList, setUpdatedRefereeList] = useState([]);
+
+  useEffect(() => {
+    dispatch(getListRefereeFreeTime(competitionId));
+  }, [dispatch, competitionId]);
+
+  useEffect(() => {
+    // Only set `updatedRefereeList` if it is different from `refereeList`
+    if (JSON.stringify(updatedRefereeList) !== JSON.stringify(refereeList)) {
+      setUpdatedRefereeList(
+        refereeList?.map(referee => ({
+          ...referee,
+          role: 'Staff', 
+          selected: false,
+        }))
+      );
+    }
+  }, [refereeList]);
 
   const handleRoleChange = (id, newRole) => {
-    const updatedReferees = refereeList.map((referee) =>
-      referee.id === id ? { ...referee, role: newRole } : referee
+    setUpdatedRefereeList(prevList =>
+      prevList.map(referee =>
+        referee.id === id ? { ...referee, role: newRole } : referee
+      )
     );
-    setRefereeList(updatedReferees);
   };
 
   const handleConfirm = () => {
     const requiredChiefReferees = chiefReferees * simultaneousReferees;
     const requiredRegularReferees = referees * simultaneousReferees;
 
-    const selectedChiefReferees = refereeList.filter(
-      (referee) => referee.selected && referee.role === "Trọng tài chính"
+    const selectedChiefReferees = updatedRefereeList.filter(
+      referee => referee.selected && referee.role === 'Manage'
     ).length;
-    const selectedRegularReferees = refereeList.filter(
-      (referee) => referee.selected && referee.role === "Trọng tài viên"
+    const selectedRegularReferees = updatedRefereeList.filter(
+      referee => referee.selected && referee.role === 'Staff'
     ).length;
 
     const chiefRefereesRemaining = requiredChiefReferees - selectedChiefReferees;
     const regularRefereesRemaining = requiredRegularReferees - selectedRegularReferees;
 
     if (chiefRefereesRemaining <= 0 && regularRefereesRemaining <= 0) {
-      alert("Valid selection! Referee roles confirmed.");
+      saveRefereesToDB(); 
     } else {
       alert(
         `Invalid selection!\n- Trọng tài chính: cần ${requiredChiefReferees}, đã chọn ${selectedChiefReferees}, còn thiếu ${chiefRefereesRemaining > 0 ? chiefRefereesRemaining : 0}\n` +
@@ -46,21 +69,34 @@ const RoleAssignment = () => {
     }
   };
 
+  const saveRefereesToDB = () => {
+    const selectedReferees = updatedRefereeList
+      .filter(referee => referee.selected)
+      .map(referee => ({
+        refereeId: referee.id,
+        role: referee.role,
+      }));
+    console.log(competitionId,selectedReferees)
+    dispatch();
+  };
+
   const toggleSelection = (id) => {
-    const updatedReferees = refereeList.map((referee) =>
-      referee.id === id ? { ...referee, selected: !referee.selected } : referee
+    setUpdatedRefereeList(prevList =>
+      prevList.map(referee =>
+        referee.id === id ? { ...referee, selected: !referee.selected } : referee
+      )
     );
-    setRefereeList(updatedReferees);
   };
 
   const handleSelectAll = () => {
     const newSelectAll = !selectAll;
     setSelectAll(newSelectAll);
-    const updatedReferees = refereeList.map((referee) => ({
-      ...referee,
-      selected: newSelectAll,
-    }));
-    setRefereeList(updatedReferees);
+    setUpdatedRefereeList(prevList =>
+      prevList.map(referee => ({
+        ...referee,
+        selected: newSelectAll,
+      }))
+    );
   };
 
   return (
@@ -68,7 +104,7 @@ const RoleAssignment = () => {
       <div className="role-assignment-header">
         <h2>Quản lí trọng tài</h2>
         <div className="header-buttons">
-          <button className="import-button">Import</button>
+          {/* <button className="import-button">Import</button> */}
           <button className="create-button" onClick={handleConfirm}>Lưu</button>
         </div>
       </div>
@@ -113,7 +149,7 @@ const RoleAssignment = () => {
           </tr>
         </thead>
         <tbody>
-          {refereeList.map((referee) => (
+          {updatedRefereeList.map((referee) => (
             <tr key={referee.id}>
               <td>
                 <input
@@ -131,8 +167,8 @@ const RoleAssignment = () => {
                   onChange={(e) => handleRoleChange(referee.id, e.target.value)}
                   className="role-select"
                 >
-                  <option value="Trọng tài chính">Trọng tài chính</option>
-                  <option value="Trọng tài viên">Trọng tài viên</option>
+                  <option value="Manage">Trọng tài chính</option>
+                  <option value="Staff">Trọng tài viên</option>
                 </select>
               </td>
             </tr>
