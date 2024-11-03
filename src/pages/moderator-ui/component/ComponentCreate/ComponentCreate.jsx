@@ -51,7 +51,8 @@ const ComponentCreate = () => {
 
     // Format competition list to match API structure
     const formattedCompetitions = competitionList.map((competition) => ({
-      genreId: competition.id, // Assuming each competition has an `id` field for genreId
+      genreId: competition.id, 
+      mode:""// Assuming each competition has an `id` field for genreId
     }));
 
     // Tournament data to be sent
@@ -61,7 +62,7 @@ const ComponentCreate = () => {
       location: address,
       image: avatarInput,
       status: mode, // Set status as needed
-      phone,
+      phone:phone,
       competition: formattedCompetitions,
     };
 
