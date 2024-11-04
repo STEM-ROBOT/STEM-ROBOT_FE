@@ -1,4 +1,4 @@
-import { GET_TEAMS_FAIL, GET_TEAMS_REQUEST, GET_TEAMS_RESET, GET_TEAMS_SUCCESS } from "../constants/TeamConstant";
+import { ADD_TEAM_KNOCKOUT_FAIL, ADD_TEAM_KNOCKOUT_REQUEST, ADD_TEAM_KNOCKOUT_RESET, ADD_TEAM_KNOCKOUT_SUCCESS, ADD_TEAM_TABLE_FAIL, ADD_TEAM_TABLE_REQUEST, ADD_TEAM_TABLE_RESET, ADD_TEAM_TABLE_SUCCESS, GET_TEAM_KNOCKOUT_FAIL, GET_TEAM_KNOCKOUT_REQUEST, GET_TEAM_KNOCKOUT_RESET, GET_TEAM_KNOCKOUT_SUCCESS, GET_TEAM_MATCH_GROUP_FAIL, GET_TEAM_MATCH_GROUP_REQUEST, GET_TEAM_MATCH_GROUP_RESET, GET_TEAM_MATCH_GROUP_SUCCESS, GET_TEAM_TABLE_FAIL, GET_TEAM_TABLE_REQUEST, GET_TEAM_TABLE_RESET, GET_TEAM_TABLE_SUCCESS, GET_TEAMS_FAIL, GET_TEAMS_REQUEST, GET_TEAMS_RESET, GET_TEAMS_SUCCESS } from "../constants/TeamConstant";
 
 
 export const getTeamsReducer = (state = { listTeam: [] }, action) => {
@@ -10,6 +10,82 @@ export const getTeamsReducer = (state = { listTeam: [] }, action) => {
         case GET_TEAMS_FAIL:
             return { loading: false, error: action.payload };
         case GET_TEAMS_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+
+export const addTeamKnockoutReducer = (state = {}, action) => {
+    switch (action.type) {
+        case ADD_TEAM_KNOCKOUT_REQUEST:
+            return { loading: true };
+        case ADD_TEAM_KNOCKOUT_SUCCESS:
+            return { loading: false, listTeam: action.payload };
+        case ADD_TEAM_KNOCKOUT_FAIL:
+            return { loading: false, error: action.payload };
+        case ADD_TEAM_KNOCKOUT_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+export const getTeamknockoutReducer = (state = { listTeams: [] }, action) => {
+    switch (action.type) {
+        case GET_TEAM_KNOCKOUT_REQUEST:
+            return { loading: true };
+        case GET_TEAM_KNOCKOUT_SUCCESS:
+            return { loading: false, listTeams: action.payload };
+        case GET_TEAM_KNOCKOUT_FAIL:
+            return { loading: false, error: action.payload };
+        case GET_TEAM_KNOCKOUT_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+export const getTeamTableReducer = (state = { listTeams: [] }, action) => {
+    switch (action.type) {
+        case GET_TEAM_TABLE_REQUEST:
+            return { loading: true };
+        case GET_TEAM_TABLE_SUCCESS:
+            return { loading: false, listTeams: action.payload };
+        case GET_TEAM_TABLE_FAIL:
+            return { loading: false, error: action.payload };
+        case GET_TEAM_TABLE_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+export const addTeamTableReducer = (state = {}, action) => {
+    switch (action.type) {
+        case ADD_TEAM_TABLE_REQUEST:
+            return { loading: true };
+        case ADD_TEAM_TABLE_SUCCESS:
+            return { loading: false, success:true};
+        case ADD_TEAM_TABLE_FAIL:
+            return { loading: false, error: action.payload };
+        case ADD_TEAM_TABLE_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+export const getTeamMatchReducer = (state = {listTeamMatch:[]}, action) => {
+    switch (action.type) {
+        case GET_TEAM_MATCH_GROUP_REQUEST:
+            return { loading: true };
+        case GET_TEAM_MATCH_GROUP_SUCCESS:
+            return { loading: false, listTeamMatch:action.payload};
+        case GET_TEAM_MATCH_GROUP_FAIL:
+            return { loading: false, error: action.payload };
+        case GET_TEAM_MATCH_GROUP_RESET:
             return {};
         default:
             return state;

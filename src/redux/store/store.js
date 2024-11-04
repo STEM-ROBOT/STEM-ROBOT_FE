@@ -13,11 +13,12 @@ import storage from 'redux-persist/lib/storage';
 import { createContestantReducer, getContestantReducer } from '../reducers/ContestantReducer';
 import { LoginReducer } from '../reducers/AuthenReducer';
 import { createTournamentInfoReducer, getTournamentInfoReducer, getTournamentModeratorReducer } from '../reducers/TournamentReducer';
-import { getCompetitionInfoReducer, getCompetitionModeratorReducer } from '../reducers/CompetitionReducer';
-import { createRefereeReducer, getRefereeReducer } from '../reducers/RefereeReducer';
+import { addCompetitionFormatReducer, getCompetitionInfoReducer, getCompetitionModeratorReducer } from '../reducers/CompetitionReducer';
+import { createRefereeReducer, getFreeTimeRefereeReducer, getRefereeReducer } from '../reducers/RefereeReducer';
 import { importRuleReducer } from '../reducers/RuleReducer';
 import { addScoreReducer } from '../reducers/ScoreReducer';
-import { getTeamsReducer } from '../reducers/TeamReducer';
+import { addTeamKnockoutReducer, addTeamTableReducer, getTeamknockoutReducer, getTeamMatchReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
+import { getLoctionReducer } from '../reducers/LocationReducer';
 
 const persistConfig = {
     key: 'root',
@@ -40,7 +41,14 @@ const rootReducer = combineReducers({
     addRule:importRuleReducer,
     addScore:addScoreReducer,
     getTeams:getTeamsReducer,
-
+    getFreetimeReferee:getFreeTimeRefereeReducer,
+    addCompetitionFormat:addCompetitionFormatReducer,
+    addTeamknockout:addTeamKnockoutReducer,
+    getTeamknockout:getTeamknockoutReducer,
+    getTeamTable:getTeamTableReducer,
+    addTeamTable:addTeamTableReducer,
+    getListTeamMatch:getTeamMatchReducer,
+    getLocations:getLoctionReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

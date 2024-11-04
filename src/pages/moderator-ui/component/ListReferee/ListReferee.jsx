@@ -8,11 +8,11 @@ import { useParams } from 'react-router-dom';
 import { addReferee, getListReferee } from '../../../../redux/actions/RefereeAction';
 
 const ListReferee = () => {
-    const { id } = useParams();
+    const { id: tournamentId } = useParams();
     const dispatch = useDispatch();
 
     const getReferees = useSelector((state) => state.getReferee);
-    const refereesList = Array.isArray(getReferees?.listReferee?.data?.success.data) ? getReferees?.listReferee?.data?.success.data : [];
+    const refereesList = Array.isArray(getReferees?.listReferee?.success?.data) ? getReferees.listReferee.success.data : [];
 
     const [referees, setReferees] = useState([]);
     const [newRefereesToAdd, setNewRefereesToAdd] = useState([]); 
@@ -21,12 +21,15 @@ const ListReferee = () => {
     const [hasChanges, setHasChanges] = useState(false);
 
     useEffect(() => {
-        dispatch(getListReferee(id));
-    }, [ dispatch]);
+        dispatch(getListReferee(tournamentId));
+    }, [dispatch, tournamentId]);
 
     useEffect(() => {
-        setReferees(refereesList);
-    }, [refereesList]);
+        // Only update referees state if refereesList has data and referees are different
+        if (refereesList.length > 0 && JSON.stringify(referees) !== JSON.stringify(refereesList)) {
+            setReferees(refereesList);
+        }
+    }, [refereesList, referees]);
 
     const totalPages = Math.ceil(referees.length / refereesPerPage);
     const indexOfLastReferee = currentPage * refereesPerPage;
@@ -72,16 +75,14 @@ const ListReferee = () => {
                 image: item["Hình ảnh"] || "https://via.placeholder.com/50",
             }));
           
-            // Lọc trọng tài không trùng
             const newReferees = importedReferees.filter(
                 newReferee => !referees.some(existing => existing.email === newReferee.email)
             );
 
-            // Nếu có trọng tài không trùng, thêm vào danh sách hiển thị và cập nhật danh sách mới
             if (newReferees.length > 0) {
                 setReferees((prev) => [...prev, ...newReferees]);
-                setNewRefereesToAdd(newReferees); // Lưu trọng tài không trùng vào biến riêng
-                setHasChanges(true); // Đánh dấu có thay đổi để hiển thị nút lưu
+                setNewRefereesToAdd(newReferees);
+                setHasChanges(true);
             }
         };
 
@@ -89,20 +90,19 @@ const ListReferee = () => {
     };
 
     const saveRefereesToDB = () => {
-        // Chỉ lưu trọng tài mới từ `newRefereesToAdd`
         const payload = newRefereesToAdd.map(referee => ({
-            tournamentId:id,
+            tournamentId: tournamentId,
             name: referee.name,
             email: referee.email,
             phoneNumber: referee.phoneNumber ? String(referee.phoneNumber) : "",
             image: referee.image,
-            status:"active",
+            status: "active",
         }));
 
-        console.log("Payload gửi đi:", payload);
+        console.log("Payload sent:", payload);
         dispatch(addReferee(payload));
         setHasChanges(false);
-        setNewRefereesToAdd([]); // Xóa danh sách trọng tài mới sau khi lưu
+        setNewRefereesToAdd([]);
     };
 
     return (

@@ -1,4 +1,4 @@
-import { GET_COMPETITION_INFO_FAIL, GET_COMPETITION_INFO_REQUEST, GET_COMPETITION_INFO_RESET, GET_COMPETITION_INFO_SUCCESS, GET_COMPETITION_MODERATOR_FAIL, GET_COMPETITION_MODERATOR_REQUEST, GET_COMPETITION_MODERATOR_RESET, GET_COMPETITION_MODERATOR_SUCCESS } from "../constants/CompetitionConstant";
+import { ADD_COMPETITION_FORMAT_FAIL, ADD_COMPETITION_FORMAT_REQUEST, ADD_COMPETITION_FORMAT_RESET, ADD_COMPETITION_FORMAT_SUCCESS, GET_COMPETITION_INFO_FAIL, GET_COMPETITION_INFO_REQUEST, GET_COMPETITION_INFO_RESET, GET_COMPETITION_INFO_SUCCESS, GET_COMPETITION_MODERATOR_FAIL, GET_COMPETITION_MODERATOR_REQUEST, GET_COMPETITION_MODERATOR_RESET, GET_COMPETITION_MODERATOR_SUCCESS } from "../constants/CompetitionConstant";
 
 
 export const getCompetitionModeratorReducer = (state = { listCompetition:[]}, action) => {
@@ -25,6 +25,21 @@ export const getCompetitionInfoReducer = (state = { infoCompetition:{}}, action)
         case GET_COMPETITION_INFO_FAIL:
             return { loading: false, error: action.payload };
         case GET_COMPETITION_INFO_RESET:
+            return {};
+        default:
+            return state;
+    }
+};
+
+export const addCompetitionFormatReducer = (state = {}, action) => {
+    switch (action.type) {
+        case ADD_COMPETITION_FORMAT_REQUEST:
+            return { loading: true };
+        case ADD_COMPETITION_FORMAT_SUCCESS:
+            return { loading: false, success:true };
+        case ADD_COMPETITION_FORMAT_FAIL:
+            return { loading: false, error: action.payload };
+        case ADD_COMPETITION_FORMAT_RESET:
             return {};
         default:
             return state;

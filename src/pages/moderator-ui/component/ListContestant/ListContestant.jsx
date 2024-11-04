@@ -74,14 +74,14 @@ const ListContestant = () => {
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         if (!file) return;
-
+    
         const reader = new FileReader();
         reader.onload = (e) => {
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: 'array' });
             const sheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[sheetName];
-
+    
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
             const importedData = jsonData.map((item, index) => ({
                 stt: index + 1,
@@ -93,24 +93,36 @@ const ListContestant = () => {
                 tournamentId,
                 schoolName
             }));
-
+    
             const newContestants = importedData.filter(
                 newContestant => !updatedContestants.some(existing => existing.email === newContestant.email)
             );
-
+            console.log(newContestants)
             if (newContestants.length > 0) {
-                setUpdatedContestants(prev => [...prev, ...newContestants]);
-                setNewContestantsToAdd(newContestants);
+                const mappedNewContestants = newContestants.map((item) => ({
+                    name: item.name,
+                    email: item.email,
+                    gender: item.gender,
+                    phone: item.phone,
+                    image: item.image,
+                    schoolName
+                }));
+                
+                setUpdatedContestants(prev => [...prev, ...mappedNewContestants]);
+                console.log("ad",updatedContestants)
+                setNewContestantsToAdd(mappedNewContestants);
                 setHasChanges(true);
             }
         };
-
+    
         reader.readAsArrayBuffer(file);
     };
+    
+    console.log(updatedContestants)
+    console.log(newContestantsToAdd)
 
     const saveContestantsToDB = () => {
         const payload = newContestantsToAdd.map(contestant => ({
-            tournamentId: tournamentId.toString(),
             name: contestant.name,
             email: contestant.email,
             gender: contestant.gender,
@@ -120,7 +132,7 @@ const ListContestant = () => {
         }));
 
         console.log("Payload sent:", payload);
-        dispatch(addContestant(payload));
+        dispatch(addContestant(tournamentId,payload));
         setHasChanges(false);
         setNewContestantsToAdd([]);
     };

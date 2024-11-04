@@ -3,6 +3,7 @@ import "./CompetitionList.css";
 import { IoLogoGameControllerB } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../../../config";
+import { competitions_tournament } from "../../api/ApiFlowView/ApiFlowView";
 const competitions = [
   {
     id: 1,
@@ -36,7 +37,7 @@ const CompetitionList = () => {
   const [competitions, setCompetitions] = useState([]);
   useEffect(() => {
     api
-      .get(`/api/competitions/tournament?id=${path.league_id}`)
+      .get(`${competitions_tournament + path.league_id}`)
       .then((competition) => {
         console.log(competition);
         setCompetitions(competition.data.data.data);
@@ -89,10 +90,7 @@ const CompetitionList = () => {
                     "competitionEndDate",
                     competition.endDate
                   ),
-                  navigate(
-                    `${competition.id}`,
-                   
-                  );
+                  navigate(`${competition.id}`);
               }
             }}
           >

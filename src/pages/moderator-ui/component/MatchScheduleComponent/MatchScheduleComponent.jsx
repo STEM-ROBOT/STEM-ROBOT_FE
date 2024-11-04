@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./MatchScheduleComponent.css";
 import MatchDetailView from "../MatchDetailView/MatchDetailView";
+import { useParams } from "react-router-dom";
+import api from "../../../../Config";
+import { match_schedule_view } from "../../api/ApiFlowView/ApiFlowView";
 // vong 1/8
 const roundMatch = [
   {
     round: "1/8",
     matches: [
       {
+        matchId: 2,
         homeTeam: "FC NHƯ THANH",
         homeTeamLogo:
           "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
@@ -16,10 +20,11 @@ const roundMatch = [
         awayTeam: "FC TRIỆU SƠN",
         homeScore: 4,
         awayScore: 7,
-        time: "16:00 15/09/2024",
+        startDate: "16:00 15/09/2024",
         location: "Sân 1",
       },
       {
+        matchId: 2,
         homeTeam: "FC THIỆU HÓA",
         homeTeamLogo:
           "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
@@ -29,7 +34,7 @@ const roundMatch = [
         awayTeam: "FC NÔNG CỐNG",
         homeScore: 1,
         awayScore: 1,
-        time: "17:30 15/09/2024",
+        startDate: "17:30 15/09/2024",
         location: "Sân 1",
       },
       {
@@ -42,7 +47,7 @@ const roundMatch = [
         awayTeam: "FC NHƯ THANH",
         homeScore: 3,
         awayScore: 0,
-        time: "16:00 22/09/2024",
+        startDate: "16:00 22/09/2024",
         location: "Sân 1",
       },
       {
@@ -55,7 +60,7 @@ const roundMatch = [
         awayTeam: "FC NÔNG CỐNG",
         homeScore: 4,
         awayScore: 3,
-        time: "17:30 22/09/2024",
+        startDate: "17:30 22/09/2024",
         location: "Sân 1",
       },
       {
@@ -68,7 +73,7 @@ const roundMatch = [
         awayTeam: "FC THIỆU HÓA",
         homeScore: 1,
         awayScore: 2,
-        time: "16:00 29/09/2024",
+        startDate: "16:00 29/09/2024",
         location: "Sân 1",
       },
       {
@@ -81,7 +86,7 @@ const roundMatch = [
         awayTeam: "FC NHƯ THANH",
         homeScore: 8,
         awayScore: 1,
-        time: "16:00 29/09/2024",
+        startDate: "16:00 29/09/2024",
         location: "Sân 1",
       },
       {
@@ -94,7 +99,7 @@ const roundMatch = [
         awayTeam: "FC NHƯ THANH",
         homeScore: 8,
         awayScore: 1,
-        time: "16:00 29/09/2024",
+        startDate: "16:00 29/09/2024",
         location: "Sân 1",
       },
       {
@@ -107,7 +112,7 @@ const roundMatch = [
         awayTeam: "FC NHƯ THANH",
         homeScore: 8,
         awayScore: 1,
-        time: "",
+        startDate: "",
         location: "Sân 1",
       },
     ],
@@ -126,7 +131,7 @@ const roundMatch = [
         awayTeam: "FC TRIỆU SƠN",
         homeScore: 4,
         awayScore: 7,
-        time: "16:00 15/09/2024",
+        startDate: "16:00 15/09/2024",
         location: "Sân 1",
       },
       {
@@ -139,7 +144,7 @@ const roundMatch = [
         awayTeam: "FC NÔNG CỐNG",
         homeScore: 1,
         awayScore: 1,
-        time: "17:30 15/09/2024",
+        startDate: "17:30 15/09/2024",
         location: "Sân 1",
       },
       {
@@ -152,7 +157,7 @@ const roundMatch = [
         awayTeam: "FC NHƯ THANH",
         homeScore: 3,
         awayScore: 0,
-        time: "16:00 22/09/2024",
+        startDate: "16:00 22/09/2024",
         location: "Sân 1",
       },
       {
@@ -165,7 +170,7 @@ const roundMatch = [
         awayTeam: "FC NÔNG CỐNG",
         homeScore: 4,
         awayScore: 3,
-        time: "17:30 22/09/2024",
+        startDate: "17:30 22/09/2024",
         location: "Sân 1",
       },
     ],
@@ -183,7 +188,7 @@ const roundMatch = [
         awayTeam: "FC TRIỆU SƠN",
         homeScore: 4,
         awayScore: 7,
-        time: "16:00 15/09/2024",
+        startDate: "16:00 15/09/2024",
         location: "Sân 1",
       },
       {
@@ -196,7 +201,7 @@ const roundMatch = [
         awayTeam: "FC NÔNG CỐNG",
         homeScore: 1,
         awayScore: 1,
-        time: "17:30 15/09/2024",
+        startDate: "17:30 15/09/2024",
         location: "Sân 1",
       },
     ],
@@ -214,7 +219,7 @@ const roundMatch = [
         awayTeam: "FC NHƯ THANH",
         homeScore: 3,
         awayScore: 0,
-        time: "16:00 22/09/2024",
+        startDate: "16:00 22/09/2024",
         location: "Sân 1",
       },
       {
@@ -227,7 +232,7 @@ const roundMatch = [
         awayTeam: "FC NÔNG CỐNG",
         homeScore: 4,
         awayScore: 3,
-        time: "17:30 22/09/2024",
+        startDate: "17:30 22/09/2024",
         location: "Sân 1",
       },
     ],
@@ -238,6 +243,7 @@ const roundMode = [
   { id: 2, mode: "Thời Gian" },
 ];
 const MatchScheduleComponent = () => {
+  const path = useParams();
   const [viewMode, setViewMode] = useState("Vòng Đấu");
   const [matchApi, setMatchApi] = useState([]);
   const [matchView, setMatchView] = useState([]);
@@ -246,14 +252,17 @@ const MatchScheduleComponent = () => {
   const [showMatchDetail, setShowMatchDetail] = useState(false);
   const [matchDetailData, setMatchDetailData] = useState();
   useEffect(() => {
-    setMatchApi(roundMatch);
-    setMatchView(roundMatch);
-    if (optionViewMode.length < 1) {
-      optionViewMode.push({ mode: "TẤT" });
-      for (let i = 0; i < roundMatch.length; i++) {
-        optionViewMode.push({ mode: roundMatch[i].round });
+    api.get(`${match_schedule_view + path.competitionId}`).then((response) => {
+      console.log(response.data);
+      setMatchApi(response.data);
+      setMatchView(response.data);
+      if (optionViewMode.length < 1) {
+        optionViewMode.push({ mode: "TẤT" });
+        for (let i = 0; i < response.data.length; i++) {
+          optionViewMode.push({ mode: response.data[i].round });
+        }
       }
-    }
+    });
   }, []);
   const CacuNumberMatch = () => {
     let numberMatch = 0;
@@ -266,9 +275,9 @@ const MatchScheduleComponent = () => {
   };
   const MatchToMode = (viewMode) => {
     if (viewMode.mode !== "TẤT") {
-      for (let i = 0; i < roundMatch.length; i++) {
-        if (roundMatch[i].round == viewMode.mode) {
-          setMatchView([roundMatch[i]]);
+      for (let i = 0; i < matchApi?.length; i++) {
+        if (matchApi[i].round == viewMode.mode) {
+          setMatchView([matchApi[i]]);
         }
       }
     } else {
@@ -349,7 +358,9 @@ const MatchScheduleComponent = () => {
                     </div>
                     <div className="match_item_score">
                       <div className="item_score">
-                        {`${match.homeScore} - ${match.awayScore}`}
+                        {`${match.homeScore ? match.homeScore : ""} - ${
+                          match.awayScore ? match.awayScore : ""
+                        }`}
                       </div>
                     </div>
                     <div className="match_item_layer">
@@ -361,8 +372,10 @@ const MatchScheduleComponent = () => {
                         />
                         <div className="item_team_name">{match.awayTeam}</div>
                       </div>
-                      <div className="match_item_time">
-                        {match.time ? match.time : " Chưa có lịch thi đấu"}
+                      <div className="match_item_startDate">
+                        {match.startDate
+                          ? match.startDate
+                          : " Chưa có lịch thi đấu"}
                       </div>
                     </div>
                   </div>

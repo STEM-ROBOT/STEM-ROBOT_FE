@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './MatchManagement.css';
 
 const fakeData = {
+    isMatch:false,
     group: {
         rounds: [
             {
@@ -92,7 +93,7 @@ const fakeData = {
             },
         ],
     },
-    isAssign: false,
+    
 };
 
 
