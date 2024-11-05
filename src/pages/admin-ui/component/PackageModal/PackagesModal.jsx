@@ -3,6 +3,7 @@ import "./PackagesModal.css";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import api from "../../../../config";
 
 const PackagesModal = ({ isOpen, onClose, onSave, packageData }) => {
   const [name, setName] = useState("");
@@ -27,7 +28,7 @@ const PackagesModal = ({ isOpen, onClose, onSave, packageData }) => {
     }
   }, [packageData]);
 
-  const handleSave = async () => {
+  const handleSave = () => {
     const updatedPackage = {
       name,
       maxMatch,
@@ -38,42 +39,40 @@ const PackagesModal = ({ isOpen, onClose, onSave, packageData }) => {
 
     if (packageData) {
       // Update existing package
-      try {
-        await axios.put(
-          `https://localhost:7283/api/packages/${packageData.id}`,
-          updatedPackage,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        toast.success("Cập nhật gói dịch vụ thành công!");
-        onSave({ ...updatedPackage, id: packageData.id }); // Pass the ID back to the parent
-        onClose();
-      } catch (error) {
-        toast.error("Cập nhật gói dịch vụ thất bại!");
-        console.error("Error updating package:", error);
-      }
+
+      api
+        .put(`/api/packages/${packageData.id}`, updatedPackage, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          toast.success("Cập nhật gói dịch vụ thành công!");
+          onSave({ ...updatedPackage, id: packageData.id }); // Pass the ID back to the parent
+          onClose();
+        })
+        .catch((error) => {
+          toast.error("Cập nhật gói dịch vụ thất bại!");
+          console.error("Error updating package:", error);
+        });
     } else {
       // Add new package
-      try {
-        const response = await axios.post(
-          "https://localhost:7283/api/packages",
-          updatedPackage,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        toast.success("Thêm gói dịch vụ thành công!");
-        onSave({ ...updatedPackage, id: response.data.id }); // Use response data ID if available
-        onClose();
-      } catch (error) {
-        toast.error("Thêm gói dịch vụ thất bại!");
-        console.error("Error adding package:", error);
-      }
+
+      const response = api
+        .post("/api/packages", updatedPackage, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          toast.success("Thêm gói dịch vụ thành công!");
+          onSave({ ...updatedPackage, id: response.data.id }); // Use response data ID if available
+          onClose();
+        })
+        .catch((error) => {
+          toast.error("Thêm gói dịch vụ thất bại!");
+          console.error("Error adding package:", error);
+        });
     }
   };
 

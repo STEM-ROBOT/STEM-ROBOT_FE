@@ -4,26 +4,33 @@ import { CiEdit, CiCircleRemove } from "react-icons/ci";
 import "./PackageManage.css";
 import PackagesModal from "../PackageModal/PackagesModal";
 import DeleteModal from "../PackageModal/DeleteModal";
-
+import api from "../../../../config";
 const PackageManage = () => {
   const [packages, setPackages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
+  
   // Fetch packages from API
-  const fetchPackages = async () => {
-    try {
-      const response = await axios.get("https://localhost:7283/api/packages");
-      setPackages(response.data.success.data);
-    } catch (error) {
-      console.error("Error fetching packages:", error);
-    }
-  };
 
   useEffect(() => {
-    fetchPackages();
+    api
+      .get("api/packages")
+      .then((response) => {
+        if (response.data.success.data) {
+            setPackages(response.data.success.data);
+            console.log(packages);
+          } else {
+          navigate(`/404error`);
+        }
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
+
+
 
   const handleAddClick = () => {
     setSelectedPackage(null); // Clear selected package for adding new

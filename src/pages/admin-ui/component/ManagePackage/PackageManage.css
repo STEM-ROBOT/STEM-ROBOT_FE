@@ -53,9 +53,10 @@
 
 .package_manage_container_wrapper {
     display: flex;
+    border-radius: 10px;
     flex-direction: column;
     gap: 20px;
-    max-height: 80vh; /* Giới hạn chiều cao cho khung chứa các gói */
+    max-height: 75vh; /* Giới hạn chiều cao cho khung chứa các gói */
     overflow-y: auto; /* Thêm thanh cuộn dọc nếu vượt quá chiều cao */
     padding-right: 10px; /* Để có không gian cho thanh cuộn */
 }
@@ -79,7 +80,7 @@
     right: 10%;
     background-color: #01395f;
     color: #fff;
-    border-radius: 15%;
+    border-radius: 10px;
     padding: 10px;
     cursor: pointer;
     font-size: 0.9em;
