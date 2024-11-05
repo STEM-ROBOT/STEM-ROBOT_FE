@@ -1,5 +1,9 @@
-
+.tournament-configuration-main{
+    max-width: 85%;
+    margin: 0 auto;
+}
 .tournament-configuration {
+   
     gap: 20px;
     display: flex;
     border-radius: 10px;

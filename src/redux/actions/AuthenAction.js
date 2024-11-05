@@ -27,7 +27,7 @@ export const login = (user, navigate, setSignIn) => async (dispatch) => {
         const message = error.response && error.response.data.message
             ? error.response.data.message
             : error.message;
-
+            toast.error("Login Fail");
         dispatch({
             type: LOGIN_FAIL,
             payload: message,
@@ -35,7 +35,9 @@ export const login = (user, navigate, setSignIn) => async (dispatch) => {
     }
 };
 
-export const logout = () => (dispatch) => {
+export const logout = (navigate) => (dispatch) => {
     TokenService.removeUser();
+   
     dispatch({ type: LOGOUT });
+    navigate("/home");
 };
