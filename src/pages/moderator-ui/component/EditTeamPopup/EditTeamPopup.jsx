@@ -122,10 +122,10 @@ const EditTeamPopup = ({ team, closePopup }) => {
           </button>
         </div>
 
-        <button className="save-button" onClick={handleSave}>
+        <button className="save-button-edit-team" onClick={handleSave}>
           Lưu
         </button>
-        <button className="cancel-button" onClick={closePopup}>
+        <button className="cancel-button-edit-team" onClick={closePopup}>
           Hủy
         </button>
       </div>

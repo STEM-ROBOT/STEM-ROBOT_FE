@@ -65,8 +65,8 @@
   border: 1px solid #ccc;
 }
 
-.save-button,
-.cancel-button {
+.save-button-edit-team,
+.cancel-button-edit-team {
   margin: 10px;
   padding: 10px 20px;
   border: none;
@@ -75,11 +75,11 @@
   cursor: pointer;
 }
 
-.save-button {
+.save-button-edit-team {
   background-color: #28a745;
 }
 
-.cancel-button {
+.cancel-button-edit-team {
   background-color: #dc3545;
 }
 
