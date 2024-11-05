@@ -419,7 +419,7 @@ const MatchGroupStageComponent = () => {
                         <div className="item_team_name">{match.awayTeam}</div>
                       </div>
                       <div className="match_item_time">
-                        {match.time ? match.time : " Chưa có lịch thi đấu"}
+                        {match.startTime ? match.startTime : " Chưa có lịch thi đấu"}
                       </div>
                     </div>
                   </div>
