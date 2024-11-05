@@ -1,58 +1,126 @@
-import React from 'react';
-import './Dashboard.css';
+import React, { useState, useEffect } from "react";
+import "./Dashboard.css";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
-import { IoCartOutline } from 'react-icons/io5';
-import { FaRegUser, FaTrophy } from 'react-icons/fa';
-import { CartesianGrid, Line, LineChart, BarChart, Bar, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from 'recharts';
+import { IoCartOutline } from "react-icons/io5";
+import { FaRegUser, FaTrophy } from "react-icons/fa";
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  BarChart,
+  Bar,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  Legend,
+} from "recharts";
+import api from "../../../../config";
 
-// Dữ liệu giả cho biểu đồ doanh thu theo từng tháng
-const listRevenue = [
-  { month: 'Jan', revenue: 200000000 },
-  { month: 'Feb', revenue: 250000000 },
-  { month: 'Mar', revenue: 300000000 },
-  { month: 'Apr', revenue: 150000000 },
-  { month: 'May', revenue: 220000000 },
-  { month: 'Jun', revenue: 280000000 },
-  { month: 'Jul', revenue: 310000000 },
-  { month: 'Aug', revenue: 400000000 },
-  { month: 'Sep', revenue: 350000000 },
-  { month: 'Oct', revenue: 290000000 },
-  { month: 'Nov', revenue: 330000000 },
-  { month: 'Dec', revenue: 370000000 }
-];
+// Y-axis format function
+const formatYAxis = (tickItem) => `${tickItem / 1000000}M`;
 
-// Dữ liệu giả cho biểu đồ cột hiển thị số lượng giải đấu được tạo theo từng tháng
-const tournamentsCreated = [
-  { month: 'Jan', tournaments: 10 },
-  { month: 'Feb', tournaments: 15 },
-  { month: 'Mar', tournaments: 20 },
-  { month: 'Apr', tournaments: 8 },
-  { month: 'May', tournaments: 12 },
-  { month: 'Jun', tournaments: 18 },
-  { month: 'Jul', tournaments: 22 },
-  { month: 'Aug', tournaments: 25 },
-  { month: 'Sep', tournaments: 17 },
-  { month: 'Oct', tournaments: 19 },
-  { month: 'Nov', tournaments: 21 },
-  { month: 'Dec', tournaments: 23 }
-];
-
-// Hàm định dạng doanh thu cho trục Y
-const formatYAxis = (tickItem) => {
-  return `${tickItem / 1000000}M`;
-};
-
-// Hàm định dạng giá trị hiển thị trong Tooltip
-const formatCurrency = (value) => {
-  return `${value.toLocaleString()} đ`;
-};
+// Tooltip currency format function
+const formatCurrency = (value) => `${value.toLocaleString()} đ`;
 
 const Dashboard = () => {
+  const [revenueData, setRevenueData] = useState(0);
+  const [tournamentsData, setTournamentsData] = useState([]);
+  const [transactionsData, setTransactionsData] = useState([]);
+  const [accountsData, setAccountsData] = useState([]);
+  const [revenueByTimeData, setRevenueByTimeData] = useState([]);
+  const [tournamentCreatedData, setTournamentCreatedData] = useState([]);
+  useEffect(() => {
+    api
+      .get("api/orders/total-revenue")
+      .then((response) => {
+        setRevenueData(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    api
+      .get("api/orders")
+      .then((response) => {
+        setTransactionsData(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    api
+      .get("api/accounts")
+      .then((response) => {
+        setAccountsData(response.data.success.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    api
+      .get("api/tournaments/list-tournament")
+      .then((response) => {
+        if (response.data.data.data) {
+          setTournamentsData(response.data.data.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    api
+      .get("api/orders/revenue-by-time")
+      .then((response) => {
+        // Ensure that response.data.data is defined before mapping
+        if (response.data) {
+          // Chuyển đổi dữ liệu
+          const monthlyRevenue = response.data.map((item) => ({
+            month: new Date(item.year, item.month - 1).toLocaleString(
+              "default",
+              {
+                month: "short",
+              }
+            ),
+            revenue: item.revenue,
+          }));
+          setRevenueByTimeData(monthlyRevenue);
+        } else {
+          console.error(
+            "Expected data format is missing in response",
+            response.data
+          );
+        }
+      })
+      .catch((error) => {
+        console.log("Error fetching monthly revenue:", error);
+      });
+
+      api
+      .get("api/tournaments/per-month")
+      .then((response) => {
+        console.log(response.data.data.data);
+        if (response) {
+          // Nếu dữ liệu trả về đúng định dạng
+          const tournamentData = response.data.data.data.map((item) => ({
+            month: new Date(2024, item.month - 1).toLocaleString("default", {
+              month: "short",
+            }),
+            tournaments: item.count,
+          }));
+          setTournamentCreatedData(tournamentData);
+        } else {
+          console.error("Expected data format is missing in response", response.data);
+        }
+      })
+      .catch((error) => {
+        console.log("Error fetching tournament data:", error);
+      });
+  }, []);
+
   return (
     <div className="dashboard_full_page_container">
-      <div className="dashboard_full_page_title">
-        Thống kê
-      </div>
+      <div className="dashboard_full_page_title">Thống kê</div>
       <div className="dashboard_statistics_cards_container">
         <div className="dashboard_statistics_card">
           <div className="dashboard_statistics_card_icon yellow_background">
@@ -60,7 +128,7 @@ const Dashboard = () => {
           </div>
           <div>
             <h2>Doanh thu</h2>
-            <p>2.000.000.000đ</p>
+            <div>{revenueData}đ</div>
           </div>
         </div>
 
@@ -70,7 +138,7 @@ const Dashboard = () => {
           </div>
           <div>
             <h2>Đơn hàng</h2>
-            <p>40</p>
+            <p>{transactionsData?.length}</p>
           </div>
         </div>
 
@@ -80,7 +148,7 @@ const Dashboard = () => {
           </div>
           <div>
             <h2>Người dùng</h2>
-            <p>200</p>
+            <p>{accountsData?.length}</p>
           </div>
         </div>
 
@@ -90,7 +158,7 @@ const Dashboard = () => {
           </div>
           <div>
             <h2>Giải đấu</h2>
-            <p>5</p>
+            <p>{tournamentsData?.length}</p>
           </div>
         </div>
       </div>
@@ -100,13 +168,21 @@ const Dashboard = () => {
           <h3>Doanh thu theo từng tháng</h3>
           <div className="activities_chart_container">
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={listRevenue} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <LineChart
+                data={revenueByTimeData}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" />
                 <YAxis tickFormatter={formatYAxis} />
                 <Tooltip formatter={(value) => formatCurrency(value)} />
                 <Legend />
-                <Line type="monotone" dataKey="revenue" stroke="#8884d8" activeDot={{ r: 8 }} />
+                <Line
+                  type="monotone"
+                  dataKey="revenue"
+                  stroke="#8884d8"
+                  activeDot={{ r: 8 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -116,7 +192,10 @@ const Dashboard = () => {
           <h3>Số lượng giải đấu được tạo theo từng tháng</h3>
           <div className="reports_chart_container">
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={tournamentsCreated} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <BarChart
+                data={tournamentCreatedData}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" />
                 <YAxis />
@@ -129,7 +208,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="dashboard_bottom_section">
+      {/* <div className="dashboard_bottom_section">
         <div className="dashboard_task_overview_card">
           <h3>Your tasks</h3>
           <p>Calculated in last 7 days</p>
@@ -143,7 +222,7 @@ const Dashboard = () => {
           <h3>Your projects</h3>
           <p>Calculated in last 30 days</p>
           <div className="project_chart_container">
-            {/* Biểu đồ dự án ở đây */}
+            
           </div>
         </div>
 
@@ -151,10 +230,10 @@ const Dashboard = () => {
           <h3>Your Sales</h3>
           <p>A general overview of your sales</p>
           <div className="sales_chart_container">
-            {/* Biểu đồ doanh số ở đây */}
+            
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

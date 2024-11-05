@@ -34,6 +34,8 @@ import RefereeAssignment from "../pages/moderator-ui/component/RefereeAssignment
 import ManageArena from "../pages/moderator-ui/component/ManageArena/ManageArena";
 import GroupAllocation from "../pages/moderator-ui/component/GroupAllocation/GroupAllocation";
 import GroupMatch from "../pages/moderator-ui/component/GroupMatchDraw/GroupMatch";
+import InforAccount from "../pages/moderator-ui/component/InfoAccount/InforAccount";
+
 
 export const tournamentChildren = [
   { path: "format", element: <ConfigTournament/> },
@@ -47,6 +49,8 @@ export const tournamentChildren = [
   { path: "arena", element: <ManageArena /> },
   { path: "groupstage", element: <GroupAllocation /> },
 ];
+
+
 
 export const tournamentRoutes = [
   { path: "mycompetition", element: <ManageCompetition /> },
@@ -81,12 +85,13 @@ export const competition_detail_router = [
 export const profileChildren = [
   { path: "mytournament", element: <TournamentList /> },
   { path: "mytournament/:id", element: <TournamentDetail /> },
-  { path: "mycompetitor", element: <></> },
+  // { path: "profile", element: <InforAccount/> },
   { path: "myinvoice", element: <></> },
 ];
 
 const moderatorRouter = [
   { path: "/account/*", element: <Account /> },
+  {path:"profile",element:<InforAccount/>},
   {
     path: "/account/*/:id",
     element: <Account />,

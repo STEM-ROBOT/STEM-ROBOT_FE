@@ -35,7 +35,9 @@ export const login = (user, navigate, setSignIn) => async (dispatch) => {
     }
 };
 
-export const logout = () => (dispatch) => {
+export const logout = (navigate) => (dispatch) => {
     TokenService.removeUser();
+   
     dispatch({ type: LOGOUT });
+    navigate("/home");
 };
