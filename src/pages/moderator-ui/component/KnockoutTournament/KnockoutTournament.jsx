@@ -3,7 +3,7 @@ import './KnockoutTournament.css';
 import CountdownPopup from '../CountdownPopup/CountdownPopup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getListTeamsKnockout } from '../../../../redux/actions/TeamAction';
+import { addTeamAssignMatch, getListTeamsKnockout } from '../../../../redux/actions/TeamAction';
 
 const KnockoutTournament = () => {
   const dispatch = useDispatch();
@@ -33,35 +33,31 @@ const KnockoutTournament = () => {
   };
 
   const initialRandomAssignment = () => {
-    setRounds((prevRounds) =>
-      prevRounds.map((round) => {
-        let availableTeams = [...tournamentData.teams].sort(() => Math.random() - 0.5);
-        const usedTeams = new Set();
 
+    const shuffledTeams = [...tournamentData.teams].sort(() => Math.random() - 0.5);
+
+    setRounds((prevRounds) => {
+
+      let availableTeams = [...shuffledTeams];
+
+      return prevRounds.map((round) => {
         const newMatches = round.matches.map((match) => {
-          const teamsmatch = match.teamsmatch.map((team) => {
+          const teamMatches = match.teamMatches.map((team) => {
             if (!team.teamId && !team.teamName && availableTeams.length > 0) {
-              let uniqueTeam;
-              while (availableTeams.length > 0) {
-                uniqueTeam = availableTeams.pop();
-                if (!usedTeams.has(uniqueTeam.teamId)) {
-                  usedTeams.add(uniqueTeam.teamId);
-                  break;
-                }
-              }
+              const uniqueTeam = availableTeams.pop(); // Assign team and remove from availableTeams
               return uniqueTeam ? { ...team, teamId: uniqueTeam.teamId, teamName: uniqueTeam.name } : team;
             }
             return team;
           });
-          return { ...match, teamsmatch };
+          return { ...match, teamMatches };
         });
 
         return { ...round, matches: newMatches };
-      })
-    );
-
-    setSuccessMessage("Cập nhật thành công!");
+      });
+    });
   };
+
+
 
   useEffect(() => {
     if (tournamentData && !tournamentData.isAssign) {
@@ -73,20 +69,20 @@ const KnockoutTournament = () => {
     setRounds((prevRounds) =>
       prevRounds.map((round) => {
         let assignedTeams = round.matches.flatMap((match) =>
-          match.teamsmatch.filter((team) => team.teamId && team.teamName)
+          match.teamMatches.filter((team) => team.teamId && team.teamName)
         );
 
         assignedTeams = assignedTeams.sort(() => Math.random() - 0.5);
 
         const newMatches = round.matches.map((match) => {
-          const teamsmatch = match.teamsmatch.map((team) => {
+          const teamMatches = match.teamMatches.map((team) => {
             if (team.teamId && team.teamName) {
               const randomizedTeam = assignedTeams.pop();
               return randomizedTeam ? { ...team, teamId: randomizedTeam.teamId, teamName: randomizedTeam.teamName } : team;
             }
             return team;
           });
-          return { ...match, teamsmatch };
+          return { ...match, teamMatches };
         });
 
         return { ...round, matches: newMatches };
@@ -105,15 +101,29 @@ const KnockoutTournament = () => {
     randomizeFilledMatches();
   };
 
-  const saveMatchesToDB = async () => {
+  const saveMatchesToDB = () => {
     setIsSaving(true);
-
-    const dataToSave = {
-      tournamentId: tournamentData?.id,
-      rounds,
-    };
+    const dataToSave = rounds.flatMap((round) =>
+      round.matches.flatMap((match) =>
+        [
+          {
+            matchId: match.matchId,
+            teamId: match.teamMatches[0]?.teamId || 0,
+            teamName: match.teamMatches[0]?.teamName || "Unknown",
+            teamMatchId: match.teamMatches[0]?.teamMatchId || 0,
+          },
+          {
+            matchId: match.matchId,
+            teamId: match.teamMatches[1]?.teamId || 0,
+            teamName: match.teamMatches[1]?.teamName || "Unknown",
+            teamMatchId: match.teamMatches[1]?.teamMatchId || 0,
+          },
+        ].filter((team) => team.teamId !== 0)
+      )
+    );
+    
     console.log(dataToSave);
-
+    dispatch(addTeamAssignMatch(competitionId, dataToSave))
     setTimeout(() => {
       setIsSaving(false);
       setSuccessMessage("Lưu thành công!");
@@ -143,11 +153,11 @@ const KnockoutTournament = () => {
               <div key={matchIndex} className={`match-container-custom match-number-${matchIndex + 1}`}>
                 <span className="match-number-custom"># {matchIndex + 1}</span>
                 <div className="team-selection-container-custom">
-                  <span className="team-name-custom">{getTeamName(match.teamsmatch[0])}</span>
+                  <span className="team-name-custom">{getTeamName(match.teamMatches[0])}</span>
                 </div>
                 <span className="vs-custom"> - </span>
                 <div className="team-selection-container-custom">
-                  <span className="team-name-custom">{getTeamName(match.teamsmatch[1])}</span>
+                  <span className="team-name-custom">{getTeamName(match.teamMatches[1])}</span>
                 </div>
               </div>
             ))}

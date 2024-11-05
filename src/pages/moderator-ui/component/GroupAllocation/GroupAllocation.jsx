@@ -18,7 +18,7 @@ const GroupAllocation = () => {
     const [totalTeamsToNextRound, setTotalTeamsToNextRound] = useState(2);
     const [error, setError] = useState('');
 
-    // Tạo các giá trị mảng từ 2 đến 64
+    // Create array for team options from 2 to 64
     const teamOptions = Array.from({ length: 6 }, (_, i) => Math.pow(2, i + 1));
 
     useEffect(() => {
@@ -29,10 +29,8 @@ const GroupAllocation = () => {
         if (Array.isArray(data?.tables) && Array.isArray(data?.teams)) {
             setTables(data.tables);
             setTeams(data.teams);
-            setTeamsToNextRound(Array(data.tables.length).fill(1));
-
-            // Chia đội ngẫu nhiên sau khi dữ liệu được tải xong
-            randomizeGroups(data.teams, data.tables);
+            setTeamsToNextRound(Array(data.tables.length).fill(1)); // Set initial teamsToNextRound for each table
+            randomizeGroups(data.teams, data.tables); // Randomize groups after data load
         }
     }, [data]);
 
@@ -110,17 +108,17 @@ const GroupAllocation = () => {
     };
 
     const handleSave = () => {
-      
         if (validateGroups()) {
             const dataToSave = {       
-                tableAssign: tables.map((table) => ({
+                tableAssign: tables.map((table, index) => ({
+                    teamNextRound: teamsToNextRound[index] || 1, 
                     tableGroupId: table.tableId,
                     tableGroupName: table.tableName,
                     teams: table.teams.map((team) => team.teamId)
                 })),
-                teamNextRound:totalTeamsToNextRound,
             };
-            dispatch(AddTeamsTable(competitionId,dataToSave))
+            console.log(dataToSave)
+            dispatch(AddTeamsTable(competitionId, dataToSave));
         }
     };
 

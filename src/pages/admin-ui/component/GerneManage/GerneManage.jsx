@@ -1,37 +1,49 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import './GerneManage.css';
 import GenreModal from '../GenreModal/GenreModal';
+import {ListGenre} from '../../../../redux/actions/AdminAction';
+import { useDispatch, useSelector } from 'react-redux';
 
-const initialPackages = [
-    {
-        id: 1,
-        title: 'Robot trồng lúa',
-        imageUrl: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
-        ruleFile: 'https://aburobocon2024.vtv.gov.vn/assets/rulePdfs/Robocon%202024%20Rulebook%20-%20revision%201.0.pdf',
-        scoreFile: 'https://robofight.com.vn/wp-content/uploads/2019/12/19.12.19-Thong-bao-Quy-dinh-ve-cach-cham-diem-1.pdf',
-    },
-    {
-        id: 2,
-        title: 'Robot chiến thuật',
-        imageUrl: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
-        ruleFile: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
-        scoreFile: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
-    },
-    {
-        id: 3,
-        title: 'Robot mê cung',
-        imageUrl: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
-        ruleFile: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
-        scoreFile: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
-    },
-];
+// const initialPackages = [
+//     {
+//         id: 1,
+//         title: 'Robot trồng lúa',
+//         imageUrl: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
+//         ruleFile: 'https://aburobocon2024.vtv.gov.vn/assets/rulePdfs/Robocon%202024%20Rulebook%20-%20revision%201.0.pdf',
+//         scoreFile: 'https://robofight.com.vn/wp-content/uploads/2019/12/19.12.19-Thong-bao-Quy-dinh-ve-cach-cham-diem-1.pdf',
+//     },
+//     {
+//         id: 2,
+//         title: 'Robot chiến thuật',
+//         imageUrl: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
+//         ruleFile: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
+//         scoreFile: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
+//     },
+//     {
+//         id: 3,
+//         title: 'Robot mê cung',
+//         imageUrl: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
+//         ruleFile: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
+//         scoreFile: 'https://ohstem.vn/wp-content/uploads/2024/04/webinar-stem-he-sinh-thai-robot-moi-orc-ohstem.png',
+//     },
+// ];
 
 const GerneManage = () => {
-    const [packages, setPackages] = useState(initialPackages);
+    
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedGenre, setSelectedGenre] = useState(null);
-
+    const dispatch = useDispatch();
+    const ListGenreData = useSelector((state) => state.getListGenre);
+    console.log(ListGenreData)
+    const AccountArrayData = Array.isArray(ListGenreData.success?.data) ? ListGenreData.success?.data : [];
+    console.log(AccountArrayData)
+   
+    useEffect(() => {
+      dispatch(ListGenre()); 
+      
+  }, [dispatch]);
+ 
     const handleAddClick = () => {
         setSelectedGenre(null); // Clear any selected genre to open modal for adding new content
         setIsModalOpen(true);
@@ -56,7 +68,7 @@ const GerneManage = () => {
         setIsModalOpen(false); // Close modal after saving
     };
 
-    return (
+   return (
         <div className='genre_manage_container'>
             <div className='genre_manage_container_title'>
                 Nội dung thi đấu
@@ -71,14 +83,14 @@ const GerneManage = () => {
                 </div>
             </div>
             <div className="genre_manage_container_wrapper">
-                {packages.map((pkg) => (
+                {AccountArrayData.map((pkg) => (
                     <div key={pkg.id} className="genre_card_wrapper">
                         <div className="genre_card_edit_icon" onClick={() => handleEditClick(pkg)}>
                             <CiEdit />
                         </div>
-                        <img src={pkg.imageUrl} alt={pkg.title} className="genre_card_image" />
+                        <img src={pkg.image} alt={pkg.name} className="genre_card_image" />
                         <div className="genre_card_content_wrapper">
-                            <h3 className="genre_card_title_text">{pkg.title}</h3>
+                            <h3 className="genre_card_title_text">{pkg.name}</h3>
                         </div>
                     </div>
                 ))}

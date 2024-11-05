@@ -2,6 +2,9 @@ import React, { useRef, useState } from "react";
 import "./CreateTournamentFormat.css";
 import { IoAlertCircle } from "react-icons/io5";
 import { GiFinishLine } from "react-icons/gi";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addCompetitionFormat } from "../../../../redux/actions/CompetitionAction";
 const formats = [
   {
     id: 1,
@@ -70,11 +73,14 @@ const formats = [
   },
 ];
 const teamGoIn = [2, 4, 8, 16, 32, 64];
-const CreateTournamentFormat = ({}) => {
+const CreateTournamentFormat = ({ }) => {
+  const {competitionId} = useParams();
+  const dispatch = useDispatch();
   const [formatCompetition, setFormatCompetition] = useState(formats[0]);
   const [teamNumber, setTeamNumber] = useState(8);
   const [memberNumber, setMemberNumber] = useState(1);
   const [dayRegisNumber, setDayRegisNumber] = useState(2);
+  const [startTime ,setStartTime] = useState();
   const [showSetupTable, setShowSetupTable] = useState(false); // State để lưu số đội
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef(null);
@@ -85,6 +91,8 @@ const CreateTournamentFormat = ({}) => {
   const [errorWin, setErrorWin] = useState("");
   const [errorDraw, setErrorDraw] = useState("");
   const [errorLose, setErrorLose] = useState("");
+  const [startTimeError, setStartTimeError] = useState("");
+
   const handleTeamNumberChange = (e) => {
     const input = e.target.value;
 
@@ -107,6 +115,19 @@ const CreateTournamentFormat = ({}) => {
       }
     }
   };
+
+  const handleStartTimeChange = (e) => {
+    const selectedStartTime = new Date(e.target.value);
+    const currentRegisterTime = new Date();
+
+    if (selectedStartTime <= currentRegisterTime) {
+        setStartTimeError("Ngày bắt đầu (startTime) phải sau ngày đăng ký (registerTime).");
+        setStartTime(""); // Optionally reset startTime if invalid
+    } else {
+        setStartTimeError(""); // Clear error if valid
+        setStartTime(e.target.value); // Update startTime
+    }
+};
 
   const selectFormat = (format) => {
     setFormatCompetition(format);
@@ -159,6 +180,9 @@ const CreateTournamentFormat = ({}) => {
       }
     }
   };
+  const handleDayRegisNumberChange = (e) => {
+    setDayRegisNumber(e.target.value); // Set the date value directly
+};
   const handleMemberNumberChange = (e) => {
     const input = e.target.value;
 
@@ -168,16 +192,51 @@ const CreateTournamentFormat = ({}) => {
       setMemberNumber(teamCount);
     }
   };
-  const handleDayRegisNumberChange = (e) => {
-    const input = e.target.value;
+  // const handleDayRegisNumberChange = (e) => {
+  //   const input = e.target.value;
 
-    // Kiểm tra xem input có phải là số không, nếu đúng thì cập nhật state
-    if (/^\d*$/.test(input)) {
-      const teamCount = parseInt(input, 10); // Chuyển input sang số nguyên
-      setDayRegisNumber(teamCount);
+  //   // Kiểm tra xem input có phải là số không, nếu đúng thì cập nhật state
+  //   if (/^\d*$/.test(input)) {
+  //     const teamCount = parseInt(input, 10); // Chuyển input sang số nguyên
+  //     setDayRegisNumber(teamCount);
+  //   }
+  // };
+  const handleSubmit = () => {
+    // Check if startTime is valid
+    if (!startTime) {
+        setStartTimeError("Please select a valid start time.");
+        return;
     }
-  };
-  const handleSubmit = () => {};
+
+    const registerTime = new Date().toISOString();
+    const selectedStartTime = new Date(startTime);
+
+    // Validate that startTime is after registerTime
+    if (selectedStartTime <= new Date()) {
+        setStartTimeError("Ngày bắt đầu (startTime) phải sau ngày đăng ký (registerTime).");
+        return;
+    } else {
+        setStartTimeError("");
+    }
+
+    // Prepare data only if startTime is valid
+    const data = {
+        formatId: formatCompetition.id,
+        registerTime: registerTime,
+        startTime: selectedStartTime.toISOString(),
+        numberContestantTeam: memberNumber || 0,
+        isTop: formatCompetition.id === 3,
+        numberTeam: teamNumber,
+        numberTeamNextRound: parseInt(document.querySelector(".format_tournament").value) || 0,
+        numberTable: parseInt(document.querySelector(".format_tournament").value) || 0,
+        winScore: winPoints || 0,
+        loseScore: losePoints || 0,
+        tieScore: drawPoints || 0
+    };
+    dispatch(addCompetitionFormat(competitionId,data))
+   
+};
+
   return (
     <div className="container_create_format_tournament">
       <div className="format_create">
@@ -314,15 +373,32 @@ const CreateTournamentFormat = ({}) => {
             value={memberNumber}
             onChange={handleMemberNumberChange}
           />
-          <div className="label_avatar" style={{ width: "100%" }}>
-            Thời gian mở đăng ký (số ngày)
+          <div className="competition_format_date">
+            <div style={{ width: "50%" }}>
+              <div className="label_avatar">
+                Thời gian đóng đăng kí
+              </div>
+              <input
+                type="date"
+                className="input_date_team"
+                value={dayRegisNumber}
+                onChange={handleDayRegisNumberChange}
+              />
+            </div>
+            <div style={{ width: "50%" }}>
+              <div className="label_avatar">
+                Thời gian bắt đầu thi đấu
+              </div>
+              <input
+                type="date"
+                className="input_date_team"
+                value={startTime}
+                onChange={handleStartTimeChange}
+              />
+              {startTimeError && <div className="error_message">{startTimeError}</div>}
+            </div>
           </div>
-          <input
-            type="number"
-            className="input_number_team"
-            value={dayRegisNumber}
-            onChange={handleDayRegisNumberChange}
-          />
+
         </div>
       </div>
 

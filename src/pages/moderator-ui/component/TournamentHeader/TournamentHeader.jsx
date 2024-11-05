@@ -9,10 +9,10 @@ const TournamentHeader = () => {
   const { tournamentId, competitionId } = useParams(); 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState("settings");
 
   const tabs = [
-    { name: "TÙY CHỈNH", key: "customize" },
+    { name: "TÙY CHỈNH", key: "settings" },
   ];
 
   // Lấy thông tin từ Redux store

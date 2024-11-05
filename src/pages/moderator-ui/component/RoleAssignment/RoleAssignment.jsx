@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { getListRefereeFreeTime } from '../../../../redux/actions/RefereeAction';
 
 const RoleAssignment = () => {
-  const { competitionId } = useParams();
+  const { tournamentId } = useParams();
   const dispatch = useDispatch();
 
   const [chiefReferees, setChiefReferees] = useState(1); 
@@ -19,10 +19,9 @@ const RoleAssignment = () => {
     : [];
 
   const [updatedRefereeList, setUpdatedRefereeList] = useState([]);
-
   useEffect(() => {
-    dispatch(getListRefereeFreeTime(competitionId));
-  }, [dispatch, competitionId]);
+    dispatch(getListRefereeFreeTime(tournamentId));
+  }, [dispatch, tournamentId]);
 
   useEffect(() => {
     // Only set `updatedRefereeList` if it is different from `refereeList`
