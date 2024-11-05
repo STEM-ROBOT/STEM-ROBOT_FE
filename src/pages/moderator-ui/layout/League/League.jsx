@@ -6,7 +6,7 @@ import { IoAppsSharp, IoGrid, IoListSharp, IoSearch } from "react-icons/io5";
 import LeagueView from "../../component/LeagueView/LeagueView";
 import SearchFilter from "../../component/SearchFilter/SearchFilter";
 import { useNavigate } from "react-router-dom";
-import api from "../../../../Config";
+import api from "../../../../config";
 
 const League = () => {
   const navigate = useNavigate();
