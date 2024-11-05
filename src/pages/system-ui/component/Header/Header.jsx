@@ -56,7 +56,7 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [numberNotifications]);
-
+`gv  bbb                                      `
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > window.innerHeight * 0.01) {
@@ -86,7 +86,7 @@ const Header = () => {
     }
   };
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logout(navigate));
     setAuInfo(null);
     setPagesDropdownOpen(false);
   };
