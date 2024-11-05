@@ -41,7 +41,7 @@ export const tournamentChildren = [
   { path: "format", element: <ConfigTournament/> },
   { path: "permissions", element: <RoleAssignment /> },
   { path: "teams", element: <ManageTeam /> },
-  { path: "matchups", element: <KnockoutTournament/> },
+  { path: "matchups", element: <GroupMatch/> },
   // <GroupMatch/>
   //<KnockoutTournament />
   { path: "schedule", element: <MatchManagement /> },
