@@ -19,15 +19,15 @@ const LeagueDetail = () => {
   const id = useParams();
   const storedLeague = sessionStorage.getItem("leagueData");
   const [league, setLeague] = useState(JSON.parse(storedLeague));
-  // useEffect(() => {
-  //   if (!league) {
-  //     const storedLeague = sessionStorage.getItem("leagueData");
-  //     if (storedLeague) {
-  //       setLeague(JSON.parse(storedLeague));
-  //     }
-  //   }
-  // }, [league]);
-  // console.log(league);
+  useEffect(() => {
+    if (!league) {
+      const storedLeague = sessionStorage.getItem("leagueData");
+      if (storedLeague) {
+        setLeague(JSON.parse(storedLeague));
+      }
+    }
+  }, [league]);
+  console.log(league);
 
   const renderRoutes = (routes) =>
     routes.map((route, index) => {
