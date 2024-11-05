@@ -1,64 +1,38 @@
 import React, { useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import Sidebar from '../../component/Sidebar/Sidebar';
+import { tournamentChildren } from '../../../../router/ModeratorRouter';
 import './TournamentConfiguration.css';
-import ConfigTournament from '../../component/ConfigTournament/ConfigTournament';
-import ManageTeam from '../../component/ManageTeam/ManageTeam';
-import RoleAssignment from '../../component/RoleAssignment/RoleAssignment';
-import KnockoutTournament from '../../component/KnockoutTournament/KnockoutTournament';
-import GroupAllocation from '../../component/GroupAllocation/GroupAllocation';
-import GroupMatchDraw from '../../component/GroupMatchDraw/GroupMatch';
-import GroupMatch from '../../component/GroupMatchDraw/GroupMatch';
-import MatchManagement from '../../component/MatchManagement/MatchManagement';
-import RefereeAssignment from '../../component/RefereeAssignment/RefereeAssignment';
-import ManageArena from '../../component/ManageArena/ManageArena';
+import Header from '../../../system-ui/component/Header/Header';
+import InfoTournament from '../../component/InfoTournament/InfoTournament';
+import Footer from '../../../system-ui/component/Footer/Footer';
+import TournamentHeader from '../../component/TournamentHeader/TournamentHeader';
 
 const TournamentConfiguration = () => {
-  const [tournamentFormat, setTournamentFormat] = useState("group");
-  const [activeItem, setActiveItem] = useState("config");
+    const [activeItem, setActiveItem] = useState("format");
 
+    const renderRoutes = (routes) =>
+        routes.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element} />
+        ));
 
-  const isGroupStage = tournamentFormat === "group";
+    return (
+        <>
+            <Header />
+            <TournamentHeader />
+            <div className='tournament-configuration-main'>
+                <div className="tournament-configuration">
+                    <Sidebar activeItem={activeItem} onMenuClick={setActiveItem} isGroupStage={true} />
+                    <div className="config-content">
+                        <Routes>{renderRoutes(tournamentChildren)}</Routes>
+                    </div>
+                </div>
 
+            </div>
 
-
-
-
-  const renderComponent = () => {
-    switch (activeItem) {
-      case 'config':
-        return <ConfigTournament />;
-      case 'status':
-        return <></>;
-      case 'permissions':
-        return <RoleAssignment />;
-      case 'teams':
-        return <ManageTeam />;
-      case 'matchups':
-        return isGroupStage ? <GroupMatch /> : <KnockoutTournament/>;
-      case 'schedule':
-        return <MatchManagement />;
-      case 'referee':
-        return <RefereeAssignment />;
-      case 'organizers':
-        return <></>;
-      case 'sponsors':
-        return <></>;
-      case 'groupstage':
-        return isGroupStage ? <GroupAllocation /> : null;
-      case 'arena':
-        return <ManageArena />;
-      default:
-        return <></>;
-    }
-  };
-  return (
-    <div className="tournament-configuration">
-      <Sidebar activeItem={activeItem} onMenuClick={setActiveItem} isGroupStage={isGroupStage} />
-      <div className="config-content">
-        {renderComponent()}
-      </div>
-    </div>
-  );
+            <Footer />
+        </>
+    );
 };
 
 export default TournamentConfiguration;
