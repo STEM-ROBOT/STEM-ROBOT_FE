@@ -17,8 +17,8 @@ import { addCompetitionFormatReducer, getCompetitionInfoReducer, getCompetitionM
 import { createRefereeReducer, getFreeTimeRefereeReducer, getRefereeReducer } from '../reducers/RefereeReducer';
 import { importRuleReducer } from '../reducers/RuleReducer';
 import { addScoreReducer } from '../reducers/ScoreReducer';
-import { addTeamKnockoutReducer, addTeamTableReducer, getTeamknockoutReducer, getTeamMatchReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
-import { getLoctionReducer } from '../reducers/LocationReducer';
+import { addTeamAssignMatchReducer, addTeamKnockoutReducer, addTeamTableReducer, addTimeAssignMatchReducer, getTeamAssignMatchReducer, getTeamknockoutReducer, getTeamMatchReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
+import { addLoctionReducer, getLoctionReducer } from '../reducers/LocationReducer';
 
 const persistConfig = {
     key: 'root',
@@ -49,6 +49,10 @@ const rootReducer = combineReducers({
     addTeamTable:addTeamTableReducer,
     getListTeamMatch:getTeamMatchReducer,
     getLocations:getLoctionReducer,
+    addLocation:addLoctionReducer,
+    getTeamAssignMatch:getTeamAssignMatchReducer,
+    addTeamAssignMatch:addTeamAssignMatchReducer,
+    addTimeAssignMatch:addTimeAssignMatchReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

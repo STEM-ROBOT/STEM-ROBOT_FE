@@ -1,16 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ManageArena.css';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addLocations, getLocations } from '../../../../redux/actions/LocationAction';
 
 const ManageArena = () => {
-    const fakeData = [
-        { id: 1, name: "Sân 1" },
-        { id: 2, name: "Sân 2" },
-        { id: 3, name: "Sân 3" },
-        { id: 4, name: "Sân 4" }
-    ];
+    const {competitionId} = useParams();
 
-    const [arenas, setArenas] = useState(fakeData);
+    const dispatch = useDispatch();
+
+    
+
+    const getListLocations = useSelector((state) => state.getLocations);
+    const Data = Array.isArray(getListLocations?.listLocation?.data) ? getListLocations?.listLocation?.data : [];
+
+    // const fakeData = [
+    //     { id: 1, name: "Sân 1" },
+    //     { id: 2, name: "Sân 2" },
+    //     { id: 3, name: "Sân 3" },
+    //     { id: 4, name: "Sân 4" }
+    // ];
+
+    const [arenas, setArenas] = useState([]);
     const [inputValue, setInputValue] = useState("");
+
+    useEffect(()=>{
+        dispatch(getLocations(competitionId))
+    },[dispatch,competitionId])
+
+
+    useEffect(() => {
+      
+        if (Data.length > 0) {
+            setArenas(Data)
+        }
+    }, [Data, ]);
 
     // Handle setting new arenas based on user input
     const handleConfirmClick = () => {
@@ -18,7 +42,7 @@ const ManageArena = () => {
         if (num > 0) {
             const newArenas = Array.from({ length: num }, (_, index) => ({
                 id: index + 1,
-                name: `Sân ${index + 1}`
+                address: `Sân ${index + 1}`
             }));
             setArenas(newArenas);
         }
@@ -27,15 +51,17 @@ const ManageArena = () => {
     // Handle name change for each arena
     const handleNameChange = (e, id) => {
         const updatedArenas = arenas.map((arena) =>
-            arena.id === id ? { ...arena, name: e.target.value } : arena
+            arena.id === id ? { ...arena, address: e.target.value } : arena
         );
         setArenas(updatedArenas);
     };
 
     // Placeholder save function
     const saveArenas = () => {
-        console.log("Saving arenas to database:", arenas);
-        alert("Arena data saved successfully!");
+        const payload = arenas.map((item) => ({
+            address: item.address
+        }));
+       dispatch(addLocations(competitionId,payload));
     };
 
     return (
@@ -62,7 +88,7 @@ const ManageArena = () => {
                         <div className="manage-arena-center-circle"></div>
                         <input
                             type="text"
-                            value={arena.name}
+                            value={arena.address}
                             onChange={(e) => handleNameChange(e, arena.id)}
                             className="manage-arena-name-input"
                         />

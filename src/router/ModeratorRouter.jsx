@@ -25,19 +25,40 @@ import ListContestant from "../pages/moderator-ui/component/ListContestant/ListC
 import ListReferee from "../pages/moderator-ui/component/ListReferee/ListReferee";
 import InfoTournament from "../pages/moderator-ui/component/InfoTournament/InfoTournament";
 import CreateTournamentInfo from "../pages/moderator-ui/component/CreateTournamentInfo/CreateTournamentInfo";
+import ConfigTournament from "../pages/moderator-ui/component/ConfigTournament/ConfigTournament";
+import RoleAssignment from "../pages/moderator-ui/component/RoleAssignment/RoleAssignment";
+import ManageTeam from "../pages/moderator-ui/component/ManageTeam/ManageTeam";
+import KnockoutTournament from "../pages/moderator-ui/component/KnockoutTournament/KnockoutTournament";
+import MatchManagement from "../pages/moderator-ui/component/MatchManagement/MatchManagement";
+import RefereeAssignment from "../pages/moderator-ui/component/RefereeAssignment/RefereeAssignment";
+import ManageArena from "../pages/moderator-ui/component/ManageArena/ManageArena";
+import GroupAllocation from "../pages/moderator-ui/component/GroupAllocation/GroupAllocation";
+import GroupMatch from "../pages/moderator-ui/component/GroupMatchDraw/GroupMatch";
 
+export const tournamentChildren = [
+  { path: "format", element: <ConfigTournament/> },
+  { path: "permissions", element: <RoleAssignment /> },
+  { path: "teams", element: <ManageTeam /> },
+  { path: "matchups", element: <KnockoutTournament/> },
+  // <GroupMatch/>
+  //<KnockoutTournament />
+  { path: "schedule", element: <MatchManagement /> },
+  { path: "referee", element: <RefereeAssignment /> },
+  { path: "arena", element: <ManageArena /> },
+  { path: "groupstage", element: <GroupAllocation /> },
+];
 
 export const tournamentRoutes = [
   { path: "mycompetition", element: <ManageCompetition /> },
   { path: "contestant", element: <ListContestant /> },
   { path: "refee", element: <ListReferee /> },
-  { path: "settings", element: <CreateTournamentInfo/> },
+  { path: "create", element: <CreateTournamentInfo/> },
 ];
 export const competitionChildren = [
-  { path: "dashboard", element: <div>Tournament Dashboard</div> },
-  { path: "schedule", element: <MatchScheduleComponent/> },
-  { path: "teammatch", element: <TeamCompetition/> },
-  { path: "customize", element: <TournamentConfiguration /> },
+  // { path: "dashboard", element: <div>Tournament Dashboard</div> },
+  // { path: "schedule", element: <MatchScheduleComponent/> },
+  // { path: "teammatch", element: <TeamCompetition/> },
+  { path: "settings", element: <TournamentConfiguration /> },
 ];
 
 export const league_detail = [
@@ -83,6 +104,10 @@ const moderatorRouter = [
   {
     path: "/mytournament/:id/*",
     element: <Tournament />,
+  },
+  {
+    path: "/mytournament/:tournamentId/mycompetition/:competitionId/settings/*",
+    element: <TournamentConfiguration />,
   },
 ];
 
