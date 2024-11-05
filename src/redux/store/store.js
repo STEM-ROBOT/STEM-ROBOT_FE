@@ -19,6 +19,8 @@ import { importRuleReducer } from '../reducers/RuleReducer';
 import { addScoreReducer } from '../reducers/ScoreReducer';
 import { addTeamKnockoutReducer, addTeamTableReducer, getTeamknockoutReducer, getTeamMatchReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
 import { getLoctionReducer } from '../reducers/LocationReducer';
+import { ListAccountReducer, ListGenreReducer, ListOrderReducer } from '../reducers/AdminReducer';
+import {  ChangeInforReducer, ChangePassword, InforAccountID } from '../reducers/AccountReducer';
 
 const persistConfig = {
     key: 'root',
@@ -49,6 +51,12 @@ const rootReducer = combineReducers({
     addTeamTable:addTeamTableReducer,
     getListTeamMatch:getTeamMatchReducer,
     getLocations:getLoctionReducer,
+    getListAccount:ListAccountReducer,
+    getListGenre : ListGenreReducer,
+    getListOrder:ListOrderReducer,
+    getAccountID : InforAccountID,
+    ChangePassword : ChangePassword,
+    ChangeInfor : ChangeInforReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

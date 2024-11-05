@@ -3,15 +3,9 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./Countdown.css";
 import Introduction from "../Introduction/Introduction";
 import RegisterTeam from "../RegisterTeam/RegisterTeam";
-const registerConfig = {
-  id: 3,
-  name: "Di chuyển đồ vật",
-  image: "https://tuyensinh.hueic.edu.vn/wp-content/uploads/2021/03/ro1.jpg",
-  endDate: "2024-10-13T23:59:59",
-  status: false,
-  timeConfig: "2024-11-11T23:59:59",
-  teamConfig: { minContestant: 2, maxContestant: 4 },
-  introduction: `🏆 Lâu lâu không tạo giải cho anh em, anh em hỏi nhiều quá. Tiện đây chào mừng 70 năm giải phóng thủ đô, Rùa Billiards xin tổ chức 1 giải nho nhỏ cho các em học sinh nhé. 🎓
+import api from "../../../../config";
+import { api_register_time_check } from "../../api/ApiFlowView/ApiFlowView";
+const introduction = `🏆 Lâu lâu không tạo giải cho anh em, anh em hỏi nhiều quá. Tiện đây chào mừng 70 năm giải phóng thủ đô, Rùa Billiards xin tổ chức 1 giải nho nhỏ cho các em học sinh nhé. 🎓
   Lịch thi đấu sẽ vào ngày 11-12 tức thứ 6 tuần tới.
   Đối tượng tham gia toàn bộ học sinh đang học tại trường THPT Nam Phù Cừ.
   - Giải sẽ bắn 8 bóng bida đánh sọc trơn. Game 2 mạng.
@@ -24,14 +18,13 @@ const registerConfig = {
   Thời gian đăng kí bắt đầu từ ngày hôm nay đến hết ngày 10-10.
   Về game 2 mạng thì anh em có thể đọc ở bài viết sau.
   Rùa Billiards xin cảm ơn!
-  Mọi chi tiết xin liên hệ qua sdt 0387598791 (Mạnh Quân) hoặc nhắn tin trực tiếp qua Facebook Quân Mạnh.`,
-};
+  Mọi chi tiết xin liên hệ qua sdt 0387598791 (Mạnh Quân) hoặc nhắn tin trực tiếp qua Facebook Quân Mạnh.`;
+
 const Countdown = () => {
   const navigate = useNavigate();
   const pram = useParams();
-  const [registerConfigApi, setRegisterConfigApi] = useState(registerConfig);
   const calculateTimeLeft = () => {
-    const difference = new Date(registerConfigApi?.timeConfig) - new Date();
+    const difference = new Date(registerConfigApi?.registerTime) - new Date();
     let timeLeft = {};
 
     if (difference > 0) {
@@ -42,22 +35,31 @@ const Countdown = () => {
         seconds: Math.floor((difference / 1000) % 60),
       };
     }
-
     return timeLeft;
   };
 
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [registerConfigApi, setRegisterConfigApi] = useState();
   const [showRegisterTeam, setRegisterTeam] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   useEffect(() => {
-    if (!registerConfigApi?.status) {
-      navigate(`/404error`);
-    }
+    api
+      .get(`${api_register_time_check + pram.competitionId}`)
+      .then((response) => {
+        if (response.data?.status == "") {
+          navigate(`/404error`);
+        }
+        setRegisterConfigApi(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
-
     return () => clearInterval(timer);
-  }, [registerConfigApi?.timeConfig]);
+  }, [registerConfigApi]);
 
   return (
     <div className="countdown_page">
@@ -69,24 +71,24 @@ const Countdown = () => {
             <div className="countdown_title">
               Nội dung thi đấu này cho phép đăng ký trực tuyến đến hết ngày
               <span className="highlight">
-                {new Date(registerConfigApi?.timeConfig).toLocaleDateString()}
+                {new Date(registerConfigApi?.registerTime).toLocaleDateString()}
               </span>
             </div>
             <div className="countdown_timer">
               <div className="time_block">
-                <div className="time_value">{timeLeft.days || 0}</div>
+                <div className="time_value">{timeLeft?.days || 0}</div>
                 <div className="time_label">Ngày</div>
               </div>
               <div className="time_block">
-                <div className="time_value">{timeLeft.hours || 0}</div>
+                <div className="time_value">{timeLeft?.hours || 0}</div>
                 <div className="time_label">Giờ</div>
               </div>
               <div className="time_block">
-                <div className="time_value">{timeLeft.minutes || 0}</div>
+                <div className="time_value">{timeLeft?.minutes || 0}</div>
                 <div className="time_label">Phút</div>
               </div>
               <div className="time_block">
-                <div className="time_value">{timeLeft.seconds || 0}</div>
+                <div className="time_value">{timeLeft?.seconds || 0}</div>
                 <div className="time_label">Giây</div>
               </div>
             </div>
@@ -97,7 +99,7 @@ const Countdown = () => {
               Bắt đầu đăng ký
             </button>
           </div>
-          <Introduction introduction={registerConfigApi?.introduction} />
+          <Introduction introduction={introduction} />
         </>
       )}
     </div>

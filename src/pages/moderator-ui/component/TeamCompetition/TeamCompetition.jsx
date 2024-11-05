@@ -3,7 +3,7 @@ import "./TeamCompetition.css";
 import { IoClose } from "react-icons/io5";
 import api from "../../../../config";
 import { useParams } from "react-router-dom";
-
+import { team_competitions } from "../../api/ApiFlowView/ApiFlowView";
 
 const TeamCompetition = () => {
   const pram = useParams();
@@ -13,15 +13,17 @@ const TeamCompetition = () => {
   const [showMember, setShowMember] = useState(false);
   const [memberView, setMemberView] = useState([]);
   const ViewMember = (team) => {
-    setMemberView(team);
-    setShowMember(true);
+    if (team.length > 0) {
+      setMemberView(team);
+      setShowMember(true);
+    }
   };
   const CloseMemberPopup = () => {
     setShowMember(false);
   };
   useEffect(() => {
     api
-      .get(`/api/competitions/team-competition?competitionId=${39}`)
+      .get(`${team_competitions + pram.competitionId}`)
       .then((response) => {
         setTeams(response.data.data.data);
       })
@@ -61,7 +63,7 @@ const TeamCompetition = () => {
           </div>
         </div>
       ))}
-      {showMember == true && (
+      {showMember == true > 0 && (
         <div className="popup-modal">
           <div className="team-member-detail">
             <div className="competition_layout_close">

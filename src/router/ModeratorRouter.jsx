@@ -25,6 +25,7 @@ import ListContestant from "../pages/moderator-ui/component/ListContestant/ListC
 import ListReferee from "../pages/moderator-ui/component/ListReferee/ListReferee";
 import InfoTournament from "../pages/moderator-ui/component/InfoTournament/InfoTournament";
 import CreateTournamentInfo from "../pages/moderator-ui/component/CreateTournamentInfo/CreateTournamentInfo";
+import InforAccount from "../pages/moderator-ui/component/InfoAccount/InforAccount";
 
 
 export const tournamentRoutes = [
@@ -60,12 +61,13 @@ export const competition_detail_router = [
 export const profileChildren = [
   { path: "mytournament", element: <TournamentList /> },
   { path: "mytournament/:id", element: <TournamentDetail /> },
-  { path: "mycompetitor", element: <></> },
+  // { path: "profile", element: <InforAccount/> },
   { path: "myinvoice", element: <></> },
 ];
 
 const moderatorRouter = [
   { path: "/account/*", element: <Account /> },
+  {path:"profile",element:<InforAccount/>},
   {
     path: "/account/*/:id",
     element: <Account />,

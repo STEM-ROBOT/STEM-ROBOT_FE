@@ -4,13 +4,14 @@ import DashBoard from '../pages/admin-ui/component/DashBoard/DashBoard';
 import CustomerTable from '../pages/admin-ui/component/CustomerTable/CustomerTable';
 import OrderTable from '../pages/admin-ui/component/OrderTable/OrderTable';
 import GerneManage from '../pages/admin-ui/component/GerneManage/GerneManage';
-
+import PackageManage from '../pages/admin-ui/component/ManagePackage/PackageManage';
 
 export const adminChildren = [
     { path: "dashboard", element: <DashBoard /> },
     { path: "manage-user", element: <CustomerTable /> },
     { path: "manage-order", element: <OrderTable /> },
     { path: "manage-genre", element: <GerneManage /> },
+    { path: "manage-package", element: <PackageManage /> },
 ];
 const adminRouter = [
     { path: "/admin/*", element: <AdminPage /> },

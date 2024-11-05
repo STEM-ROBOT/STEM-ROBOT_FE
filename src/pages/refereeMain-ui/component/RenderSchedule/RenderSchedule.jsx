@@ -75,7 +75,13 @@ const RenderSchedule = ({ week, scheduleData, setMatchView, setShowPopup }) => {
                 scheduleData.hourStartInDay,
                 scheduleData.hourEndInDay
               ).map((hour, i) => (
-                <div key={i} className="day_body_hour_item">
+                <div
+                  key={i}
+                  style={{
+                    height: `${hourHeight}px`,
+                  }}
+                  className="day_body_hour_item"
+                >
                   <div className="day_body_hour_item_data">{hour.time}</div>
                 </div>
               ))}
