@@ -1,68 +1,105 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import Settings from '../InforPorfile/PassWordAccount';
+import { ChangeInfor, InforAccountID } from '../../../../redux/actions/AccountAction';
 import './ProfileDashboard.css';
+import { useDispatch, useSelector } from 'react-redux';
 
 const ProfileDashboard = () => {
-    const tabs = [
-        { name: "QUẢN LÍ GIẢI ĐẤU", key: "mytournament" },
-        { name: "QUẢN LÝ GÓI", key: "myinvoice" },
-    ];
+  const [profileInfo, setProfileInfo] = useState({
+    name: '',
+    phoneNumber: '',
+    email: ''
+  });
 
-    const navigate = useNavigate();
-    const location = useLocation();
-    const [activeTab, setActiveTab] = useState("");
+  const dispatch = useDispatch();
+  const InforAccountIDs = useSelector((state) => state.getAccountID);
 
-    useEffect(() => {
-        const currentPath = location.pathname.split("/").pop();
-        const matchedTab = tabs.find(tab => tab.key === currentPath);
-        if (matchedTab) {
-            setActiveTab(matchedTab.key);
-        } else {
-           
-        }
-    }, [location.pathname, navigate]);
+  useEffect(() => {
+    // Gọi API để lấy thông tin tài khoản và cập nhật profileInfo khi tải trang
+    dispatch(InforAccountID());
+  }, [dispatch]);
 
-    const handleTabClick = (tab) => {
-        setActiveTab(tab.key);
-        navigate(`/account/${tab.key}`);
-    };
+  // Cập nhật profileInfo khi thông tin tài khoản thay đổi
+  useEffect(() => {
+    if (InforAccountIDs.success) {
+      setProfileInfo({
+        name: InforAccountIDs.success.name || '',
+        phoneNumber: InforAccountIDs.success.phoneNumber || '',
+        email: InforAccountIDs.success.email || ''
+      });
+    }
+  }, [InforAccountIDs.success]);
 
-    return (
-        <div className="profile-dashboard-outer">
-            <div className="profile-dashboard">
-                <div className='profile-dashboard-content'>
-                <div className="profile-info">
-                        <div className="profile-avatar">
-                            <span className="avatar-initial">T</span>
-                        </div>
-                        <div className="profile-details">
-                            <h3>Thành Lê Đình <span className="edit-icon">✎</span></h3>
-                            <p><i className="fa fa-envelope"></i> xuanthanh01122003@gmail.com</p>
-                            <p><i className="fa fa-phone"></i> Chưa cập nhật</p>
-                            <p><i className="fa fa-calendar"></i> Chưa cập nhật</p>
-                            <div className="email-warning">
-                                <i className="fa fa-exclamation-triangle"></i> Chưa kích hoạt email
-                                <button className="resend-email-btn">Gửi lại Email</button>
-                            </div>
-                        </div>
-                    </div>
+  const handleSave =  () => {
+     dispatch(ChangeInfor(profileInfo));
+   // dispatch(InforAccountID());
+  };
 
-                    <div className="tab-navigation">
-                        {tabs.map((tab) => (
-                            <div
-                                key={tab.key}
-                                className={`tab-item ${activeTab === tab.key ? "active" : ""}`}
-                                onClick={() => handleTabClick(tab)}
-                            >
-                                {tab.name}
-                                {activeTab === tab.key && <div className="indicator"></div>}
-                            </div>
-                        ))}
-                    </div>
-                </div>
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setProfileInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
+  };
+
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+
+  const openPasswordModal = () => setIsPasswordModalOpen(true);
+  const closePasswordModal = () => setIsPasswordModalOpen(false);
+
+  return (
+    <div className="profile-container-parent">
+      <div className="profile-container">
+        <h2 className="profile-header">
+          <i className="fa fa-user"></i> Thông tin tài khoản
+        </h2>
+        <div className="profile-content">
+          <div className="profile-left">
+            <div className="profile-picture-section">
+              <div className="profile-picture" onClick={() => alert("Change Picture Clicked")}>
+                <img src={InforAccountIDs.success?.image} alt="Profile" />
+                <span className="change-picture-text">Nhấn vào để thay đổi hình ảnh</span>
+              </div>
+              <p className="change-password" onClick={openPasswordModal}>Thay đổi mật khẩu</p>
             </div>
+          </div>
+          <div className="profile-right">
+            <form>
+              <div className="form-group">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={profileInfo.name}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Phone</label>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  value={profileInfo.phoneNumber}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="text"
+                  name="email"
+                  value={profileInfo.email}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button type="button" className="save-button" onClick={handleSave}>Lưu</button>
+            </form>
+          </div>
         </div>
-    );
-};
+
+        {/* Password Change Modal */}
+        <Settings isOpen={isPasswordModalOpen} onClose={closePasswordModal} />
+      </div>
+    </div>
+  );
+}
 
 export default ProfileDashboard;
