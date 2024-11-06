@@ -12,7 +12,6 @@ const EditTeamPopup = ({ team, competitionId, closePopup, setLoadApi }) => {
     image: team.image,
     members: team.member || [],
   });
-  console.log(team.member);
 
   const [contestantInTeam, setContestantInTeam] = useState(
     team.contestantInTeam
@@ -81,20 +80,18 @@ const EditTeamPopup = ({ team, competitionId, closePopup, setLoadApi }) => {
   const toggleSelection = (id) => {
     setAvailableContestants((prevContestants) => {
       const updatedContestants = prevContestants.map((contestant) => {
+        // Chuyển đổi trạng thái chọn của thí sinh được bấm
         if (contestant.id === id) {
           return { ...contestant, selected: !contestant.selected };
         }
         return contestant;
       });
 
-      // Lọc ra các ID của thí sinh được chọn dựa trên trạng thái `selected` của họ
+      // Lọc ra các ID của thí sinh đã được chọn
       const selectedIds = updatedContestants
         .filter((contestant) => contestant.selected)
         .map((contestant) => contestant.id);
 
-      // Cập nhật `selectedContestant` chỉ một lần với danh sách ID được chọn
-      setSelectedContestant(selectedIds);
-      // Kiểm tra xem số lượng thí sinh được chọn có vượt quá số lượng cho phép không
       if (selectedIds.length === contestantInTeam + 1) {
         alert(
           "Một đội chỉ được đăng ký tối đa " + contestantInTeam + " thành viên"
@@ -111,8 +108,11 @@ const EditTeamPopup = ({ team, competitionId, closePopup, setLoadApi }) => {
         alert("Sô lượng thành viên vượt quá số lượng cho phép");
         return prevContestants;
       }
+
+      // Nếu đủ điều kiện, cập nhật danh sách `selectedContestant` và trạng thái `selectAll`
       setSelectAll(selectedIds.length === updatedContestants.length);
       setSelectedContestant(selectedIds);
+
       return updatedContestants;
     });
   };
@@ -174,7 +174,12 @@ const EditTeamPopup = ({ team, competitionId, closePopup, setLoadApi }) => {
                 alt={teamDetails.name}
                 className="edit-logo"
               />
-              <input style={{ display: "none" }} type="file" accept="image/*" onChange={handleLogoChange} />
+              <input
+                style={{ display: "none" }}
+                type="file"
+                accept="image/*"
+                onChange={handleLogoChange}
+              />
             </label>
           </div>
 
