@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
-import api from "../../config";
-import { ADD_COMPETITION_FORMAT_FAIL, ADD_COMPETITION_FORMAT_REQUEST, ADD_COMPETITION_FORMAT_SUCCESS, GET_COMPETITION_INFO_FAIL, GET_COMPETITION_INFO_REQUEST, GET_COMPETITION_INFO_SUCCESS, GET_COMPETITION_MODERATOR_FAIL, GET_COMPETITION_MODERATOR_REQUEST, GET_COMPETITION_MODERATOR_SUCCESS } from "../constants/CompetitionConstant";
+
+import { ACTIVE_COMPETITION_FAIL, ACTIVE_COMPETITION_REQUEST, ACTIVE_COMPETITION_SUCCESS, ADD_COMPETITION_FORMAT_FAIL, ADD_COMPETITION_FORMAT_REQUEST, ADD_COMPETITION_FORMAT_SUCCESS, GET_COMPETITION_INFO_FAIL, GET_COMPETITION_INFO_REQUEST, GET_COMPETITION_INFO_SUCCESS, GET_COMPETITION_MODERATOR_FAIL, GET_COMPETITION_MODERATOR_REQUEST, GET_COMPETITION_MODERATOR_SUCCESS } from "../constants/CompetitionConstant";
+import api from "../../Config";
 
 
 export const getCompetitionbyTournament = (id) => async (dispatch) => {
@@ -65,6 +66,35 @@ export const getCompetitionbyTournament = (id) => async (dispatch) => {
       }
       dispatch({
         type: ADD_COMPETITION_FORMAT_FAIL,
+        payload: message,
+      });
+    }
+  };
+
+  export const activeCompetition = (competitionId) => async (dispatch) => {
+    try {
+      dispatch({ type: ACTIVE_COMPETITION_REQUEST });
+  
+      const { data } = await api.put(`/api/competitions/set-active?competitionId=${competitionId}`);
+  
+      dispatch({ type: ACTIVE_COMPETITION_SUCCESS, payload: data });
+      if(data.code === "400"){
+        toast.error("Vui lòng cấu hình trước khi kích hoạt !!")
+      }else{
+        toast.success("Thêm thành công")
+      }
+    
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      if (message === "Not authorized, token failed") {
+        // dispatch(logout());
+      
+      }
+      dispatch({
+        type: ACTIVE_COMPETITION_FAIL,
         payload: message,
       });
     }

@@ -28,12 +28,17 @@ const MatchManagement = () => {
         if (dataTeamMatch) {
             const clonedData = deepClone(dataTeamMatch);
             setData(clonedData);
-            setCurrentStage(clonedData.group ? 'group' : 'knockout');
-            setCurrentRound(
-                Array.isArray(clonedData?.group?.rounds) && clonedData.group.rounds[0]?.round
-                    ? clonedData.group.rounds[0].round
-                    : []
-            );
+    
+            // Set the initial stage based on availability
+            const initialStage = clonedData.group ? 'group' : 'knockout';
+            setCurrentStage(initialStage);
+    
+            // Set the initial round based on the stage
+            const initialRound = Array.isArray(clonedData[initialStage]?.rounds) && clonedData[initialStage].rounds[0]?.round
+                ? clonedData[initialStage].rounds[0].round
+                : null;
+            setCurrentRound(initialRound);
+            
             setFiledCount(clonedData?.locations?.length || 1);
             setStartDate(clonedData?.startTime);
         }
@@ -65,8 +70,10 @@ const MatchManagement = () => {
     const handleStageChange = (stage) => {
         setCurrentStage(stage);
         const firstRound = data[stage]?.rounds?.[0]?.round || [];
+      
         setCurrentRound(firstRound);
     };
+    console.log(currentRound)
 
     const handleAutoAssign = () => {
         const updatedData = deepClone(data);
