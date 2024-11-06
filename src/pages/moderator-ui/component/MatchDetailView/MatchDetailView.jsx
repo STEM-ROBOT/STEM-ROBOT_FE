@@ -160,11 +160,11 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
           <div className="match_detail_item">
             <div className="match_time_location_view">
               <MdAccessTime className="icon_match_time" />
-              {matchData.time || "Chưa có lịch thi đấu"}
+              {matchData.startTime || "Chưa có lịch thi đấu"}
             </div>
             <div className="match_time_location_view">
               <IoLocationOutline className="icon_match_time" />
-              {matchData.location || "Chưa cập nhật"}
+              {matchData.locationName || "Chưa cập nhật"}
             </div>
           </div>
           <div className="match_detail_item">

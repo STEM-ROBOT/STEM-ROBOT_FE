@@ -17,10 +17,12 @@ import { addCompetitionFormatReducer, getCompetitionInfoReducer, getCompetitionM
 import { createRefereeReducer, getFreeTimeRefereeReducer, getRefereeReducer } from '../reducers/RefereeReducer';
 import { importRuleReducer } from '../reducers/RuleReducer';
 import { addScoreReducer } from '../reducers/ScoreReducer';
-import { addTeamKnockoutReducer, addTeamTableReducer, getTeamknockoutReducer, getTeamMatchReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
+// import {  getTeamknockoutReducer, getTeamMatchReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
 import { getLoctionReducer } from '../reducers/LocationReducer';
 import { ListAccountReducer, ListGenreReducer, ListOrderReducer } from '../reducers/AdminReducer';
 import {  ChangeInforReducer, ChangePassword, InforAccountID } from '../reducers/AccountReducer';
+import { addTeamAssignMatchReducer, addTeamKnockoutReducer, addTeamTableReducer, addTimeAssignMatchReducer, getTeamAssignMatchReducer, getTeamknockoutReducer, getTeamMatchReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
+import { addLoctionReducer } from '../reducers/LocationReducer';
 
 const persistConfig = {
     key: 'root',
@@ -46,7 +48,6 @@ const rootReducer = combineReducers({
     getFreetimeReferee:getFreeTimeRefereeReducer,
     addCompetitionFormat:addCompetitionFormatReducer,
     addTeamknockout:addTeamKnockoutReducer,
-    getTeamknockout:getTeamknockoutReducer,
     getTeamTable:getTeamTableReducer,
     addTeamTable:addTeamTableReducer,
     getListTeamMatch:getTeamMatchReducer,
@@ -56,7 +57,11 @@ const rootReducer = combineReducers({
     getListOrder:ListOrderReducer,
     getAccountID : InforAccountID,
     ChangePassword : ChangePassword,
-    ChangeInfor : ChangeInforReducer
+    ChangeInfor : ChangeInforReducer,
+    addLocation:addLoctionReducer,
+    getTeamAssignMatch:getTeamAssignMatchReducer,
+    addTeamAssignMatch:addTeamAssignMatchReducer,
+    addTimeAssignMatch:addTimeAssignMatchReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

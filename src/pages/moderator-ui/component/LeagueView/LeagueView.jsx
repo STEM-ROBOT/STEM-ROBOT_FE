@@ -10,6 +10,7 @@ const LeagueView = ({ viewMode, league }) => {
         prevIndex === league.imagesCompetition.length - 1 ? 0 : prevIndex + 1
       );
     }, 3000); // 2000ms = 2 seconds
+    console.log(league);
 
     return () => clearInterval(intervalId); // Clean up the interval
   }, [league.imagesCompetition.length]);
@@ -53,7 +54,7 @@ const LeagueView = ({ viewMode, league }) => {
         }}
       >
         <img
-          src="https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png"
+          src={league.image}
           alt="League Image"
           className={`league_thumbnail ${viewMode}`}
         />
@@ -63,7 +64,7 @@ const LeagueView = ({ viewMode, league }) => {
           <span>{league.name}</span>
         </div>
         <div className={`league_detail ${viewMode}`}>
-          <span>{league.address}</span>
+          <span>{league.location}</span>
         </div>
         <div className={`league_stats ${viewMode}`}>
           <div className={`tooltip ${viewMode}`}>

@@ -21,7 +21,8 @@ const CountdownPopup = ({ onComplete }) => {
     return (
         <div className="popup-count-overlay">
             <div className="popup-count-content">
-                <h2>Hệ thống đang xử lý...</h2>
+               {/* <h2>Hệ thống đang xử lý...</h2> */}
+                <h2>DƯƠNG ĐẸP TRAI ĐÃ XỬ LÝ..</h2>
                 <p>{countdown}</p>
             </div>
         </div>

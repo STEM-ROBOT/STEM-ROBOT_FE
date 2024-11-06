@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import MatchDetailView from "../MatchDetailView/MatchDetailView";
+import { match_group_stage_view } from "../../api/ApiFlowView/ApiFlowView";
+import api from "../../../../Config";
+import { useParams } from "react-router-dom";
 const groupMatch = [
   {
     groupName: "A",
@@ -202,36 +205,49 @@ const roundMode = [
   { id: 2, mode: "Vòng Đấu" },
 ];
 const MatchGroupStageComponent = () => {
+  const path = useParams();
   const [viewMode, setViewMode] = useState("Bảng Đấu");
   const [optionViewModeDefault, setOptionViewModeDefault] = useState([]);
+  const [matchApi, setMatchApi] = useState([]);
   const [matchView, setMatchView] = useState([]);
   const [showMatchDetail, setShowMatchDetail] = useState(false);
   const [matchDetailData, setMatchDetailData] = useState();
   useEffect(() => {
-    if (matchView.length < 1) {
-      let matchInGroup;
-      for (let i = 0; i < groupMatch.length; i++) {
-        matchInGroup = {
-          groupName: groupMatch[i].groupName,
-          matchInGroup: [],
-        };
-        groupMatch[i].round.map((round, i) => {
-          round.matches.map((match, i) => {
-            const updatedMatch = {
-              ...match,
-              roundName: round.roundNumber,
+    if (matchApi.length < 1) {
+      api
+        .get(`${match_group_stage_view + path.competitionId}`)
+        .then((response) => {
+          response.data.forEach((group) => {
+            let matchInGroups = {
+              groupName: group.groupName,
+              matchInGroup: [],
             };
-
-            matchInGroup.matchInGroup.push(updatedMatch);
+            
+            let matchCheck = []; // Initialize for each group
+            group.round.forEach((round) => {
+              round.matches.forEach((match) => {
+                const updatedMatch = {
+                  ...match,
+                  roundName: round.roundNumber,
+                };
+                matchCheck.push(updatedMatch);
+              });
+            });
+            
+            matchInGroups.matchInGroup = matchCheck;
+            setMatchView((prev) => [...prev, matchInGroups]);
           });
+          
+          setMatchApi(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
         });
-        setMatchView((prev) => [...prev, matchInGroup]);
-      }
     }
-  }, []);
+  }, [matchApi]);
   const CacuNumberMatch = () => {
     let numberMatch = 0;
-    groupMatch?.map((group) => {
+    matchApi?.map((group) => {
       group.round.map((round) => {
         for (let i = 0; i < round.matches.length; i++) {
           numberMatch += 1;
@@ -240,6 +256,7 @@ const MatchGroupStageComponent = () => {
     });
     return numberMatch;
   };
+
   const NumberRound = (rounds, index) => {
     const roundNumber = [];
     if (roundNumber.length < 1) {
@@ -251,6 +268,7 @@ const MatchGroupStageComponent = () => {
     optionViewModeDefault.push({ mode: "TẤT", index: index });
     return roundNumber;
   };
+
   // chọn vòng để xem
   const MatchToMode = (roundNumber, indexView, groupData) => {
     if (roundNumber !== "TẤT") {
@@ -326,7 +344,7 @@ const MatchGroupStageComponent = () => {
           <div style={{ marginRight: "7px", fontWeight: "bold" }}>
             Giai đoạn đấu vòng bảng:
           </div>
-          {`Có ${groupMatch?.length} bảng đấu và `}
+          {`Có ${matchApi?.length} bảng đấu và `}
           {CacuNumberMatch()} trận đấu
         </div>
         <div className="schedule_match_"></div>
@@ -344,7 +362,7 @@ const MatchGroupStageComponent = () => {
           </div>
         ))}
       </div>
-      {groupMatch?.map((group, index) => (
+      {matchApi?.map((group, index) => (
         <div key={index} className="schedule_match_layout_view_match">
           <div className="view_match_option">
             Vòng
@@ -401,7 +419,7 @@ const MatchGroupStageComponent = () => {
                         <div className="item_team_name">{match.awayTeam}</div>
                       </div>
                       <div className="match_item_time">
-                        {match.time ? match.time : " Chưa có lịch thi đấu"}
+                        {match.startTime ? match.startTime : " Chưa có lịch thi đấu"}
                       </div>
                     </div>
                   </div>
