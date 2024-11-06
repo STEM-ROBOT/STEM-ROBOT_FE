@@ -41,6 +41,7 @@ const actionReferee = [
   },
 ];
 const DashboardBarReferee = () => {
+
   const [selectedRule, setSelectedRule] = useState("Rule");
   const [audioPlaying, setAudioPlaying] = useState(false);
   const audioRef = React.useRef(null);
@@ -67,7 +68,7 @@ const DashboardBarReferee = () => {
       </audio>
       <div className="sidebar_referee_layout">
         <div className="sidebar_referee_head">
-          <HiOutlineLogin className="referee_head_logo" />
+          <HiOutlineLogin className="referee_head_logo" onClick={() => navigate("/referee-main")} />
           <IoSettingsSharp
             onClick={handleAudioPlay}
             className="referee_head_icon"

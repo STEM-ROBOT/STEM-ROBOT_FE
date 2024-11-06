@@ -252,17 +252,22 @@ const MatchScheduleComponent = () => {
   const [showMatchDetail, setShowMatchDetail] = useState(false);
   const [matchDetailData, setMatchDetailData] = useState();
   useEffect(() => {
-    api.get(`${match_schedule_view + path.competitionId}`).then((response) => {
-      console.log(response.data);
-      setMatchApi(response.data);
-      setMatchView(response.data);
-      if (optionViewMode.length < 1) {
-        optionViewMode.push({ mode: "TẤT" });
-        for (let i = 0; i < response.data.length; i++) {
-          optionViewMode.push({ mode: response.data[i].round });
+    api
+      .get(`${match_schedule_view + path.competitionId}`)
+      .then((response) => {
+        console.log(response.data);
+        setMatchApi(response.data);
+        setMatchView(response.data);
+        if (optionViewMode.length < 1) {
+          optionViewMode.push({ mode: "TẤT" });
+          for (let i = 0; i < response.data.length; i++) {
+            optionViewMode.push({ mode: response.data[i].round });
+          }
         }
-      }
-    });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
   const CacuNumberMatch = () => {
     let numberMatch = 0;
@@ -373,8 +378,8 @@ const MatchScheduleComponent = () => {
                         <div className="item_team_name">{match.awayTeam}</div>
                       </div>
                       <div className="match_item_startDate">
-                        {match.startDate
-                          ? match.startDate
+                        {match.startTime
+                          ? match.startTime
                           : " Chưa có lịch thi đấu"}
                       </div>
                     </div>

@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import api from "../../config";
 import { CREATE_REFEREE_FAIL, CREATE_REFEREE_REQUEST, CREATE_REFEREE_SUCCESS, GET_FREETIME_REFEREE_FAIL, GET_FREETIME_REFEREE_REQUEST, GET_FREETIME_REFEREE_SUCCESS, GET_REFEREE_FAIL, GET_REFEREE_REQUEST, GET_REFEREE_SUCCESS } from "../constants/RefereeConstant";
 
@@ -40,6 +41,7 @@ export const getListReferee = (tournamentId) => async (dispatch) => {
         );
 
         dispatch({ type: CREATE_REFEREE_SUCCESS, payload: data });
+        toast.success("Thêm thành công")
     } catch (error) {
         const message =
             error.response && error.response.data.message
@@ -52,15 +54,17 @@ export const getListReferee = (tournamentId) => async (dispatch) => {
             type: CREATE_REFEREE_FAIL,
             payload: message,
         });
+        toast.success("Thêm thất bại");
     }
 };
 
-export const getListRefereeFreeTime = (tournamentId) => async (dispatch) => {
+export const getListRefereeFreeTime = (tournamentId, competitionId) => async (dispatch) => {
   try {
     dispatch({ type: GET_FREETIME_REFEREE_REQUEST });
 
-    const { data } = await api.get(`/api/referees/free-referee?tournamentId=${tournamentId}`);
+    const { data } = await api.get(`/api/referees/free-referee?tournamentId=${tournamentId}&competitionId=${competitionId}`);
 
+    console.log(tournamentId)
     dispatch({ type: GET_FREETIME_REFEREE_SUCCESS, payload: data });
   } catch (error) {
     const message =

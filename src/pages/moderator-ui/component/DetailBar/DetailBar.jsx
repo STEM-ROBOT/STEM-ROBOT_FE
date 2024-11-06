@@ -28,8 +28,7 @@ const DetailBar = ({ league }) => {
         <div className="bar_content">
           <div className="bar_content_img">
             <img
-              src="https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png"
-              alt="League Image"
+              src={league.image}
               className="bar_img"
             />
           </div>
@@ -38,7 +37,7 @@ const DetailBar = ({ league }) => {
               <span>{league.name}</span>
             </div>
             <div className="bar_detail">
-              <span>{league.address}</span>
+              <span>{league.location}</span>
             </div>
             <div className="bar_stats">
               <div className="tooltip">

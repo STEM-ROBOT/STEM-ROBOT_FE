@@ -1,4 +1,4 @@
-.team-list-container {
+.team-list-container-view {
   background-color: white;
   border-radius: 7px;
   display: flex;
@@ -8,10 +8,9 @@
   padding: 20px;
 }
 
-.team-card {
-
+.team-card-view {
   position: relative;
-  background-color: rgb(216, 235, 247);
+  background-color: rgba(171, 220, 250, 0.17);
   border: 1px solid #e5e5e5;
   border-radius: 7px;
   padding: 13px;
@@ -101,11 +100,11 @@
 }
 
 /* Hover Effect */
-.team-card:hover .hover-overlay {
+.team-card-view:hover .hover-overlay {
   opacity: 0.6;
 }
 
-.team-card:hover {
+.team-card-view:hover {
   transform: scale(1.01);
 }
 
@@ -133,7 +132,7 @@
   transition: width 0.4s ease, left 0.4s ease;
 }
 
-.team-card:hover .hover-line {
+.team-card-view:hover .hover-line {
   width: 100%;
   left: 0;
 }
