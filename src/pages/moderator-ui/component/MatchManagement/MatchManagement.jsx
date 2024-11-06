@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addTimeAssignMatch, getTeamAssignMatch } from '../../../../redux/actions/TeamAction';
 import { toast } from 'react-toastify';
 
-// Utility to deep clone the data object
 const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
 
 const MatchManagement = () => {
@@ -15,8 +14,8 @@ const MatchManagement = () => {
     const dataTeamMatch = teamMatchAssign.listTeamAssignMatch?.data;
 
     const [data, setData] = useState({});
-    const [currentStage, setCurrentStage] = useState(data.group ? 'group' : 'knockout');
-    const [currentRound, setCurrentRound] = useState();
+    const [currentStage, setCurrentStage] = useState();
+    const [currentRound, setCurrentRound] = useState('group');
     const [fieldCount, setFiledCount] = useState(1);
     const [startDate, setStartDate] = useState();
     const [isAssigned, setIsAssigned] = useState(false);
@@ -27,47 +26,51 @@ const MatchManagement = () => {
 
     useEffect(() => {
         if (dataTeamMatch) {
-            setData(deepClone(dataTeamMatch));  // Deep clone to avoid direct mutations
+            const clonedData = deepClone(dataTeamMatch);
+            setData(clonedData);
+            setCurrentStage(clonedData.group ? 'group' : 'knockout');
             setCurrentRound(
-                Array.isArray(dataTeamMatch?.group?.rounds) && dataTeamMatch.group.rounds[0]?.round
-                    ? dataTeamMatch.group.rounds[0].round
+                Array.isArray(clonedData?.group?.rounds) && clonedData.group.rounds[0]?.round
+                    ? clonedData.group.rounds[0].round
                     : []
             );
-            setFiledCount(dataTeamMatch?.locations?.length)
-            setStartDate(dataTeamMatch?.startTime)
+            setFiledCount(clonedData?.locations?.length || 1);
+            setStartDate(clonedData?.startTime);
         }
     }, [dataTeamMatch]);
 
     const getCurrentDate = (dateString) => {
-        if (!dateString) return ''; // Return empty string if dateString is invalid
+        if (!dateString) return '';
         const date = new Date(dateString);
-        return !isNaN(date) ? date.toISOString().split('T')[0] : ''; // Only return a formatted date if valid
+        return !isNaN(date) ? date.toISOString().split('T')[0] : '';
     };
 
     const [config, setConfig] = useState({
-        fieldCount: fieldCount,
+        fieldCount,
         startDate: getCurrentDate(startDate),
         startTime: '06:00',
         endTime: '18:00',
         matchDuration: 90,
         breakTime: 60,
     });
+
     useEffect(() => {
         setConfig((prevConfig) => ({
             ...prevConfig,
-            fieldCount: fieldCount,
+            fieldCount,
             startDate: getCurrentDate(startDate),
         }));
     }, [fieldCount, startDate]);
+
     const handleStageChange = (stage) => {
         setCurrentStage(stage);
-        setCurrentRound(data[stage]?.rounds[0]?.round || []);
+        const firstRound = data[stage]?.rounds?.[0]?.round || [];
+        setCurrentRound(firstRound);
     };
 
     const handleAutoAssign = () => {
-        const updatedData = deepClone(data); // Deep clone data to avoid mutations
+        const updatedData = deepClone(data);
         const { startDate, startTime, matchDuration, breakTime, endTime } = config;
-
         const availableLocations = updatedData.locations || [];
         const locationCount = availableLocations.length;
 
@@ -130,23 +133,14 @@ const MatchManagement = () => {
     };
 
     const handleUpdate = (roundId, tableIndex, matchIndex, field, value) => {
-        const updatedData = deepClone(data); // Deep clone data to avoid mutations
+        const updatedData = deepClone(data);
         const round = updatedData[currentStage]?.rounds?.find((r) => r.roundId === roundId);
         if (round) {
             round.matchrounds[tableIndex].matches[matchIndex][field] = value;
             setData(updatedData);
         }
     };
-    const addTime = (time, minutesToAdd) => {
-        let [hours, minutes] = time.split(':').map(Number);
-        minutes += minutesToAdd;
-        hours += Math.floor(minutes / 60);
-        minutes %= 60;
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-    };
 
-
-    const stageData = data[currentStage]?.rounds || [];
     const prepareDataForSave = () => {
         if (!isAssigned) {
             toast.error("Vui lòng sắp xếp trước khi lưu !");
@@ -155,14 +149,12 @@ const MatchManagement = () => {
 
         const { startDate, startTime, endTime, matchDuration, breakTime } = config;
 
-        // Convert minutes to HH:MM:SS format (TimeSpan-compatible)
         const convertMinutesToTimeSpan = (minutes) => {
             const hours = Math.floor(minutes / 60);
             const mins = minutes % 60;
             return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:00`;
         };
 
-        // Convert "HH:MM" format to HH:MM:SS (TimeSpan-compatible)
         const convertTimeToTimeSpan = (time) => {
             const [hours, minutes] = time.split(':').map(Number);
             return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`;
@@ -176,6 +168,7 @@ const MatchManagement = () => {
             startTime: new Date(startDate).toISOString(),
             matchs: []
         };
+
         Object.keys(data).forEach((stageKey) => {
             const stage = data[stageKey];
             (stage.rounds || []).forEach((round) => {
@@ -185,125 +178,113 @@ const MatchManagement = () => {
                             id: match.matchId,
                             startDate: match.date ? new Date(match.date).toISOString() : new Date(startDate).toISOString(),
                             locationId: match.locationId || 0,
-                            timeIn: convertTimeToTimeSpan(match.time || startTime), // TimeSpan in HH:MM:SS
-                            timeOut: convertTimeToTimeSpan(addTime(match.time || startTime, matchDuration)) // TimeSpan in HH:MM:SS
+                            timeIn: convertTimeToTimeSpan(match.time || startTime),
+                            timeOut: convertTimeToTimeSpan(addTime(match.time || startTime, matchDuration))
                         });
                     });
                 });
             });
         });
 
-        console.log(mappedData);
         dispatch(addTimeAssignMatch(competitionId, mappedData));
     };
 
-    // Helper function to add minutes to time in HH:MM format
-    // const addTime = (time, minutesToAdd) => {
-    //     let [hours, minutes] = time.split(':').map(Number);
-    //     minutes += minutesToAdd;
-    //     hours += Math.floor(minutes / 60);
-    //     minutes %= 60;
-    //     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-    // };
-
-
+    const stageData = data[currentStage]?.rounds || [];
 
     return (
-        <div className="match-management-container">
-            <h2>Quản lý lịch đấu</h2>
+        <div className="match-management-container-main">
+            <h2 className="match-management-title">Quản lý lịch đấu</h2>
             <p>Cài đặt chung cho các trận đấu</p>
-            <div className="match-management-config-section-standard match-management-config-input-container">
-                {!data.isAssign && (
-                    <div className="match-management-config-section-standard match-management-config-input-container">
-                        <div className="match-management-config-input-grid">
-                            <div className="match-management-config-column-left">
-                                <label className="match-management-input-label">Số sân</label>
-                                <input
-                                    type="number"
-                                    placeholder="Số sân"
-                                    value={config.fieldCount}
-                                    min="1"
-                                    readOnly
-                                    className="match-management-input-field match-management-field-standard"
-                                />
+            {dataTeamMatch?.isMatch !== true && (
+                <div className="match-management-config-section">
+                    <div className="match-management-config-grid">
+                        <div className="match-management-config-column-left">
+                            <label className="match-management-label">Số sân</label>
+                            <input
+                                type="number"
+                                placeholder="Số sân"
+                                value={config.fieldCount}
+                                min="1"
+                                readOnly
+                                className="match-management-input-field"
+                            />
 
-                                <label className="match-management-input-label">Ngày bắt đầu</label>
-                                <input
-                                    type="date"
-                                    placeholder="Ngày bắt đầu"
-                                    value={config.startDate}
-                                    readOnly
-                                    className="match-management-input-field match-management-field-standard"
-                                />
+                            <label className="match-management-label">Ngày bắt đầu</label>
+                            <input
+                                type="date"
+                                placeholder="Ngày bắt đầu"
+                                value={config.startDate}
+                                readOnly
+                                className="match-management-input-field"
+                            />
 
-                                <label className="match-management-input-label">Thời gian nghỉ giữa các trận đấu (phút)</label>
-                                <input
-                                    type="number"
-                                    placeholder="Thời gian nghỉ giữa các trận đấu (phút)"
-                                    value={config.breakTime}
-                                    onChange={(e) => setConfig({ ...config, breakTime: parseInt(e.target.value, 10) })}
-                                    className="match-management-input-field match-management-field-standard"
-                                />
-                            </div>
-
-                            <div className="match-management-config-column-right">
-                                <label className="match-management-input-label">Thời gian bắt đầu</label>
-                                <input
-                                    type="time"
-                                    placeholder="Thời gian bắt đầu"
-                                    value={config.startTime}
-                                    onChange={(e) => setConfig({ ...config, startTime: e.target.value })}
-                                    className="match-management-input-field match-management-field-standard"
-                                />
-
-                                <label className="match-management-input-label">Thời gian kết thúc</label>
-                                <input
-                                    type="time"
-                                    placeholder="Thời gian kết thúc"
-                                    value={config.endTime}
-                                    onChange={(e) => setConfig({ ...config, endTime: e.target.value })}
-                                    className="match-management-input-field match-management-field-standard"
-                                />
-
-                                <label className="match-management-input-label">Thời gian một trận đấu (phút)</label>
-                                <input
-                                    type="number"
-                                    placeholder="Thời gian một trận đấu (phút)"
-                                    value={config.matchDuration}
-                                    onChange={(e) => setConfig({ ...config, matchDuration: parseInt(e.target.value, 10) })}
-                                    className="match-management-input-field match-management-field-standard"
-                                />
-                            </div>
+                            <label className="match-management-label">Thời gian nghỉ giữa các trận đấu (phút)</label>
+                            <input
+                                type="number"
+                                placeholder="Thời gian nghỉ giữa các trận đấu (phút)"
+                                value={config.breakTime}
+                                onChange={(e) => setConfig({ ...config, breakTime: parseInt(e.target.value, 10) })}
+                                className="match-management-input-field"
+                            />
                         </div>
-                        <button className="match-management-auto-assign-button match-management-primary-button" onClick={handleAutoAssign}>
-                            Sắp xếp tự động
-                        </button>
-                    </div>
-                )}
-            </div>
 
-            <div className="navbar">
+                        <div className="match-management-config-column-right">
+                            <label className="match-management-label">Thời gian bắt đầu</label>
+                            <input
+                                type="time"
+                                placeholder="Thời gian bắt đầu"
+                                value={config.startTime}
+                                onChange={(e) => setConfig({ ...config, startTime: e.target.value })}
+                                className="match-management-input-field"
+                            />
+
+                            <label className="match-management-label">Thời gian kết thúc</label>
+                            <input
+                                type="time"
+                                placeholder="Thời gian kết thúc"
+                                value={config.endTime}
+                                onChange={(e) => setConfig({ ...config, endTime: e.target.value })}
+                                className="match-management-input-field"
+                            />
+
+                            <label className="match-management-label">Thời gian một trận đấu (phút)</label>
+                            <input
+                                type="number"
+                                placeholder="Thời gian một trận đấu (phút)"
+                                value={config.matchDuration}
+                                onChange={(e) => setConfig({ ...config, matchDuration: parseInt(e.target.value, 10) })}
+                                className="match-management-input-field"
+                            />
+                        </div>
+                    </div>
+                    <button className="match-management-primary-button" onClick={handleAutoAssign}>
+                        Sắp xếp tự động
+                    </button>
+                </div>
+            )}
+
+            <div className="match-management-navbar">
                 {data.group && (
                     <button
-                        className={`navbar-btn ${currentStage === 'group' ? 'active' : ''}`}
+                        className={`match-management-navbar-button ${currentStage === 'group' ? 'match-management-navbar-button-active' : ''}`}
                         onClick={() => handleStageChange('group')}
                     >
                         Giai đoạn đấu vòng bảng
                     </button>
                 )}
                 <button
-                    className={`navbar-btn ${currentStage === 'knockout' ? 'active' : ''}`}
+                    className={`match-management-navbar-button ${currentStage === 'knockout' ? 'match-management-navbar-button-active' : ''}`}
                     onClick={() => handleStageChange('knockout')}
                 >
                     Giai đoạn loại trực tiếp
                 </button>
             </div>
 
-            <div className="round-navbar">
+            <div className="match-management-round-navbar">
                 {stageData.map((round) => (
                     <button
                         key={round.roundId}
-                        className={`round-btn ${currentRound === round.round ? 'active' : ''}`}
+                        className={`match-management-round-button ${currentRound === round.round ? 'match-management-round-button-active' : ''}`}
                         onClick={() => setCurrentRound(round.round)}
                     >
                         Vòng {round.round}
@@ -314,19 +295,19 @@ const MatchManagement = () => {
             {stageData
                 .filter((round) => round.round === currentRound)
                 .map((round) => (
-                    <div key={round.roundId} className="round">
+                    <div key={round.roundId} className="match-management-round">
                         <h3>Vòng {round.round}</h3>
                         {round.matchrounds.map((table, tableIndex) => (
-                            <div key={table.tableName} className="table-container">
+                            <div key={table.tableName} className="match-management-table-container">
                                 <h4>Bảng {table.tableName}</h4>
                                 {table.matches.map((match, matchIndex) => (
-                                    <div key={match.matchId} className="match-row">
+                                    <div key={match.matchId} className="match-management-match-row">
                                         <span>{`#${match.matchId}`}</span>
                                         <span>{`${match.teamA} - ${match.teamB}`}</span>
 
                                         <input
                                             type="date"
-                                            value={match.date || ''}
+                                            value={match.date ? new Date(match.date).toISOString().split('T')[0] : ''}
                                             onChange={(e) =>
                                                 handleUpdate(round.roundId, tableIndex, matchIndex, 'date', e.target.value)
                                             }
@@ -358,8 +339,9 @@ const MatchManagement = () => {
                         ))}
                     </div>
                 ))}
-
-            <button className="save-btn" onClick={prepareDataForSave}>Lưu</button>
+            {dataTeamMatch?.isMatch !== true && (
+                <button className="match-management-save-button" onClick={prepareDataForSave}>Lưu</button>
+            )}
         </div>
     );
 };
