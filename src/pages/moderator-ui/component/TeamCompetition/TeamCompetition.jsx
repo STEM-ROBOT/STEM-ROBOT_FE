@@ -32,11 +32,11 @@ const TeamCompetition = () => {
       });
   }, []);
   return (
-    <div className="team-list-container">
+    <div className="team-list-container-view">
       {teams.map((team) => (
         <div
           key={team.id}
-          className="team-card"
+          className="team-card-view"
           onClick={() => ViewMember(team.members)}
         >
           <div className="team-logo-competition">

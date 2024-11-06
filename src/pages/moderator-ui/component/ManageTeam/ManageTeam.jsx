@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { FaDownload, FaEdit, FaArrowLeft, FaArrowRight, FaFileExport, FaFileUpload } from 'react-icons/fa';
-import * as XLSX from 'xlsx'; // Import thư viện để xuất/nhập Excel
-import './ManageTeam.css';
-import EditTeamPopup from '../EditTeamPopup/EditTeamPopup';
-import { useDispatch, useSelector } from 'react-redux';
-import { getListTeam } from '../../../../redux/actions/TeamAction';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import {
+  FaDownload,
+  FaEdit,
+  FaArrowLeft,
+  FaArrowRight,
+  FaFileExport,
+  FaFileUpload,
+} from "react-icons/fa";
+import * as XLSX from "xlsx"; // Import thư viện để xuất/nhập Excel
+import "./ManageTeam.css";
+import EditTeamPopup from "../EditTeamPopup/EditTeamPopup";
+import { useDispatch, useSelector } from "react-redux";
+import { getListTeam } from "../../../../redux/actions/TeamAction";
+import { useParams } from "react-router-dom";
 
 const ManageTeam = () => {
   const { competitionId } = useParams();
@@ -13,16 +20,20 @@ const ManageTeam = () => {
   const getteams = useSelector((state) => state.getTeams);
 
   // Ensure teams is always an array
-  const teams = Array.isArray(getteams?.listTeam?.data?.success?.data) ? getteams.listTeam.data.success.data : [];
-
+  const teams = Array.isArray(getteams?.listTeam?.data?.success?.data)
+    ? getteams.listTeam.data.success.data
+    : [];
+    const [loadApi, setLoadApi] = useState(false);
   useEffect(() => {
     dispatch(getListTeam(competitionId));
-  }, [dispatch, competitionId]);
+    setLoadApi(false);
+  }, [dispatch, competitionId,loadApi]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [teamsPerPage] = useState(6);
   const [isEditing, setIsEditing] = useState(false);
   const [editTeam, setEditTeam] = useState(null);
+  
 
   // Pagination logic
   const indexOfLastTeam = currentPage * teamsPerPage;
@@ -33,6 +44,7 @@ const ManageTeam = () => {
 
   // Open the edit popup
   const handleEditClick = (team) => {
+    console.log(team);
     setEditTeam(team);
     setIsEditing(true);
   };
@@ -48,15 +60,17 @@ const ManageTeam = () => {
     const ws = XLSX.utils.json_to_sheet(
       teams.map((team) => ({
         "#": team.id,
-        'Tên đội': team.name,
-        'SĐT Liên hệ': team.phoneNumber,
-        'Người liên hệ': team.contactInfo,
-        'Thành viên': (team.member || []).map(m => `${m.contestantName} (ID: ${m.contestantId})`).join(', '),
+        "Tên đội": team.name,
+        "SĐT Liên hệ": team.phoneNumber,
+        "Người liên hệ": team.contactInfo,
+        "Thành viên": (team.member || [])
+          .map((m) => `${m.contestantName} (ID: ${m.contestantId})`)
+          .join(", "),
       }))
     );
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Danh sách đội');
-    XLSX.writeFile(wb, 'DanhSachDoi.xlsx');
+    XLSX.utils.book_append_sheet(wb, ws, "Danh sách đội");
+    XLSX.writeFile(wb, "DanhSachDoi.xlsx");
   };
 
   // Function to handle file upload and merging data
@@ -66,30 +80,32 @@ const ManageTeam = () => {
 
     reader.onload = (event) => {
       const binaryStr = event.target.result;
-      const workbook = XLSX.read(binaryStr, { type: 'binary' });
+      const workbook = XLSX.read(binaryStr, { type: "binary" });
 
       const firstSheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[firstSheetName];
 
-      const importedData = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+      const importedData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
 
       const formattedImportedData = importedData.map((row) => ({
-        id: row['#'],
-        name: row['Tên đội'],
-        phoneNumber: row['SĐT Liên hệ'],
-        contactInfo: row['Người liên hệ'],
-        members: row['Thành viên'] 
-          ? row['Thành viên'].split(', ').map((member, index) => ({
+        id: row["#"],
+        name: row["Tên đội"],
+        phoneNumber: row["SĐT Liên hệ"],
+        contactInfo: row["Người liên hệ"],
+        members: row["Thành viên"]
+          ? row["Thành viên"].split(", ").map((member, index) => ({
               contestantId: index + 1,
               contestantName: member,
-            })) 
+            }))
           : [],
-        logo: 'https://t3.ftcdn.net/jpg/07/68/91/92/360_F_768919266_4OfllVFjsr99DPeFCATa0jrTOjKnUshK.jpg', // Default logo
+        logo: "https://t3.ftcdn.net/jpg/07/68/91/92/360_F_768919266_4OfllVFjsr99DPeFCATa0jrTOjKnUshK.jpg", // Default logo
       }));
 
       const updatedTeams = [...teams];
       formattedImportedData.forEach((importedTeam) => {
-        const existingIndex = updatedTeams.findIndex((team) => team.id === importedTeam.id);
+        const existingIndex = updatedTeams.findIndex(
+          (team) => team.id === importedTeam.id
+        );
         if (existingIndex !== -1) {
           updatedTeams[existingIndex] = importedTeam;
         } else {
@@ -107,10 +123,15 @@ const ManageTeam = () => {
     <div className="team-list-container">
       <div className="team-list-header">
         <span>
-          Có {teams.length} đội và {teams.reduce((acc, team) => acc + (team.member?.length || 0), 0)} người chơi tham gia giải
+          Có {teams.length} đội và{" "}
+          {teams.reduce((acc, team) => acc + (team.member?.length || 0), 0)}{" "}
+          người chơi tham gia giải
         </span>
         <div className="header-buttons">
-          <button className="import-button-team" onClick={() => document.getElementById('hidden-file-input').click()}>
+          <button
+            className="import-button-team"
+            onClick={() => document.getElementById("hidden-file-input").click()}
+          >
             <FaFileUpload /> Nhập tệp tin
           </button>
           <input
@@ -118,7 +139,7 @@ const ManageTeam = () => {
             id="hidden-file-input"
             accept=".xlsx, .xls"
             onChange={handleFileUpload}
-            style={{ display: 'none' }}
+            style={{ display: "none" }}
           />
           <button className="export-button-team" onClick={exportToExcel}>
             <FaFileExport /> Xuất ra file Excel
@@ -130,7 +151,10 @@ const ManageTeam = () => {
           <div key={team.id} className="team-card">
             <div className="team-card-header">
               <img src={team.image} alt={team.name} className="team-logo" />
-              <FaEdit className="edit-icon" onClick={() => handleEditClick(team)} />
+              <FaEdit
+                className="edit-icon"
+                onClick={() => handleEditClick(team)}
+              />
             </div>
             <div className="team-name">{team.name}</div>
             <div className="team-members">
@@ -172,7 +196,12 @@ const ManageTeam = () => {
       </div>
 
       {isEditing && (
-        <EditTeamPopup team={editTeam} closePopup={closePopup} />
+        <EditTeamPopup
+          team={editTeam}
+          competitionId={competitionId}
+          closePopup={closePopup}
+          setLoadApi={setLoadApi}
+        />
       )}
     </div>
   );

@@ -59,11 +59,12 @@ export const getListReferee = (tournamentId) => async (dispatch) => {
     }
 };
 
-export const getListRefereeFreeTime = (tournamentId) => async (dispatch) => {
+export const getListRefereeFreeTime = (tournamentId, competitionId) => async (dispatch) => {
   try {
     dispatch({ type: GET_FREETIME_REFEREE_REQUEST });
 
-    const { data } = await api.get(`/api/referees/free-referee?tournamentId=${tournamentId}`);
+    const { data } = await api.get(`/api/referees/free-referee?tournamentId=${tournamentId}&competitionId=${competitionId}`);
+
     console.log(tournamentId)
     dispatch({ type: GET_FREETIME_REFEREE_SUCCESS, payload: data });
   } catch (error) {

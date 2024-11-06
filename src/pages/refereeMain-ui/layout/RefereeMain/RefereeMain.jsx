@@ -1,13 +1,20 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
-import { refereeMain_page } from "../../../../router/RefereeMainRouter";
-
+import "./RefereeMain.css";
+import SidebarTournamentReferee from "../../component/SidebarTournamentReferee/SidebarTounamentReferee";
+import ContentTournamentReferee from "../../component/ContentTournamentReferee/ContentTournamentReferee";
 const RefereeMain = () => {
-  const renderRoutes = (routes) =>
-    routes.map((route, index) => {
-      return <Route key={index} path={route.path} element={route.element} />;
-    });
-  return <Routes>{renderRoutes(refereeMain_page)}</Routes>;
+  return (
+    <div className="competition_referee_container">
+      <div className="competition_referee_view">
+        <div className="competition_referee_sidebar">
+          <SidebarTournamentReferee />
+        </div>
+        <div className="competition_referee_content">
+          <ContentTournamentReferee />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default RefereeMain;
