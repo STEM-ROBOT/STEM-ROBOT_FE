@@ -64,17 +64,15 @@
     align-items: center;
 }
 
-/* Input and select fields */
-/* .match-management-input,
-.match-management-select-field {
-    width: 15%;
+.match-management-input-field {
+    width: 80%;
     padding: 8px;
     font-size: 14px;
     color: #333;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 15px;
-} */
+}
 
 /* Optional styling for custom select dropdown arrow */
 .match-management-select-field {
