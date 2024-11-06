@@ -1,0 +1,24 @@
+.author_modal .login_view {
+  font-family: TrajanPro3;
+  width: auto;
+  height: auto;
+  min-height: 400px;
+  color: #031a38;
+  padding: 20px 10px 24px 10px;
+  background: #ffffff;
+  border-radius: 33px;
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 2px 10px;
+}
+.sign_up_layout_view {
+  display: flex;
+  justify-content: space-between;
+  width: 900px;
+}
+.sign_up_layout1 {
+  width: 50%;
+}
+.sign_up_layout2 {
+     background-color: #c3d7f1;
+  width: 40%;
+  border-radius: 13px;
+}

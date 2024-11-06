@@ -27,7 +27,7 @@ const LeagueDetail = () => {
       }
     }
   }, [league]);
-  console.log(league);
+
 
   const renderRoutes = (routes) =>
     routes.map((route, index) => {
