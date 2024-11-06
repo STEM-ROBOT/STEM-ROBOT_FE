@@ -30,11 +30,30 @@
   border-radius: 7px 30px 30px 7px;
   background-color: #ecf3fb;
 }
-/* .admin_dashboard_main_content_section_two {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  padding: 0 10px;
-} */
+.submenu-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submenu-item.active-submenu,
+.nested-submenu-item.active-nested-submenu {
+    background-color: #01395f;
+    color: #ffffff;
+}
+
+.nested-submenu {
+    padding-left: 30px;
+}
+
+.nested-submenu-item {
+    padding: 5px 10px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}.admin_dashboard_main_content_section_two{
+  padding: 20px;
+}

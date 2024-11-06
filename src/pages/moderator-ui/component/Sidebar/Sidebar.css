@@ -54,3 +54,8 @@
 .sidebar ul + ul {
     margin-top: 20px;           
 }
+
+.sidebar li .check-icon {
+    margin-left: auto; 
+    color: #4caf50; 
+}
