@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import api from "../../config";
 import { CREATE_CONTESTANT_FAIL, CREATE_CONTESTANT_REQUEST, CREATE_CONTESTANT_SUCCESS, GET_CONTESTANT_FAIL, GET_CONTESTANT_REQUEST, GET_CONTESTANT_SUCCESS } from "../constants/ContestantConstant";
 
@@ -42,6 +43,7 @@ export const getListContestant = (tournamentId) => async (dispatch) => {
         );
 
         dispatch({ type: CREATE_CONTESTANT_SUCCESS, payload: data });
+        toast.success("Thêm thành công");
     } catch (error) {
         const message =
             error.response && error.response.data.message
@@ -54,5 +56,6 @@ export const getListContestant = (tournamentId) => async (dispatch) => {
             type: CREATE_CONTESTANT_FAIL,
             payload: message,
         });
+        toast.error("Thêm thất bại");
     }
 };

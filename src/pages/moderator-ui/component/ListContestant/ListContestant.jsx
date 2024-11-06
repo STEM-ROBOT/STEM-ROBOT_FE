@@ -33,6 +33,10 @@ const ListContestant = () => {
         }
     }, [contestants]);
 
+    useEffect(() => {
+        setUpdatedContestants(updatedContestants);
+    }, [updatedContestants]);
+
     const uniqueContestantsWithDetails = updatedContestants.map(contestant => ({
         tournamentId,
         name: contestant.name,
@@ -70,7 +74,6 @@ const ListContestant = () => {
         const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
         saveAs(blob, "contestant_data.xlsx");
     };
-
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         if (!file) return;
@@ -97,7 +100,6 @@ const ListContestant = () => {
             const newContestants = importedData.filter(
                 newContestant => !updatedContestants.some(existing => existing.email === newContestant.email)
             );
-            console.log(newContestants)
             if (newContestants.length > 0) {
                 const mappedNewContestants = newContestants.map((item) => ({
                     name: item.name,
@@ -107,9 +109,10 @@ const ListContestant = () => {
                     image: item.image,
                     schoolName
                 }));
-                
+                console.log("mappedNewContestants", mappedNewContestants);
+    
+                // Dùng spread operator để thêm vào updatedContestants
                 setUpdatedContestants(prev => [...prev, ...mappedNewContestants]);
-                console.log("ad",updatedContestants)
                 setNewContestantsToAdd(mappedNewContestants);
                 setHasChanges(true);
             }

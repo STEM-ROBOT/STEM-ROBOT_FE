@@ -87,12 +87,12 @@ const scoreRuleCompetitions2 = {
 };
 
 const GameRuleComponent = () => {
-  // const path = useParams();
+const path = useParams();
   const [selectedRule, setSelectedRule] = useState("Score");
   const [scoreRuleCompetitions, setScoreRuleCompetitions] = useState({});
   useEffect(() => {
     api
-      .get(`/api/competitions/score-competition?competitionID=${65}`)
+      .get(`/api/competitions/score-competition?competitionID=${path.competitionId}`)
       .then((response) => {
         setScoreRuleCompetitions(response.data.data.data);
       })

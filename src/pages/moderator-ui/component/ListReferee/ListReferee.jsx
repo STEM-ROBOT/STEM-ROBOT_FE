@@ -78,6 +78,7 @@ const ListReferee = () => {
             const newReferees = importedReferees.filter(
                 newReferee => !referees.some(existing => existing.email === newReferee.email)
             );
+            console.log(newReferees)
 
             if (newReferees.length > 0) {
                 setReferees((prev) => [...prev, ...newReferees]);
@@ -97,6 +98,7 @@ const ListReferee = () => {
             phoneNumber: referee.phoneNumber ? String(referee.phoneNumber) : "",
             image: referee.image,
             status: "active",
+            role:"RE"
         }));
 
         console.log("Payload sent:", payload);

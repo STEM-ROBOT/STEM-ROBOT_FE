@@ -4,3 +4,4 @@ export const api_register_time_check = "/api/competitions/config-register?compet
 export const competitions_tournament = "/api/competitions/tournament?id="
 export const team_competitions = "/api/competitions/team-competition?competitionId="
 export const match_schedule_view="/api/competitions/match-schedule-view?competitionId="
+export const match_group_stage_view="/api/competitions/match-group-stage-view?competitionId="
