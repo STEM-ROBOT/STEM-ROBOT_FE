@@ -58,27 +58,37 @@
   color: #fff;
   border: none;
 }
-
+.table-manage-customer-admin{
+  max-height: 75vh;
+  overflow-y: auto;
+  border-radius: 8px;
+}
 .customer_table_main {
   width: 100%;
   border-collapse: collapse;
   background-color: #fff;
-  border-radius: 10px;
-  overflow: hidden;
+  border-radius: 15px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .customer_table_main th, .customer_table_main td {
   padding: 15px;
-  text-align: left;
+  text-align: center;
   border-bottom: 1px solid #e0e0e0;
   color: #333;
+}
+.customer_table_main th{
+ position: sticky;
+  top: 0;
+  z-index: 1; 
+  background-color: #fff;
 }
 
 .customer_table_main thead {
   background-color: #f8f9fa;
   color: #666;
   font-weight: normal;
+
 }
 
 .customer_table_info {
