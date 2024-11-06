@@ -13,41 +13,45 @@
 
 .popup-content {
   background-color: white;
-  padding: 20px;
+  padding: 30px;
   border-radius: 8px;
   text-align: center;
-  max-width: 600px;
-  width: 100%;
+  max-width: 750px; /* Giới hạn chiều rộng */
+  width: 90%; /* Đặt chiều rộng 90% để linh hoạt */
+  max-height: 90vh; /* Giới hạn chiều cao cho popup */
 }
-.popup-content h3{
-  padding-bottom: 10px;
+
+.popup-content h3 {
+  padding-bottom: 30px;
+  font-size: 1.5em;
+  color: #1c1d83;
 }
 
 .popup-main-content {
   display: flex;
-  align-items: flex-start;
-  margin-bottom: 20px;
+  flex-wrap: wrap; /* Cho phép nội dung xuống dòng nếu quá rộng */
+  justify-content: space-between;
 }
 
 .edit-logo-section {
+  flex: 1 1 150px; /* Đặt chiều rộng tối thiểu cho logo */
   margin-right: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 30px;
 }
 
 .edit-logo-section img {
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 10px;
-}
-
-.edit-logo-section input {
-  display: block;
-  margin: 0 auto;
 }
 
 .edit-info-section {
-  flex: 1;
+  flex: 2 1 200px; /* Điều chỉnh chiều rộng tối thiểu cho phần thông tin */
+  text-align: left;
 }
 
 .popup-content label {
@@ -58,17 +62,17 @@
 }
 
 .popup-content input {
-  width: 90%;
-  margin: 10px 0;
-  padding: 10px;
+  width: 100%;
+  margin: 5px 0;
+  padding: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
 }
 
 .save-button-edit-team,
 .cancel-button-edit-team {
-  margin: 10px;
-  padding: 10px 20px;
+  margin: 10px 5px;
+  padding: 8px 16px;
   border: none;
   color: white;
   border-radius: 5px;
@@ -76,7 +80,7 @@
 }
 
 .save-button-edit-team {
-  background-color: #28a745;
+  background-color: #1c1d83;
 }
 
 .cancel-button-edit-team {
@@ -84,40 +88,57 @@
 }
 
 .team-members-section {
-  text-align: left;
-  margin-top: 20px;
+  text-align: center;
+  margin-top: 10px;
+  flex: 1 1 100%;
 }
 
 .members-scroll {
-  padding: 0 20px;
-  max-height: 150px;
+  max-height: 100px;
   overflow-y: auto;
-  padding-right: 10px;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 10px;
 }
 
-.team-members-section .member-input {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+.table-assign-contestatnnt-to-team {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  max-height: 500px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.team-members-section {
+  max-height: 50vh;
+  overflow-y: auto;
+}
+.table-assign-contestatnnt-to-team th,
+.table-assign-contestatnnt-to-team td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.9em;
 }
 
-.team-members-section .member-input input {
-  flex: 1;
-  margin-right: 10px;
+.table-assign-contestatnnt-to-team thead {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  position: sticky;
+  z-index: 1;
+  top: -1px;
+  padding: 8px 0;
 }
 
-.remove-member-btn {
-  cursor: pointer;
-  color: red;
+.table-assign-contestatnnt-to-team td {
+  background-color: #f9f9f9;
 }
 
 .add-member-btn {
   display: inline-flex;
   align-items: center;
-  padding: 8px 12px;
+  padding: 6px 12px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -128,4 +149,15 @@
 
 .add-member-btn svg {
   margin-right: 5px;
+}
+.phone-and-contactperson {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.lable-image-edit-team{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
 }
