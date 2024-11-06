@@ -5,19 +5,29 @@ import RefereeMain from "../pages/refereeMain-ui/layout/RefereeMain/RefereeMain"
 import GameRuleScore from "../pages/moderator-ui/component/GameRuleScore/GameRuleScore";
 import RuleRefereeMain from "../pages/refereeMain-ui/layout/RuleRefereeMain/RuleRefereeMain";
 import ScoreRefereeMain from "../pages/refereeMain-ui/layout/ScoreRefereeMain/ScoreRefereeMain";
+import RefereeAssignHome from "../pages/refereeMain-ui/layout/RefereeAssignHome/RefereeAssignHome";
 
 const refereeMainRouter = [
   {
     path: "/referee-main/*",
-    element: <RefereeMain />,
+    element: <RefereeAssignHome />,
   },
+  // {
+  //   path: "/referee-main/competitionId:/*",
+  //   element: <RefereeAssignHome />,
+  // },
 ];
+
 export const refereeMain_page = [
   {
     path: "",
-    element: <Navigate to="dashboard" />,
+    element: <Navigate to="competition-schedule" />,
   },
-  { path: "dashboard/*", element: <DashboardRefereeMain /> },
+  {
+    path: "competition-schedule",
+    element: <RefereeMain />,
+  },
+  { path: "competition-schedule/:competitionId/*", element: <DashboardRefereeMain /> },
 ];
 export const refereeMain_dashboard = [
   {

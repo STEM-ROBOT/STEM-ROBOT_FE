@@ -1,8 +1,9 @@
+import React from "react";
 import axios from "axios";
 import TokenService from "./tokenservice";
 
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL, // Sử dụng import.meta.env thay vì process.env
 });
 
