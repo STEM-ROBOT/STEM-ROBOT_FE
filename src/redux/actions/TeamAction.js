@@ -1,7 +1,8 @@
 import { toast } from "react-toastify";
-import api from "../../config";
+
 import { ADD_SCORE_REQUEST } from "../constants/ScoreConstant";
 import { ADD_TEAM_ASSIGN_MATCH_FAIL, ADD_TEAM_ASSIGN_MATCH_REQUEST, ADD_TEAM_ASSIGN_MATCH_SUCCESS, ADD_TEAM_KNOCKOUT_FAIL, ADD_TEAM_KNOCKOUT_REQUEST, ADD_TEAM_KNOCKOUT_SUCCESS, ADD_TEAM_TABLE_FAIL, ADD_TEAM_TABLE_REQUEST, ADD_TEAM_TABLE_SUCCESS, ADD_TIME_ASSIGN_MATCH_FAIL, ADD_TIME_ASSIGN_MATCH_REQUEST, ADD_TIME_ASSIGN_MATCH_SUCCESS, GET_TEAM_ASSIGN_MATCH_FAIL, GET_TEAM_ASSIGN_MATCH_REQUEST, GET_TEAM_ASSIGN_MATCH_SUCCESS, GET_TEAM_KNOCKOUT_FAIL, GET_TEAM_KNOCKOUT_REQUEST, GET_TEAM_KNOCKOUT_SUCCESS, GET_TEAM_MATCH_GROUP_FAIL, GET_TEAM_MATCH_GROUP_REQUEST, GET_TEAM_MATCH_GROUP_SUCCESS, GET_TEAM_TABLE_FAIL, GET_TEAM_TABLE_REQUEST, GET_TEAM_TABLE_SUCCESS, GET_TEAMS_FAIL, GET_TEAMS_REQUEST, GET_TEAMS_SUCCESS } from "../constants/TeamConstant";
+import api from "../../Config";
 
 export const getListTeam = (competitionId) => async (dispatch) => {
     try {
@@ -51,6 +52,7 @@ export const getListTeamsKnockout = (competitionId) => async (dispatch) => {
     dispatch({ type: GET_TEAM_KNOCKOUT_REQUEST });
 
     const { data } = await api.get(`/api/matches/get-round-knockout-late?CompetitionID=${competitionId}`);
+    console.log(data)
 
     dispatch({ type: GET_TEAM_KNOCKOUT_SUCCESS, payload: data });
   } catch (error) {

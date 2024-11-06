@@ -1,62 +1,68 @@
+/* Main container styling for referee assignment section */
+.referee-assignment-container-main {
+    width: 95%;  
+    margin: 0 auto;
+}
 
-.referee-assignment-title {
+/* Title styling for referee assignment section */
+.referee-assignment-title-main {
     font-size: 24px;
     font-weight: bold;
     text-align: center;
     margin-bottom: 20px;
     color: #333;
 }
-.referee-assignment-title-detail{
-    font-size: 20px;
-    text-align: center;
+
+/* Input container for number of referees in matches */
+.referee-assignment-num-referees-input-container {
     margin-bottom: 20px;
-}
-.num-referees-input {
-    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.input-label {
+.referee-assignment-input-label {
     font-size: 16px;
     margin-right: 10px;
+    color: #555;
 }
 
-.input-field {
-    width: 50px;
-    padding: 5px;
+.referee-assignment-input-field {
+    width: 60px;
+    padding: 8px;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 14px;
+    text-align: center;
 }
 
-.round-selector {
+/* Round selection button container */
+.referee-assignment-round-selector {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
 }
 
-.round-btn {
+.referee-assignment-round-button {
     padding: 10px 20px;
     margin: 0 5px;
     border: 1px solid #ccc;
-    border-radius: 50%;
+    border-radius: 5px;
     background-color: #fff;
     cursor: pointer;
     font-size: 14px;
     color: #333;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.round-btn.active {
+.referee-assignment-round-button.active,
+.referee-assignment-round-button:hover {
     background-color: #4caf50;
     color: #fff;
 }
 
-.round-btn:hover {
-    background-color: #4caf50;
-    color: #fff;
-}
-
-.match-row {
+/* Match row styling within each round */
+.referee-assignment-match-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -67,36 +73,53 @@
     border: 1px solid #ccc;
 }
 
-.match-info {
+/* Match information styling */
+.referee-assignment-match-info {
     font-size: 14px;
     font-weight: bold;
-    flex: 1;
     color: #333;
 }
 
-/* Select dropdown for referees */
-.main-referee-select,
-.match-referee-select {
-    padding: 5px;
+/* Input styling for date, time, and arena fields */
+.referee-assignment-date-input,
+.referee-assignment-time-input,
+.referee-assignment-arena-input,
+.referee-assignment-main-referee-select,
+.referee-assignment-match-referee-select,
+.referee-assignment-input-field {
+    width: 100%;
+    max-width: 130px; /* Controls the width of each input */
+    padding: 8px;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 14px;
-    margin-right: 10px;
+    text-align: center;
+    box-sizing: border-box;
+    margin-left: 8px;
 }
 
-/* Round title */
-.round-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-align: left;
+/* Dropdown styling for referee selection */
+.referee-assignment-main-referee-select,
+.referee-assignment-match-referee-select {
+    appearance: none;
+    background-color: #fff;
     color: #333;
 }
 
-/* Save button */
-.save-btn {
-    display: block;
-    margin: 20px auto;
+/* Round title styling within each section */
+.referee-assignment-round-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+    text-align: left;
+}
+
+/* Buttons for randomization and saving assignments */
+.referee-assignment-randomize-button,
+.referee-assignment-save-button {
+    display: inline-block;
+    margin: 15px 5px;
     padding: 10px 20px;
     background-color: #28a745;
     color: #fff;
@@ -104,8 +127,20 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
+    text-align: center;
+    transition: background-color 0.3s;
 }
 
-.save-btn:hover {
+.referee-assignment-randomize-button:hover,
+.referee-assignment-save-button:hover {
     background-color: #218838;
+}
+
+/* Referee selectors container within each match */
+.referee-assignment-referee-selectors-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
 }

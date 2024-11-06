@@ -1,8 +1,8 @@
 import jwtDecode from "jwt-decode";
-import api from "../../config";
-import TokenService from "../../config/tokenservice";
 import { LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT } from "../constants/AuthenConstant";
 import { toast } from "react-toastify";
+import api from "../../Config";
+import TokenService from "../../Config/tokenservice";
 
 
 export const login = (user, navigate, setSignIn) => async (dispatch) => {
@@ -19,9 +19,13 @@ export const login = (user, navigate, setSignIn) => async (dispatch) => {
             TokenService.setUserName(token.unique_name);
 
             dispatch({ type: LOGIN_SUCCESS, payload: data });
+            if(token.role === "AD"){
+                navigate("/admin/dashboard");
+            }else if(token.role === "RF"){
+                navigate("/referee-main");
+            }
             toast.success("Login successful");
-
-            setSignIn(false);  // Tắt popup đăng nhập khi thành công
+            setSignIn(false); 
         }
     } catch (error) {
         const message = error.response && error.response.data.message
@@ -36,8 +40,7 @@ export const login = (user, navigate, setSignIn) => async (dispatch) => {
 };
 
 export const logout = (navigate) => (dispatch) => {
-    TokenService.removeUser();
-   
+    TokenService.removeUser();  
     dispatch({ type: LOGOUT });
     navigate("/home");
 };

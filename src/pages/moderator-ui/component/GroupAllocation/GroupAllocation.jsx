@@ -17,8 +17,8 @@ const GroupAllocation = () => {
     const [teamsToNextRound, setTeamsToNextRound] = useState([]);
     const [totalTeamsToNextRound, setTotalTeamsToNextRound] = useState(2);
     const [error, setError] = useState('');
+    const [randomizeEnabled, setRandomizeEnabled] = useState(false);
 
-    // Create array for team options from 2 to 64
     const teamOptions = Array.from({ length: 6 }, (_, i) => Math.pow(2, i + 1));
 
     useEffect(() => {
@@ -29,10 +29,14 @@ const GroupAllocation = () => {
         if (Array.isArray(data?.tables) && Array.isArray(data?.teams)) {
             setTables(data.tables);
             setTeams(data.teams);
-            setTeamsToNextRound(Array(data.tables.length).fill(1)); // Set initial teamsToNextRound for each table
-            randomizeGroups(data.teams, data.tables); // Randomize groups after data load
+            setTeamsToNextRound(Array(data.tables.length).fill(1));
+           
+            if (randomizeEnabled) {
+                randomizeGroups(data.teams, data.tables);
+            }
         }
-    }, [data]);
+        setRandomizeEnabled(data?.isTable)
+    }, [data, randomizeEnabled,data?.isTable]);
 
     const randomizeGroups = (teams, tables) => {
         const shuffledTeams = [...teams].sort(() => Math.random() - 0.5);
@@ -86,13 +90,14 @@ const GroupAllocation = () => {
         const newTeamsToNextRound = [...teamsToNextRound];
         newTeamsToNextRound[tableIndex] = parseInt(value, 10);
         setTeamsToNextRound(newTeamsToNextRound);
+        setError(''); // Reset error on change
     };
 
     const validateGroups = () => {
         const totalSelectedTeams = teamsToNextRound.reduce((acc, val) => acc + val, 0);
 
-        if (totalSelectedTeams > totalTeamsToNextRound) {
-            setError(`Số đội đi tiếp không được vượt quá ${totalTeamsToNextRound} đội.`);
+        if (totalSelectedTeams !== totalTeamsToNextRound) {
+            setError(`Tổng số đội đi tiếp trong các bảng phải bằng ${totalTeamsToNextRound}`);
             return false;
         }
 
@@ -134,6 +139,7 @@ const GroupAllocation = () => {
                 <select
                     id="teamsToNextRound"
                     value={totalTeamsToNextRound}
+                    disabled={!randomizeEnabled}
                     onChange={(e) => setTotalTeamsToNextRound(parseInt(e.target.value, 10))}
                 >
                     {teamOptions.map((value) => (
@@ -144,9 +150,11 @@ const GroupAllocation = () => {
                 </select>
             </div>
 
-            <button className="custom-randomize-btn" onClick={() => randomizeGroups(teams, tables)}>
-                Chia đội ngẫu nhiên
-            </button>
+            {randomizeEnabled && (
+                <button className="custom-randomize-btn" onClick={() => randomizeGroups(teams, tables)}>
+                    Chia đội ngẫu nhiên
+                </button>
+            )}
 
             {error && <div className="custom-error-message">{error}</div>}
 
@@ -202,10 +210,12 @@ const GroupAllocation = () => {
                     </div>
                 ))}
             </div>
-
-            <button className="custom-save-btn" onClick={handleSave}>
+          {randomizeEnabled && (
+                <button className="custom-save-btn" onClick={handleSave}>
                 Lưu
             </button>
+          )}
+           
         </div>
     );
 };
