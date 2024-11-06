@@ -13,7 +13,7 @@ import storage from 'redux-persist/lib/storage';
 import { createContestantReducer, getContestantReducer } from '../reducers/ContestantReducer';
 import { LoginReducer } from '../reducers/AuthenReducer';
 import { createTournamentInfoReducer, getTournamentInfoReducer, getTournamentModeratorReducer } from '../reducers/TournamentReducer';
-import { addCompetitionFormatReducer, getCompetitionInfoReducer, getCompetitionModeratorReducer } from '../reducers/CompetitionReducer';
+import { activeCompetitionReducer, addCompetitionFormatReducer, getCompetitionInfoReducer, getCompetitionModeratorReducer } from '../reducers/CompetitionReducer';
 import { addScheduleRefereeReducer, createRefereeReducer, getFreeTimeRefereeReducer, getRefereeReducer, getScheduleRefereeReducer } from '../reducers/RefereeReducer';
 import { importRuleReducer } from '../reducers/RuleReducer';
 import { addScoreReducer } from '../reducers/ScoreReducer';
@@ -67,6 +67,7 @@ const rootReducer = combineReducers({
     getTeamknockout:getTeamknockoutReducer,
     addScheduleReferee:addScheduleRefereeReducer,
     getScheduleReferee:getScheduleRefereeReducer,
+    activeCompetition:activeCompetitionReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
