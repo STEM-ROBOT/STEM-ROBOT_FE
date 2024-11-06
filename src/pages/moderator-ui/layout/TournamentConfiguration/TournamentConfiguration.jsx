@@ -10,7 +10,8 @@ import TournamentHeader from '../../component/TournamentHeader/TournamentHeader'
 import GroupMatch from '../../component/GroupMatchDraw/GroupMatch';
 import KnockoutTournament from '../../component/KnockoutTournament/KnockoutTournament';
 import PrivateRoute from '../../../../router/PrivateRoute';
-import TokenService from '../../../../config/tokenservice';
+import TokenService from '../../../../Config/tokenservice';
+
 
 
 const TournamentConfiguration = () => {
