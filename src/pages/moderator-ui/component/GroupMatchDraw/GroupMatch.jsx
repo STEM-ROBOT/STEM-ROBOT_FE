@@ -82,51 +82,51 @@ const GroupMatch = () => {
         if (teamMatchs) {
             setCurrentRoundName(teamMatchs.rounds[0]?.roundName);
 
-            if (!teamMatchs.isTeamMatch) {
-                const dataUse = teamMatchs
-                const updatedData = { ...dataUse };
 
-                // Cache to store generated schedules by tableId, ensuring each table uses the same schedule across all rounds
+            const dataUse = teamMatchs
+            const updatedData = { ...dataUse };
 
-
-                updatedData.rounds.forEach((round, indexroud) => {
-                    const scheduleCache = {};
-
-                    round.tables.forEach((table) => {
-                        // Find teams associated with the current tableId
-                        const tableGroupData = teamMatchs.tableGroup.find((group) => group.team_tableId === table.tableId);
-                        const teams = tableGroupData ? tableGroupData.team_table : [];
-                        const tableId = tableGroupData ? tableGroupData.team_tableId : null;
-
-                        // Check if the schedule for this tableId is already in the cache
+            // Cache to store generated schedules by tableId, ensuring each table uses the same schedule across all rounds
 
 
-                        // Generate and cache the schedule if it hasn't been generated yet
-                        const schedule = generateRoundRobinSchedule(teams, tableId);
+            updatedData.rounds.forEach((round, indexroud) => {
+                const scheduleCache = {};
 
-                        // Assign team pairs to teamMatches in `table.matches` for each round based on the cached schedule
-                        table.matches.forEach((match, index) => {
-                            // console.log(generatedMatches[index])
-                            const generatedMatch = schedule.matches[table.matches.length * indexroud + index];
+                round.tables.forEach((table) => {
+                    // Find teams associated with the current tableId
+                    const tableGroupData = teamMatchs.tableGroup.find((group) => group.team_tableId === table.tableId);
+                    const teams = tableGroupData ? tableGroupData.team_table : [];
+                    const tableId = tableGroupData ? tableGroupData.team_tableId : null;
 
-                            if (generatedMatch) {
-                                // Set team1 details from the cached matches
-                                match.teamMatches[0].teamId = generatedMatch.team1.teamId || null;
-                                match.teamMatches[0].teamName = generatedMatch.team1.teamName || "Unknown";
-
-                                // Set team2 details from the cached matches
-                                match.teamMatches[1].teamId = generatedMatch.team2.teamId || null;
-                                match.teamMatches[1].teamName = generatedMatch.team2.teamName || "Unknown";
-                            }
-                        });
+                    // Check if the schedule for this tableId is already in the cache
 
 
+                    // Generate and cache the schedule if it hasn't been generated yet
+                    const schedule = generateRoundRobinSchedule(teams, tableId);
+
+                    // Assign team pairs to teamMatches in `table.matches` for each round based on the cached schedule
+                    table.matches.forEach((match, index) => {
+                        // console.log(generatedMatches[index])
+                        const generatedMatch = schedule.matches[table.matches.length * indexroud + index];
+
+                        if (generatedMatch) {
+                            // Set team1 details from the cached matches
+                            match.teamMatches[0].teamId = generatedMatch.team1.teamId || null;
+                            match.teamMatches[0].teamName = generatedMatch.team1.teamName || "Unknown";
+
+                            // Set team2 details from the cached matches
+                            match.teamMatches[1].teamId = generatedMatch.team2.teamId || null;
+                            match.teamMatches[1].teamName = generatedMatch.team2.teamName || "Unknown";
+                        }
                     });
-                });
-                console.log(updatedData);
 
-                setData(updatedData);
-            }
+
+                });
+            });
+            console.log(updatedData);
+
+            setData(updatedData);
+
 
         }
     }, [teamMatchs]);
@@ -137,19 +137,20 @@ const GroupMatch = () => {
     // Shuffle function (Fisher-Yates algorithm)
 
     const randomizeMatches = () => {
-        if (!data.isTeamMatch) {
-            setCurrentRoundName(teamMatchs.rounds[0]?.roundName);
-            const dataUse = JSON.parse(JSON.stringify(teamMatchs));
-            const updatedData = { ...dataUse };
 
-            // Cache to store generated schedules by tableId, ensuring each table uses the same schedule across all rounds
+        setCurrentRoundName(teamMatchs.rounds[0]?.roundName);
+        const dataUse = JSON.parse(JSON.stringify(teamMatchs));
+        const updatedData = { ...dataUse };
 
-            const shuffleArray = (array) => {
-                for (let i = array.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [array[i], array[j]] = [array[j], array[i]];
-                }
-            };
+
+
+        const shuffleArray = (array) => {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        };
+        if (!teamMatchs.isTeamMatch) {
             updatedData.rounds.forEach((round, indexroud) => {
 
                 round.tables.forEach((table) => {
@@ -182,13 +183,15 @@ const GroupMatch = () => {
 
                 });
             });
-            setData(updatedData);
-            setGroupSchedules(updatedData);
         }
+
+        setData(updatedData);
+        setGroupSchedules(updatedData);
+
     };
 
     const handleRandomDraw = () => {
-        if (!data.isTeamMatch) {
+        if (!teamMatchs.isTeamMatch) {
             setShowPopup(true);
         }
     };
@@ -229,7 +232,7 @@ const GroupMatch = () => {
     };
 
     const saveMatchesToDatabase = async () => {
-        if (!data.isTeamMatch) {
+        if (!teamMatchs.isTeamMatch) {
             const matchData = [];
             data.rounds.forEach((round) => {
                 round.tables.forEach((table) => {
@@ -241,7 +244,7 @@ const GroupMatch = () => {
                             teamName: match.teamMatches[0]?.teamName || "Unknown",
                             teamMatchId: match.teamMatches[0]?.teamMatchId || 0,
                         };
-    
+
                         const team2Data = {
                             matchId: match.matchId,
                             teamId: match.teamMatches[1]?.teamId || 0,
@@ -255,9 +258,9 @@ const GroupMatch = () => {
             });
             console.log(matchData)
             dispatch(addTeamAssignMatch(competitionId, matchData))
-     
+
         }
-      
+
 
     };
 
@@ -265,10 +268,14 @@ const GroupMatch = () => {
         <div className="group-match-container">
             <h2 className="group-match-title">Sắp xếp cặp đấu</h2>
             <p className="group-match-description">Bạn có thể thay đổi cấu hình cho từng trận đấu.</p>
+            {!teamMatchs?.isTeamMatch && (
+                <div className="button-container">
+                    <button className="random-btn" onClick={handleRandomDraw}>Bốc thăm ngẫu nhiên</button>
+                </div>
+            )
 
-            <div className="button-container">
-                <button className="random-btn" onClick={handleRandomDraw}>Bốc thăm ngẫu nhiên</button>
-            </div>
+            }
+
 
             <div className="group-stage">
                 <div className="round-tabs">
@@ -296,8 +303,12 @@ const GroupMatch = () => {
                         )}
                 </div>
             </div>
+            {
+                !teamMatchs?.isTeamMatch && (
+                    <button className="save-btn" onClick={saveMatchesToDatabase}>Lưu</button>
+                )
+            }
 
-            <button className="save-btn" onClick={saveMatchesToDatabase}>Lưu</button>
 
             {showPopup && <CountdownPopup onComplete={handleCountdownComplete} />}
         </div>

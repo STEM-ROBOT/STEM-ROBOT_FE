@@ -13,8 +13,8 @@ import storage from 'redux-persist/lib/storage';
 import { createContestantReducer, getContestantReducer } from '../reducers/ContestantReducer';
 import { LoginReducer } from '../reducers/AuthenReducer';
 import { createTournamentInfoReducer, getTournamentInfoReducer, getTournamentModeratorReducer } from '../reducers/TournamentReducer';
-import { addCompetitionFormatReducer, getCompetitionInfoReducer, getCompetitionModeratorReducer } from '../reducers/CompetitionReducer';
-import { createRefereeReducer, getFreeTimeRefereeReducer, getRefereeReducer } from '../reducers/RefereeReducer';
+import { activeCompetitionReducer, addCompetitionFormatReducer, getCompetitionInfoReducer, getCompetitionModeratorReducer } from '../reducers/CompetitionReducer';
+import { addScheduleRefereeReducer, createRefereeReducer, getFreeTimeRefereeReducer, getRefereeReducer, getScheduleRefereeReducer } from '../reducers/RefereeReducer';
 import { importRuleReducer } from '../reducers/RuleReducer';
 import { addScoreReducer } from '../reducers/ScoreReducer';
 // import {  getTeamknockoutReducer, getTeamMatchReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
@@ -23,6 +23,7 @@ import { ListAccountReducer, ListGenreReducer, ListOrderReducer } from '../reduc
 import {  ChangeInforReducer, ChangePassword, InforAccountID } from '../reducers/AccountReducer';
 import { addTeamAssignMatchReducer, addTeamKnockoutReducer, addTeamTableReducer, addTimeAssignMatchReducer, getTeamAssignMatchReducer, getTeamknockoutReducer, getTeamMatchReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
 import { addLoctionReducer } from '../reducers/LocationReducer';
+import { getActiveCompetitionReducer } from '../reducers/FormatReducer';
 
 const persistConfig = {
     key: 'root',
@@ -62,6 +63,11 @@ const rootReducer = combineReducers({
     getTeamAssignMatch:getTeamAssignMatchReducer,
     addTeamAssignMatch:addTeamAssignMatchReducer,
     addTimeAssignMatch:addTimeAssignMatchReducer,
+    getActiveFormat:getActiveCompetitionReducer,
+    getTeamknockout:getTeamknockoutReducer,
+    addScheduleReferee:addScheduleRefereeReducer,
+    getScheduleReferee:getScheduleRefereeReducer,
+    activeCompetition:activeCompetitionReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

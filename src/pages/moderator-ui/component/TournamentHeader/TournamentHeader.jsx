@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { FaUsers, FaEye, FaHeart } from 'react-icons/fa';
 import './TournamentHeader.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCompetitionInfo } from '../../../../redux/actions/CompetitionAction';
+import { activeCompetition, getCompetitionInfo } from '../../../../redux/actions/CompetitionAction';
 
 const TournamentHeader = () => {
   const { tournamentId, competitionId } = useParams(); 
@@ -31,6 +31,10 @@ const TournamentHeader = () => {
     navigate(`/mytournament/${tournamentId}/mycompetition/${competitionId}/${tab.key}`); 
   };
 
+  const handleActive = () =>{
+     dispatch(activeCompetition(competitionId))
+  }
+
   return (
     <div className="tournaments-header-outer">
       <div className="tournaments-header-container">
@@ -54,10 +58,7 @@ const TournamentHeader = () => {
               </div>
             </div>
             <div className="activation-section">
-              <button className="activate-button">Kích hoạt</button>
-              <div className="progress-bar">
-                <span>0 / 2</span>
-              </div>
+              <button className="activate-button" onClick={handleActive}>Kích hoạt</button>
             </div>
           </div>
 

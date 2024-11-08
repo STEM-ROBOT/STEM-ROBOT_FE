@@ -4,16 +4,18 @@ import './ExcelUploadComponent.css'; // Import the CSS file
 import { useDispatch } from 'react-redux';
 import { addScoreCompetition } from '../../../../redux/actions/ScoreAction';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const ExcelUploadComponent = () => {
-    const {competitionId} = useParams();
+    const { competitionId } = useParams();
     const [data, setData] = useState([]); 
+    const [fileInput, setFileInput] = useState(null); // Reference for file input
     
     const dispatch = useDispatch();
 
     // Function to handle file upload and parsing
     const handleFileUpload = (e) => {
-        const file = e.target.files[0]; // Get the uploaded file
+        const file = e.target.files[0];
         const reader = new FileReader();
 
         reader.onload = (event) => {
@@ -23,14 +25,14 @@ const ExcelUploadComponent = () => {
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
 
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '' }); // Parse sheet to JSON
-            setData(jsonData); // Update the state with the parsed data
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+            setData(jsonData);
         };
 
-        reader.readAsBinaryString(file); // Read file as binary string
+        reader.readAsBinaryString(file);
     };
 
-    // Function to convert the parsed data to JSON format (for DB submission)
+    // Function to convert the parsed data to JSON format and save it
     const convertToJson = () => {
         const formattedData = data.map((row) => ({
             description: row['MÔ TẢ'],
@@ -38,7 +40,14 @@ const ExcelUploadComponent = () => {
             type: row['KIỂU'] || '',
         }));
 
-        dispatch(addScoreCompetition(competitionId,formattedData));
+        dispatch(addScoreCompetition(competitionId, formattedData))
+            .then(() => {
+                // Reset data and clear file input upon successful save
+                setData([]);
+                if (fileInput) fileInput.value = ""; // Reset file input value
+                toast.success('Lưu thành công!');
+            })
+            .catch(() => toast.error('Đã xảy ra lỗi khi lưu!'));
     };
 
     return (
@@ -54,6 +63,7 @@ const ExcelUploadComponent = () => {
                 type="file"
                 accept=".xlsx, .xls"
                 onChange={handleFileUpload}
+                ref={(input) => setFileInput(input)} // Set ref for input
                 className="excel-upload-container-input-file"
             />
 
