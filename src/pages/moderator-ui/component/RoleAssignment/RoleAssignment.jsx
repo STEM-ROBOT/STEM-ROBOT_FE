@@ -3,7 +3,7 @@ import "./RoleAssignment.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getListRefereeFreeTime } from "../../../../redux/actions/RefereeAction";
-import api from "../../../../config";
+import api from "/src/config";
 import { toast } from "react-toastify";
 
 const RoleAssignment = () => {
