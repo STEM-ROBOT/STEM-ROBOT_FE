@@ -84,7 +84,7 @@ export const competition_detail_router = [
 
 export const profileChildren = [
   { path: "mytournament", element: <PrivateRoute element={<TournamentList />} requiredRole="MD" /> },
-  { path: "mytournament/:id", element: <PrivateRoute element={<TournamentDetail />} requiredRole="MD" /> },
+  { path: "mytournament/:tournamentId", element: <PrivateRoute element={<TournamentDetail />} requiredRole="MD" /> },
   { path: "myinvoice", element: <PrivateRoute element={<></>} requiredRole="MD" /> },
 ];
 
@@ -92,7 +92,7 @@ const moderatorRouter = [
   { path: "/account/*", element: <PrivateRoute element={<Account />} requiredRole="MD" /> },
   { path: "profile", element: <PrivateRoute element={<InforAccount />} requiredRole="MD" /> },
   {
-    path: "/account/*/:id",
+    path: "/account/*/:tournamentId",
     element: <PrivateRoute element={<Account />} requiredRole="MD" />,
   },
   { path: "/league/create-tournament", element: <PrivateRoute element={<CreateTournament />} requiredRole="MD" /> },
@@ -106,7 +106,7 @@ const moderatorRouter = [
     element: <PrivateRoute element={<Competition />} requiredRole="MD" />,
   },
   {
-    path: "/mytournament/:id/*",
+    path: "/mytournament/:tournamentId/*",
     element: <PrivateRoute element={<Tournament />} requiredRole="MD" />,
   },
   {

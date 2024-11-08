@@ -9,25 +9,21 @@ const RefereeAssignment = () => {
     const dispatch = useDispatch();
     const getScheduleReferee = useSelector((state) => state.getScheduleReferee);
     const refereeData = getScheduleReferee?.listRefereeSchedule;
-    
 
     const [data, setData] = useState();
     const [numMatchReferees, setNumMatchReferees] = useState(1);
-    
 
     useEffect(() => {
         dispatch(getRefereeSchedule(competitionId));
-    }, [competitionId]);
-    
-  
+    }, [competitionId, dispatch]);
+
     useEffect(() => {
         if (refereeData?.rounds && refereeData.rounds[0]?.matches) {
             setData(refereeData);
-            setNumMatchReferees(refereeData.rounds[0].matches.length);
+            setNumMatchReferees(1);  // Default number of assistant referees per match
         }
-      
     }, [refereeData]);
-    console.log(refereeData?.isSchedule)
+
     const shuffleArray = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -37,41 +33,39 @@ const RefereeAssignment = () => {
     };
 
     const randomizeReferees = () => {
-        const fieldCount = 3;
-        const updatedData = JSON.parse(JSON.stringify(data));
+        const fieldCount = 4; // Assume max field count for matches
+        const updatedData = JSON.parse(JSON.stringify(data)); // Deep clone the data
         let isNotEnoughReferees = false;
 
         updatedData.rounds.forEach((round) => {
             let availableMainRefs = shuffleArray([...data.referees]);
             let availableMatchRefs = shuffleArray([...data.matchReferees]);
 
-            // Count matches by time slots to check against field count
-            const timeSlotMatches = {};
+            const timeSlotMatches = {}; // Track number of matches per time slot
 
             round.matches.forEach((match) => {
-                // Check if there are enough main referees
+                // Ensure there are enough main referees
                 if (availableMainRefs.length === 0) {
                     isNotEnoughReferees = true;
                     return;
                 }
 
-                // Assign a main referee
+                // Assign a main referee to the match
                 match.mainReferee = availableMainRefs.pop();
 
-                // Check if there are enough match referees
+                // Check for sufficient assistant referees
                 if (availableMatchRefs.length < numMatchReferees) {
                     isNotEnoughReferees = true;
                     return;
                 }
 
-                // Check field count for the match time
+                // Check for field count conflicts in the same time slot
                 const matchTime = match.timeIn || 'default';
                 if (!timeSlotMatches[matchTime]) {
                     timeSlotMatches[matchTime] = 0;
                 }
                 timeSlotMatches[matchTime]++;
 
-                // If matches at this time exceed fields, stop assignment
                 if (timeSlotMatches[matchTime] > fieldCount) {
                     alert(`Số trận đấu diễn ra tại ${matchTime} vượt quá số lượng sân có sẵn.`);
                     isNotEnoughReferees = true;
@@ -93,14 +87,12 @@ const RefereeAssignment = () => {
         }
     };
 
-
     const handleUpdate = (roundIndex, matchIndex, field, value) => {
-        const updatedData = JSON.parse(JSON.stringify(data));
+        const updatedData = JSON.parse(JSON.stringify(data)); // Deep clone data
 
         const selectedMatch = updatedData.rounds[roundIndex].matches[matchIndex];
         const selectedTime = selectedMatch.timeIn;
 
-        // Check for time conflicts with other matches
         const hasTimeConflict = updatedData.rounds.some((round) =>
             round.matches.some((match, idx) => {
                 if (idx !== matchIndex) {
@@ -117,7 +109,6 @@ const RefereeAssignment = () => {
             return;
         }
 
-        // Assign the referee if no conflict is found
         if (field === 'mainReferee') {
             updatedData.rounds[roundIndex].matches[matchIndex][field] = value;
         } else {
@@ -147,8 +138,9 @@ const RefereeAssignment = () => {
                 });
             });
         });
-        dispatch(addRefereeSchedule(competitionId, result))
+        dispatch(addRefereeSchedule(competitionId, result));
     };
+
     return (
         <div className="referee-assignment-container-main">
             <h2 className="referee-assignment-title-main">Sắp xếp trọng tài</h2>
@@ -169,7 +161,6 @@ const RefereeAssignment = () => {
                     <button className="referee-assignment-randomize-button" onClick={randomizeReferees}>Bốc thăm ngẫu nhiên trọng tài</button>
                 )
             }
-           
 
             {data?.rounds.map((round, roundIndex) => (
                 <div key={round.roundId} className="referee-assignment-round">
@@ -195,19 +186,19 @@ const RefereeAssignment = () => {
 
                             <input
                                 type="text"
-                                value={match?.arena}
+                                value={match?.arena || ''}
                                 onChange={(e) => handleUpdate(roundIndex, matchIndex, 'arena', e.target.value)}
                                 className="referee-assignment-arena-input"
                             />
 
                             <select
                                 className="referee-assignment-main-referee-select"
-                                value={match.mainReferee || ''}
+                                value={match.mainReferee?.id || ''}
                                 onChange={(e) =>
                                     handleUpdate(roundIndex, matchIndex, 'mainReferee', data.referees.find(ref => ref.id === parseInt(e.target.value, 10)))
                                 }
                             >
-                                <option value="">Chọn trọng tài chính</option>
+                                <option value="">{match.mainRefereeName ? match.mainRefereeName : "Trọng tài chính"}</option>
                                 {data.referees.map((ref) => (
                                     <option key={ref.id} value={ref.id}>
                                         {ref.name}
@@ -215,17 +206,16 @@ const RefereeAssignment = () => {
                                 ))}
                             </select>
 
-
                             {Array.from({ length: numMatchReferees }).map((_, refIndex) => (
                                 <select
                                     className="referee-assignment-match-referee-select"
                                     key={refIndex}
-                                    value={match.matchRefereesdata[refIndex]?.subRefereeId || ''}
+                                    value={match.matchRefereesdata[refIndex]?.id || ''}
                                     onChange={(e) =>
                                         handleUpdate(roundIndex, matchIndex, 'matchRefereesdata', { index: refIndex, ref: data.matchReferees.find(ref => ref.id === parseInt(e.target.value, 10)) })
                                     }
                                 >
-                                    <option value="">Chọn trọng tài trận</option>
+                                    <option value="">{match.matchRefereesdata[refIndex]?.subRefereeName ? match.matchRefereesdata[refIndex]?.subRefereeName : "Trọng tài viên"}</option>
                                     {data.matchReferees.map((ref) => (
                                         <option key={ref.id} value={ref.id}>
                                             {ref.name}
@@ -242,7 +232,6 @@ const RefereeAssignment = () => {
                     <button className="referee-assignment-save-button" onClick={prepareDataForSave}>Lưu</button>
                 )
             }
-         
         </div>
     );
 };
