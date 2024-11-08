@@ -1,8 +1,8 @@
 import jwtDecode from "jwt-decode";
 import { LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT } from "../constants/AuthenConstant";
 import { toast } from "react-toastify";
-import api from "../../Config";
-import TokenService from "../../Config/tokenservice";
+import api from "/src/config";
+import TokenService from "/src/config/tokenservice";
 
 
 export const login = (user, navigate, setSignIn) => async (dispatch) => {

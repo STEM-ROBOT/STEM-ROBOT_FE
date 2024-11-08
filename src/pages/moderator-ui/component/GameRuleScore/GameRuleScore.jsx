@@ -60,16 +60,16 @@ const GameRuleScore = ({ data, type }) => {
               <div className="score_item_point">
                 <div
                   className={
-                    scoreData?.type == "Điểm Cộng"
+                    scoreData?.type.toLowerCase() == "điểm cộng"
                       ? "score_item_point_item plus"
-                      : scoreData?.type == "Điểm Trừ"
+                      : scoreData?.type.toLowerCase() == "điểm trừ"
                       ? "score_item_point_item minus"
                       : "score_item_point_item "
                   }
                 >
-                  {scoreData?.type == "Điểm Cộng"
+                  {scoreData?.type.toLowerCase() == "điểm cộng"
                     ? `+${score.point}`
-                    : scoreData?.type == "Điểm Trừ"
+                    : scoreData?.type.toLowerCase() == "điểm trừ"
                     ? `-${score.point}`
                     : "Xử Thua Trực Tiếp"}
                 </div>

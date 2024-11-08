@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
-import api from "../../config";
-import TokenService from "../../config/tokenservice";
+import api from "/src/config";
+import TokenService from "/src/config/tokenservice";
 import { GET_ACCOUNT_FAIL,GET_ACCOUNT_REQUEST,GET_ACCOUNT_RESET,GET_ACCOUNT_SUCCESS,GET_GENRE_FAIL,GET_GENRE_REQUEST,GET_GENRE_RESET,GET_GENRE_SUCCESS,GET_ORDER_FAIL,GET_ORDER_REQUEST,GET_ORDER_RESET,GET_ORDER_SUCCESS } from "../constants/AdminConstant";
 import { toast } from "react-toastify";
 
