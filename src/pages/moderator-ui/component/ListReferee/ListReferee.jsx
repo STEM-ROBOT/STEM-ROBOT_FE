@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import { addReferee, getListReferee } from '../../../../redux/actions/RefereeAction';
 
 const ListReferee = () => {
-    const { id: tournamentId } = useParams();
+    const {tournamentId } = useParams();
     const dispatch = useDispatch();
 
     const getReferees = useSelector((state) => state.getReferee);

@@ -4,9 +4,10 @@ import CreateTournamentCompetition from '../../../moderator-ui/component/CreateT
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createTournament } from '../../../../redux/actions/TournamentAction';
+import './CreateTournamentAdmin.css'
 
 const CreateTournamentAdmin = () => {
-    const [avatarInput, setAvatarInput] = useState();
+  const [avatarInput, setAvatarInput] = useState();
   const [nameTournament, setNameTournament] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -48,8 +49,8 @@ const CreateTournamentAdmin = () => {
 
     // Format competition list to match API structure
     const formattedCompetitions = competitionList.map((competition) => ({
-      genreId: competition.id, 
-      mode:""// Assuming each competition has an `id` field for genreId
+      genreId: competition.id,
+      mode: ""// Assuming each competition has an `id` field for genreId
     }));
 
     // Tournament data to be sent
@@ -59,50 +60,55 @@ const CreateTournamentAdmin = () => {
       location: address,
       image: avatarInput,
       status: mode, // Set status as needed
-      phone:phone,
+      phone: phone,
       competition: formattedCompetitions,
     };
 
-    // Dispatch action to create tournament
-    dispatch(createTournament(tournamentData,navigate));
+    // Dispatch action to create tournament/admin/tournaments-admin
+    dispatch(createTournament(tournamentData, navigate))
+    .then(() => {
+      navigate('/admin/tournaments-admin'); 
+    })
+    .catch((error) => {
+      console.error("Lỗi khi tạo giải đấu:", error); 
+    });;
   };
   return (
-    <>
-     <CreateTournamentInfo
-            avatarInput={avatarInput}
-            setAvatarInput={setAvatarInput}
-            nameTournament={nameTournament}
-            setNameTournament={setNameTournament}
-            phone={phone}
-            setPhone={setPhone}
-            address={address}
-            setAddress={setAddress}
-            mode={mode}
-            setMode={setMode}
-            nameError={nameError}
-            setNameError={setNameError}
-            locationError={locationError}
-            setLocationError={setLocationError}
-            phoneError={phoneError}
-            setPhoneError={setPhoneError}
-          />
-          <CreateTournamentCompetition
-            competitionList={competitionList}
-            setCompetitionList={setCompetitionList}
-            competitionError={competitionError}
-            setCompetitionError={setCompetitionError}
-          />
-          {/* <div className="format_create">
-            <div className="apply_create_tournament"> */}
-              <div
-                // className="btn_create_tournament"
-                onClick={() => handleSubmit()}
-              >
-                Hoàn Tất
-              </div>
-            {/* </div>
-          </div> */}
-    </>
+    <div className='admin_create_tournament_container'>
+      <div className="label_create" style={{ display: "flex", justifyContent: "space-between" }}>
+        Tạo Giải
+        <div
+          className="btn_create_tournament"
+          onClick={() => handleSubmit()}
+        >
+          Hoàn Tất
+        </div>
+      </div>
+      <CreateTournamentInfo
+        avatarInput={avatarInput}
+        setAvatarInput={setAvatarInput}
+        nameTournament={nameTournament}
+        setNameTournament={setNameTournament}
+        phone={phone}
+        setPhone={setPhone}
+        address={address}
+        setAddress={setAddress}
+        mode={mode}
+        setMode={setMode}
+        nameError={nameError}
+        setNameError={setNameError}
+        locationError={locationError}
+        setLocationError={setLocationError}
+        phoneError={phoneError}
+        setPhoneError={setPhoneError}
+      />
+      <CreateTournamentCompetition
+        competitionList={competitionList}
+        setCompetitionList={setCompetitionList}
+        competitionError={competitionError}
+        setCompetitionError={setCompetitionError}
+      />
+    </div>
   )
 }
 

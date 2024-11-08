@@ -62,7 +62,7 @@ const CreateTournamentInfo = ({
 
   return (
     <div className="container_create_info_tournament">
-      <div className="label_create">Tạo Giải</div>
+   
       <div className="info_create">
         <div className="avatar_tournament ">
           <label>
