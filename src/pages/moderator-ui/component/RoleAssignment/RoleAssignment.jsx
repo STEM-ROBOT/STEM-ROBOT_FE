@@ -3,7 +3,7 @@ import "./RoleAssignment.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getListRefereeFreeTime } from "../../../../redux/actions/RefereeAction";
-import api from "../../../../config";
+import api from "/src/config";
 import { toast } from "react-toastify";
 
 const RoleAssignment = () => {
@@ -29,7 +29,7 @@ const RoleAssignment = () => {
     dispatch(getListRefereeFreeTime(tournamentId, competitionId));
   }, [dispatch, tournamentId]);
   const isCheck = refereeList[0]?.isReferee;
-  
+
   useEffect(() => {
     // Only set `updatedRefereeList` if it is different from `refereeList`
     if (JSON.stringify(updatedRefereeList) !== JSON.stringify(refereeList)) {
@@ -50,7 +50,7 @@ const RoleAssignment = () => {
       )
     );
   };
-console.log(updatedRefereeList);
+  console.log(updatedRefereeList);
 
   const handleConfirm = () => {
     const requiredChiefReferees = chiefReferees * simultaneousReferees;
@@ -152,7 +152,6 @@ console.log(updatedRefereeList);
     console.log(newSelectAll ? updatedList : []);
   };
 
-
   return (
     <div className="role-assignment-container">
       <div className="role-assignment-header">
@@ -189,61 +188,65 @@ console.log(updatedRefereeList);
           />
         </div>
       </div>
-
-      <table className="role-assignment-table">
-        <thead>
-          <tr>
-            {isCheck !== true && (
-              <th>
-                <input
-                  type="checkbox"
-                  checked={selectAll}
-                  onChange={handleSelectAll}
-                />
-              </th>
-            )}
-            <th>Ảnh</th>
-            <th>Email</th>
-            <th>Tên</th>
-            <th>Vai trò</th>
-          </tr>
-        </thead>
-        <tbody>
-          {updatedRefereeList.map((referee) => (
-            <tr key={referee.id}>
+      <div className="table-edit-refereecompetition-moderator">
+        <table className="role-assignment-table">
+          <thead>
+            <tr>
               {isCheck !== true && (
-                <td>
+                <th>
                   <input
                     type="checkbox"
-                    checked={referee.selected}
-                    onChange={() => toggleSelection(referee)}
+                    checked={selectAll}
+                    onChange={handleSelectAll}
+                  />
+                </th>
+              )}
+              <th>Ảnh</th>
+              <th>Email</th>
+              <th>Tên</th>
+              <th>Vai trò</th>
+            </tr>
+          </thead>
+          <tbody>
+            {updatedRefereeList.map((referee) => (
+              <tr key={referee.id}>
+                {isCheck !== true && (
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={referee.selected}
+                      onChange={() => toggleSelection(referee)}
+                    />
+                  </td>
+                )}
+
+                <td>
+                  <img
+                    src={referee.image}
+                    alt={referee.name}
+                    className="referee-image"
                   />
                 </td>
-              )}
-
-              <td>
-                <img
-                  src={referee.image}
-                  alt={referee.name}
-                  className="referee-image"
-                />
-              </td>
-              <td>{referee.email}</td>
-              <td>{referee.name}</td>
-              <td>
-                <select
-                  value={referee.role}
-                  onChange={(e) => handleRoleChange(referee.id, e.target.value)}
-                  className="role-select"
-                >
-                  <option value="MRF">Trọng tài chính</option>
-                  <option value="SRF">Trọng tài viên</option>
-                </select>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                <td>{referee.email}</td>
+                <td>{referee.name}</td>
+                <td>
+                  <select
+                    value={referee.role}
+                    onChange={(e) =>
+                      handleRoleChange(referee.id, e.target.value)
+                    }
+                    className="role-select"
+                    disabled={isCheck === true}
+                  >
+                    <option value="MRF">Trọng tài chính</option>
+                    <option value="SRF">Trọng tài viên</option>
+                  </select>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
