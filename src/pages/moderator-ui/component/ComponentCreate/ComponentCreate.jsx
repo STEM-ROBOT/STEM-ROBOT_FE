@@ -51,29 +51,36 @@ const ComponentCreate = () => {
 
     // Format competition list to match API structure
     const formattedCompetitions = competitionList.map((competition) => ({
-      genreId: competition.id, 
-      mode:""// Assuming each competition has an `id` field for genreId
+      genreId: competition.id,
+      mode: ""// Assuming each competition has an `id` field for genreId
     }));
 
-    // Tournament data to be sent
+   
     const tournamentData = {
       tournamentLevel: "Cấp trường",
       name: nameTournament,
       location: address,
       image: avatarInput,
-      status: mode, // Set status as needed
-      phone:phone,
+      status: mode, 
+      phone: phone,
       competition: formattedCompetitions,
     };
 
-    // Dispatch action to create tournament
-    dispatch(createTournament(tournamentData,navigate));
+    dispatch(createTournament(tournamentData, navigate))
+    .then(() => {
+      navigate('/account/mytournament'); 
+    })
+    .catch((error) => {
+      console.error("Lỗi khi tạo giải đấu:", error); 
+    });
   };
 
   return (
     <div className="create_tournament_page">
       <div className="create_container">
         <div className="create_info_container">
+          <div className="label_create"> Tạo Giải</div>
+
           <CreateTournamentInfo
             avatarInput={avatarInput}
             setAvatarInput={setAvatarInput}

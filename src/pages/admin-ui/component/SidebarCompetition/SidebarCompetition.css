@@ -1,0 +1,47 @@
+.sidebar_home_admin{
+    padding: 15px 0;
+}
+.admin_info_role_btnLogOut {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Đặt hai phần tử ở hai bên trái phải */
+    padding: 8px;
+    margin: 10px;
+    border-radius: 8px; /* Bo góc cho khối */
+    width: 90%; /* Chiều rộng đầy đủ của container */
+}
+
+.admin_head_btnLogOut {
+    font-size: 24px; /* Kích thước biểu tượng */
+    color: #333; /* Màu biểu tượng */
+    cursor: pointer; /* Con trỏ khi di chuột vào */
+    transition: color 0.3s ease; /* Hiệu ứng chuyển màu */
+}
+
+.admin_head_btnLogOut:hover {
+    color: #d9534f; /* Màu khi hover */
+}
+
+.admin_button_active {
+    padding: 6px 12px;
+    font-size: 16px;
+    color: #fff; /* Màu chữ */
+    background-color: #28a745; /* Màu nền cho nút */
+    border: none;
+    border-radius: 4px; /* Bo góc cho nút */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.admin_button_active:hover {
+    background-color: #218838; /* Màu nền khi hover */
+}
+
+.admin_button_active:active {
+    background-color: #1e7e34; /* Màu nền khi nhấn */
+}
+.check-icon {
+    margin-left: auto; /* Đẩy biểu tượng sang bên phải */
+    color: green;
+    font-size: 16px; /* Kích thước biểu tượng */
+}

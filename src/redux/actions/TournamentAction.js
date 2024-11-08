@@ -46,7 +46,6 @@ export const createTournament = (tournamnet,navigate) => async (dispatch) => {
     dispatch({ type: CREATE_TOURNAMENT_REQUEST });
     const { data } = await api.post(`/api/tournaments`,tournamnet);
     dispatch({ type: CREATE_TOURNAMENT_SUCCESS, payload: data });
-    navigate("/account/mytournament");
   } catch (error) {
     const message =
       error.response && error.response.data.message

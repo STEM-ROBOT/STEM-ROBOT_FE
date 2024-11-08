@@ -7,7 +7,7 @@ import { getCompetitionbyTournament } from "../../../../redux/actions/Competitio
 
 const ManageCompetition = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { tournamentId } = useParams();
 
   const competitionData = useSelector((state) => state.getCompetition.listCompetition);
   const competitions = Array.isArray(competitionData?.data?.data) ? competitionData.data.data : [];
@@ -15,11 +15,11 @@ const ManageCompetition = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCompetitionbyTournament(id));
-  }, [dispatch, id]);
+    dispatch(getCompetitionbyTournament(tournamentId));
+  }, [dispatch, tournamentId]);
 
   const handleCompetitionClick = (competitionId) => {
-    navigate(`/mytournament/${id}/mycompetition/${competitionId}/settings/format`);
+    navigate(`/mytournament/${tournamentId}/mycompetition/${competitionId}/settings/format`);
   };
 
   const activeStatuses = (competition) => {

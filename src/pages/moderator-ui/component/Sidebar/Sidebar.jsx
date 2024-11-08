@@ -13,22 +13,22 @@ const Sidebar = ({ activeItem, onMenuClick, isGroupStage }) => {
     const dispatch = useDispatch();
     const [activeIcon, setActiveIcon] = useState();
 
-    // Rename the variable from useSelector to avoid conflict with imported action
+    
     const activeFormatData = useSelector((state) => state.getActiveFormat);
     const activeData = activeFormatData?.data?.data;
     TokenService.setFormatId(activeData?.formatId);
 
-    // Fetch active format data
+   
     useEffect(() => {
-        dispatch(fetchActiveFormat(competitionId)); // Use the renamed action
+        dispatch(fetchActiveFormat(competitionId));
     }, [competitionId, dispatch]);
 
-    // Update activeIcon state when activeData changes
+  
     useEffect(() => {
         setActiveIcon(activeData);
     }, [activeData]);
 
-    // Define menu items with icons and conditional check mark
+   
     const menuItems = [
         { key: "format", label: "Cấu hình nội dung", icon: <FaCogs />, isActive: activeIcon?.isFormat },
         { key: "permissions", label: "Quản lí trọng tài", icon: <FaUsers />, isActive: activeIcon?.isReferee },

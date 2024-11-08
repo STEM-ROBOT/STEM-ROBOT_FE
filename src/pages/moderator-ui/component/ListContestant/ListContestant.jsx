@@ -9,7 +9,8 @@ import { addContestant, getListContestant } from '../../../../redux/actions/Cont
 import { useParams } from 'react-router-dom';
 
 const ListContestant = () => {
-    const { id: tournamentId } = useParams();
+    const {tournamentId } = useParams();
+    console.log(tournamentId)
     const schoolName = "Trường Di Linh";
 
     const dispatch = useDispatch();
@@ -137,7 +138,7 @@ const ListContestant = () => {
         console.log("Payload sent:", payload);
         dispatch(addContestant(tournamentId,payload));
         setHasChanges(false);
-        setNewContestantsToAdd([]);
+        // setNewContestantsToAdd([]);
     };
 
     return (
