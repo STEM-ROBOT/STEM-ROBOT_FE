@@ -10,7 +10,7 @@ const KnockoutTournament = () => {
   const { competitionId } = useParams();
   const getTeamsmatch = useSelector((state) => state.getTeamknockout);
   const tournamentData = getTeamsmatch?.listTeams?.data?.data;
-
+ console.log(tournamentData)
   const [rounds, setRounds] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -134,10 +134,14 @@ const KnockoutTournament = () => {
     <div className="knockout-tournament-container-custom">
       <div className="knockout-tournament-content-custom">
         <h2 className="tournament-title-custom">Sắp xếp cặp đấu - Hình thức loại trực tiếp</h2>
-
-        <button className="random-draw-button-custom" onClick={handleRandomDraw}>
-          Bốc thăm ngẫu nhiên
-        </button>
+        {
+          !tournamentData?.isTeamMatch && (
+            <button className="random-draw-button-custom" onClick={handleRandomDraw}>
+            Bốc thăm ngẫu nhiên
+          </button>
+          )
+        }
+       
 
         {successMessage && <p className="success-message">{successMessage}</p>}
       </div>
@@ -164,10 +168,14 @@ const KnockoutTournament = () => {
           </div>
         </div>
       ))}
-
-      <button className="save-button-custom" onClick={saveMatchesToDB} disabled={isSaving}>
+      {
+          !tournamentData?.isTeamMatch && (
+            <button className="save-button-custom" onClick={saveMatchesToDB} disabled={isSaving}>
         {isSaving ? 'Đang lưu...' : 'Lưu'}
       </button>
+          )
+        }
+     
 
       {showPopup && <CountdownPopup onComplete={handleCountdownComplete} />}
     </div>
