@@ -14,20 +14,18 @@ import CompetitionList from "../../component/CompetitionList/CompetitionList";
 import Countdown from "../../component/Countdown/Countdown";
 import TeamList from "../../component/TeamList/TeamList";
 import { league_detail } from "../../../../router/ModeratorRouter";
+import api from "/src/Config";
+import { tournament_view } from "../../api/ApiFlowView/ApiFlowView";
 
 const LeagueDetail = () => {
   const id = useParams();
   const storedLeague = sessionStorage.getItem("leagueData");
-  const [league, setLeague] = useState(JSON.parse(storedLeague));
+  const [league, setLeague] = useState();
   useEffect(() => {
-    if (!league) {
-      const storedLeague = sessionStorage.getItem("leagueData");
-      if (storedLeague) {
-        setLeague(JSON.parse(storedLeague));
-      }
-    }
-  }, [league]);
-
+    api.get(tournament_view + id.league_id).then((response) => {
+      setLeague(response.data.data);
+    });
+  }, [  ]);
 
   const renderRoutes = (routes) =>
     routes.map((route, index) => {

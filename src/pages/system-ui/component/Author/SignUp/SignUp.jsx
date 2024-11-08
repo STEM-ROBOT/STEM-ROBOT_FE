@@ -19,18 +19,20 @@ const SignUp = ({ setSignUp }) => {
   return (
     <div className="author_modal">
       <div className="login_view">
-        <div className="close_logo">
-          <div className="login_view_logo">
+        <div className="close_logo_signUp_layout">
+          <div className="close_logo_signUp">
             <img className="logo_view" src={logoImg} />
-          </div>
-          <div className="login_view_close" onClick={CloseSignUp}>
-            <IoClose className="close_click" />
+
+            <div className="login_view_close" onClick={CloseSignUp}>
+              <IoClose className="close_click" />
+            </div>
           </div>
         </div>
+
         <div className="login_Welcome">STEM xin chào</div>
         <div className="sign_up_layout_view">
           <div className="sign_up_layout1">
-           <SchoolAccount/>
+            <SchoolAccount />
           </div>
           <div className="sign_up_layout2">
             <div className="login_info">

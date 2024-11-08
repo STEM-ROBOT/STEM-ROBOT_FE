@@ -11,7 +11,7 @@ import Footer from "../../../system-ui/component/Footer/Footer";
 import { competition_detail_router } from "../../../../router/ModeratorRouter";
 import { IoLogoGameControllerB } from "react-icons/io";
 import "./CompetitionDetail.css";
-import api from "../../../../config";
+import api from "/src/config";
 
 const allTabs = [
   {
@@ -53,7 +53,9 @@ const CompetitionDetail = () => {
 
   useEffect(() => {
     api
-      .get(`/api/competitions/config-register?competitionID=${path.competitionId}`)
+      .get(
+        `/api/competitions/config-register?competitionID=${path.competitionId}`
+      )
       .then((response) => {
         const { status, formatId } = response.data;
         setStatus(status);

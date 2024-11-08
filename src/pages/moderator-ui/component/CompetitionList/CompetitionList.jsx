@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./CompetitionList.css";
 import { IoLogoGameControllerB } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../../../../config";
+import api from "/src/config";
 import { competitions_tournament } from "../../api/ApiFlowView/ApiFlowView";
 
 const CompetitionList = () => {
@@ -45,11 +45,11 @@ const CompetitionList = () => {
     }
   };
   const GoCompetition = (competition) => {
-    // if (isActive === true) {
+    if (isActive === true) {
       localStorage.setItem("competitionName", competition.name),
         localStorage.setItem("competitionEndDate", competition.endDate),
         navigate(`${competition.id}`);
-    
+    }
   };
   return (
     <div className="competition_container">
