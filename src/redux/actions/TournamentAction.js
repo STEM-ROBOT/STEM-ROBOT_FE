@@ -1,5 +1,5 @@
 import { CREATE_TOURNAMENT_FAIL, CREATE_TOURNAMENT_REQUEST, CREATE_TOURNAMENT_SUCCESS, GET_TOURNAMENT_INFO_FAIL, GET_TOURNAMENT_INFO_REQUEST, GET_TOURNAMENT_INFO_SUCCESS, GET_TOURNAMENT_MODERATOR_FAIL, GET_TOURNAMENT_MODERATOR_REQUEST, GET_TOURNAMENT_MODERATOR_SUCCESS } from "../constants/TournamentConstant";
-import api from "../../config";
+import api from "/src/config";
 
 export const getListTournament = () => async (dispatch) => {
   try {

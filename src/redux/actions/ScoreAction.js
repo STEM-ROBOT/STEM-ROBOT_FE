@@ -1,4 +1,4 @@
-import api from "../../config";
+import api from "/src/config";
 import { ADD_SCORE_FAIL, ADD_SCORE_REQUEST, ADD_SCORE_SUCCESS } from "../constants/ScoreConstant";
 
 export const addScoreCompetition = (competitionId, listScore) => async (dispatch) => {

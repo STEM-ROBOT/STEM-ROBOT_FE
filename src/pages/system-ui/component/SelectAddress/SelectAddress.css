@@ -1,0 +1,32 @@
+.select-address-log1 {
+  width: 52%;
+  position: relative;
+  color: #358bb9;
+}
+
+.select-address-log1 .select-address {
+  padding: 13px 10px;
+  width: 100%;
+  font-size: 17px;
+  border-radius: 4px;
+  align-items: center;
+  appearance: none;
+  border: 2px solid #0d0d0e;
+  color: #0f0f0f;
+}
+
+.select-address-log1 .select-address option {
+  background-color: #b6effa;
+  color: #000;
+  position: absolute;
+}
+
+.select-address-log1 .select-address option:hover {
+  background-color: #7ea8bd;
+}
+
+/* Scrollable options */
+.select-address-log1 .select-address option {
+  overflow-y: scroll;
+  max-height: 10px;
+}

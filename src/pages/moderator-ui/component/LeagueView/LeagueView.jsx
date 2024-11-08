@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./LeagueView.css";
 import { useNavigate } from "react-router-dom";
+import api from "/src/Config";
+import { update_viewer_filter } from "../../api/ApiFlowView/ApiFlowView";
 const LeagueView = ({ viewMode, league }) => {
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -32,8 +34,13 @@ const LeagueView = ({ viewMode, league }) => {
   };
   const GoLeague = () => {
     if (league) {
-      sessionStorage.setItem("leagueData", JSON.stringify(league));
-      navigate(`${league.id}`);
+      api.put(update_viewer_filter + league.id).then((response) => {
+        console.log(response);
+
+        sessionStorage.setItem("leagueData", JSON.stringify(league));
+
+        navigate(`${league.id}`);
+      });
     } else {
       console.error("league is undefined or null");
     }
@@ -53,6 +60,15 @@ const LeagueView = ({ viewMode, league }) => {
           "--background-image": `url(${league.imagesCompetition[currentImageIndex]})`,
         }}
       >
+        <dic
+          className={
+            league.status == "Private"
+              ? "competition_status_competition done "
+              : "competition_status_competition rg"
+          }
+        >
+          {league.status == "Public" ? "Mở đăng ký" : "Không mở đăng ký"}
+        </dic>
         <img
           src={league.image}
           alt="League Image"
@@ -76,7 +92,7 @@ const LeagueView = ({ viewMode, league }) => {
 
           {/* Tooltip for views */}
           <div className={`tooltip ${viewMode}`}>
-            <span>👁️ {league.views}</span>
+            <div>👁️ {league.views}</div>
             <div className={`tooltip_text ${viewMode}`}>Lượt xem</div>
           </div>
 
