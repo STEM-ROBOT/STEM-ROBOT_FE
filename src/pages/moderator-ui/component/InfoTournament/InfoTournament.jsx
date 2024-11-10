@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getInfoTournament } from '../../../../redux/actions/TournamentAction';
 
 const InfoTournament = () => {
-    const { id } = useParams();
+    const { tournamentId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -26,10 +26,10 @@ const InfoTournament = () => {
     const error = useSelector((state) => state.infoTournament.error);
    
     useEffect(() => {
-        if (id) {
-            dispatch(getInfoTournament(id));
+        if (tournamentId) {
+            dispatch(getInfoTournament(tournamentId));
         }
-    }, [id, dispatch]);
+    }, [tournamentId, dispatch]);
 
     useEffect(() => {
         const currentPath = location.pathname.split("/").pop();
@@ -41,7 +41,7 @@ const InfoTournament = () => {
 
     const handleTabClick = (tab) => {
         setActiveTab(tab.key);
-        navigate(`/mytournament/${id}/${tab.key}`); 
+        navigate(`/mytournament/${tournamentId}/${tab.key}`); 
     };
 
     return (

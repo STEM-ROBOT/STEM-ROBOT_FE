@@ -239,7 +239,7 @@ const CreateTournamentFormat = ({ }) => {
 
   return (
     <div className="container_create_format_tournament">
-      <div className="format_create">
+      <div className="format_create_competition">
         <div className="competition_format">
           <div className="label_avatar">Hình Thức Thi Đấu</div>
           <div className="competition_format_option">
@@ -356,13 +356,13 @@ const CreateTournamentFormat = ({ }) => {
           </div>
         </div>
       </div>
-      <div className="format_create">
+      <div className="format_create_competition">
         <div className="total_match">
           {`Đối với cấu hình này thì số lượng trận đấu của mỗi nội dung là: ${12}`}
           <IoAlertCircle className="icon_total_match" />
         </div>
       </div>
-      <div className="format_create">
+      <div className="format_create_competition">
         <div className="competition_format">
           <div className="label_avatar" style={{ width: "100%" }}>
             Số thí sinh trong 1 đội

@@ -10,7 +10,7 @@ import TournamentHeader from '../../component/TournamentHeader/TournamentHeader'
 import GroupMatch from '../../component/GroupMatchDraw/GroupMatch';
 import KnockoutTournament from '../../component/KnockoutTournament/KnockoutTournament';
 import PrivateRoute from '../../../../router/PrivateRoute';
-import TokenService from '../../../../Config/tokenservice';
+import TokenService from '/src/Config/tokenservice';
 
 
 

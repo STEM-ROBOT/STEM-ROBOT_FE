@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 
 import { CREATE_CONTESTANT_FAIL, CREATE_CONTESTANT_REQUEST, CREATE_CONTESTANT_SUCCESS, GET_CONTESTANT_FAIL, GET_CONTESTANT_REQUEST, GET_CONTESTANT_SUCCESS } from "../constants/ContestantConstant";
-import api from "../../Config";
+import api from "/src/config";
 
 
 

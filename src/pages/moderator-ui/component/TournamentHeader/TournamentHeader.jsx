@@ -47,9 +47,9 @@ const TournamentHeader = () => {
               />
             </div>
             <div className="tournaments-detail">
-              <h2>{competitionInfo?.tournamentName || "Tournament Name"}</h2>
+              <h2>{competitionInfo?.name || "Tournament Name"}</h2>
               <p>
-                {competitionInfo?.name || "Loại Trực Tiếp"} || {competitionInfo?.location || "Location"}
+                {competitionInfo?.tournamentName || "Loại Trực Tiếp"} || {competitionInfo?.location || "Location"}
               </p>
               <div className="tournaments-stats">
                 <span><FaUsers /> {competitionInfo?.numberTeam || 0} Đội</span>

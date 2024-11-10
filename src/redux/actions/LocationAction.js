@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import api from "../../config";
+import api from "/src/config";
 import { GET_LOCATION_FAIL, GET_LOCATION_REQUEST, GET_LOCATION_SUCCESS } from "../constants/LocationConstant";
 
 

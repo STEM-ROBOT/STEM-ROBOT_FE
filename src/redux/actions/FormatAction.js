@@ -1,4 +1,4 @@
-import api from "../../config";
+import api from "/src/config";
 import { GET_ACTIVE_FORMAT_FAIL, GET_ACTIVE_FORMAT_REQUEST, GET_ACTIVE_FORMAT_SUCCESS } from "../constants/FormatConstant";
 
 export const getActive = (competitionId) => async (dispatch) => {

@@ -2,32 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./CompetitionList.css";
 import { IoLogoGameControllerB } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../../../../config";
+import api from "/src/config";
 import { competitions_tournament } from "../../api/ApiFlowView/ApiFlowView";
-const competitions = [
-  {
-    id: 1,
-    name: "Bóng Đá",
-    image:
-      "https://image-cdn.essentiallysports.com/wp-content/uploads/imago0241552301h.jpg?width=600",
-    endDate: "2024-10-20T23:59:59",
-    status: true,
-  },
-  {
-    id: 2,
-    name: "Giải Mê Cung",
-    image: "https://ohstem.vn/wp-content/uploads/2021/12/Lap-thuc-te-2.png",
-    endDate: "2024-10-30T23:59:59",
-    status: false,
-  },
-  {
-    id: 3,
-    name: "Di chuyển đồ vật",
-    image: "https://tuyensinh.hueic.edu.vn/wp-content/uploads/2021/03/ro1.jpg",
-    endDate: "2024-10-13T23:59:59",
-    status: true,
-  },
-];
 
 const CompetitionList = () => {
   const path = useParams();
@@ -49,24 +25,31 @@ const CompetitionList = () => {
   const tagStatuses = (competition) => {
     const now = new Date(); // Lấy thời gian hiện tại
     const endDate = new Date(competition.endDate);
-    if (competition.status === false) {
+    if (competition.isActive === false) {
       return "Chưa kích hoạt";
-    } else if (competition.status === true && now <= endDate) {
+    } else if (competition.isActive === true && now <= endDate) {
       return "Đang đăng ký";
-    } else if (competition.status === true && now > endDate) {
+    } else if (competition.isActive === true && now > endDate) {
       return "Đang diển ra";
     }
   };
   const activeStatuses = (competition) => {
     const now = new Date(); // Lấy thời gian hiện tại
     const endDate = new Date(competition.endDate);
-    if (competition.status === false) {
+    if (competition.isActive === false) {
       return "competition_status_competition";
-    } else if (competition.status === true && now <= endDate) {
+    } else if (competition.isActive === true && now <= endDate) {
       return "competition_status_competition rg";
-    } else if (competition.status === true && now > endDate) {
+    } else if (competition.isActive === true && now > endDate) {
       return "competition_status_competition done";
     }
+  };
+  const GoCompetition = (competition) => {
+    // if (isActive === true) {
+      localStorage.setItem("competitionName", competition.name),
+        localStorage.setItem("competitionEndDate", competition.endDate),
+        navigate(`${competition.id}`);
+    // }
   };
   return (
     <div className="competition_container">
@@ -83,16 +66,7 @@ const CompetitionList = () => {
           <div
             key={competition.id}
             className="competition_item"
-            onClick={() => {
-              {
-                localStorage.setItem("competitionName", competition.name),
-                  localStorage.setItem(
-                    "competitionEndDate",
-                    competition.endDate
-                  ),
-                  navigate(`${competition.id}`);
-              }
-            }}
+            onClick={() => GoCompetition(competition)}
           >
             <div className={activeStatuses(competition)}>
               {tagStatuses(competition)}

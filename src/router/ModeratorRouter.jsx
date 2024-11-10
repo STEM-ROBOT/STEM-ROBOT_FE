@@ -1,4 +1,3 @@
-
 import Account from "../pages/moderator-ui/layout/Account/Account";
 import { Navigate, useParams } from "react-router-dom";
 import CompetitionList from "../pages/moderator-ui/component/CompetitionList/CompetitionList";
@@ -36,82 +35,179 @@ import ManageArena from "../pages/moderator-ui/component/ManageArena/ManageArena
 import GroupAllocation from "../pages/moderator-ui/component/GroupAllocation/GroupAllocation";
 import GroupMatch from "../pages/moderator-ui/component/GroupMatchDraw/GroupMatch";
 import InforAccount from "../pages/moderator-ui/component/InfoAccount/InforAccount";
-import PrivateRoute from './PrivateRoute';  
-
+import PrivateRoute from "./PrivateRoute";
 
 export const tournamentChildren = [
-  { path: "format", element: <PrivateRoute element={<ConfigTournament />} requiredRole="MD" /> },
-  { path: "permissions", element: <PrivateRoute element={<RoleAssignment />} requiredRole="MD" /> },
-  { path: "teams", element: <PrivateRoute element={<ManageTeam />} requiredRole="MD" /> },
-  { 
-    path: "matchups", 
-    element: <PrivateRoute element={<GroupMatch/>} requiredRole="MD" /> 
+  {
+    path: "format",
+    element: <PrivateRoute element={<ConfigTournament />} requiredRole="MD" />,
   },
-  { path: "schedule", element: <PrivateRoute element={<MatchManagement />} requiredRole="MD" /> },
-  { path: "referee", element: <PrivateRoute element={<RefereeAssignment />} requiredRole="MD" /> },
-  { path: "arena", element: <PrivateRoute element={<ManageArena />} requiredRole="MD" /> },
-  { path: "groupstage", element: <PrivateRoute element={<GroupAllocation />} requiredRole="MD" /> },
+  {
+    path: "permissions",
+    element: <PrivateRoute element={<RoleAssignment />} requiredRole="MD" />,
+  },
+  {
+    path: "teams",
+    element: <PrivateRoute element={<ManageTeam />} requiredRole="MD" />,
+  },
+  {
+    path: "matchups",
+    element: <PrivateRoute element={<GroupMatch />} requiredRole="MD" />,
+  },
+  {
+    path: "schedule",
+    element: <PrivateRoute element={<MatchManagement />} requiredRole="MD" />,
+  },
+  {
+    path: "referee",
+    element: <PrivateRoute element={<RefereeAssignment />} requiredRole="MD" />,
+  },
+  {
+    path: "arena",
+    element: <PrivateRoute element={<ManageArena />} requiredRole="MD" />,
+  },
+  {
+    path: "groupstage",
+    element: <PrivateRoute element={<GroupAllocation />} requiredRole="MD" />,
+  },
 ];
 
 export const tournamentRoutes = [
-  { path: "mycompetition", element: <PrivateRoute element={<ManageCompetition />} requiredRole="MD" /> },
-  { path: "contestant", element: <PrivateRoute element={<ListContestant />} requiredRole="MD" /> },
-  { path: "refee", element: <PrivateRoute element={<ListReferee />} requiredRole="MD" /> },
-  { path: "create", element: <PrivateRoute element={<CreateTournamentInfo />} requiredRole="MD" /> },
+  {
+    path: "mycompetition",
+    element: <PrivateRoute element={<ManageCompetition />} requiredRole="MD" />,
+  },
+  {
+    path: "contestant",
+    element: <PrivateRoute element={<ListContestant />} requiredRole="MD" />,
+  },
+  {
+    path: "refee",
+    element: <PrivateRoute element={<ListReferee />} requiredRole="MD" />,
+  },
+  {
+    path: "create",
+    element: (
+      <PrivateRoute element={<CreateTournamentInfo />} requiredRole="MD" />
+    ),
+  },
 ];
 
 export const competitionChildren = [
-  { path: "settings", element: <PrivateRoute element={<TournamentConfiguration />} requiredRole="MD" /> },
+  {
+    path: "settings",
+    element: (
+      <PrivateRoute element={<TournamentConfiguration />} requiredRole="MD" />
+    ),
+  },
 ];
 
 export const league_detail = [
-  { path: "", element: <PrivateRoute element={<Navigate to="competition" />} requiredRole="MD" /> },
-  { path: "team-list", element: <PrivateRoute element={<TeamList />} requiredRole="MD" /> },
-  { path: "competition", element: <PrivateRoute element={<CompetitionList />} requiredRole="MD" /> },
-  { path: "register-contestant", element: <PrivateRoute element={<RegisterContestant />} requiredRole="MD" /> },
-  { path: "competition/:competitionId/*", element: <PrivateRoute element={<CompetitionDetail />} requiredRole="MD" /> },
+  {
+    path: "",
+    element: <Navigate to="competition" />,
+  },
+  {
+    path: "team-list",
+    element: <TeamList />,
+  },
+  {
+    path: "competition",
+    element: <CompetitionList />,
+  },
+  {
+    path: "register-contestant",
+    element: <RegisterContestant />,
+  },
+  {
+    path: "competition/:competitionId/*",
+    element: <CompetitionDetail />,
+  },
 ];
 
 export const competition_detail_router = [
-  { path: "", element: <PrivateRoute element={<Navigate to="game-rule" />} requiredRole="MD" /> },
-  { path: "register-time", element: <PrivateRoute element={<Countdown />} requiredRole="MD" /> },
-  { path: "game-rule", element: <PrivateRoute element={<GameRuleComponent />} requiredRole="MD" /> },
-  { path: "team-competition-list", element: <PrivateRoute element={<TeamCompetition />} requiredRole="MD" /> },
-  { path: "match-schedule", element: <PrivateRoute element={<MatchScheduleComponent />} requiredRole="MD" /> },
-  { path: "stage-group", element: <PrivateRoute element={<MatchGroupStageComponent />} requiredRole="MD" /> },
-  { path: "knockout", element: <PrivateRoute element={<MatchScheduleComponent />} requiredRole="MD" /> },
+  {
+    path: "",
+    element: <Navigate to="game-rule" />,
+  },
+  {
+    path: "register-time",
+    element: <Countdown />,
+  },
+  {
+    path: "game-rule",
+    element: <GameRuleComponent />,
+  },
+  {
+    path: "team-competition-list",
+    element: <TeamCompetition />,
+  },
+  {
+    path: "match-schedule",
+    element: <MatchScheduleComponent />,
+  },
+  {
+    path: "stage-group",
+    element: <MatchGroupStageComponent />,
+  },
+  {
+    path: "knockout",
+    element: <MatchScheduleComponent />,
+  },
 ];
 
 export const profileChildren = [
-  { path: "mytournament", element: <PrivateRoute element={<TournamentList />} requiredRole="MD" /> },
-  { path: "mytournament/:id", element: <PrivateRoute element={<TournamentDetail />} requiredRole="MD" /> },
-  { path: "myinvoice", element: <PrivateRoute element={<></>} requiredRole="MD" /> },
+
+  {
+    path: "mytournament",
+    element: <PrivateRoute element={<TournamentList />} requiredRole="MD" />,
+  },
+  {
+    path: "mytournament/:id",
+    element: <PrivateRoute element={<TournamentDetail />} requiredRole="MD" />,
+  },
+  {
+    path: "myinvoice",
+    element: <PrivateRoute element={<></>} requiredRole="MD" />,
+  },
+
 ];
 
 const moderatorRouter = [
-  { path: "/account/*", element: <PrivateRoute element={<Account />} requiredRole="MD" /> },
-  { path: "profile", element: <PrivateRoute element={<InforAccount />} requiredRole="MD" /> },
   {
-    path: "/account/*/:id",
+    path: "/account/*",
     element: <PrivateRoute element={<Account />} requiredRole="MD" />,
   },
-  { path: "/league/create-tournament", element: <PrivateRoute element={<CreateTournament />} requiredRole="MD" /> },
-  { path: "/league", element: <PrivateRoute element={<League />} requiredRole="MD" /> },
+  {
+    path: "profile",
+    element: <PrivateRoute element={<InforAccount />} requiredRole="MD" />,
+  },
+  {
+    path: "/account/*/:tournamentId",
+    element: <PrivateRoute element={<Account />} requiredRole="MD" />,
+  },
+  { path: "/league/create-tournament", element: <CreateTournament /> },
+  {
+    path: "/league",
+    element: <League />,
+  },
   {
     path: "/league/:league_id/*",
-    element: <PrivateRoute element={<LeagueDetail />} requiredRole="MD" />,
+    element: <LeagueDetail />,
   },
   {
     path: "/mytournament/:tournamentId/mycompetition/:competitionId/*",
     element: <PrivateRoute element={<Competition />} requiredRole="MD" />,
   },
   {
-    path: "/mytournament/:id/*",
+    path: "/mytournament/:tournamentId/*",
     element: <PrivateRoute element={<Tournament />} requiredRole="MD" />,
   },
   {
     path: "/mytournament/:tournamentId/mycompetition/:competitionId/settings/*",
-    element: <PrivateRoute element={<TournamentConfiguration />} requiredRole="MD" />,
+    element: (
+      <PrivateRoute element={<TournamentConfiguration />} requiredRole="MD" />
+    ),
   },
 ];
 

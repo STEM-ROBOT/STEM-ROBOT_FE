@@ -78,66 +78,68 @@ const MatchManagement = () => {
     const handleAutoAssign = () => {
         const updatedData = deepClone(data);
         const { startDate, startTime, matchDuration, breakTime, endTime } = config;
+    
         const availableLocations = updatedData.locations || [];
         const locationCount = availableLocations.length;
-
+    
         let currentDate = startDate;
-        let locationTimes = Array.from({ length: locationCount }, () => startTime);
-
+        let locationTimes = Array.from({ length: locationCount || 1 }, () => startTime); // Đảm bảo có ít nhất một vị trí
+    
         const addTime = (time, minutesToAdd) => {
-            let [hours, minutes] = time.split(':').map(Number);
+            let [hours, minutes] = time?.split(':').map(Number);
             minutes += minutesToAdd;
             hours += Math.floor(minutes / 60);
             minutes %= 60;
             return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
         };
-
+    
         const exceedsEndTime = (time, endTime) => {
             const [hours, minutes] = time.split(':').map(Number);
             const [endHours, endMinutes] = endTime.split(':').map(Number);
             return hours > endHours || (hours === endHours && minutes > endMinutes);
         };
-
+    
         const incrementDate = (dateString) => {
             const date = new Date(dateString);
             date.setDate(date.getDate() + 1);
             return date.toISOString().split('T')[0];
         };
-
+    
         const assignRoundMatches = (stage) => {
             (stage.rounds || []).forEach((round) => {
                 round.matchrounds?.forEach((table) => {
                     table.matches?.forEach((match, index) => {
                         let assigned = false;
-                        let locationIndex = index % locationCount;
-
+                        let locationIndex = index % (locationCount || 1); // Đảm bảo luôn có một vị trí hợp lệ
+    
                         while (!assigned) {
                             const matchTime = locationTimes[locationIndex];
                             const matchEndTime = addTime(matchTime, matchDuration);
-
+    
                             if (!exceedsEndTime(matchEndTime, endTime)) {
-                                match.locationId = availableLocations[locationIndex]?.locationId;
+                                match.locationId = availableLocations[locationIndex]?.locationId || 1;
                                 match.date = currentDate;
                                 match.time = matchTime;
-
+    
                                 locationTimes[locationIndex] = addTime(matchTime, matchDuration + breakTime);
                                 assigned = true;
                             } else {
                                 currentDate = incrementDate(currentDate);
-                                locationTimes = Array.from({ length: locationCount }, () => startTime);
+                                locationTimes = Array.from({ length: locationCount || 1 }, () => startTime);
                             }
                         }
                     });
                 });
             });
         };
-
+    
         assignRoundMatches(updatedData.group || {});
         assignRoundMatches(updatedData.knockout || {});
-
+    
         setData(updatedData);
         setIsAssigned(true);
     };
+    
 
     const handleUpdate = (roundId, tableIndex, matchIndex, field, value) => {
         const updatedData = deepClone(data);
@@ -146,6 +148,13 @@ const MatchManagement = () => {
             round.matchrounds[tableIndex].matches[matchIndex][field] = value;
             setData(updatedData);
         }
+    };
+    const addTime = (time, minutesToAdd) => {
+        let [hours, minutes] = time?.split(':').map(Number);
+        minutes += minutesToAdd;
+        hours += Math.floor(minutes / 60);
+        minutes %= 60;
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
     };
 
     const prepareDataForSave = () => {
@@ -186,7 +195,7 @@ const MatchManagement = () => {
                             startDate: match.date ? new Date(match.date).toISOString() : new Date(startDate).toISOString(),
                             locationId: match.locationId || 0,
                             timeIn: convertTimeToTimeSpan(match.time || startTime),
-                            timeOut: convertTimeToTimeSpan(addTime(match.time || startTime, matchDuration))
+                            timeOut: convertTimeToTimeSpan(addTime(match?.time || startTime, matchDuration))
                         });
                     });
                 });
