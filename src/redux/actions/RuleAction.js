@@ -1,4 +1,4 @@
-import api from "../../config";
+import api from "/src/config";
 import { IMPORT_RULE_FAIL, IMPORT_RULE_REQUEST, IMPORT_RULE_SUCCESS } from "../constants/RuleConstant";
 
 export const addRuleCompetition = (competitionId, file) => async (dispatch) => {

@@ -1,7 +1,7 @@
 import jwtDecode from "jwt-decode";
 import { GET_ACCOUNTID_FAIL,GET_ACCOUNTID_REQUEST,GET_ACCOUNTID_SUCCESS,GET_ACCOUNTID_RESET, CHANGE_INFOR_REQUEST,CHANGE_INFOR_SUCCESS,CHANGE_INFOR_FAIL } from "../constants/AccountConstant";
-import TokenService from "../../config/tokenservice";
-import api from "../../config";
+import TokenService from "/src/config/tokenservice";
+import api from "/src/config";
 
 // api Infor AccountID
 export const InforAccountID = () =>async(dispatch) =>{

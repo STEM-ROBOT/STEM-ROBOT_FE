@@ -70,7 +70,10 @@
   display: flex;
   align-items: center;
 }
-
+.tooltip {
+  color: #bac7da;
+  font-size: 17px;
+}
 /* Tooltip Styles */
 .tooltip.grid {
   position: relative;

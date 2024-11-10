@@ -27,12 +27,12 @@ export const refereeMain_page = [
     path: "competition-schedule",
     element: <RefereeMain />,
   },
-  { path: "competition-schedule/:competitionId/*", element: <DashboardRefereeMain /> },
+  { path: "competition-schedule/:referee_competition_Id/*", element: <DashboardRefereeMain /> },
 ];
 export const refereeMain_dashboard = [
   {
     path: "",
-    element: <Navigate to="rule-competition" />,
+    element: <Navigate to="schedule" />,
   },
   { path: "schedule", element: <ScheduleRefereeMain /> },
   { path: "rule-competition", element: <RuleRefereeMain /> },

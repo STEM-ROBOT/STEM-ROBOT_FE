@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ScoreRefereeMain.css";
+import api from "/src/config";
 const scoreCompetition = [
   {
     type: "Điểm Cộng",
@@ -74,20 +75,31 @@ const scoreCompetition = [
   },
 ];
 const ScoreRefereeMain = () => {
+  const storedCompetitionId = sessionStorage.getItem("competitionId");
   const [listViewMode, setListViewMode] = useState([]);
   const [viewMode, setViewMode] = useState();
   const [scoreApi, setScoreApi] = useState([]);
   const [scoreData, setScoreData] = useState([]);
+
   useEffect(() => {
-    if (listViewMode?.length < 1) {
-      setScoreApi(scoreCompetition);
-      setViewMode(scoreCompetition[0].type);
-      setScoreData(scoreCompetition[0]);
-      for (let i = 0; i < scoreCompetition.length; i++) {
-        listViewMode.push({ mode: scoreCompetition[i].type });
-      }
-    }
-  }, [scoreApi]);
+    api
+      .get(
+        `/api/competitions/score-competition?competitionID=${22}`
+      )
+      .then((response) => {
+        const scoreCompetition= response.data.data.data.scoreCompetition
+        console.log(scoreCompetition);
+
+        if (listViewMode?.length < 1) {
+          setScoreApi(scoreCompetition);
+          setViewMode(scoreCompetition[0].type);
+          setScoreData(scoreCompetition[0]);
+          for (let i = 0; i < scoreCompetition.length; i++) {
+            listViewMode.push({ mode: scoreCompetition[i].type });
+          }
+        }
+      });
+  }, []);
   const changeViewMode = (key) => {
     for (let i = 0; i < scoreApi.length; i++) {
       if (scoreApi[i].type === key) {
@@ -138,16 +150,16 @@ const ScoreRefereeMain = () => {
                       <div className="score_item_point">
                         <div
                           className={
-                            scoreData?.type == "Điểm Cộng"
+                            scoreData?.type.toLowerCase() == "điểm cộng"
                               ? "score_item_point_item plus"
-                              : scoreData?.type == "Điểm Trừ"
+                              : scoreData?.type.toLowerCase() == "điểm trừ"
                               ? "score_item_point_item minus"
                               : "score_item_point_item "
                           }
                         >
-                          {scoreData?.type == "Điểm Cộng"
+                          {scoreData?.type.toLowerCase() == "điểm cộng"
                             ? `+${score.point}`
-                            : scoreData?.type == "Điểm Trừ"
+                            : scoreData?.type.toLowerCase() == "điểm trừ"
                             ? `-${score.point}`
                             : "Xử Thua Trực Tiếp"}
                         </div>

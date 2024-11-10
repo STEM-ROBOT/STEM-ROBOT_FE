@@ -31,7 +31,7 @@
 .view_toggle {
   margin: 0 8% 20px 8%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 .btn_option {
   width: auto;
