@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./CreateTournamentFormat.css";
 import { IoAlertCircle } from "react-icons/io5";
 import { GiFinishLine } from "react-icons/gi";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addCompetitionFormat } from "../../../../redux/actions/CompetitionAction";
 const formats = [
   {
@@ -92,26 +92,31 @@ const CreateTournamentFormat = ({ }) => {
   const [errorDraw, setErrorDraw] = useState("");
   const [errorLose, setErrorLose] = useState("");
   const [startTimeError, setStartTimeError] = useState("");
+  const isAddSuccess = useSelector((state) => state.addCompetitionFormat?.success);
+
+  useEffect(()=>{
+    dispatch(getActive())
+  },[isAddSuccess])
 
   const handleTeamNumberChange = (e) => {
     const input = e.target.value;
 
-    // Kiểm tra xem input có phải là số không, nếu đúng thì cập nhật state
+ 
     if (/^\d*$/.test(input)) {
-      const teamCount = parseInt(input, 10); // Chuyển input sang số nguyên
+      const teamCount = parseInt(input, 10);
       setTeamNumber(teamCount);
 
-      // Kiểm tra nếu số đội >= 6 và chia cho 3 để tính số bảng hợp lệ
+   
       if (teamCount >= 6) {
-        const maxGroups = Math.floor(teamCount / 3); // Số bảng tối đa, mỗi bảng ít nhất 3 đội
+        const maxGroups = Math.floor(teamCount / 3); 
 
-        // Nếu số bảng đấu lớn hơn 1 thì tạo danh sách các tùy chọn
+       
         const options = Array.from({ length: maxGroups - 1 }, (_, i) => i + 2);
         console.log(options);
 
         setGroupOptions(options);
       } else {
-        setGroupOptions([]); // Không cho phép chia bảng nếu dưới 6 đội
+        setGroupOptions([]); 
       }
     }
   };
@@ -202,24 +207,21 @@ const CreateTournamentFormat = ({ }) => {
   //   }
   // };
   const handleSubmit = () => {
-    // Check if startTime is valid
     if (!startTime) {
-        setStartTimeError("Please select a valid start time.");
+        setStartTimeError("Vui lòng chọn ngày bắt đầu hợp lệ.");
         return;
     }
 
     const registerTime = new Date().toISOString();
     const selectedStartTime = new Date(startTime);
 
-    // Validate that startTime is after registerTime
     if (selectedStartTime <= new Date()) {
-        setStartTimeError("Ngày bắt đầu (startTime) phải sau ngày đăng ký (registerTime).");
+        setStartTimeError("Ngày bắt đầu phải sau ngày đăng ký.");
         return;
     } else {
         setStartTimeError("");
     }
 
-    // Prepare data only if startTime is valid
     const data = {
         formatId: formatCompetition.id,
         registerTime: registerTime,
@@ -233,9 +235,31 @@ const CreateTournamentFormat = ({ }) => {
         loseScore: losePoints || 0,
         tieScore: drawPoints || 0
     };
-    dispatch(addCompetitionFormat(competitionId,data))
-   
+
+    dispatch(addCompetitionFormat(competitionId, data))
+      .then(() => {
+        // Reset các state của input về giá trị mặc định sau khi thành công
+        setFormatCompetition(formats[0]);
+        setTeamNumber(8);
+        setMemberNumber(1);
+        setDayRegisNumber(2);
+        setStartTime("");
+        setWinPoints("");
+        setDrawPoints("");
+        setLosePoints("");
+        setErrorWin("");
+        setErrorDraw("");
+        setErrorLose("");
+        setStartTimeError("");
+        setGroupOptions([]);
+        setShowSetupTable(false);
+        setIsExpanded(false);
+      })
+      .catch(error => {
+        console.error("Lỗi khi thêm hình thức thi đấu:", error);
+      });
 };
+
 
   return (
     <div className="container_create_format_tournament">

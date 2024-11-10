@@ -3,6 +3,7 @@ import './RefereeAssignment.css';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addRefereeSchedule, getRefereeSchedule } from '../../../../redux/actions/RefereeAction';
+import { getActive } from '../../../../redux/actions/FormatAction';
 
 const RefereeAssignment = () => {
     const { competitionId } = useParams();
@@ -12,10 +13,11 @@ const RefereeAssignment = () => {
 
     const [data, setData] = useState();
     const [numMatchReferees, setNumMatchReferees] = useState(1);
-
+    const isAddSuccess = useSelector((state) => state. addScheduleReferee?.success);
     useEffect(() => {
         dispatch(getRefereeSchedule(competitionId));
-    }, [competitionId, dispatch]);
+        dispatch(getActive(competitionId))
+    }, [competitionId, dispatch,isAddSuccess]);
 
     useEffect(() => {
         if (refereeData?.rounds && refereeData.rounds[0]?.matches) {

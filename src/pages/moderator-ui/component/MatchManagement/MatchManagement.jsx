@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTimeAssignMatch, getTeamAssignMatch } from '../../../../redux/actions/TeamAction';
 import { toast } from 'react-toastify';
+import { getActive } from '../../../../redux/actions/FormatAction';
 
 const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
 
@@ -19,10 +20,14 @@ const MatchManagement = () => {
     const [fieldCount, setFiledCount] = useState(1);
     const [startDate, setStartDate] = useState();
     const [isAssigned, setIsAssigned] = useState(false);
+    const isAddSuccess = useSelector((state) => state.addTimeAssignMatch?.success);
+
+
 
     useEffect(() => {
         dispatch(getTeamAssignMatch(competitionId));
-    }, [dispatch, competitionId]);
+        dispatch(getActive(competitionId))
+    }, [dispatch, competitionId,isAddSuccess]);
 
     useEffect(() => {
         if (dataTeamMatch) {

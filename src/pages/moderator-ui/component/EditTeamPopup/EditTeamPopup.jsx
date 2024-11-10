@@ -121,12 +121,22 @@ const EditTeamPopup = ({ team, competitionId, closePopup, setLoadApi }) => {
     // Định dạng lại mảng selectedContestant thành mảng đối tượng với thuộc tính contestantId
     const formattedContestants = selectedContestant.map((id) => ({
       contestantId: id,
+      teamId:team.id,
     }));
 
+    const dataToSave = {
+      name: teamDetails.name,
+      phoneNumber: teamDetails.phoneNumber,
+      contactInfo:teamDetails.contactInfo,
+      image:"https://t3.ftcdn.net/jpg/07/68/91/92/360_F_768919266_4OfllVFjsr99DPeFCATa0jrTOjKnUshK.jpg",
+      contestants : formattedContestants
+    } 
+    console.log(dataToSave)
+
     api
-      .post(
-        `/api/contestants/contestant-to-team/${team.id}`,
-        formattedContestants,
+      .put(
+        `api/teams/${team.id}`,
+        dataToSave,
         {
           headers: {
             "Content-Type": "application/json",
@@ -140,22 +150,6 @@ const EditTeamPopup = ({ team, competitionId, closePopup, setLoadApi }) => {
       })
       .catch((error) => {
         toast.error("Có lỗi xảy ra khi cập nhật thí sinh vào đội");
-        console.error("Error updating team members:", error.message);
-      });
-
-    api
-      .put(`/api/teams/${team.id}`, teamDetails, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        toast.success("Đội đã được cập nhật thành công");
-        setLoadApi(true);
-        closePopup();
-      })
-      .catch((error) => {
-        toast.error("Có lỗi xảy ra khi cập nhật đội");
         console.error("Error updating team members:", error.message);
       });
   };
