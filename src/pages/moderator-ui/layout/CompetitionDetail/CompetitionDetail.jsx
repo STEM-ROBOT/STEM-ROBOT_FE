@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Route,
   Routes,
@@ -11,7 +11,9 @@ import Footer from "../../../system-ui/component/Footer/Footer";
 import { competition_detail_router } from "../../../../router/ModeratorRouter";
 import { IoLogoGameControllerB } from "react-icons/io";
 import "./CompetitionDetail.css";
-const tabs = [
+import api from "/src/config";
+
+const allTabs = [
   {
     name: "ĐĂNG KÝ THI ĐẤU",
     path: "register-time",
@@ -39,6 +41,8 @@ const tabs = [
 ];
 
 const CompetitionDetail = () => {
+  const [status, setStatus] = useState(null);
+  const [formatId, setFormatId] = useState(null);
   const path = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,12 +50,21 @@ const CompetitionDetail = () => {
   const name = location.state?.names || localStorage.getItem("competitionName");
   const endDate =
     location.state?.endDate || localStorage.getItem("competitionEndDate");
-  const now = new Date();
-  const end = new Date(endDate);
-  console.log(path, location);
 
   useEffect(() => {
-  
+    api
+      .get(
+        `/api/competitions/config-register?competitionID=${path.competitionId}`
+      )
+      .then((response) => {
+        const { status, formatId } = response.data;
+        setStatus(status);
+        setFormatId(formatId);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     const targetPosition = 245;
     const startPosition = window.scrollY;
     const distance = targetPosition - startPosition;
@@ -71,21 +84,32 @@ const CompetitionDetail = () => {
     };
 
     requestAnimationFrame(step);
-  }, []);
+  }, [path.competitionId]);
 
   const renderRoutes = (routes) =>
     routes.map((route, index) => {
       return <Route key={index} path={route.path} element={route.element} />;
     });
+
   const handleTabClick = (tab) => {
-    localStorage.setItem("competitionRgEndDate", endDate),
-      navigate(
-        `${tab.path}`,
-        {
-          state: { endDate },
-        }
-      );
+    localStorage.setItem("competitionRgEndDate", endDate);
+    navigate(`${tab.path}`, {
+      state: { endDate },
+    });
   };
+
+  // Filter tabs based on status and formatId
+  const filteredTabs = allTabs.filter((tab) => {
+    if (tab.path === "register-time" && status === "Private") return false;
+    if (tab.path === "match-schedule" && formatId !== 1) return false;
+    if (
+      (tab.path === "stage-group" || tab.path === "knockout") &&
+      formatId !== 2
+    )
+      return false;
+    return true;
+  });
+
   return (
     <div className="competition_container">
       <div className="introduction_header">
@@ -94,7 +118,7 @@ const CompetitionDetail = () => {
       </div>
       <div className="competition_detail_bar">
         <div className="competition_detail_tab">
-          {tabs.map((tab, i) => (
+          {filteredTabs.map((tab, i) => (
             <div
               key={i}
               className={`competition_tab_item ${

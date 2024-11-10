@@ -3,7 +3,8 @@ import "./ScheduleRefereeMain.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import RenderSchedule from "../../component/RenderSchedule/RenderSchedule";
 import ConfirmPopupReferee from "../../component/ConfirmPopupReferee/ConfirmPopupReferee";
-import api from "../../../../config";
+import api from "/src/config";
+import { useParams } from "react-router-dom";
 
 const scheduleData = {
   refereeId: "123",
@@ -99,6 +100,7 @@ const scheduleData = {
 };
 
 const ScheduleRefereeMain = () => {
+  const path= useParams()
   const [scheduleData, setScheduleData] = useState();
   const [weeks, setWeeks] = useState([]);
   const [currentWeekIndex, setCurrentWeekIndex] = useState(0);
@@ -117,7 +119,7 @@ const ScheduleRefereeMain = () => {
   };
   useEffect(() => {
     api
-      .get("/api/refereecompetition/list-referee-competition?competitionID=1")
+      .get(`/api/refereecompetition/schedules-referee-competition?competitionID=${path.referee_competition_Id}`)
       .then((response) => {
         const data = response.data.data;
         // Transform data for hourStartInDay, hourEndInDay, and timePlayMatch

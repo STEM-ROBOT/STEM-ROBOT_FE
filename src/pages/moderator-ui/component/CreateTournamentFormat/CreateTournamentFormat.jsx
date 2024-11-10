@@ -5,6 +5,7 @@ import { GiFinishLine } from "react-icons/gi";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addCompetitionFormat } from "../../../../redux/actions/CompetitionAction";
+import { getActive } from "../../../../redux/actions/FormatAction";
 const formats = [
   {
     id: 1,

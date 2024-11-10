@@ -1,39 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoClose, IoSearch } from "react-icons/io5";
 import "./CompetitionPopup.css";
 import { TbLayoutGridAdd } from "react-icons/tb";
-const games = [
-  {
-    id: 1,
-    name: "AOE",
-    image:
-      "https://image-cdn.essentiallysports.com/wp-content/uploads/imago0241552301h.jpg?width=600",
-  },
-  {
-    id: 2,
-    name: "BattleBots",
-    image:
-      "https://image-cdn.essentiallysports.com/wp-content/uploads/imago0241552301h.jpg?width=600",
-  },
-  {
-    id: 3,
-    name: "Bi đá trên băng",
-    image:
-      "https://image-cdn.essentiallysports.com/wp-content/uploads/imago0241552301h.jpg?width=600",
-  },
-  {
-    id: 4,
-    name: "Bida",
-    image:
-      "https://image-cdn.essentiallysports.com/wp-content/uploads/imago0241552301h.jpg?width=600",
-  },
-  {
-    id: 5,
-    name: "Bowling",
-    image:
-      "https://image-cdn.essentiallysports.com/wp-content/uploads/imago0241552301h.jpg?width=600",
-  },
-];
+import api from "../../../../config";
+import { moderator_create_tournament_competition } from "../../api/ApiFlowCreate/ApiFlowCreate";
+
 const CompetitionPopup = ({
   setShowCompetition,
   competitionList,
@@ -42,6 +13,14 @@ const CompetitionPopup = ({
 }) => {
   const [selectedCompetitions, setSelectedCompetitions] =
     useState(competitionList);
+  const [games, setGame] = useState();
+  useEffect(() => {
+    api.get(moderator_create_tournament_competition).then((response) => {
+      console.log(response.data);
+
+      setGame(response.data);
+    });
+  }, []);
   const CloseCompetitionPopup = () => {
     setShowCompetition(false);
   };
@@ -54,7 +33,6 @@ const CompetitionPopup = ({
       setSelectedCompetitions(
         selectedCompetitions.filter((selected) => selected.id !== game.id)
       );
-
     } else {
       setSelectedCompetitions([...selectedCompetitions, game]);
       setCompetitionError("");
@@ -65,7 +43,7 @@ const CompetitionPopup = ({
   };
   const ConfirmCompetition = () => {
     setCompetitionList(selectedCompetitions);
-   
+
     setShowCompetition(false);
   };
   return (
@@ -81,7 +59,7 @@ const CompetitionPopup = ({
           <div className="search_competition_container">
             <input
               type="text"
-              placeholder="Tên giải đấu"
+              placeholder="Tên Nội Dung"
               className="search_competition_input"
             />
             <div className="btn_search_competition">
@@ -91,7 +69,7 @@ const CompetitionPopup = ({
         </div>
         <div className="competition_layout">
           <div className="competition_select_option">
-            {games.map((game) => (
+            {games?.map((game) => (
               <div
                 key={game.id}
                 className="competition_choice"

@@ -28,26 +28,26 @@ const DetailBar = ({ league }) => {
         <div className="bar_content">
           <div className="bar_content_img">
             <img
-              src={league.image}
+              src={league?.image}
               className="bar_img"
             />
           </div>
           <div className="bar_content_info">
             <div className="bar_title">
-              <span>{league.name}</span>
+              <span>{league?.name}</span>
             </div>
             <div className="bar_detail">
-              <span>{league.location}</span>
+              <span>{league?.location}</span>
             </div>
             <div className="bar_stats">
               <div className="tooltip">
-                <span>👥 {league.contestant}</span>
+                <span>👥 {league?.contestant}</span>
                 <div className="tooltip_text"> Số thí sinh trong giải</div>
               </div>
 
               {/* Tooltip for views */}
               <div className="tooltip">
-                <span>👁️ {league.views}</span>
+                <span>👁️ {league?.views}</span>
                 <div className="tooltip_text">Lượt xem</div>
               </div>
             </div>
@@ -57,7 +57,7 @@ const DetailBar = ({ league }) => {
       <div className="tab_navigation">
         {tabs.map((tab, i) => {
           // Kiểm tra điều kiện để hiển thị tab "ĐĂNG KÝ THÍ SINH"
-          if (tab.name === "ĐĂNG KÝ THÍ SINH" && league.status !== "public") {
+          if (tab.name === "ĐĂNG KÝ THÍ SINH" && league?.status !== "public") {
             return null; // Không render tab nếu điều kiện không phù hợp
           }
 
