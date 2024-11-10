@@ -3,7 +3,9 @@ import "./CreateTournamentInfo.css";
 import logo from "/src/assets/images/logo.png";
 const CreateTournamentInfo = ({
   avatarInput,
+  avatarInputView,
   setAvatarInput,
+  setAvatarInputView,
   nameTournament,
   setNameTournament,
   phone,
@@ -28,11 +30,11 @@ const CreateTournamentInfo = ({
     // setImageIndex(e.target.files[0]);
 
     const file = e.target.files[0];
+    setAvatarInput(file);
     if (file) {
       const reader = new FileReader();
-
       reader.onloadend = () => {
-        setAvatarInput(reader.result);
+        setAvatarInputView(reader.result);
         console.log(e.target.files[0]);
       };
       reader.readAsDataURL(file);
@@ -62,12 +64,11 @@ const CreateTournamentInfo = ({
 
   return (
     <div className="container_create_info_tournament">
-   
       <div className="info_create">
         <div className="avatar_tournament ">
           <label>
             <div className="label_avatar">Hình giải đấu</div>
-            <img className="avatar_view" src={avatarInput} alt="" />
+            <img className="avatar_view" src={avatarInputView} alt="" />
             <input
               type="file"
               style={{ display: "none" }}
