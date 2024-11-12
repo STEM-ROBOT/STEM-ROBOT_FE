@@ -1,7 +1,27 @@
 .detail_bar {
   width: 100%;
   padding: 20px 0 0 0;
-  background-color: #050505c0;
+  background: linear-gradient(
+      130deg,
+      transparent 0% 87%,
+      rgba(230, 237, 247, 0.6) 87.1% 100%
+    ),
+    linear-gradient(
+      130deg,
+      transparent 0% 75%,
+      rgba(255, 255, 255, 0.4) 75.1% 100%
+    ),
+    linear-gradient(
+      90deg,
+      transparent 0% 35%,
+      rgba(255, 255, 255, 0.3) 65.1% 100%
+    ),
+    linear-gradient(
+      130deg,
+      transparent 0% 60%,
+      rgba(255, 255, 255, 0.2) 60.1% 100%
+    ),
+    linear-gradient(90deg, #024a70 0%, #1f6c96 100%);
 }
 .detail_bar_content {
   margin: 0 8% 0 8%;
@@ -22,25 +42,23 @@
   flex: 1;
   color: #fff;
 }
-.bar_title{
+.bar_title {
   text-align: start;
   margin-bottom: 5px;
 }
-.bar_title span{
+.bar_title span {
   font-weight: 600;
   font-size: 20px;
-  
-} 
-.bar_detail span{
+}
+.bar_detail span {
   font-size: 17px;
   color: #9ca4a4;
   font-weight: 500;
-
 }
-.bar_detail{
+.bar_detail {
   margin-bottom: 20px;
 }
-.bar_stats{
+.bar_stats {
   font-weight: 500;
   width: 25%;
   display: flex;

@@ -5,102 +5,8 @@ import RenderSchedule from "../../component/RenderSchedule/RenderSchedule";
 import ConfirmPopupReferee from "../../component/ConfirmPopupReferee/ConfirmPopupReferee";
 import api from "/src/config";
 import { useParams } from "react-router-dom";
-
-const scheduleData = {
-  refereeId: "123",
-  refereeEmail: "lethanhnhat@gmail.com",
-  dateStartCompetition: "2024-10-20",
-  dateEndCompetition: "2024-11-10",
-  hourStartInDay: "8",
-  hourEndInDay: "18",
-  timePlayMatch: "165",
-  scheduleReferee: [
-    {
-      scheduleId: "1",
-      startTime: "2024-10-27T09:10:00",
-      location: "Sân 1",
-      matchId: "1",
-      teamMatch: [
-        {
-          teamId: "1",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "home",
-        },
-        {
-          teamId: "2",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "away",
-        },
-      ],
-    },
-    {
-      scheduleId: "2",
-      startTime: "2024-10-27T15:00:00",
-      location: "Sân 1",
-      matchId: "2",
-      teamMatch: [
-        {
-          teamId: "3",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "home",
-        },
-        {
-          teamId: "4",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "away",
-        },
-      ],
-    },
-    {
-      scheduleId: "3",
-      startTime: "2024-10-28T13:00:00",
-      location: "Sân 1",
-      matchId: "2",
-      teamMatch: [
-        {
-          teamId: "3",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "home",
-        },
-        {
-          teamId: "4",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "away",
-        },
-      ],
-    },
-    {
-      scheduleId: "4",
-      startTime: "2024-10-29T10:00:00",
-      location: "Sân 1",
-      matchId: "2",
-      teamMatch: [
-        {
-          teamId: "3",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "home",
-        },
-        {
-          teamId: "4",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "away",
-        },
-      ],
-    },
-    // Thêm dữ liệu lịch trình
-  ],
-};
-
 const ScheduleRefereeMain = () => {
-  const path= useParams()
+  const path = useParams();
   const [scheduleData, setScheduleData] = useState();
   const [weeks, setWeeks] = useState([]);
   const [currentWeekIndex, setCurrentWeekIndex] = useState(0);
@@ -119,7 +25,9 @@ const ScheduleRefereeMain = () => {
   };
   useEffect(() => {
     api
-      .get(`/api/refereecompetition/schedules-referee-competition?competitionID=${path.referee_competition_Id}`)
+      .get(
+        `/api/refereecompetition/schedules-referee-competition?competitionID=${path.referee_competition_Id}`
+      )
       .then((response) => {
         const data = response.data.data;
         // Transform data for hourStartInDay, hourEndInDay, and timePlayMatch
@@ -127,11 +35,10 @@ const ScheduleRefereeMain = () => {
           ...data,
           // Convert hour to HH:MM:SS
           timePlayMatch: convertTimeToMinutes(data.timePlayMatch),
-          hourStartInDay: extractHour(data.timePlayMatch),// Convert minutes to HH:MM:SS
+          hourStartInDay: extractHour(data.timePlayMatch), // Convert minutes to HH:MM:SS
           hourEndInDay: extractHour(data.hourEndInDay),
-          dateStartCompetition:extractDate(data.dateStartCompetition),
-          dateEndCompetition:extractDate(data.dateEndCompetition)
-
+          dateStartCompetition: extractDate(data.dateStartCompetition),
+          dateEndCompetition: extractDate(data.dateEndCompetition),
         };
         console.log(transformedData);
         setScheduleData(transformedData);
@@ -141,9 +48,7 @@ const ScheduleRefereeMain = () => {
       });
   }, []);
 
-
   useEffect(() => {
-
     if (scheduleData) {
       const splitIntoWeeks = (start, end) => {
         const startDate = new Date(start);

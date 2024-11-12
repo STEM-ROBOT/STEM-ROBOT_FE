@@ -2,14 +2,16 @@ import React from "react";
 import "./RenderSchedule.css";
 import { FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 const RenderSchedule = ({ week, scheduleData, setMatchView, setShowPopup }) => {
+  const navigate = useNavigate();
   const weekStart = week.start;
   const weekEnd = week.end;
   const scheduleForWeek = scheduleData.scheduleReferee.filter((schedule) => {
     const scheduleDate = new Date(schedule.startTime);
     console.log(scheduleDate);
-    
+
     return scheduleDate >= weekStart && scheduleDate <= weekEnd;
   });
 

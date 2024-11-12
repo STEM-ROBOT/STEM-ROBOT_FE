@@ -84,7 +84,7 @@ const ScoreRefereeMain = () => {
   useEffect(() => {
     api
       .get(
-        `/api/competitions/score-competition?competitionID=${22}`
+        `/api/competitions/score-competition?competitionID=${storedCompetitionId}`
       )
       .then((response) => {
         const scoreCompetition= response.data.data.data.scoreCompetition
