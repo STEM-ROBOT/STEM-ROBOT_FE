@@ -5,12 +5,15 @@ import { BsFillKeyFill, BsShieldFillCheck } from "react-icons/bs";
 import { GoPasskeyFill } from "react-icons/go";
 import { SiSimplelogin } from "react-icons/si";
 import api from "/src/config";
+import { useNavigate } from "react-router-dom";
+
 const ConfirmPopupReferee = ({
   match_view,
   setShowPopup,
   email,
   refereeId,
 }) => {
+  const navigate = useNavigate();
   const [popupActive, setActive] = useState(false);
   const [codeTimeout, setTimeouts] = useState(false);
   const [textView, setTextView] = useState(0);
@@ -72,6 +75,9 @@ const ConfirmPopupReferee = ({
       .then((response) => {
         setCodeInput("");
         setStatusCheck(response.data.message);
+        if (response.data.message.toLowerCase() == "success") {
+          navigate(`/referee-main/main-referee-match/${match_view.id}`);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -80,7 +86,7 @@ const ConfirmPopupReferee = ({
   const handleCodeInputChange = (e) => {
     if (codeTimeout) {
       if (countInput > 0) {
-        setCodeInput(e.target.value);      
+        setCodeInput(e.target.value);
       } else {
         setActive(false);
         const timer = setTimeout(() => {

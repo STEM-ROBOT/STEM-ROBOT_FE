@@ -7,6 +7,8 @@ import { MdNotificationsActive } from "react-icons/md";
 import TokenService from "../../../../config/tokenservice";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../../redux/actions/AuthenAction";
+import connectHub from "../../../../config/connectHub";
+import api from "../../../../config";
 // const user = {
 //   accountId: "2",
 //   moderatorName: "Hoàng Dương",
@@ -14,17 +16,60 @@ import { logout } from "../../../../redux/actions/AuthenAction";
 //     "https://static-images.vnncdn.net/files/publish/2023/5/5/mmw-4-956.jpg",
 // };
 const Header = () => {
-  const [isVisible, setIsVisible] = useState(false); 
+  const [isVisible, setIsVisible] = useState(false);
   const [tournamentDropdownOpen, setTournamentDropdownOpen] = useState(false);
   const [auInfo, setAuInfo] = useState(TokenService.getUser());
   const [pagesDropdownOpen, setPagesDropdownOpen] = useState(false);
   const [signIn, setSignIn] = useState(false);
   const [signUp, setSignUp] = useState(false);
   const [shake, setShake] = useState(true);
+  const [loadApiConnectClient, setLoadApiConnectClient] = useState(false);
   const tournamentRef = useRef(null);
+  const [notificationData, setNotificationData] = useState([]);
+  const [numberNotifications, setNumberNotifications] = useState(0);
   const pagesRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [userId, setUserId] = useState(null);
+  const fetchedUserId = TokenService.getUserId();
+  const hubConnectionRef = useRef(null);
+  useEffect(() => {
+    console.log(fetchedUserId);
+
+    const handleData = (data) => {
+      console.log("Data received in component:", data);
+      setNumberNotifications(data.length);
+      setTeamData(data);
+    };
+    const connectHubClient = () => {
+      connectHub({
+        client: `notification/${fetchedUserId}`,
+        onDataReceived: handleData,
+      }).then((hubConnection) => {
+        hubConnectionRef.current = hubConnection; // Lưu hubConnection vào useRef
+      });
+    };
+    const connectClient = () => {
+      api
+        .get("/api/notification/notification")
+        .then((response) => {
+          if (response.data == "timeout") {
+            setLoadApiConnectClient(true);
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    };
+    if (loadApiConnectClient) {
+      setUserId(fetchedUserId);
+      connectHubClient();
+      connectClient();
+    }
+    if (fetchedUserId && fetchedUserId !== userId) {
+      setLoadApiConnectClient(true);
+    }
+  }, [fetchedUserId, loadApiConnectClient]);
 
   const toggleTournamentDropdown = () => {
     setTournamentDropdownOpen(!tournamentDropdownOpen);
@@ -35,7 +80,7 @@ const Header = () => {
     setPagesDropdownOpen(!pagesDropdownOpen);
     setTournamentDropdownOpen(false);
   };
-  const numberNotifications = 2;
+
   useEffect(() => {
     if (numberNotifications > 0) {
       setShake(true);
@@ -56,7 +101,7 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [numberNotifications]);
-`gv  bbb                                      `
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > window.innerHeight * 0.01) {
@@ -86,14 +131,18 @@ const Header = () => {
     }
   };
   const handleLogout = () => {
+    if (hubConnectionRef.current) {
+      hubConnectionRef.current.stop();
+      setLoadApiConnectClient(false);
+    }
     dispatch(logout(navigate));
     setAuInfo(null);
     setPagesDropdownOpen(false);
   };
   useEffect(() => {
-    // Cập nhật thông tin người dùng sau khi đăng nhập
     setAuInfo(TokenService.getUser());
   }, [signIn]);
+
   return (
     <div className={`header-outer ${isVisible ? "header-visible" : ""}`}>
       <div className="header-container">
