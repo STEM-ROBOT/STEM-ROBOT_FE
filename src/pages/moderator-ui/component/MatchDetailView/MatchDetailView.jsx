@@ -4,101 +4,94 @@ import { IoClose, IoLocationOutline } from "react-icons/io5";
 import { MdAccessTime } from "react-icons/md";
 import { GrMapLocation } from "react-icons/gr";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
-const scoreTeamDetail = [
-  {
-    haftMatch: "1",
-    activity: [
-      {
-        teamName: "Đội #7",
-        teamType: "home",
-        type: "Điểm Trừ",
-        description: "Robot bị bẫy búa đập trúng",
-        point: 1,
-        timeScore: "2",
-      },
-      {
-        teamName: "Đội #8",
-        teamType: "away",
-        type: "Điểm Cộng",
-        description:
-          "Tấn công có chủ đích làm đối thủ văng ra khoảng cách lớn hơn 0,5 m.",
-        point: 1,
-        timeScore: "7",
-      },
-      {
-        teamName: "Đội #8",
-        teamType: "away",
-        type: "Điểm Cộng",
-        description: "làm đối thủ lật ngửa",
-        point: 2,
-        timeScore: "9",
-      },
-      {
-        teamName: "Đội #8",
-        teamType: "away",
-        type: "Điểm Cộng",
-        description: "Làm đối thủ văng ra khỏi khu vực thi đấu",
-        point: 2,
-        timeScore: "15",
-      },
-      {
-        teamName: "Đội #7",
-        teamType: "home",
-        type: "Điểm Cộng",
-        description: "Làm đối thủ văng ra khỏi khu vực thi đấu",
-        point: 2,
-        timeScore: "19",
-      },
-    ],
-  },
-  {
-    haftMatch: "2",
-    activity: [
-      {
-        teamName: "Đội #7",
-        teamType: "home",
-        type: "Điểm Trừ",
-        description: "Robot bị bẫy búa đập trúng",
-        point: 1,
-        timeScore: "30",
-      },
-      {
-        teamName: "Đội #8",
-        teamType: "away",
-        type: "Điểm Cộng",
-        description:
-          "Tấn công có chủ đích làm đối thủ văng ra khoảng cách lớn hơn 0,5 m.",
-        point: 1,
-        timeScore: "33",
-      },
-      {
-        teamName: "Đội #8",
-        teamType: "away",
-        type: "Điểm Cộng",
-        description: "làm đối thủ lật ngửa",
-        point: 2,
-        timeScore: "34",
-      },
-      {
-        teamName: "Đội #8",
-        teamType: "away",
-        type: "Điểm Cộng",
-        description: "Làm đối thủ văng ra khỏi khu vực thi đấu",
-        point: 2,
-        timeScore: "40",
-      },
-    ],
-  },
-];
+import connectHub from "../../../../config/connectHub";
+import api from "../../../../config";
+
 const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
   const [popupActive, setActive] = useState(false);
   const [scoreTeamDetailApi, setScoreTeamDetailApi] = useState([]);
   const [showScrollArrow, setShowScrollArrow] = useState("down");
+  const previousDataRef = useRef(null);
   const containerRef = useRef(null);
+  const hubConnectionRef = useRef(null);
+  const [loadApiConnectClient, setLoadApiConnectClient] = useState(true);
+  const [timeCountDown, setTimeCountDown] = useState(null);
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setScoreTeamDetailApi(scoreTeamDetail);
-    }, 2000);
+    const handleData = (data) => {
+      const dataString = JSON.stringify(data);
+      const previousDataString = JSON.stringify(previousDataRef.current);
+
+      if (dataString !== previousDataString) {
+        console.log(data);
+        setScoreTeamDetailApi(data);
+        previousDataRef.current = data; // Cập nhật dữ liệu cũ để so sánh ở lần sau
+      }
+    };
+
+    const connectHubClient = () => {
+      connectHub({
+        client: `match-deatail/${2158}`,
+        onDataReceived: handleData,
+      }).then((hubConnection) => {
+        hubConnectionRef.current = hubConnection;
+      });
+    };
+
+    const connectClient = () => {
+      const currentDate = new Date().toISOString();
+      setLoadApiConnectClient(false);
+      api
+        .get(
+          `/api/matches/match-detail-action?matchID=${2158}&date=${"2024-11-09T06:50:00"}`
+        )
+        .then((response) => {
+          if (response.data === "timeout") {
+            setLoadApiConnectClient(true);
+            if (hubConnectionRef.current) {
+              hubConnectionRef.current.stop(); // Dừng kết nối nếu timeout
+              hubConnectionRef.current = null; // Xóa tham chiếu
+            }
+          } else if (response.data.length > 0) {
+            console.log(response.data);
+            setScoreTeamDetailApi(response.data);
+            previousDataRef.current = response.data; // Lưu dữ liệu vào biến tham chiếu
+          } else {
+            setTimeCountDown(response.data);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    if (loadApiConnectClient) {
+      connectHubClient();
+      connectClient();
+    }
+
+    return () => {
+      if (hubConnectionRef.current) {
+        hubConnectionRef.current.stop();
+      }
+    };
+  }, [loadApiConnectClient]);
+  useEffect(() => {
+    if (timeCountDown != null) {
+      if (hubConnectionRef.current) {
+        hubConnectionRef.current.stop();
+      }
+    }
+  }, [timeCountDown]);
+  useEffect(() => {
+    if (containerRef.current && scoreTeamDetailApi.length > 0) {
+      containerRef.current.scrollTo({
+        top: containerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [scoreTeamDetailApi]);
+  useEffect(() => {
+    const timer = setTimeout(() => {}, 2000);
     setActive(true);
 
     const container = containerRef.current;
@@ -121,9 +114,19 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
       clearTimeout(timer);
       container.removeEventListener("scroll", handleScroll);
     };
+  }, []);
+  useEffect(() => {
+    if (containerRef.current && scoreTeamDetailApi.length > 0) {
+      containerRef.current.scrollTo({
+        top: containerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [scoreTeamDetailApi]);
-
   const CloseMatchDetail = () => {
+    if (hubConnectionRef.current) {
+      hubConnectionRef.current.stop();
+    }
     setActive(false);
     const timer = setTimeout(() => {
       setShowMatchDetail(false);
@@ -138,6 +141,28 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
       container.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
+
+  function mergeAndSortActivities(activityTeam1, activityTeam2) {
+    // Set teamType as "home" for team1 and "away" for team2
+    const updatedActivityTeam1 = activityTeam1.map((activity) => ({
+      ...activity,
+      teamType: "home",
+    }));
+
+    const updatedActivityTeam2 = activityTeam2.map((activity) => ({
+      ...activity,
+      teamType: "away",
+    }));
+
+    // Merge the updated lists
+    const mergedActivities = [...updatedActivityTeam1, ...updatedActivityTeam2];
+
+    // Sort by timeScore in ascending order
+    mergedActivities.sort((a, b) => {
+      return parseInt(a.timeScore) - parseInt(b.timeScore);
+    });
+    return mergedActivities;
+  }
   return (
     <div
       className={
@@ -190,20 +215,24 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
           </div>
         </div>
         <div className="view_data_match_container" ref={containerRef}>
-          {scoreTeamDetailApi.length < 1 ? (
+          {scoreTeamDetailApi?.length < 1 ? (
             <img
               className="match_score_team_detail_load"
               src="https://i.gifer.com/embedded/download/PG23.gif"
             />
           ) : (
             <div className="match_score_team_detail">
-              {scoreTeamDetailApi.map((scoreTeam, i) => (
+              {scoreTeamDetailApi?.map((haft, i) => (
                 <div key={i} className="haft_match">
                   <div className="info_haft_match">
-                    {`HIỆP ${scoreTeam.haftMatch}`}
+                    {`HIỆP ${haft.haftMatch}`}
                   </div>
-                  {scoreTeam.activity.map((activity, i) => (
+                  {mergeAndSortActivities(
+                    haft.activity.activityTeam1,
+                    haft.activity.activityTeam2
+                  ).map((activity, i) => (
                     <div
+                      key={i}
                       className={
                         activity.teamType == "home"
                           ? "match_score_team_item home"
@@ -224,14 +253,14 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
                             </div>
                             <div
                               className={
-                                activity.type == "Điểm Cộng"
+                                activity.type.toLowerCase() === "điểm cộng"
                                   ? "score_team_point bonus"
                                   : "score_team_point"
                               }
                             >
-                              {activity.type == "Điểm Cộng"
+                              {activity.type.toLowerCase() === "điểm cộng"
                                 ? `+${activity.point}`
-                                : activity.type == "Điểm Trừ"
+                                : activity.type.toLowerCase() === "điểm trừ"
                                 ? `-${activity.point}`
                                 : "Xử Thua Trực Tiếp"}
                             </div>
@@ -245,14 +274,14 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
                           <div className="score_team_item_info_away">
                             <div
                               className={
-                                activity.type == "Điểm Cộng"
+                                activity.type.toLowerCase() === "điểm cộng"
                                   ? "score_team_point bonus"
                                   : "score_team_point"
                               }
                             >
-                              {activity.type == "Điểm Cộng"
+                              {activity.type.toLowerCase() === "điểm cộng"
                                 ? `+${activity.point}`
-                                : activity.type == "Điểm Trừ"
+                                : activity.type.toLowerCase() === "điểm trừ"
                                 ? `-${activity.point}`
                                 : "Xử Thua Trực Tiếp"}
                             </div>
@@ -271,7 +300,7 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
               ))}
             </div>
           )}
-          {showScrollArrow && (
+          {scoreTeamDetailApi?.length > 1 && (
             <div className="scroll-arrow" onClick={handleArrowClick}>
               {showScrollArrow === "down" ? (
                 <FaArrowDown className="icon_scroll_arrow" />

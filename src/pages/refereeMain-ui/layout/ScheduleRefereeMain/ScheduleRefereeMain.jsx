@@ -21,8 +21,28 @@ const ScheduleRefereeMain = () => {
     return timeString.split(":")[0]; // Take only the hour part
   };
   const extractDate = (dateTimeString) => {
-    return dateTimeString.split("T")[0]; // Take only the date part
+    const date = new Date(dateTimeString);
+    date.setDate(date.getDate() - 1); // Subtract one day
+    return date.toISOString().split("T")[0]; // Return the date part in "YYYY-MM-DD" format
   };
+  function ensureMinDateRange(dateStart, dateEnd) {
+    // Convert both dates to Date objects
+    const startDate = new Date(dateStart);
+    let endDate = new Date(dateEnd);
+ 
+    // Calculate the difference in days
+    const diffInTime = endDate - startDate;
+    const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert milliseconds to days
+    
+    // Check if the difference is less than 7 days
+    if (diffInDays < 7) {
+      // Adjust the endDate to be 7 days after the startDate
+      endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 7);
+    }
+  
+    return endDate.toISOString().split("T")[0]; // Return date in "YYYY-MM-DD" format
+  }
   useEffect(() => {
     api
       .get(
@@ -35,10 +55,10 @@ const ScheduleRefereeMain = () => {
           ...data,
           // Convert hour to HH:MM:SS
           timePlayMatch: convertTimeToMinutes(data.timePlayMatch),
-          hourStartInDay: extractHour(data.timePlayMatch), // Convert minutes to HH:MM:SS
+          hourStartInDay: extractHour(data.hourStartInDay),
           hourEndInDay: extractHour(data.hourEndInDay),
           dateStartCompetition: extractDate(data.dateStartCompetition),
-          dateEndCompetition: extractDate(data.dateEndCompetition),
+          dateEndCompetition: ensureMinDateRange(data.dateStartCompetition,data.dateEndCompetition),
         };
         console.log(transformedData);
         setScheduleData(transformedData);
@@ -72,10 +92,11 @@ const ScheduleRefereeMain = () => {
           // Move to next week
           startDate.setDate(startDate.getDate() + 7);
         }
-
+        console.log(weeksArray);
+        
         return weeksArray;
       };
-
+     
       const weeksList = splitIntoWeeks(
         scheduleData.dateStartCompetition,
         scheduleData.dateEndCompetition

@@ -75,7 +75,9 @@ const ConfirmPopupReferee = ({
       .then((response) => {
         setCodeInput("");
         setStatusCheck(response.data.message);
-        if (response.data.message.toLowerCase() == "success") {
+        navigate(`/referee-main/main-referee-match/${match_view.id}`);
+        console.log(response.data.message.toLowerCase());       
+        if (response.data.message.toLowerCase() === "Success ") {
           navigate(`/referee-main/main-referee-match/${match_view.id}`);
         }
       })

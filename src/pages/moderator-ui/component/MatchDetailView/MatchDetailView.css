@@ -109,6 +109,7 @@
 }
 .item_team_logo {
   margin-bottom: 10px;
+  object-fit: cover;
   width: 150px;
   height: 150px;
 }
@@ -181,12 +182,12 @@
   top: -30px;
   scale: 0.7;
   z-index: 1;
-  opacity: 0; 
+  opacity: 0;
   transition: all 0.5s ease;
 }
 
 .match_score_team_item_detail:hover .match_score_description {
-  opacity: 1; 
+  opacity: 1;
   scale: 1;
 }
 .score_team_item_time {

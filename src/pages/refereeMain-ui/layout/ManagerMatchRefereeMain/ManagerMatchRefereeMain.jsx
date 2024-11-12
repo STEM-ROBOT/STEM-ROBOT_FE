@@ -22,8 +22,8 @@ const teamMatchResult = [
 ];
 
 const matchDetail = {
-  timeIn: "12:40:00",
-  timeOut: "13:00:00",
+  timeIn: "21:00:00",
+  timeOut: "21:22:00",
   numberHaft: 3,
   breakTimeHaft: 5,
 };
@@ -576,6 +576,15 @@ const ManagerMatchRefereeMain = () => {
                       ? "Đã công nhận"
                       : "Không công nhận"}
                   </div>
+                  {action.status.toLocaleLowerCase() == "pending" && (
+                    <div className="view_action_haft_btn_layout">
+                      <div className="btn_action_show_view">
+                        <div className="btn_action_show_view_indicator"></div>
+                      </div>
+                      <FaCheckCircle className="btn_action_haft_icon accept" />
+                      <ImCancelCircle className="btn_action_haft_icon cancel" />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
