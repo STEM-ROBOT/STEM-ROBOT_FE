@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./DetailBar.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-const DetailBar = ({ league }) => {
+import { BiLogOutCircle } from "react-icons/bi";
+const DetailBar = ({ league, setTabActive, tabActive }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentSubPath = location.pathname.split("/").pop();
@@ -20,17 +21,27 @@ const DetailBar = ({ league }) => {
     },
   ];
   const handleTabClick = (tab) => {
-    navigate(`${tab.path}`, { status: true });
+    setTabActive(tab.path);
+    navigate(`${tab.path}`);
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="detail_bar">
       <div className="detail_bar_content">
+        <div
+          className="back_view_leagues"
+          onClick={() => {
+            navigate("/league");
+          }}
+        >
+          <BiLogOutCircle className="back_view_leagues_icon" /> Trở lại
+        </div>
         <div className="bar_content">
           <div className="bar_content_img">
-            <img
-              src={league?.image}
-              className="bar_img"
-            />
+            <img src={league?.image} className="bar_img" />
           </div>
           <div className="bar_content_info">
             <div className="bar_title">
@@ -57,20 +68,21 @@ const DetailBar = ({ league }) => {
       <div className="tab_navigation">
         {tabs.map((tab, i) => {
           // Kiểm tra điều kiện để hiển thị tab "ĐĂNG KÝ THÍ SINH"
-          if (tab.name === "ĐĂNG KÝ THÍ SINH" && league?.status !== "public") {
+          if (
+            tab.path === "register-contestant" &&
+            league?.status !== "Public"
+          ) {
             return null; // Không render tab nếu điều kiện không phù hợp
           }
 
           return (
             <div
               key={i}
-              className={`tab_item ${
-                currentSubPath === tab.path ? "active" : ""
-              }`}
+              className={`tab_item ${tabActive === tab.path ? "active" : ""}`}
               onClick={() => handleTabClick(tab)}
             >
               {tab.name}
-              {currentSubPath === tab.path && <div className="indicator"></div>}
+              {tabActive === tab.path && <div className="indicator"></div>}
             </div>
           );
         })}

@@ -1,6 +1,9 @@
 /* Custom View Gird */
 
 .league_card.grid {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   background-color: #fff;
   border-radius: 7px;
   box-shadow: 0 4px 8px rgba(228, 222, 222, 0.1);
@@ -19,6 +22,9 @@
 }
 
 .league_image_container.grid {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   width: 100%;
   height: auto;
   position: relative;

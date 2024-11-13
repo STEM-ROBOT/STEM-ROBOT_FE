@@ -37,9 +37,7 @@ const Header = () => {
     console.log(fetchedUserId);
 
     const handleData = (data) => {
-      console.log("Data received in component:", data);
       setNumberNotifications(data.length);
-      setTeamData(data);
     };
     const connectHubClient = () => {
       connectHub({
@@ -58,7 +56,7 @@ const Header = () => {
           }
         })
         .catch((err) => {
-          alert(err);
+          console.log(err);
         });
     };
     if (loadApiConnectClient) {
