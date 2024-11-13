@@ -10,12 +10,23 @@ import api from "../../../../config";
 const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
   const [popupActive, setActive] = useState(false);
   const [scoreTeamDetailApi, setScoreTeamDetailApi] = useState([]);
+  const [team1Score, setTeam1Score] = useState(0);
+  const [team2Score, setTeam2Score] = useState(0);
   const [showScrollArrow, setShowScrollArrow] = useState("down");
   const previousDataRef = useRef(null);
+  const previousResultDataRef = useRef(null);
   const containerRef = useRef(null);
   const hubConnectionRef = useRef(null);
+  const hubConnectionResultRef = useRef(null);
   const [loadApiConnectClient, setLoadApiConnectClient] = useState(true);
   const [timeCountDown, setTimeCountDown] = useState(null);
+  const storedImage = sessionStorage.getItem("ImageCompetition");
+  const [noPlayMatch, setNoPlayMatch] = useState(false);
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
   useEffect(() => {
     const handleData = (data) => {
       const dataString = JSON.stringify(data);
@@ -24,37 +35,93 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
       if (dataString !== previousDataString) {
         console.log(data);
         setScoreTeamDetailApi(data);
-        previousDataRef.current = data; // Cập nhật dữ liệu cũ để so sánh ở lần sau
+        previousDataRef.current = data;
+      }
+    };
+    const handleResultData = (data) => {
+      const dataString = JSON.stringify(data);
+      const previousDataString = JSON.stringify(previousResultDataRef.current);
+
+      if (dataString !== previousDataString) {
+        console.log(data);
+        setTeam1Score(data[0].tolalScore);
+        setTeam2Score(data[1].tolalScore);
+        previousResultDataRef.current = data;
       }
     };
 
     const connectHubClient = () => {
+      setLoadApiConnectClient(false);
       connectHub({
-        client: `match-deatail/${2158}`,
+        client: `match-deatail/${matchData.matchId}`,
         onDataReceived: handleData,
       }).then((hubConnection) => {
         hubConnectionRef.current = hubConnection;
       });
+      connectHub({
+        client: `team-match-result/${matchData.matchId}`,
+        onDataReceived: handleResultData,
+      }).then((hubConnection) => {
+        hubConnectionResultRef.current = hubConnection;
+      });
     };
 
     const connectClient = () => {
-      const currentDate = new Date().toISOString();
       setLoadApiConnectClient(false);
+      //connectClient ResultPlayClient
       api
-        .get(
-          `/api/matches/match-detail-action?matchID=${2158}&date=${"2024-11-09T06:50:00"}`
-        )
+        .get(`/api/matches/match-total-point?matchId=${matchData.matchId}`)
         .then((response) => {
+          console.log(response.data);
+          if (response.data === "timeout") {
+            if (hubConnectionResultRef.current) {
+              hubConnectionResultRef.current.stop();
+              hubConnectionResultRef.current = null;
+            }
+          } else if (
+            response.data !== "notstarted" &&
+            Array.isArray(response.data) &&
+            response.data.length > 0
+          ) {
+            console.log(response.data);
+            setTeam1Score(response.data[0].tolalScore);
+            setTeam2Score(response.data[1].tolalScore);
+            previousDataRef.current = response.data;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      //connectClient MatchDetail
+      api
+        .get(`/api/matches/match-detail-action?matchID=${matchData.matchId}`)
+        .then((response) => {
+          console.log(response.data);
+
           if (response.data === "timeout") {
             setLoadApiConnectClient(true);
             if (hubConnectionRef.current) {
-              hubConnectionRef.current.stop(); // Dừng kết nối nếu timeout
-              hubConnectionRef.current = null; // Xóa tham chiếu
+              hubConnectionRef.current.stop();
+              hubConnectionRef.current = null;
             }
-          } else if (response.data.length > 0) {
+          } else if (
+            response.data !== "notstarted" &&
+            Array.isArray(response.data) &&
+            response.data.length > 0
+          ) {
             console.log(response.data);
             setScoreTeamDetailApi(response.data);
-            previousDataRef.current = response.data; // Lưu dữ liệu vào biến tham chiếu
+            previousDataRef.current = response.data;
+          } else if (response.data === "notstarted") {
+            setNoPlayMatch(true);
+            if (hubConnectionRef.current) {
+              hubConnectionRef.current.stop();
+              hubConnectionRef.current = null;
+            }
+            if (hubConnectionResultRef.current) {
+              hubConnectionResultRef.current.stop();
+              hubConnectionResultRef.current = null;
+            }
           } else {
             setTimeCountDown(response.data);
           }
@@ -73,6 +140,10 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
       if (hubConnectionRef.current) {
         hubConnectionRef.current.stop();
       }
+      if (hubConnectionResultRef.current) {
+        hubConnectionResultRef.current.stop();
+
+      }
     };
   }, [loadApiConnectClient]);
   useEffect(() => {
@@ -80,6 +151,37 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
       if (hubConnectionRef.current) {
         hubConnectionRef.current.stop();
       }
+      const calculateTimeLeft = () => {
+        // Parse the target timeInMatch
+        const [hours, minutes, seconds] = timeCountDown.timeInMatch
+          .split(":")
+          .map(Number);
+        const targetTime = new Date();
+        targetTime.setHours(hours, minutes, seconds);
+
+        // Calculate the difference between target time and current time
+        const now = new Date();
+        const difference = targetTime - now;
+
+        if (difference > 0) {
+          // Convert remaining time to hours, minutes, and seconds
+          setTimeLeft({
+            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+            minutes: Math.floor((difference / (1000 * 60)) % 60),
+            seconds: Math.floor((difference / 1000) % 60),
+          });
+        } else {
+          setTimeCountDown(null);
+          setLoadApiConnectClient(true);
+          setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
+        }
+      };
+
+      // Update every second
+      const timer = setInterval(calculateTimeLeft, 1000);
+
+      // Cleanup the interval on component unmount
+      return () => clearInterval(timer);
     }
   }, [timeCountDown]);
   useEffect(() => {
@@ -170,6 +272,7 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
           ? "match_detail_container_popup active"
           : "match_detail_container_popup"
       }
+      style={popupActive ? { backgroundImage: `url(${storedImage})` } : {}}
     >
       <div className="match_detail_container">
         <div className="match_head_detail">
@@ -202,7 +305,7 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
               <div>{matchData.homeTeam}</div>
             </div>
             <div className="match_team_item_score">
-              {`${matchData.homeScore || "0"} - ${matchData.awayScore || "0"}`}
+              {`${team1Score} - ${team2Score}`}
             </div>
             <div className="match_team_item">
               <img
@@ -215,7 +318,35 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
           </div>
         </div>
         <div className="view_data_match_container" ref={containerRef}>
-          {scoreTeamDetailApi?.length < 1 ? (
+          {timeCountDown ? (
+            <div className="match_display_match_play">
+              Trận đấu sắp bắt đầu
+              <div className="countdown_display_match_play">
+                <div className="time_block match_action">
+                  <div className="time_value">{timeLeft?.minutes || 0}</div>
+                  <div className="time_label match_action">Phút</div>
+                </div>
+                <div className="time_block match_action">
+                  <div className="time_value">{timeLeft?.seconds || 0}</div>
+                  <div className="time_label match_action">Giây</div>
+                </div>
+              </div>
+            </div>
+          ) : noPlayMatch ? (
+            <div className="match_display_match_play not">
+              Trận đấu chưa sẵn sàng
+              <div className="countdown_display_match_play">
+                <div className="time_block match_action">
+                  <div className="time_value">{timeLeft?.minutes || 0}</div>
+                  <div className="time_label match_action">Phút</div>
+                </div>
+                <div className="time_block match_action">
+                  <div className="time_value">{timeLeft?.seconds || 0}</div>
+                  <div className="time_label match_action">Giây</div>
+                </div>
+              </div>
+            </div>
+          ) : scoreTeamDetailApi?.length < 1 ? (
             <img
               className="match_score_team_detail_load"
               src="https://i.gifer.com/embedded/download/PG23.gif"
@@ -225,7 +356,7 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
               {scoreTeamDetailApi?.map((haft, i) => (
                 <div key={i} className="haft_match">
                   <div className="info_haft_match">
-                    {`HIỆP ${haft.haftMatch}`}
+                    {`HIỆP ${haft.haftName}`}
                   </div>
                   {mergeAndSortActivities(
                     haft.activity.activityTeam1,
@@ -300,7 +431,7 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
               ))}
             </div>
           )}
-          {scoreTeamDetailApi?.length > 1 && (
+          {scoreTeamDetailApi?.length > 0 && (
             <div className="scroll-arrow" onClick={handleArrowClick}>
               {showScrollArrow === "down" ? (
                 <FaArrowDown className="icon_scroll_arrow" />

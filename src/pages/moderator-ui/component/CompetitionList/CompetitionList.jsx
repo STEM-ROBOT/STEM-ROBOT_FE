@@ -45,11 +45,11 @@ const CompetitionList = () => {
     }
   };
   const GoCompetition = (competition) => {
-    if (competition.isActive === true) {
+    // if (competition.isActive === true) {
       localStorage.setItem("competitionName", competition.name),
         localStorage.setItem("competitionEndDate", competition.endDate),
         navigate(`${competition.id}`)}
-  };
+  // };
   return (
     <div className="competition_container">
       <div className="introduction_header">

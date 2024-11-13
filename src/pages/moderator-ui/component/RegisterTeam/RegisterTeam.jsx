@@ -7,44 +7,64 @@ import "react-quill/dist/quill.snow.css"; // Quill styles
 import { MdFormatListBulletedAdd, MdGroupAdd } from "react-icons/md";
 import { FaCheckSquare } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
+import { IoIosLogOut } from "react-icons/io";
 
-const RegisterTeam = () => {
+const RegisterTeam = ({ setRegisterTeam }) => {
   const navigate = useNavigate();
   const path = useParams();
-  const [stepLine, setStepLine] = useState(true);
-  const [value, setValue] = useState("");
+  const [stepLine, setStepLine] = useState(false);
+
   const [contestantList, setContestant] = useState([]);
-  console.log(path);
+  const [logoTeamView, setLogoTeamView] = useState(logo);
+  const [logoTeam, setLogoTeam] = useState();
+  const [teamName, setTeamName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [contactName, setContactName] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const handleTeamCreation = () => {
+    const teamData = {
+      logo,
+      teamName,
+      phone,
+      email,
+      contactName,
+    };
 
-  const modules = {
-    toolbar: [
-      [{ font: [] }, { size: [] }], // custom dropdown
-      ["bold", "italic", "underline", "strike"], // toggled buttons
-      [{ align: [] }],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "image", "blockquote", "code-block"],
-      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-      ["clean"], // remove formatting button
-    ],
+    // You can send `teamData` to an API or store it as needed.
+    console.log("Team Data Submitted:", teamData);
+
+    // Proceed to the next step
+    setStepLine(true);
   };
+  const handleFileChange = (e) => {
+    // setShowInputDesImg(true);
+    // setImageIndex(e.target.files[0]);
 
-  const formats = [
-    "font",
-    "size",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "align",
-    "list",
-    "bullet",
-    "link",
-    "image",
-    "blockquote",
-    "code-block",
-    "color",
-    "background",
-  ];
+    const file = e.target.files[0];
+    setLogoTeam(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogoTeamView(reader.result);
+        console.log(e.target.files[0]);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const handlePhoneChange = (e) => {
+    const phoneNumber = e.target.value;
+    const vietnamPhoneRegex = /^(0|\+84)(3|5|7|8|9)[0-9]{8}$/;
+
+    if (vietnamPhoneRegex.test(phoneNumber)) {
+      setPhoneError("");
+    } else {
+      setPhoneError(
+        "Số điện thoại không hợp lệ. Số điện thoại Việt Nam phải có 10 chữ số và bắt đầu bằng 0 hoặc +84."
+      );
+    }
+    setPhone(phoneNumber);
+  };
   return (
     <div className="register_team_container">
       <div className="register_step_container">
@@ -53,7 +73,6 @@ const RegisterTeam = () => {
           <div className="step_regis_progress">
             <div className="step_regis_view">
               <IoDisc className="progress_icon_step" />
-
               <div
                 className={stepLine ? "progress_step active" : "progress_step "}
               />
@@ -90,7 +109,14 @@ const RegisterTeam = () => {
           <div className="register_warning">
             <IoAlertCircleSharp className="icon_contestant" />
             Để tiếp tục đăng ký cho một đội khác bạn phải hoàn thành đăng ký
-            hoặc <div className="cancel_register_team"> hủy đăng ký </div> này.
+            hoặc
+            <div
+              className="cancel_register_team"
+              onClick={() => setRegisterTeam(false)}
+            >
+              hủy đăng ký
+            </div>
+            này.
           </div>
           <div className="register_warning">
             <IoAlertCircleSharp className="icon_contestant" />
@@ -151,13 +177,19 @@ const RegisterTeam = () => {
       ) : (
         <>
           <div className="register_info_team">
-            <div className="avatar_tournament">
+            <div className="avatar_tournament" style={{ padding: "0" }}>
               <label>
                 <div className="label_avatar">Logo</div>
                 <img
                   className="avatar_view"
-                  style={{ width: "270px", height: "" }}
-                  src={logo}
+                  style={{
+                    width: "250px",
+                    height: "220px",
+                    objectFit: "cover",
+                    padding: "5px",
+                    borderRadius: "7px",
+                  }}
+                  src={logoTeamView}
                   alt=""
                 />
                 <input
@@ -179,83 +211,57 @@ const RegisterTeam = () => {
                 <input
                   type="text"
                   className="input_tournament"
-                  //     value={nameTournament}
-                  //     onChange={handleNameChange}
+                  value={teamName}
+                  onChange={(e) => setTeamName(e.target.value)}
                 />
                 {/* //  {nameError && <div className="error_message">{nameError}</div>} */}
               </div>
-              <div
-                className="phone_status_tournament"
-                style={{ flexDirection: "column" }}
-              >
-                <div className="phone_tournament">
-                  <div className="label_info">Số điện thoại</div>
-                  <input
-                    type="text"
-                    maxLength={10}
-                    className="input_tournament"
-                    //  value={phone}
-                    //  onChange={handlePhoneChange}
-                  />
-                  {/* {phoneError && <div className="error_message">{phoneError}</div>} */}
-                </div>
-                <div className="phone_tournament">
-                  <div className="label_info">Email</div>
-                  <input
-                    type="text"
-                    maxLength={10}
-                    className="input_tournament"
-                    //  value={phone}
-                    //  onChange={handlePhoneChange}
-                  />
-                  {/* {phoneError && <div className="error_message">{phoneError}</div>} */}
-                </div>
-                <div className="phone_tournament">
-                  <div className="label_info">Tên người liên hệ</div>
-                  <input
-                    type="text"
-                    maxLength={10}
-                    className="input_tournament"
-                    //  value={phone}
-                    //  onChange={handlePhoneChange}
-                  />
-                  {/* {phoneError && <div className="error_message">{phoneError}</div>} */}
-                </div>
-                {/* <div className="status_tournament">
-            <div className="label_info">Giới tính</div>
 
-            <select className="option_tournament">
-              <option value="Private">Nữ</option>
-              <option value="Public">Nam</option>
-            </select>
-          </div> */}
+              <div className="phone_tournament" style={{ width: "100%" }}>
+                <div className="label_info">Số điện thoại</div>
+                <input
+                  type="text"
+                  maxLength={10}
+                  className="input_tournament"
+                  value={phone}
+                  onChange={(e) => handlePhoneChange(e)}
+                />
+                {phoneError && (
+                  <div className="error_message">{phoneError}</div>
+                )}
               </div>
-              {/* <div className="name_tournament">
-          <div className="label_info">Email</div>
-          <input
-            type="text"
-            className="input_tournament"
-            //     value={address}
-            //     onChange={handleAddressChange}
-          /> */}
-              {/* {locationError && (
-            <div className="error_message">{locationError}</div>
-          )} */}
-              {/* </div> */}
+              <div className="phone_tournament" style={{ width: "100%" }}>
+                <div className="label_info">Email</div>
+                <input
+                  type="text"
+                  maxLength={10}
+                  className="input_tournament"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {/* {phoneError && <div className="error_message">{phoneError}</div>} */}
+              </div>
+              <div className="phone_tournament" style={{ width: "100%" }}>
+                <div className="label_info">Tên người liên hệ</div>
+                <input
+                  type="text"
+                  maxLength={10}
+                  className="input_tournament"
+                  value={contactName}
+                  onChange={(e) => setContactName(e.target.value)}
+                />
+                {/* {phoneError && <div className="error_message">{phoneError}</div>} */}
+              </div>
             </div>
           </div>
-          <div className="register_info_intro_team">
-            <ReactQuill
-              value={value}
-              onChange={setValue}
-              modules={modules}
-              formats={formats}
-              theme="snow"
-              style={{ height: "300px", marginBottom: "50px" }}
-            />
-          </div>
-          <div className="apply_create_tournament">
-            <div className="btn_create_tournament">Tiếp Theo</div>
+
+          <div className="apply_create_tournament" onClick={handleTeamCreation}>
+            <div className="btn_create_team">
+              Tiếp Theo{" "}
+              <IoIosLogOut
+                style={{ width: "25px", height: "25px", marginLeft: "10px" }}
+              />
+            </div>
           </div>
         </>
       )}

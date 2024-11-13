@@ -37,7 +37,6 @@ const Header = () => {
     console.log(fetchedUserId);
 
     const handleData = (data) => {
-      console.log("Data received in component:", data);
       setNumberNotifications(data.length);
     };
     const connectHubClient = () => {
