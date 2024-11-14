@@ -41,15 +41,12 @@ const allTabs = [
 ];
 
 const CompetitionDetail = () => {
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState("");
   const [formatId, setFormatId] = useState(null);
   const path = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const currentSubPath = location.pathname.split("/").pop();
-  const name = location.state?.names || localStorage.getItem("competitionName");
-  const endDate =
-    location.state?.endDate || localStorage.getItem("competitionEndDate");
 
   useEffect(() => {
     api
@@ -57,7 +54,9 @@ const CompetitionDetail = () => {
         `/api/competitions/config-register?competitionID=${path.competitionId}`
       )
       .then((response) => {
-        const { status, formatId } = response.data;
+        
+        const { status, formatId,image } = response.data;
+        sessionStorage.setItem("ImageCompetition", image);
         setStatus(status);
         setFormatId(formatId);
       })
@@ -65,7 +64,7 @@ const CompetitionDetail = () => {
         console.log(error);
       });
 
-    const targetPosition = 245;
+    const targetPosition = 285;
     const startPosition = window.scrollY;
     const distance = targetPosition - startPosition;
     const duration = 500;
@@ -92,15 +91,16 @@ const CompetitionDetail = () => {
     });
 
   const handleTabClick = (tab) => {
-    localStorage.setItem("competitionRgEndDate", endDate);
-    navigate(`${tab.path}`, {
-      state: { endDate },
-    });
+    navigate(`${tab.path}`);
   };
 
   // Filter tabs based on status and formatId
   const filteredTabs = allTabs.filter((tab) => {
-    if (tab.path === "register-time" && status === "Private") return false;
+    if (
+      tab.path === "register-time" &&
+      status.toLocaleLowerCase() === "private"
+    )
+      return false;
     if (tab.path === "match-schedule" && formatId !== 1) return false;
     if (
       (tab.path === "stage-group" || tab.path === "knockout") &&

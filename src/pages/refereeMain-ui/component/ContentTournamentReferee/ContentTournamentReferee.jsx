@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const ContentTournamentReferee = ({ schedules }) => {
   const navigate = useNavigate();
   const GoSchedule = (schedule) => {
-    navigate(`${schedule.id}`);
+    navigate(`${schedule.competitionId}`);
     sessionStorage.setItem("competitionId", schedule.competitionId);
   };
   return (

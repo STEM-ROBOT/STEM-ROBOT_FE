@@ -2,14 +2,16 @@ import React from "react";
 import "./RenderSchedule.css";
 import { FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 const RenderSchedule = ({ week, scheduleData, setMatchView, setShowPopup }) => {
+  const navigate = useNavigate();
   const weekStart = week.start;
   const weekEnd = week.end;
   const scheduleForWeek = scheduleData.scheduleReferee.filter((schedule) => {
     const scheduleDate = new Date(schedule.startTime);
     console.log(scheduleDate);
-    
+
     return scheduleDate >= weekStart && scheduleDate <= weekEnd;
   });
 
@@ -23,16 +25,16 @@ const RenderSchedule = ({ week, scheduleData, setMatchView, setShowPopup }) => {
     const startHour = parseInt(start.split(":")[0], 10);
     const endHour = parseInt(end.split(":")[0], 10);
     const timeList = [];
-
+  
     for (let hour = startHour; hour <= endHour; hour++) {
       const timeString = hour < 10 ? `0${hour}:00` : `${hour}:00`;
       timeList.push({ time: timeString });
     }
-
+  
     return timeList;
   };
-
   // Tính chiều cao mỗi giờ (đơn vị: pixel)
+
   const hourHeight = 120.8; // 120px cho mỗi giờ
   const totalDayHeight =
     (parseInt(scheduleData.hourEndInDay, 10) -
