@@ -5,7 +5,7 @@ import "./League.css";
 import { IoGrid, IoListSharp } from "react-icons/io5";
 import LeagueView from "../../component/LeagueView/LeagueView";
 import SearchFilter from "../../component/SearchFilter/SearchFilter";
-import { useNavigate } from "react-router-dom";
+import { Route, useNavigate } from "react-router-dom";
 import api from "/src/config";
 import { list_tournament_view } from "../../api/ApiFlowView/ApiFlowView";
 import Pagination from "../../../system-ui/component/Pagination/Pagination";
@@ -70,50 +70,46 @@ const League = () => {
   };
 
   return (
-    <div className="league_page">
-      <Header />
-      <div className="league_container">
-        {/* Search and Filter section */}
-        <SearchFilter
-          setSearch={setSearch}
-          setProvinceCode={setProvinceCode}
-          setStatus={setStatus}
-          setGennerId={setGennerId}
-          setLoadApi={setLoadApi}
+    <div className="league_container">
+      {/* Search and Filter section */}
+      <SearchFilter
+        setSearch={setSearch}
+        setProvinceCode={setProvinceCode}
+        setStatus={setStatus}
+        setGennerId={setGennerId}
+        setLoadApi={setLoadApi}
+      />
+      <div className="view_toggle">
+        <Pagination
+          currentPage={page}
+          totalPages={leagueData.totalPages}
+          onPageChange={handlePageChange}
         />
-        <div className="view_toggle">
-          <Pagination
-            currentPage={page}
-            totalPages={leagueData.totalPages}
-            onPageChange={handlePageChange}
-          />
-          <div className="btn_option">
-            <button
-              onClick={() => setViewMode("list")}
-              className={
-                viewMode === "list" ? "option_view active" : "option_view"
-              }
-            >
-              <IoListSharp className="icon_option_view" />
-            </button>
-            <button
-              onClick={() => setViewMode("grid")}
-              className={
-                viewMode === "grid" ? "option_view active" : "option_view"
-              }
-            >
-              <IoGrid className="icon_option_view" />
-            </button>
-          </div>
-        </div>
-        {/* View League - List View */}
-        <div className={`league_grid ${viewMode}`}>
-          {leagueData.tournamentRep?.map((leagues, i) => (
-            <LeagueView key={i} viewMode={viewMode} league={leagues} />
-          ))}
+        <div className="btn_option">
+          <button
+            onClick={() => setViewMode("list")}
+            className={
+              viewMode === "list" ? "option_view active" : "option_view"
+            }
+          >
+            <IoListSharp className="icon_option_view" />
+          </button>
+          <button
+            onClick={() => setViewMode("grid")}
+            className={
+              viewMode === "grid" ? "option_view active" : "option_view"
+            }
+          >
+            <IoGrid className="icon_option_view" />
+          </button>
         </div>
       </div>
-      <Footer />
+      {/* View League - List View */}
+      <div className={`league_grid ${viewMode}`}>
+        {leagueData.tournamentRep?.map((leagues, i) => (
+          <LeagueView key={i} viewMode={viewMode} league={leagues} />
+        ))}
+      </div>
     </div>
   );
 };

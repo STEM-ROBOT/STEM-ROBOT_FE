@@ -17,5 +17,4 @@ const RefereeMain = () => {
     </div>
   );
 };
-
 export default RefereeMain;

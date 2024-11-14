@@ -25,17 +25,17 @@ const SidebarTournamentReferee = ({ setSchedules }) => {
         console.log(error);
       });
   }, []);
-  useEffect(() => {
-    api
-      .get("/api/refereecompetition/list-referee-competition?competitionID=1")
-      .then((referee) => {
-        console.log(referee);
-        setScheduleData(referee.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   api
+  //     .get("/api/refereecompetition/list-referee-competition?competitionID=2")
+  //     .then((referee) => {
+  //       console.log(referee);
+  //       setScheduleData(referee.data.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
   const handleLogout = (navigate) => {
     dispatch(logout(navigate));
   };

@@ -8,6 +8,7 @@ import { RiTeamFill } from "react-icons/ri";
 import GameRuleScore from "../GameRuleScore/GameRuleScore";
 import { useParams } from "react-router-dom";
 import api from "../../../../config";
+import { rule_score_view } from "../../api/ApiFlowView/ApiFlowView";
 const scoreRuleCompetitions2 = {
   regulation:
     "https://storage.cloud.google.com/stem-system-storage/mau-hop-dong-dat-coc.pdf?authuser=1",
@@ -87,13 +88,14 @@ const scoreRuleCompetitions2 = {
 };
 
 const GameRuleComponent = () => {
-const path = useParams();
+  const path = useParams();
   const [selectedRule, setSelectedRule] = useState("Score");
   const [scoreRuleCompetitions, setScoreRuleCompetitions] = useState({});
   useEffect(() => {
     api
-      .get(`/api/competitions/score-competition?competitionID=${path.competitionId}`)
+      .get(rule_score_view + path.competitionId)
       .then((response) => {
+        console.log(response.data.data.data);
         setScoreRuleCompetitions(response.data.data.data);
       })
       .catch((error) => {

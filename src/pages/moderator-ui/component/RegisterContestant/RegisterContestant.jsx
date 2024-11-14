@@ -5,8 +5,24 @@ const RegisterContestant = () => {
   const location = useLocation();
   const pram = useParams();
   console.log(location, pram);
-
+  const [phoneError, setPhoneError] = useState("");
+  const [phone, setPhone] = useState("");
+  const [contestantName, setContestantName] = useState("");
+  const [email, setEmail] = useState("");
   const [contestantList, setContestant] = useState([]);
+  const handlePhoneChange = (e) => {
+    const phoneNumber = e.target.value;
+    const vietnamPhoneRegex = /^(0|\+84)(3|5|7|8|9)[0-9]{8}$/;
+
+    if (vietnamPhoneRegex.test(phoneNumber)) {
+      setPhoneError("");
+    } else {
+      setPhoneError(
+        "Số điện thoại không hợp lệ. Số điện thoại Việt Nam phải có 10 chữ số và bắt đầu bằng 0 hoặc +84."
+      );
+    }
+    setPhone(phoneNumber);
+  };
   return (
     <div className="competition_container">
       <div className="label_create">Thông tin thí sinh</div>
@@ -41,7 +57,12 @@ const RegisterContestant = () => {
           </div>
           <div
             className="phone_status_tournament"
-            style={{ flexDirection: "column" }}
+            style={{
+              flexDirection: "column",
+              justifyContent: "start",
+              width: "100%",
+              flex: "1",
+            }}
           >
             <div className="phone_tournament">
               <div className="label_info">Số điện thoại</div>
@@ -49,10 +70,10 @@ const RegisterContestant = () => {
                 type="text"
                 maxLength={10}
                 className="input_tournament"
-                //  value={phone}
-                //  onChange={handlePhoneChange}
+                value={phone}
+                onChange={handlePhoneChange}
               />
-              {/* {phoneError && <div className="error_message">{phoneError}</div>} */}
+              {phoneError && <div className="error_message">{phoneError}</div>}
             </div>
             <div className="status_tournament">
               <div className="label_info">Giới tính</div>

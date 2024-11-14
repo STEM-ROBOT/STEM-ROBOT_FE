@@ -7,6 +7,8 @@ import { useDispatch } from "react-redux";
 import { createTournament } from "../../../../redux/actions/TournamentAction";
 import { useNavigate } from "react-router-dom";
 import { FirebaseUpload } from "/src/config/firebase";
+import ReactQuill from "react-quill";
+import QuillToolbar, { formats, modules } from "../EditorToolbar/EditorToolbar";
 const ComponentCreate = () => {
   // Tournament Info
   const [avatarInputView, setAvatarInputView] = useState(logo);
@@ -20,11 +22,13 @@ const ComponentCreate = () => {
   const [phoneError, setPhoneError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [value, setValue] = useState("");
   // Competition List
   const [competitionList, setCompetitionList] = useState([]);
   const [competitionError, setCompetitionError] = useState("");
-
+  const handleChange = (value) => {
+    setValue(value);
+  };
   // Validation and API Call
   const handleSubmit = async () => {
     let hasError = false;
@@ -74,7 +78,34 @@ const ComponentCreate = () => {
         console.error("Lỗi khi tạo giải đấu:", error);
       });
   };
-
+  // const modules = {
+  //   toolbar: [
+  //     [{ font: [] }, { size: [] }], // custom dropdown
+  //     ["bold", "italic", "underline", "strike"], // toggled buttons
+  //     [{ align: [] }],
+  //     [{ list: "ordered" }, { list: "bullet" }],
+  //     ["link", "image", "blockquote", "code-block"],
+  //     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+  //     ["clean"], // remove formatting button
+  //   ],
+  // };
+  // const formats = [
+  //   "font",
+  //   "size",
+  //   "bold",
+  //   "italic",
+  //   "underline",
+  //   "strike",
+  //   "align",
+  //   "list",
+  //   "bullet",
+  //   "link",
+  //   "image",
+  //   "blockquote",
+  //   "code-block",
+  //   "color",
+  //   "background",
+  // ];
   return (
     <div className="create_tournament_page">
       <div className="create_container">
@@ -101,12 +132,30 @@ const ComponentCreate = () => {
             phoneError={phoneError}
             setPhoneError={setPhoneError}
           />
+
           <CreateTournamentCompetition
             competitionList={competitionList}
             setCompetitionList={setCompetitionList}
             competitionError={competitionError}
             setCompetitionError={setCompetitionError}
           />
+          <div className="container_create_competition_tournament">
+            <div className="competition_create">
+              <div className="label_avatar">Giới thiệu giải </div>
+              <div className="text-editor">
+                <QuillToolbar />
+                <ReactQuill
+                  theme="snow"
+                  value={value}
+                  onChange={handleChange}
+                  placeholder={"Write something awesome..."}
+                  modules={modules}
+                  formats={formats}
+                  style={{ height: "300px" }}
+                />
+              </div>
+            </div>
+          </div>
           <div className="format_create">
             <div className="apply_create_tournament">
               <div
