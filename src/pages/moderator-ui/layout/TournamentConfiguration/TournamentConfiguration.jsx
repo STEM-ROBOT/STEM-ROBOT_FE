@@ -10,13 +10,13 @@ import TournamentHeader from '../../component/TournamentHeader/TournamentHeader'
 import GroupMatch from '../../component/GroupMatchDraw/GroupMatch';
 import KnockoutTournament from '../../component/KnockoutTournament/KnockoutTournament';
 import PrivateRoute from '../../../../router/PrivateRoute';
-import TokenService from '../../../../Config/tokenservice';
+import TokenService from '/src/Config/tokenservice';
 
 
 
 const TournamentConfiguration = () => {
     // const [activeItem, setActiveItem] = useState("format");
-    const [activeItem, setActiveItem] = useState("format");
+    const [activeItem, setActiveItem] = useState("settings/format");
     const [formatId, setFormatId] = useState(1); 
     const fetchedFormatId = TokenService.getFormatId();
     useEffect(() => {

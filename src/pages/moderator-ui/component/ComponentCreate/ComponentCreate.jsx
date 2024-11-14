@@ -6,10 +6,11 @@ import logo from "/src/assets/images/logo.png";
 import { useDispatch } from "react-redux";
 import { createTournament } from "../../../../redux/actions/TournamentAction";
 import { useNavigate } from "react-router-dom";
-
+import { FirebaseUpload } from "/src/config/firebase";
 const ComponentCreate = () => {
   // Tournament Info
-  const [avatarInput, setAvatarInput] = useState(logo);
+  const [avatarInputView, setAvatarInputView] = useState(logo);
+  const [avatarInput, setAvatarInput] = useState();
   const [nameTournament, setNameTournament] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -25,10 +26,9 @@ const ComponentCreate = () => {
   const [competitionError, setCompetitionError] = useState("");
 
   // Validation and API Call
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let hasError = false;
 
-    // Validate fields
     if (!nameTournament) {
       setNameError("Tên giải đấu không được để trống.");
       hasError = true;
@@ -52,27 +52,27 @@ const ComponentCreate = () => {
     // Format competition list to match API structure
     const formattedCompetitions = competitionList.map((competition) => ({
       genreId: competition.id,
-      mode: ""// Assuming each competition has an `id` field for genreId
+      mode: "", // Assuming each competition has an `id` field for genreId
     }));
+    const image = await FirebaseUpload(avatarInput);
 
-   
     const tournamentData = {
       tournamentLevel: "Cấp trường",
       name: nameTournament,
       location: address,
-      image: avatarInput,
-      status: mode, 
+      image: image,
+      status: mode,
       phone: phone,
       competition: formattedCompetitions,
     };
 
-    dispatch(createTournament(tournamentData, navigate))
-    .then(() => {
-      navigate('/account/mytournament'); 
-    })
-    .catch((error) => {
-      console.error("Lỗi khi tạo giải đấu:", error); 
-    });
+    await dispatch(createTournament(tournamentData, navigate))
+      .then(() => {
+        navigate("/account/mytournament");
+      })
+      .catch((error) => {
+        console.error("Lỗi khi tạo giải đấu:", error);
+      });
   };
 
   return (
@@ -84,6 +84,8 @@ const ComponentCreate = () => {
           <CreateTournamentInfo
             avatarInput={avatarInput}
             setAvatarInput={setAvatarInput}
+            setAvatarInputView={setAvatarInputView}
+            avatarInputView={avatarInputView}
             nameTournament={nameTournament}
             setNameTournament={setNameTournament}
             phone={phone}

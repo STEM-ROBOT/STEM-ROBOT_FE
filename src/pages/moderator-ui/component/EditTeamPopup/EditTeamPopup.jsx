@@ -3,6 +3,7 @@ import { FaPlus, FaTrash } from "react-icons/fa";
 import "./EditTeamPopup.css";
 import api from "../../../../config"; // API config
 import { toast } from "react-toastify";
+import { FirebaseUpload } from "/src/config/firebase";
 
 const EditTeamPopup = ({ team, competitionId, closePopup, setLoadApi }) => {
   const [teamDetails, setTeamDetails] = useState({
@@ -12,6 +13,7 @@ const EditTeamPopup = ({ team, competitionId, closePopup, setLoadApi }) => {
     image: team.image,
     members: team.member || [],
   });
+  const [logoFile, setLogoFile] = useState(null);
 
   const [contestantInTeam, setContestantInTeam] = useState(
     team.contestantInTeam
@@ -73,8 +75,12 @@ const EditTeamPopup = ({ team, competitionId, closePopup, setLoadApi }) => {
 
   // Handle logo change
   const handleLogoChange = (e) => {
-    const newLogo = URL.createObjectURL(e.target.files[0]);
-    setTeamDetails((prevDetails) => ({ ...prevDetails, image: newLogo }));
+    const file = e.target.files[0];
+    if (file) {
+      setLogoFile(file);
+      const newLogoUrl = URL.createObjectURL(file);
+      setTeamDetails((prevDetails) => ({ ...prevDetails, image: newLogoUrl }));
+    }
   };
 
   const toggleSelection = (id) => {
@@ -117,21 +123,49 @@ const EditTeamPopup = ({ team, competitionId, closePopup, setLoadApi }) => {
     });
   };
 
-  const handleSave = () => {
-    // Định dạng lại mảng selectedContestant thành mảng đối tượng với thuộc tính contestantId
+  const handleSave = async () => {
+    if (!teamDetails.name || !teamDetails.phoneNumber || !teamDetails.contactInfo) {
+      toast.error("Vui lòng điền đầy đủ thông tin đội.");
+      return;
+    }
+  
+    // Validate phone number format
+    const phoneRegex = /^[0-9]{10,11}$/; // Adjust to match the expected format
+    if (!phoneRegex.test(teamDetails.phoneNumber)) {
+      toast.error("Số điện thoại không hợp lệ. Vui lòng nhập 10-11 chữ số.");
+      return;
+    }
+  
+    if (selectedContestant.length !== contestantInTeam) {
+      toast.error(`Vui lòng chọn đủ ${contestantInTeam} thí sinh cho đội.`);
+      return;
+    }
     const formattedContestants = selectedContestant.map((id) => ({
       contestantId: id,
       teamId:team.id,
-    }));
-
+    })); 
+   
+    let imageUrl = teamDetails.image; 
+  
+    if (logoFile) {
+      try {
+        console.log(logoFile)
+        imageUrl = await FirebaseUpload(logoFile);
+      } catch (error) {
+        toast.error("Có lỗi xảy ra khi tải ảnh lên");
+        console.error("Error uploading image:", error);
+        return;
+      }
+    }
+   
     const dataToSave = {
       name: teamDetails.name,
       phoneNumber: teamDetails.phoneNumber,
       contactInfo:teamDetails.contactInfo,
-      image:"https://t3.ftcdn.net/jpg/07/68/91/92/360_F_768919266_4OfllVFjsr99DPeFCATa0jrTOjKnUshK.jpg",
+      image:imageUrl,
       contestants : formattedContestants
     } 
-    console.log(dataToSave)
+ 
 
     api
       .put(

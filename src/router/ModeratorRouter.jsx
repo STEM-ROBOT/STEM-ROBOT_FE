@@ -36,6 +36,7 @@ import GroupAllocation from "../pages/moderator-ui/component/GroupAllocation/Gro
 import GroupMatch from "../pages/moderator-ui/component/GroupMatchDraw/GroupMatch";
 import InforAccount from "../pages/moderator-ui/component/InfoAccount/InforAccount";
 import PrivateRoute from "./PrivateRoute";
+import TeamRegister from "../pages/moderator-ui/component/TeamRegister/TeamRegister";
 
 export const tournamentChildren = [
   {
@@ -94,10 +95,17 @@ export const tournamentRoutes = [
 ];
 
 export const competitionChildren = [
+  
   {
     path: "settings",
     element: (
       <PrivateRoute element={<TournamentConfiguration />} requiredRole="MD" />
+    ),
+  },
+  {
+    path: "team-register",
+    element: (
+      <PrivateRoute element={<TeamRegister />} requiredRole="MD" />
     ),
   },
 ];

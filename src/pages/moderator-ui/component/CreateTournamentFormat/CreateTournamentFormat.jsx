@@ -96,7 +96,7 @@ const CreateTournamentFormat = ({ }) => {
   const isAddSuccess = useSelector((state) => state.addCompetitionFormat?.success);
 
   useEffect(()=>{
-    dispatch(getActive())
+    dispatch(getActive(competitionId))
   },[isAddSuccess])
 
   const handleTeamNumberChange = (e) => {

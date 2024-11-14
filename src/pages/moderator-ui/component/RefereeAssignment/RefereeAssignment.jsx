@@ -13,16 +13,17 @@ const RefereeAssignment = () => {
 
     const [data, setData] = useState();
     const [numMatchReferees, setNumMatchReferees] = useState(1);
-    const isAddSuccess = useSelector((state) => state. addScheduleReferee?.success);
+    const isAddSuccess = useSelector((state) => state.addScheduleReferee?.success);
+
     useEffect(() => {
         dispatch(getRefereeSchedule(competitionId));
-        dispatch(getActive(competitionId))
-    }, [competitionId, dispatch,isAddSuccess]);
+        dispatch(getActive(competitionId));
+    }, [competitionId, dispatch, isAddSuccess]);
 
     useEffect(() => {
         if (refereeData?.rounds && refereeData.rounds[0]?.matches) {
             setData(refereeData);
-            setNumMatchReferees(1);  // Default number of assistant referees per match
+            setNumMatchReferees(1);  
         }
     }, [refereeData]);
 
@@ -34,84 +35,71 @@ const RefereeAssignment = () => {
         return array;
     };
 
+    const checkTimeConflict = (round, matchTime, refereeId, isMainReferee) => {
+        return round.matches.some(match => {
+            const isTimeMatch = match.timeIn === matchTime;
+            const isMainConflict = isMainReferee && match.mainReferee?.id === refereeId;
+            const isSubConflict = !isMainReferee && match.matchRefereesdata?.some(ref => ref.id === refereeId);
+            return isTimeMatch && (isMainConflict || isSubConflict);
+        });
+    };
+
     const randomizeReferees = () => {
-        const fieldCount = 4; // Assume max field count for matches
         const updatedData = JSON.parse(JSON.stringify(data)); // Deep clone the data
-        let isNotEnoughReferees = false;
 
         updatedData.rounds.forEach((round) => {
             let availableMainRefs = shuffleArray([...data.referees]);
             let availableMatchRefs = shuffleArray([...data.matchReferees]);
 
-            const timeSlotMatches = {}; // Track number of matches per time slot
-
             round.matches.forEach((match) => {
-                // Ensure there are enough main referees
                 if (availableMainRefs.length === 0) {
-                    isNotEnoughReferees = true;
-                    return;
+                    availableMainRefs = shuffleArray([...data.referees]);
                 }
-
-                // Assign a main referee to the match
-                match.mainReferee = availableMainRefs.pop();
-
-                // Check for sufficient assistant referees
                 if (availableMatchRefs.length < numMatchReferees) {
-                    isNotEnoughReferees = true;
-                    return;
+                    availableMatchRefs = shuffleArray([...data.matchReferees]);
                 }
 
-                // Check for field count conflicts in the same time slot
-                const matchTime = match.timeIn || 'default';
-                if (!timeSlotMatches[matchTime]) {
-                    timeSlotMatches[matchTime] = 0;
-                }
-                timeSlotMatches[matchTime]++;
-
-                if (timeSlotMatches[matchTime] > fieldCount) {
-                    alert(`Số trận đấu diễn ra tại ${matchTime} vượt quá số lượng sân có sẵn.`);
-                    isNotEnoughReferees = true;
-                    return;
+                // Assign a main referee if no time conflict
+                while (availableMainRefs.length > 0) {
+                    const mainReferee = availableMainRefs.pop();
+                    if (!checkTimeConflict(round, match.timeIn, mainReferee.id, true)) {
+                        match.mainReferee = mainReferee;
+                        break;
+                    }
                 }
 
-                // Assign assistant referees
+                // Assign assistant referees, checking for conflicts
                 match.matchRefereesdata = [];
                 for (let i = 0; i < numMatchReferees; i++) {
-                    match.matchRefereesdata.push(availableMatchRefs.pop());
+                    while (availableMatchRefs.length > 0) {
+                        const matchReferee = availableMatchRefs.pop();
+                        if (!checkTimeConflict(round, match.timeIn, matchReferee.id, false)) {
+                            match.matchRefereesdata.push(matchReferee);
+                            break;
+                        }
+                    }
                 }
             });
         });
 
-        if (isNotEnoughReferees) {
-            alert('Không đủ trọng tài hoặc số lượng sân không đáp ứng được các trận đấu cùng lúc.');
-        } else {
-            setData(updatedData);
-        }
+        setData(updatedData);
     };
 
     const handleUpdate = (roundIndex, matchIndex, field, value) => {
         const updatedData = JSON.parse(JSON.stringify(data)); // Deep clone data
-
         const selectedMatch = updatedData.rounds[roundIndex].matches[matchIndex];
-        const selectedTime = selectedMatch.timeIn;
 
-        const hasTimeConflict = updatedData.rounds.some((round) =>
-            round.matches.some((match, idx) => {
-                if (idx !== matchIndex) {
-                    const isSameMainReferee = field === 'mainReferee' && match.mainReferee?.id === value.id;
-                    const isSameMatchReferee = field === 'matchRefereesdata' && match.matchRefereesdata.some(ref => ref.id === value.id);
-                    return (isSameMainReferee || isSameMatchReferee) && match.timeIn === selectedTime;
-                }
-                return false;
-            })
-        );
+        // Check for time conflicts before updating
+        const isMainReferee = field === 'mainReferee';
+        const matchTime = selectedMatch.timeIn;
 
-        if (hasTimeConflict) {
-            alert('Trọng tài này đã được chọn cho trận đấu khác tại cùng thời gian!');
+        if (checkTimeConflict(updatedData.rounds[roundIndex], matchTime, value.id, isMainReferee)) {
+            alert('Trọng tài này đã được sắp xếp cho trận đấu khác tại cùng thời gian!');
             return;
         }
 
-        if (field === 'mainReferee') {
+        // Proceed with update if no conflict
+        if (isMainReferee) {
             updatedData.rounds[roundIndex].matches[matchIndex][field] = value;
         } else {
             updatedData.rounds[roundIndex].matches[matchIndex].matchRefereesdata[value.index] = value.ref;
@@ -147,22 +135,9 @@ const RefereeAssignment = () => {
         <div className="referee-assignment-container-main">
             <h2 className="referee-assignment-title-main">Sắp xếp trọng tài</h2>
 
-            <div className="referee-assignment-num-referees-input-container">
-                <label className="referee-assignment-input-label">Số lượng trọng tài trận:</label>
-                <input
-                    className="referee-assignment-input-field"
-                    type="number"
-                    min="1"
-                    max="3"
-                    value={numMatchReferees}
-                    onChange={(e) => setNumMatchReferees(Number(e.target.value))}
-                />
-            </div>
-            {
-                data?.isSchedule !== true && (
-                    <button className="referee-assignment-randomize-button" onClick={randomizeReferees}>Bốc thăm ngẫu nhiên trọng tài</button>
-                )
-            }
+            {data?.isSchedule !== true && (
+                <button className="referee-assignment-randomize-button" onClick={randomizeReferees}>Bốc thăm ngẫu nhiên trọng tài</button>
+            )}
 
             {data?.rounds.map((round, roundIndex) => (
                 <div key={round.roundId} className="referee-assignment-round">
@@ -174,7 +149,13 @@ const RefereeAssignment = () => {
 
                             <input
                                 type="date"
-                                value={match.date ? new Date(match.date).toISOString().split('T')[0] : ''}
+                                value={
+                                    match.date
+                                        ? new Date(new Date(match.date).setDate(new Date(match.date).getDate() + 1))
+                                              .toISOString()
+                                              .split('T')[0]
+                                        : ''
+                                }
                                 onChange={(e) => handleUpdate(roundIndex, matchIndex, 'date', e.target.value)}
                                 className="referee-assignment-date-input"
                             />
