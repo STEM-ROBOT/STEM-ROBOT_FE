@@ -4,6 +4,7 @@ import CountdownPopup from '../CountdownPopup/CountdownPopup';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTeamAssignMatch, getTeamMatch } from '../../../../redux/actions/TeamAction';
+import { getActive } from '../../../../redux/actions/FormatAction';
 
 const generateRoundRobinSchedule = (teams, tableId) => {
     const usedPairs = new Set();
@@ -63,10 +64,13 @@ const GroupMatch = () => {
     const [currentRoundName, setCurrentRoundName] = useState();
     const [showPopup, setShowPopup] = useState(false);
     const [groupSchedules, setGroupSchedules] = useState({});
+    const isAddSuccess = useSelector((state) => state.addTeamAssignMatch?.success);
+
 
     useEffect(() => {
         dispatch(getTeamMatch(competitionId));
-    }, [competitionId, dispatch]);
+        dispatch(getActive(competitionId))
+    }, [competitionId, dispatch,isAddSuccess]);
 
     // useEffect(() => {
 

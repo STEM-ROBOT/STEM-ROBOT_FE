@@ -37,6 +37,7 @@ import GroupMatch from "../pages/moderator-ui/component/GroupMatchDraw/GroupMatc
 import InforAccount from "../pages/moderator-ui/component/InfoAccount/InforAccount";
 import PrivateRoute from "./PrivateRoute";
 import LeagueRouter from "../pages/moderator-ui/layout/LeagueRouter/LeagueRouter";
+import TeamRegister from "../pages/moderator-ui/component/TeamRegister/TeamRegister";
 
 export const tournamentChildren = [
   {
@@ -95,10 +96,17 @@ export const tournamentRoutes = [
 ];
 
 export const competitionChildren = [
+  
   {
     path: "settings",
     element: (
       <PrivateRoute element={<TournamentConfiguration />} requiredRole="MD" />
+    ),
+  },
+  {
+    path: "team-register",
+    element: (
+      <PrivateRoute element={<TeamRegister />} requiredRole="MD" />
     ),
   },
 ];

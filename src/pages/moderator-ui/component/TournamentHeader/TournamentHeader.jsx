@@ -1,38 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; 
+import { useNavigate, useParams } from 'react-router-dom';
 import { FaUsers, FaEye, FaHeart } from 'react-icons/fa';
 import './TournamentHeader.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { activeCompetition, getCompetitionInfo } from '../../../../redux/actions/CompetitionAction';
 
 const TournamentHeader = () => {
-  const { tournamentId, competitionId } = useParams(); 
+  const { tournamentId, competitionId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("settings");
+  const [activeTab, setActiveTab] = useState("settings/format");
+  const isPubic = true;
 
-  const tabs = [
-    { name: "TÙY CHỈNH", key: "settings" },
-  ];
-
-  // Lấy thông tin từ Redux store
   const competitionInfo = useSelector((state) => state.infoCompetition?.infoCompetition?.data);
   const loading = useSelector((state) => state.infoTournament.loading);
   const error = useSelector((state) => state.infoTournament.error);
 
+  const tabs = [
+    { name: "TÙY CHỈNH", key: "settings/format" },
+  ];
+  if (competitionInfo?.status === "Public") {
+    tabs.push({ name: "XÉT DUYỆT ĐỘI", key: "team-register" });
+  }
+  // Lấy thông tin từ Redux store
+  
+
   useEffect(() => {
-      if (competitionId) {
-          dispatch(getCompetitionInfo(competitionId));
-      }
+    if (competitionId) {
+      dispatch(getCompetitionInfo(competitionId));
+    }
   }, [competitionId, dispatch]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab.key);
-    navigate(`/mytournament/${tournamentId}/mycompetition/${competitionId}/${tab.key}`); 
+    navigate(`/mytournament/${tournamentId}/mycompetition/${competitionId}/${tab.key}`);
+
+
   };
 
-  const handleActive = () =>{
-     dispatch(activeCompetition(competitionId))
+  const handleActive = () => {
+    dispatch(activeCompetition(competitionId))
   }
 
   return (
@@ -57,9 +64,15 @@ const TournamentHeader = () => {
                 <FaHeart className="favorite-icon" /> */}
               </div>
             </div>
-            <div className="activation-section">
-              <button className="activate-button" onClick={handleActive}>Kích hoạt</button>
-            </div>
+            {
+              !competitionInfo?.isActive && (
+                <div className="activation-section">
+                  <button className="activate-button" onClick={handleActive}>Kích hoạt</button>
+                </div>
+              )
+
+            }
+
           </div>
 
           {/* Điều hướng Tab */}
