@@ -106,3 +106,12 @@
     font-size: 16px;
     margin: 0 10px;
 }
+.btn-save-referee{
+    background: linear-gradient(90deg, #001f3f, #079bc4);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+}

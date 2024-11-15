@@ -6,6 +6,7 @@ import {
   FaArrowRight,
   FaFileExport,
   FaFileUpload,
+  FaCheck,
 } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Import thư viện để xuất/nhập Excel
 import "./ManageTeam.css";
@@ -13,11 +14,13 @@ import EditTeamPopup from "../EditTeamPopup/EditTeamPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { getListTeam } from "../../../../redux/actions/TeamAction";
 import { useParams } from "react-router-dom";
+import { getActive } from "../../../../redux/actions/FormatAction";
 
 const ManageTeam = () => {
   const { competitionId } = useParams();
   const dispatch = useDispatch();
   const getteams = useSelector((state) => state.getTeams);
+ 
 
   // Ensure teams is always an array
   const teams = Array.isArray(getteams?.listTeam?.data?.success?.data)
@@ -26,6 +29,7 @@ const ManageTeam = () => {
     const [loadApi, setLoadApi] = useState(false);
   useEffect(() => {
     dispatch(getListTeam(competitionId));
+    dispatch(getActive(competitionId))
     setLoadApi(false);
   }, [dispatch, competitionId,loadApi]);
 
@@ -127,7 +131,7 @@ const ManageTeam = () => {
           {teams.reduce((acc, team) => acc + (team.member?.length || 0), 0)}{" "}
           người chơi tham gia giải
         </span>
-        <div className="header-buttons">
+        {/* <div className="header-buttons">
           <button
             className="import-button-team"
             onClick={() => document.getElementById("hidden-file-input").click()}
@@ -144,18 +148,21 @@ const ManageTeam = () => {
           <button className="export-button-team" onClick={exportToExcel}>
             <FaFileExport /> Xuất ra file Excel
           </button>
-        </div>
+        </div> */}
       </div>
       <div className="team-list-grid">
         {currentTeams.map((team) => (
           <div key={team.id} className="team-card">
+            
             <div className="team-card-header">
+             {team.isSetup && <FaCheck className="check-icon-team" />} 
               <img src={team.image} alt={team.name} className="team-logo" />
               <FaEdit
                 className="edit-icon"
                 onClick={() => handleEditClick(team)}
               />
             </div>
+          {/* Add check icon */}
             <div className="team-name">{team.name}</div>
             <div className="team-members">
               <p>Thành viên</p>

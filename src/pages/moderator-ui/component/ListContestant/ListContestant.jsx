@@ -7,12 +7,11 @@ import AddContestant from '../AddContestant/AddContestant';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContestant, getListContestant } from '../../../../redux/actions/ContestantAction';
 import { useParams } from 'react-router-dom';
+import TokenService from '../../../../config/tokenservice';
 
 const ListContestant = () => {
     const {tournamentId } = useParams();
-    console.log(tournamentId)
-    const schoolName = "Trường Di Linh";
-
+    const schoolName = TokenService.getSchoolName();
     const dispatch = useDispatch();
     const contestantData = useSelector((state) => state.getContestants);
     const contestants = Array.isArray(contestantData?.listContestant?.data?.data) ? contestantData.listContestant.data.data : [];
@@ -22,10 +21,11 @@ const ListContestant = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const contestantsPerPage = 5;
     const [hasChanges, setHasChanges] = useState(false);
+    const isAddSuccess = useSelector((state) => state.addContestant?.success)
 
     useEffect(() => {
         dispatch(getListContestant(tournamentId));
-    }, [dispatch, tournamentId]);
+    }, [dispatch, tournamentId,isAddSuccess]);
 
     useEffect(() => {
         // Only update if contestants array has changed
@@ -145,12 +145,12 @@ const ListContestant = () => {
         <div className="contestant-container">
             <div className="contestant-header">
                 <div className='contestant-header-left'>
-                    <button className="btn-add" onClick={toggleModal}>Thêm thí sinh</button>
+                    {/* <button className="btn-add" onClick={toggleModal}>Thêm thí sinh</button> */}
                 </div>
                 <div className='contestant-header-right'>
-                    <button className="btn-import" onClick={downloadTemplate}>
+                    <label className="btn-import" onClick={downloadTemplate}>
                         <FaDownload className="icon-download" /> Tải file Excel
-                    </button>
+                    </label>
                     <label htmlFor="file-upload" className="btn-import">
                         <FaFileImport className="icon-import" /> Nhập từ Excel
                     </label>
@@ -198,7 +198,7 @@ const ListContestant = () => {
             </div>
 
             {hasChanges && (
-                <button className="btn-save" onClick={saveContestantsToDB}>Lưu thí sinh</button>
+                <button className="btn-save-contestant" onClick={saveContestantsToDB}>Lưu thí sinh</button>
             )}
 
             {isModalOpen && <AddContestant onClose={toggleModal} />}

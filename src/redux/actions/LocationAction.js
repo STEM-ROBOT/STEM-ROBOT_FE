@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
-import api from "/src/config";
-import { GET_LOCATION_FAIL, GET_LOCATION_REQUEST, GET_LOCATION_SUCCESS } from "../constants/LocationConstant";
+import api from "../../config";
+import { ADD_LOCATION_FAIL, ADD_LOCATION_REQUEST, ADD_LOCATION_SUCCESS, GET_LOCATION_FAIL, GET_LOCATION_REQUEST, GET_LOCATION_SUCCESS } from "../constants/LocationConstant";
 
 
 export const getLocations = (competitionId) => async (dispatch) => {
@@ -27,11 +27,11 @@ export const getLocations = (competitionId) => async (dispatch) => {
 
   export const addLocations = (competitionId,listlocation) => async (dispatch) => {
     try {
-      dispatch({ type: GET_LOCATION_REQUEST });
+      dispatch({ type: ADD_LOCATION_REQUEST });
   
       const { data } = await api.post(`/api/locations/list-location?competitionId=${competitionId}`,listlocation);
   
-      dispatch({ type: GET_LOCATION_SUCCESS, payload: data });
+      dispatch({ type: ADD_LOCATION_SUCCESS, payload: data });
       toast.success("Thêm thành công")
     } catch (error) {
       const message =
@@ -42,7 +42,7 @@ export const getLocations = (competitionId) => async (dispatch) => {
         // dispatch(logout());
       }
       dispatch({
-        type: GET_LOCATION_FAIL,
+        type: ADD_LOCATION_FAIL,
         payload: message,
       });
     }

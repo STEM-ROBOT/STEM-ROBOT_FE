@@ -111,12 +111,12 @@ const ListReferee = () => {
         <div className="referee-container">
             <div className="referee-header">
                 <div className='referee-header-left'>
-                    <button className="btn-add" onClick={() => { }}>Thêm trọng tài</button>
+                    {/* <button className="btn-add" onClick={() => { }}>Thêm trọng tài</button> */}
                 </div>
                 <div className='referee-header-right'>
-                    <button className="btn-import" onClick={downloadTemplate}>
+                    <label className="btn-import" onClick={downloadTemplate}>
                         <FaDownload className="icon-download" /> Tải file Excel
-                    </button>
+                    </label>
                     <label htmlFor="file-upload" className="btn-import">
                         <FaFileImport className="icon-import" /> Nhập từ Excel
                     </label>
@@ -160,7 +160,7 @@ const ListReferee = () => {
             </div>
 
             {hasChanges && (
-                <button className="btn-save" onClick={saveRefereesToDB}>Lưu trọng tài</button>
+                <button className="btn-save-referee" onClick={saveRefereesToDB}>Lưu trọng tài</button>
             )}
         </div>
     );
