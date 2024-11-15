@@ -41,7 +41,15 @@
     border-radius: 5px;
     margin-left: 10px;
 }
-
+.btn-save-contestant{
+    background: linear-gradient(90deg, #001f3f, #079bc4);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+}
 .btn-import:hover {
     background: linear-gradient(90deg,#00c9ff, #001f3f);
 }
