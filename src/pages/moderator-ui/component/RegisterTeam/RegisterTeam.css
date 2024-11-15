@@ -165,3 +165,25 @@
   justify-content: center;
   align-items: center;
 }
+.send_register_team {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn_send_register_team {
+  display: flex;
+  justify-content: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #83cbeb;
+  border: 2px solid #043b5b;
+  color: #043b5b;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 7px;
+}
+.btn_send_register_team:hover {
+  background-color: #3ca3d0;
+}

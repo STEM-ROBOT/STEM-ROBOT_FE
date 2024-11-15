@@ -26,6 +26,8 @@ const app = initializeApp(firebaseConfig);
 export const imgDB = getStorage(app);
 
 export const FirebaseUpload = async (file) => {
+  console.log(file);
+
   if (!file) return;
   const imgRef = ref(imgDB, `stem-sever/${v4()}`);
 
