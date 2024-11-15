@@ -21,7 +21,7 @@ import { addScoreReducer } from '../reducers/ScoreReducer';
 import { getLoctionReducer } from '../reducers/LocationReducer';
 import { ListAccountReducer, ListGenreReducer, ListOrderReducer } from '../reducers/AdminReducer';
 import {  ChangeInforReducer, ChangePassword, InforAccountID } from '../reducers/AccountReducer';
-import { addTeamAssignMatchReducer, addTeamKnockoutReducer, addTeamTableReducer, addTimeAssignMatchReducer, getTeamAssignMatchReducer, getTeamknockoutReducer, getTeamMatchReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
+import { addTeamAssignMatchReducer, addTeamKnockoutReducer, addTeamTableReducer, addTimeAssignMatchReducer, getTeamAssignMatchReducer, getTeamknockoutReducer, getTeamMatchReducer, getTeamRegisterReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
 import { addLoctionReducer } from '../reducers/LocationReducer';
 import { getActiveCompetitionReducer } from '../reducers/FormatReducer';
 
@@ -68,6 +68,7 @@ const rootReducer = combineReducers({
     addScheduleReferee:addScheduleRefereeReducer,
     getScheduleReferee:getScheduleRefereeReducer,
     activeCompetition:activeCompetitionReducer,
+    getTeamRegister:getTeamRegisterReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

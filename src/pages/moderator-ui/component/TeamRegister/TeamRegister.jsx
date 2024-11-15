@@ -1,9 +1,12 @@
 // TeamRegister.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./TeamRegister.css";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa"; // import icons from react-icons
+import { useDispatch, useSelector } from "react-redux";
+import { getTeamRegister } from "../../../../redux/actions/TeamAction";
+import { useParams } from "react-router-dom";
 
-const fakeTeams = [
+const teams = [
     {
         id: 1,
         image: "https://ephoto360.com/uploads/w450/2018/08/16/logo-avat-min5b7543d71cf6d_14dfbfa7e7fd2d65c95470c8cd01c651.jpg",
@@ -51,7 +54,24 @@ const fakeTeams = [
     },
 ];
 
-const TeamRegister = ({ isPublic }) => {
+const TeamRegister = () => {
+    const {competitionId} = useParams();
+    const dispatch = useDispatch();
+
+    const fetchedTeams = useSelector((state) => state.getTeamRegister.listTeamRegister?.data);
+    const loading = useSelector((state) => state.getTeamRegister.loading);
+  
+    const [teams, setTeams] = useState([]);
+
+    useEffect(() => {
+        dispatch(getTeamRegister(competitionId));
+    }, [competitionId, dispatch]);
+
+    useEffect(() => {
+        if (fetchedTeams) {
+            setTeams(fetchedTeams);
+        }
+    }, [fetchedTeams]);
     const getStatusClass = (status) => {
         switch (status) {
             case "Chấp nhận":
@@ -83,19 +103,19 @@ const TeamRegister = ({ isPublic }) => {
                     <div className="team-register-column-header">Thao tác</div>
                 </div>
                 <div className="team-register-table-body">
-                    {fakeTeams.length > 0 ? (
-                        fakeTeams.map((team) => (
+                    {teams.length > 0 ? (
+                        teams.map((team,index) => (
                             <div key={team.id} className="team-register-table-row">
-                                <div className="team-register-table-cell">{team.id}</div>
+                                <div className="team-register-table-cell">{index+1}</div>
                                 <div className="team-register-table-cell">
                                     <img src={team.image} alt={team.name} className="team-register-image" />
                                 </div>
                                 <div className="team-register-table-cell">{team.name}</div>
-                                <div className="team-register-table-cell">{team.members}</div>
-                                <div className="team-register-table-cell">{team.contactPerson}</div>
-                                <div className="team-register-table-cell">{team.contactPhone}</div>
-                                <div className="team-register-table-cell">{team.registrationTime}</div>
-                                {team.isSetup ? (
+                                <div className="team-register-table-cell">{team.member}</div>
+                                <div className="team-register-table-cell">{team.email}</div>
+                                <div className="team-register-table-cell">{team.phoneNumber}</div>
+                                <div className="team-register-table-cell">{team.registerTime}</div>
+                                {team.teamId !== null ? (
                                     team.status ? (
                                         <div className={`team-register-table-cell ${getStatusClass("Chấp nhận")}`}>
                                             Chấp nhận
