@@ -25,17 +25,20 @@ const app = initializeApp(firebaseConfig);
 export const imgDB = getStorage(app);
 
 export const FirebaseUpload = async (file) => {
+  console.log(file);
+
   if (!file) return;
   const imgRef = ref(imgDB, `stem-sever/${v4()}`);
 
   try {
     // Tải ảnh lên Firebase Storage
-    await uploadBytes(imgRef, file, contentType);
+    await uploadBytes(imgRef, file);
 
     // Lấy URL của ảnh vừa tải lên
     const url = await getDownloadURL(imgRef);
-    return url;
     console.log("Image URL:", url);
+    return url;
+
     // return url;
   } catch (error) {
     console.error("Error uploading image:", error);
