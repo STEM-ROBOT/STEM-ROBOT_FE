@@ -12,8 +12,14 @@ const Countdown = () => {
   const pram = useParams();
   const [registerConfigApi, setRegisterConfigApi] = useState();
   const [textBtn, setTextBtn] = useState("Bắt đầu đăng ký");
+  const [outTime, setOutTime] = useState(false);
   const calculateTimeLeft = () => {
-    const difference = new Date(registerConfigApi?.registerTime) - new Date();
+    const targetDate = new Date(registerConfigApi?.registerTime);
+    targetDate.setHours(24, 0, 0, 0); // Set to midnight of the next day (24:00)
+
+    // Calculate the difference between target time and current time
+    const now = new Date();
+    const difference = targetDate - now;
     let timeLeft = {};
 
     if (difference > 0) {
@@ -39,6 +45,7 @@ const Countdown = () => {
           navigate(`/404error`);
         }
         console.log(response.data);
+        sessionStorage.setItem("RegisterConfig", response.data.numberContestantTeam);
         setRegisterConfigApi(response.data);
       })
       .catch((error) => {
@@ -52,6 +59,7 @@ const Countdown = () => {
         setTimeLeft(timeDown);
       } else {
         setTextBtn("Đã hết hạn đăng ký");
+        setOutTime(true);
       }
     }, 1000);
     return () => clearInterval(timer);
@@ -90,7 +98,9 @@ const Countdown = () => {
             </div>
             <button
               className="register_button"
-              onClick={() => setRegisterTeam(true)}
+              onClick={() => {
+                outTime ? setRegisterTeam(false) : setRegisterTeam(true);
+              }}
             >
               {textBtn}
             </button>
