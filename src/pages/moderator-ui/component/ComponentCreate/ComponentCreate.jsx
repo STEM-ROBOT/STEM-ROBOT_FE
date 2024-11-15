@@ -72,40 +72,14 @@ const ComponentCreate = () => {
 
     await dispatch(createTournament(tournamentData, navigate))
       .then(() => {
+        console.log(tournamentData);
         navigate("/account/mytournament");
       })
       .catch((error) => {
         console.error("Lỗi khi tạo giải đấu:", error);
       });
   };
-  // const modules = {
-  //   toolbar: [
-  //     [{ font: [] }, { size: [] }], // custom dropdown
-  //     ["bold", "italic", "underline", "strike"], // toggled buttons
-  //     [{ align: [] }],
-  //     [{ list: "ordered" }, { list: "bullet" }],
-  //     ["link", "image", "blockquote", "code-block"],
-  //     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-  //     ["clean"], // remove formatting button
-  //   ],
-  // };
-  // const formats = [
-  //   "font",
-  //   "size",
-  //   "bold",
-  //   "italic",
-  //   "underline",
-  //   "strike",
-  //   "align",
-  //   "list",
-  //   "bullet",
-  //   "link",
-  //   "image",
-  //   "blockquote",
-  //   "code-block",
-  //   "color",
-  //   "background",
-  // ];
+
   return (
     <div className="create_tournament_page">
       <div className="create_container">
