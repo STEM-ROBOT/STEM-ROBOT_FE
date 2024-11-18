@@ -5,10 +5,12 @@ import CreateTournamentCompetition from "../CreateTournamentCompetition/CreateTo
 import logo from "/src/assets/images/logo.png";
 import { useDispatch } from "react-redux";
 import { createTournament } from "../../../../redux/actions/TournamentAction";
+import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 import { FirebaseUpload } from "/src/config/firebase";
 import ReactQuill from "react-quill";
 import QuillToolbar, { formats, modules } from "../EditorToolbar/EditorToolbar";
+
 const ComponentCreate = () => {
   // Tournament Info
   const [avatarInputView, setAvatarInputView] = useState(logo);
@@ -117,7 +119,7 @@ const ComponentCreate = () => {
             <div className="competition_create">
               <div className="label_avatar">Giới thiệu giải </div>
               <div className="text-editor">
-                <QuillToolbar />
+                <QuillToolbar/>
                 <ReactQuill
                   theme="snow"
                   value={value}
