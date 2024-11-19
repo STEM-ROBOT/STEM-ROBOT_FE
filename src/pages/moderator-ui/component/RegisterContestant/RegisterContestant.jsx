@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 import { FirebaseUpload } from "../../../../config/firebase";
 import api from "../../../../config";
 import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
+import SignIn from "../../../system-ui/component/Author/SignIn/SignIn";
+import SignUp from "../../../system-ui/component/Author/SignUp/SignUp";
+import TokenService from "../../../../config/tokenservice";
 
 const RegisterContestant = () => {
   const { league_id } = useParams();
@@ -21,6 +24,9 @@ const RegisterContestant = () => {
   const [avatarError, setAvatarError] = useState("");
   const [loadApi, setLoadApi] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [signIn, setSignIn] = useState(false);
+  const [signUp, setSignUp] = useState(false);
+  const fetchedUserId = TokenService.getUserId();
   useEffect(() => {
     const loadApi = () => {
       api
@@ -32,11 +38,33 @@ const RegisterContestant = () => {
           setContestant(response.data);
         });
     };
-    if (loadApi) {
+    if (loadApi && fetchedUserId) {
       loadApi();
+    } else {
+      setSignIn(true);
     }
-  }, [loadApi]);
+  }, [loadApi, fetchedUserId]);
+  useEffect(() => {
+    const targetPosition = 285;
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+    const duration = 500;
+    let start = null;
+    const step = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = timestamp - start;
+      const scrollY = Math.min(
+        startPosition + (distance * progress) / duration,
+        targetPosition
+      );
+      window.scrollTo(0, scrollY);
+      if (scrollY < targetPosition) {
+        requestAnimationFrame(step);
+      }
+    };
 
+    requestAnimationFrame(step);
+  }, [fetchedUserId]);
   const handlePhoneChange = (e) => {
     const phoneNumber = e.target.value;
     const vietnamPhoneRegex = /^(0|\+84)(3|5|7|8|9)[0-9]{8}$/;
@@ -65,8 +93,6 @@ const RegisterContestant = () => {
   };
 
   const handleSubmit = async () => {
-    // Validate fields before submission
-
     let hasError = false;
 
     if (!contestantName) {
@@ -134,6 +160,8 @@ const RegisterContestant = () => {
   };
   return (
     <>
+      {signIn === true && <SignIn setSignIn={setSignIn} />}
+      {signUp === true && <SignUp setSignUp={setSignUp} />}
       <div className="competition_container">
         <div className="label_create">Thông tin thí sinh</div>
         {loading ? (

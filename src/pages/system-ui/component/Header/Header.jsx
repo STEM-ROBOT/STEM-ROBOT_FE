@@ -32,7 +32,15 @@ const Header = () => {
   const navigate = useNavigate();
   const [userId, setUserId] = useState(null);
   const fetchedUserId = TokenService.getUserId();
+  const useRole = TokenService.getUserRole();
   const hubConnectionRef = useRef(null);
+  useEffect(() => {
+    if (useRole === "AD") {
+      navigate("/admin");
+    } else if (useRole === "RF") {
+      navigate("/referee-main");
+    }
+  }, [useRole]);
   useEffect(() => {
     console.log(fetchedUserId);
 
@@ -44,10 +52,11 @@ const Header = () => {
         client: `notification/${fetchedUserId}`,
         onDataReceived: handleData,
       }).then((hubConnection) => {
-        hubConnectionRef.current = hubConnection; // Lưu hubConnection vào useRef
+        hubConnectionRef.current = hubConnection;
       });
     };
     const connectClient = () => {
+      setLoadApiConnectClient(false);
       api
         .get("/api/notification/notification")
         .then((response) => {
@@ -204,7 +213,7 @@ const Header = () => {
             Liên Hệ
           </a>
         </nav>
-        {auInfo ? (
+        {fetchedUserId ? (
           <div className="cta-buttons">
             <div ref={pagesRef} className="account_action_header">
               <img

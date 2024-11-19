@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 const ContentTournamentReferee = ({ schedules }) => {
   const navigate = useNavigate();
   const GoSchedule = (schedule) => {
-    navigate(`${schedule.competitionId}`);
+    sessionStorage.setItem("competitionImageReferee", schedule.imageGenre);
     sessionStorage.setItem("competitionId", schedule.competitionId);
+    navigate(`${schedule.competitionId}`);
   };
   return (
     <div className="content_home_referee_container">
