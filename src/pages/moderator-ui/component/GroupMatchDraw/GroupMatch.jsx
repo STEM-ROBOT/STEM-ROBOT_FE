@@ -4,14 +4,12 @@ import CountdownPopup from '../CountdownPopup/CountdownPopup';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTeamAssignMatch, getTeamMatch } from '../../../../redux/actions/TeamAction';
+import { getActive } from '../../../../redux/actions/FormatAction';
 
 const generateRoundRobinSchedule = (teams, tableId) => {
     const usedPairs = new Set();
     const totalTeams = teams.length;
-
     const clonedTeams = JSON.parse(JSON.stringify(teams));
-
-    // If the number of teams is odd, add a 'Bye' team
     if (totalTeams % 2 !== 0) {
         clonedTeams.push({ teamId: null, teamName: 'Bye' });
     }
@@ -19,8 +17,6 @@ const generateRoundRobinSchedule = (teams, tableId) => {
     const numRounds = clonedTeams.length - 1;
     const halfSize = clonedTeams.length / 2;
     const teamList = [...clonedTeams];
-
-
     const matches = [];
 
     for (let round = 0; round < numRounds; round++) {
@@ -44,11 +40,8 @@ const generateRoundRobinSchedule = (teams, tableId) => {
                 usedPairs.add(reversePairKey);
             }
         }
-        // Rotate the team list for the next round (Round-Robin technique)
         teamList.splice(1, 0, teamList.pop());
-    }
-
-    // Return the desired structure with all matches for the given tableId
+    }  
     return { tableId, matches };
 };
 
@@ -58,147 +51,105 @@ const GroupMatch = () => {
     const dispatch = useDispatch();
     const listTeamMatchs = useSelector((state) => state.getListTeamMatch);
     const teamMatchs = listTeamMatchs.listTeamMatch?.data;
-
+    const [initialTeamMatches, setInitialTeamMatches] = useState(null);
     const [data, setData] = useState();
     const [currentRoundName, setCurrentRoundName] = useState();
-    const [showPopup, setShowPopup] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);  // Controls when the countdown popup is shown
     const [groupSchedules, setGroupSchedules] = useState({});
+    const isAddSuccess = useSelector((state) => state.addTeamAssignMatch?.success);
 
     useEffect(() => {
         dispatch(getTeamMatch(competitionId));
-    }, [competitionId, dispatch]);
-
-    // useEffect(() => {
-
-    //     if (teamMatchs) {
-    //         setData(teamMatchs);
-    //     }
-
-    // }, [teamMatchs]);
-
+        dispatch(getActive(competitionId))
+    }, [competitionId, dispatch, isAddSuccess]);
 
     useEffect(() => {
-
-        if (teamMatchs) {
-            setCurrentRoundName(teamMatchs.rounds[0]?.roundName);
-
-
-            const dataUse = teamMatchs
+        setInitialTeamMatches(teamMatchs)
+        if (initialTeamMatches) {
+            setCurrentRoundName(initialTeamMatches.rounds[0]?.roundName);
+            const dataUse = initialTeamMatches;
             const updatedData = { ...dataUse };
-
-            // Cache to store generated schedules by tableId, ensuring each table uses the same schedule across all rounds
-
-
             updatedData.rounds.forEach((round, indexroud) => {
-                const scheduleCache = {};
-
-                round.tables.forEach((table) => {
-                    // Find teams associated with the current tableId
-                    const tableGroupData = teamMatchs.tableGroup.find((group) => group.team_tableId === table.tableId);
+                round.tables.forEach((table) => {                  
+                    const tableGroupData = initialTeamMatches.tableGroup.find((group) => group.team_tableId === table.tableId);
                     const teams = tableGroupData ? tableGroupData.team_table : [];
-                    const tableId = tableGroupData ? tableGroupData.team_tableId : null;
-
-                    // Check if the schedule for this tableId is already in the cache
-
-
-                    // Generate and cache the schedule if it hasn't been generated yet
+                    const tableId = tableGroupData ? tableGroupData.team_tableId : null;                  
                     const schedule = generateRoundRobinSchedule(teams, tableId);
-
-                    // Assign team pairs to teamMatches in `table.matches` for each round based on the cached schedule
                     table.matches.forEach((match, index) => {
-                        // console.log(generatedMatches[index])
                         const generatedMatch = schedule.matches[table.matches.length * indexroud + index];
-
                         if (generatedMatch) {
-                            // Set team1 details from the cached matches
                             match.teamMatches[0].teamId = generatedMatch.team1.teamId || null;
-                            match.teamMatches[0].teamName = generatedMatch.team1.teamName || "Unknown";
-
-                            // Set team2 details from the cached matches
+                            match.teamMatches[0].teamName = generatedMatch.team1.teamName || "Unknown";                        
                             match.teamMatches[1].teamId = generatedMatch.team2.teamId || null;
                             match.teamMatches[1].teamName = generatedMatch.team2.teamName || "Unknown";
                         }
                     });
-
-
                 });
             });
-            console.log(updatedData);
-
             setData(updatedData);
-
-
         }
-    }, [teamMatchs]);
-
-
-
-
-    // Shuffle function (Fisher-Yates algorithm)
+    }, [teamMatchs]);  
 
     const randomizeMatches = () => {
-
-        setCurrentRoundName(teamMatchs.rounds[0]?.roundName);
-        const dataUse = JSON.parse(JSON.stringify(teamMatchs));
+        setCurrentRoundName(initialTeamMatches.rounds[0]?.roundName);
+        const dataUse = JSON.parse(JSON.stringify(initialTeamMatches));
         const updatedData = { ...dataUse };
-
-
-
+    
         const shuffleArray = (array) => {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
             }
         };
-        if (!teamMatchs.isTeamMatch) {
-            updatedData.rounds.forEach((round, indexroud) => {
-
+    
+        if (!initialTeamMatches.isTeamMatch) {
+            updatedData.rounds.forEach((round) => {
                 round.tables.forEach((table) => {
-                    // Find teams associated with the current tableId
-                    const tableGroupData = teamMatchs.tableGroup.find((group) => group.team_tableId === table.tableId);
+                    const tableGroupData = initialTeamMatches.tableGroup.find(
+                        (group) => group.team_tableId === table.tableId
+                    );
+                    const teams = tableGroupData ? tableGroupData.team_table : [];                                  
+                    shuffleArray(teams);                                  
+                    if (tableGroupData) {
+                        tableGroupData.team_table = teams;
+                    }
+                });
+            });
+
+            updatedData.rounds.forEach((round, indexroud) => {
+                round.tables.forEach((table) => {
+                    const tableGroupData = initialTeamMatches.tableGroup.find(
+                        (group) => group.team_tableId === table.tableId
+                    );
                     const teams = tableGroupData ? tableGroupData.team_table : [];
                     const tableId = tableGroupData ? tableGroupData.team_tableId : null;
-
-                    // Check if the schedule for this tableId is already in the cache
-                    shuffleArray(teams);
-                    // Generate and cache the schedule if it hasn't been generated yet
+    
                     const schedule = generateRoundRobinSchedule(teams, tableId);
-
-                    // Assign team pairs to teamMatches in `table.matches` for each round based on the cached schedule
+    
                     table.matches.forEach((match, index) => {
-                        // console.log(generatedMatches[index])
                         const generatedMatch = schedule.matches[table.matches.length * indexroud + index];
-
                         if (generatedMatch) {
-                            // Set team1 details from the cached matches
                             match.teamMatches[0].teamId = generatedMatch.team1.teamId || null;
                             match.teamMatches[0].teamName = generatedMatch.team1.teamName || "Unknown";
-
-                            // Set team2 details from the cached matches
                             match.teamMatches[1].teamId = generatedMatch.team2.teamId || null;
                             match.teamMatches[1].teamName = generatedMatch.team2.teamName || "Unknown";
                         }
                     });
-
-
                 });
             });
         }
-
+    
         setData(updatedData);
         setGroupSchedules(updatedData);
-
     };
 
     const handleRandomDraw = () => {
-        if (!teamMatchs.isTeamMatch) {
-            setShowPopup(true);
-        }
+        setShowPopup(true); // Display the countdown popup
     };
 
     const handleCountdownComplete = () => {
-        setShowPopup(false);
-        randomizeMatches();
+        setShowPopup(false); // Hide the countdown popup
+        randomizeMatches();  // Call randomizeMatches after the countdown completes
     };
 
     const renderMatchesForRound = (roundName, tableId, matches) => {
@@ -237,7 +188,6 @@ const GroupMatch = () => {
             data.rounds.forEach((round) => {
                 round.tables.forEach((table) => {
                     table.matches.forEach((match) => {
-                        // Prepare each team in the required format
                         const team1Data = {
                             matchId: match.matchId,
                             teamId: match.teamMatches[0]?.teamId || 0,
@@ -256,12 +206,8 @@ const GroupMatch = () => {
                     });
                 });
             });
-            console.log(matchData)
             dispatch(addTeamAssignMatch(competitionId, matchData))
-
         }
-
-
     };
 
     return (
@@ -272,11 +218,7 @@ const GroupMatch = () => {
                 <div className="button-container">
                     <button className="random-btn" onClick={handleRandomDraw}>Bốc thăm ngẫu nhiên</button>
                 </div>
-            )
-
-            }
-
-
+            )}
             <div className="group-stage">
                 <div className="round-tabs">
                     {data?.rounds.map((round) => (
@@ -289,7 +231,6 @@ const GroupMatch = () => {
                         </button>
                     ))}
                 </div>
-
                 <div className="group-matches">
                     {data?.rounds
                         .filter((round) => round.roundName === currentRoundName)
@@ -303,16 +244,20 @@ const GroupMatch = () => {
                         )}
                 </div>
             </div>
-            {
-                !teamMatchs?.isTeamMatch && (
-                    <button className="save-btn" onClick={saveMatchesToDatabase}>Lưu</button>
-                )
-            }
-
-
+            {!teamMatchs?.isTeamMatch && (
+                <button className="save-btn" onClick={saveMatchesToDatabase}>Lưu</button>
+            )}
             {showPopup && <CountdownPopup onComplete={handleCountdownComplete} />}
         </div>
     );
 };
 
 export default GroupMatch;
+
+
+
+
+
+
+
+

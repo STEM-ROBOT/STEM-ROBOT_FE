@@ -3,6 +3,7 @@ import './ManageArena.css';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addLocations, getLocations } from '../../../../redux/actions/LocationAction';
+import { getActive } from '../../../../redux/actions/FormatAction';
 
 const ManageArena = () => {
     const {competitionId} = useParams();
@@ -13,20 +14,16 @@ const ManageArena = () => {
 
     const getListLocations = useSelector((state) => state.getLocations);
     const Data = Array.isArray(getListLocations?.listLocation?.data) ? getListLocations?.listLocation?.data : [];
-
-    // const fakeData = [
-    //     { id: 1, name: "Sân 1" },
-    //     { id: 2, name: "Sân 2" },
-    //     { id: 3, name: "Sân 3" },
-    //     { id: 4, name: "Sân 4" }
-    // ];
-
     const [arenas, setArenas] = useState([]);
     const [inputValue, setInputValue] = useState("");
+    const isAddSuccess = useSelector((state) => state.addLocation?.success);
+
+  
 
     useEffect(()=>{
         dispatch(getLocations(competitionId))
-    },[dispatch,competitionId])
+        dispatch(getActive(competitionId))
+    },[dispatch,competitionId,isAddSuccess])
 
 
     useEffect(() => {

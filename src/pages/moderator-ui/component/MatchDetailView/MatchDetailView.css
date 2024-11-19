@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(253, 253, 253, 0); /* Màu nền với độ mờ */
+  background-color: rgba(253, 253, 253, 0);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,20 +13,24 @@
   transition: all 0.5s ease-in-out;
 }
 .match_detail_container_popup.active {
-  background-color: rgba(155, 187, 197, 0.293);
+  /* background-color: rgba(155, 187, 197, 0.293); */
+  /* background-image: url(https://firebasestorage.googleapis.com/v0/b/fine-acronym-438603-m5.firebasestorage.app/o/stem-sever%2FDALL%C2%B7E%202024-11-11%2011.51.21%20-%20A%20vibrant%20scene%20of%20a%20STEM%20robot%20soccer%20competition%20set%20in%20a%20spacious%20arena.%20The%20field%20is%20designed%20with%20a%20large%20green%20and%20yellow%20soccer%20pitch%2C%20with%20cle.webp?alt=media&token=af66e483-0009-4652-8d4d-7c473e314f8c); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   scale: 1;
 }
 
 .match_detail_container {
-  min-width: 700px;
-  background-color: #fff;
+  min-width: 55%;
+  background-color: #ffffff3f;
   padding: 10px 15px;
   border-radius: 7px;
   position: relative;
 }
 .view_data_match_container {
   overflow-y: auto;
-  max-height: 400px;
+  max-height: 50vh;
   border-radius: 7px;
 }
 .view_data_match_container::-webkit-scrollbar {
@@ -67,11 +71,11 @@
 }
 .close_head_close:hover {
   color: #fff;
-  background-color: #2d6694de;
+  background-color: #2d669449;
 }
 .match_body_detail {
   padding: 5px;
-  background-color: #2d6594;
+  background-color: rgba(5, 36, 66, 0.692);
   border-radius: 7px;
   color: #fff;
   margin-bottom: 15px;
@@ -105,6 +109,7 @@
 }
 .item_team_logo {
   margin-bottom: 10px;
+  object-fit: cover;
   width: 150px;
   height: 150px;
 }
@@ -126,12 +131,42 @@
   border-radius: 7px;
   padding: 0px 20px;
 }
-
+.match_display_match_play {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #020202da;
+  color: #2998ff;
+  border-radius: 7px;
+  padding: 0px 20px;
+  font-size: 25px;
+  font-weight: 600;
+}
+.match_display_match_play.not {
+  color: #f74702;
+}
+.countdown_display_match_play {
+  margin-top: 40px;
+  color: #2998ff;
+  width: 200px;
+  justify-content: space-around;
+  display: flex;
+}
+.time_block.match_action {
+  background-color: #ffffffc7;
+  padding: 10px;
+}
+.time_label.match_action {
+  color: #2998ff;
+}
 .match_score_team_detail_load {
   width: 100%;
   height: 200px;
   object-fit: cover;
   border-radius: 7px;
+  background-color: none;
 }
 .haft_match {
   display: flex;
@@ -176,12 +211,12 @@
   top: -30px;
   scale: 0.7;
   z-index: 1;
-  opacity: 0; /* Ẩn phần tử ban đầu */
-  transition: all 0.5s ease; /* Thêm hiệu ứng chuyển đổi */
+  opacity: 0;
+  transition: all 0.5s ease;
 }
 
 .match_score_team_item_detail:hover .match_score_description {
-  opacity: 1; /* Hiển thị phần tử khi hover */
+  opacity: 1;
   scale: 1;
 }
 .score_team_item_time {

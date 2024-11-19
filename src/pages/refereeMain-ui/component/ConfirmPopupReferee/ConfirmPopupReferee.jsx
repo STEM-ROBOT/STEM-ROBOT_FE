@@ -5,12 +5,15 @@ import { BsFillKeyFill, BsShieldFillCheck } from "react-icons/bs";
 import { GoPasskeyFill } from "react-icons/go";
 import { SiSimplelogin } from "react-icons/si";
 import api from "/src/config";
+import { useNavigate } from "react-router-dom";
+
 const ConfirmPopupReferee = ({
   match_view,
   setShowPopup,
   email,
   refereeId,
 }) => {
+  const navigate = useNavigate();
   const [popupActive, setActive] = useState(false);
   const [codeTimeout, setTimeouts] = useState(false);
   const [textView, setTextView] = useState(0);
@@ -64,23 +67,33 @@ const ConfirmPopupReferee = ({
       .toString()
       .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}s`;
   };
-  const CheckCode = () => {
-    api
-      .post(
-        `/api/schedules/schedule-sendcode?scheduleId=${match_view.id}&code=${codeInput}`
-      )
-      .then((response) => {
-        setCodeInput("");
-        setStatusCheck(response.data.message);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  useEffect(() => {
+    const CheckCode = () => {
+      api
+        .post(
+          `/api/schedules/schedule-sendcode?scheduleId=${match_view.id}&code=${codeInput}`
+        )
+        .then((response) => {
+          setCodeInput("");
+          setStatusCheck(response.data.message);
+          console.log(response.data.message.toLowerCase());
+          if (response.data.message.toLowerCase() === "success") {
+            navigate(`/referee-main/main-referee-match/${match_view.id}`);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    if (codeInput.length === textView) {
+      CheckCode();
+    }
+  }, [codeInput]);
+
   const handleCodeInputChange = (e) => {
     if (codeTimeout) {
       if (countInput > 0) {
-        setCodeInput(e.target.value);      
+        setCodeInput(e.target.value);
       } else {
         setActive(false);
         const timer = setTimeout(() => {
@@ -89,7 +102,9 @@ const ConfirmPopupReferee = ({
         return () => clearTimeout(timer);
       }
       if (e.target.value.length === textView) {
-        CheckCode();
+        //CheckCode();
+        console.log("lum lua", e.target.value.length);
+
         setCountInput(countInput - 1);
       }
     } else {

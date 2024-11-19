@@ -31,7 +31,6 @@ const Sidebar = ({ activeItem, onMenuClick, isGroupStage }) => {
    
     const menuItems = [
         { key: "format", label: "Cấu hình nội dung", icon: <FaCogs />, isActive: activeIcon?.isFormat },
-        { key: "permissions", label: "Quản lí trọng tài", icon: <FaUsers />, isActive: activeIcon?.isReferee },
         { key: "teams", label: "Quản lý đội", icon: <FaLayerGroup />, isActive: activeIcon?.isTeam },
         { key: "arena", label: "Quản lý sân đấu", icon: <FaLayerGroup />, isActive: activeIcon?.isLocation },
     ];
@@ -45,6 +44,7 @@ const Sidebar = ({ activeItem, onMenuClick, isGroupStage }) => {
     menuItems.push(
         { key: "matchups", label: "Sắp xếp cặp đấu", icon: <FaLayerGroup />, isActive: activeIcon?.isTeamMatch },
         { key: "schedule", label: "Sắp xếp lịch đấu", icon: <FaCalendarAlt />, isActive: activeIcon?.isMatch },
+        { key: "permissions", label: "Quản lí trọng tài", icon: <FaUsers />, isActive: activeIcon?.isReferee },
         { key: "referee", label: "Sắp xếp trọng tài", icon: <FaLayerGroup />, isActive: activeIcon?.isSchedule },
     );
 

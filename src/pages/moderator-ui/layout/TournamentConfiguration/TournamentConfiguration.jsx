@@ -16,7 +16,7 @@ import TokenService from '/src/Config/tokenservice';
 
 const TournamentConfiguration = () => {
     // const [activeItem, setActiveItem] = useState("format");
-    const [activeItem, setActiveItem] = useState("format");
+    const [activeItem, setActiveItem] = useState("settings/format");
     const [formatId, setFormatId] = useState(1); 
     const fetchedFormatId = TokenService.getFormatId();
     useEffect(() => {

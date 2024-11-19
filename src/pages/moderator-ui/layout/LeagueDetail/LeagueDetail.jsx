@@ -19,28 +19,28 @@ import { tournament_view } from "../../api/ApiFlowView/ApiFlowView";
 
 const LeagueDetail = () => {
   const id = useParams();
-  const storedLeague = sessionStorage.getItem("leagueData");
   const [league, setLeague] = useState();
+  const [tabActive, setTabActive] = useState("competition");
   useEffect(() => {
     api.get(tournament_view + id.league_id).then((response) => {
       setLeague(response.data.data);
     });
-  }, [  ]);
+  }, []);
 
   const renderRoutes = (routes) =>
     routes.map((route, index) => {
       return <Route key={index} path={route.path} element={route.element} />;
     });
   return (
-    <div className="league_detail_page">
-      <Header />
-      <div className="league_detail_container">
-        <DetailBar league={league} />
-        <div className="league_detail_option">
-          <Routes>{renderRoutes(league_detail)}</Routes>
-        </div>
+    <div className="league_detail_container">
+      <DetailBar
+        league={league}
+        tabActive={tabActive}
+        setTabActive={setTabActive}
+      />
+      <div className="league_detail_option">
+        <Routes>{renderRoutes(league_detail)}</Routes>
       </div>
-      <Footer />
     </div>
   );
 };

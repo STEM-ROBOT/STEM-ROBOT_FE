@@ -36,10 +36,7 @@ const LeagueView = ({ viewMode, league }) => {
     if (league) {
       api.put(update_viewer_filter + league.id).then((response) => {
         console.log(response);
-
-        sessionStorage.setItem("leagueData", JSON.stringify(league));
-
-        navigate(`${league.id}`);
+        navigate(`${league.id}/`);
       });
     } else {
       console.error("league is undefined or null");

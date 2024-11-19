@@ -1,8 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
-import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
+
 const _apiKey = import.meta.env.VITE_FIREBASE_API_KEY;
 const _authDomain = import.meta.env.VITE_FIREBASE_AUTHOR_DOMAIN;
 const _projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID;
@@ -25,20 +26,22 @@ const app = initializeApp(firebaseConfig);
 export const imgDB = getStorage(app);
 
 export const FirebaseUpload = async (file) => {
+  console.log(file);
+
   if (!file) return;
   const imgRef = ref(imgDB, `stem-sever/${v4()}`);
 
   try {
-    // Tải ảnh lên Firebase Storage
-    await uploadBytes(imgRef, file, contentType);
+    // Upload the file to Firebase Storage with the file's content type
+    await uploadBytes(imgRef, file, { contentType: file.type });
 
-    // Lấy URL của ảnh vừa tải lên
+    // Get the URL of the uploaded image
     const url = await getDownloadURL(imgRef);
-    return url;
     console.log("Image URL:", url);
-    // return url;
+    return url;
   } catch (error) {
     console.error("Error uploading image:", error);
   }
 };
+
 export default FirebaseUpload;

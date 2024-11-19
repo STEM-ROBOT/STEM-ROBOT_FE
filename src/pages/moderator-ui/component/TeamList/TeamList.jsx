@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./TeamList.css";
 const fakeTeams = [
   {
@@ -60,6 +60,40 @@ const TeamList = ({ isPublic }) => {
         return "";
     }
   };
+  useEffect(() => {
+    // api
+    //   .get(
+    //     `/api/competitions/config-register?competitionID=${path.competitionId}`
+    //   )
+    //   .then((response) => {
+    //     const { status, formatId } = response.data;
+    //     setStatus(status);
+    //     setFormatId(formatId);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+
+    const targetPosition = 285;
+    const startPosition = window.scrollY;
+    const distance = targetPosition - startPosition;
+    const duration = 500;
+    let start = null;
+    const step = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = timestamp - start;
+      const scrollY = Math.min(
+        startPosition + (distance * progress) / duration,
+        targetPosition
+      );
+      window.scrollTo(0, scrollY);
+      if (scrollY < targetPosition) {
+        requestAnimationFrame(step);
+      }
+    };
+
+    requestAnimationFrame(step);
+  }, []);
   return (
     <div className="team_list_container">
       <div className="status_overview">

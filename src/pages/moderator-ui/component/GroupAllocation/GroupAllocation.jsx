@@ -4,6 +4,7 @@ import './GroupAllocation.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddTeamsTable, getTeamsTable } from '../../../../redux/actions/TeamAction';
 import { useParams } from 'react-router-dom';
+import { getActive } from '../../../../redux/actions/FormatAction';
 
 const GroupAllocation = () => {
     const { competitionId } = useParams();
@@ -15,15 +16,17 @@ const GroupAllocation = () => {
     const [tables, setTables] = useState([]);
     const [teams, setTeams] = useState([]);
     const [teamsToNextRound, setTeamsToNextRound] = useState([]);
-    const [totalTeamsToNextRound, setTotalTeamsToNextRound] = useState(2);
+    const [totalTeamsToNextRound, setTotalTeamsToNextRound] = useState(0);
     const [error, setError] = useState('');
-    const [randomizeEnabled, setRandomizeEnabled] = useState(false);
+    const [randomizeEnabled, setRandomizeEnabled] = useState(true);
+    const isAddSuccess = useSelector((state) => state.addTeamTable?.success);
 
     const teamOptions = Array.from({ length: 6 }, (_, i) => Math.pow(2, i + 1));
 
     useEffect(() => {
         dispatch(getTeamsTable(competitionId));
-    }, [competitionId, dispatch]);
+        dispatch(getActive(competitionId))
+    }, [competitionId,isAddSuccess, dispatch]);
 
     useEffect(() => {
         if (Array.isArray(data?.tables) && Array.isArray(data?.teams)) {
@@ -31,11 +34,12 @@ const GroupAllocation = () => {
             setTeams(data.teams);
             setTeamsToNextRound(Array(data.tables.length).fill(1));
            
-            if (randomizeEnabled) {
+            if (!randomizeEnabled) {
                 randomizeGroups(data.teams, data.tables);
             }
         }
         setRandomizeEnabled(data?.isTable)
+        setTotalTeamsToNextRound(data?.numberTeamNextRound)
     }, [data, randomizeEnabled,data?.isTable]);
 
     const randomizeGroups = (teams, tables) => {
@@ -86,11 +90,20 @@ const GroupAllocation = () => {
         });
     };
 
-    const handleTeamsToNextRoundChange = (tableIndex, value) => {
-        const newTeamsToNextRound = [...teamsToNextRound];
-        newTeamsToNextRound[tableIndex] = parseInt(value, 10);
-        setTeamsToNextRound(newTeamsToNextRound);
-        setError(''); // Reset error on change
+    const handleTotalTeamsToNextRoundChange = (value) => {
+        setTotalTeamsToNextRound(value);
+        const distributedTeams = distributeTeams(value, tables.length);
+        setTeamsToNextRound(distributedTeams);
+        setError('');
+    };
+    
+    const distributeTeams = (totalTeams, numTables) => {
+        const baseTeams = Math.floor(totalTeams / numTables);
+        const remainder = totalTeams % numTables;
+    
+        return Array.from({ length: numTables }, (_, index) => 
+            baseTeams + (index < remainder ? 1 : 0)
+        );
     };
 
     const validateGroups = () => {
@@ -139,8 +152,8 @@ const GroupAllocation = () => {
                 <select
                     id="teamsToNextRound"
                     value={totalTeamsToNextRound}
-                    disabled={!randomizeEnabled}
-                    onChange={(e) => setTotalTeamsToNextRound(parseInt(e.target.value, 10))}
+                    disabled={randomizeEnabled}
+                    onChange={(e) => handleTotalTeamsToNextRoundChange(parseInt(e.target.value, 10))}
                 >
                     {teamOptions.map((value) => (
                         <option key={value} value={value}>
@@ -150,7 +163,7 @@ const GroupAllocation = () => {
                 </select>
             </div>
 
-            {randomizeEnabled && (
+            {!randomizeEnabled && (
                 <button className="custom-randomize-btn" onClick={() => randomizeGroups(teams, tables)}>
                     Chia đội ngẫu nhiên
                 </button>
@@ -210,7 +223,7 @@ const GroupAllocation = () => {
                     </div>
                 ))}
             </div>
-          {randomizeEnabled && (
+          {!randomizeEnabled && (
                 <button className="custom-save-btn" onClick={handleSave}>
                 Lưu
             </button>
