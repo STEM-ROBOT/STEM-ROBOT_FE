@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addCompetitionFormat } from "../../../../redux/actions/CompetitionAction";
 import { getActive } from "../../../../redux/actions/FormatAction";
+import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
+
 const formats = [
   {
     id: 1,
@@ -75,7 +77,7 @@ const formats = [
 ];
 const teamGoIn = [2, 4, 8, 16, 32, 64];
 const CreateTournamentFormat = ({ }) => {
-  const {competitionId} = useParams();
+  const { competitionId } = useParams();
   const dispatch = useDispatch();
   const [formatCompetition, setFormatCompetition] = useState(formats[0]);
   const [teamNumber, setTeamNumber] = useState(8);
@@ -93,7 +95,12 @@ const CreateTournamentFormat = ({ }) => {
   const [errorDraw, setErrorDraw] = useState("");
   const [errorLose, setErrorLose] = useState("");
   const [startTimeError, setStartTimeError] = useState("");
+  const [selectedGroups, setSelectedGroups] = useState();
+  const [groupError, setGroupError] = useState("");
+  const [selectedTeamsNextRound, setSelectedTeamsNextRound] = useState("");
+  const [teamsNextRoundError, setTeamsNextRoundError] = useState("");
   const isAddSuccess = useSelector((state) => state.addCompetitionFormat?.success);
+  const loadingAdd = useSelector((state) => state.addCompetitionFormat?.loading);
 
   useEffect(()=>{
     dispatch(getActive(competitionId))
@@ -102,23 +109,44 @@ const CreateTournamentFormat = ({ }) => {
   const handleTeamNumberChange = (e) => {
     const input = e.target.value;
 
- 
     if (/^\d*$/.test(input)) {
       const teamCount = parseInt(input, 10);
       setTeamNumber(teamCount);
 
-   
       if (teamCount >= 6) {
-        const maxGroups = Math.floor(teamCount / 3); 
-
-       
+        const maxGroups = Math.floor(teamCount / 3);
         const options = Array.from({ length: maxGroups - 1 }, (_, i) => i + 2);
-        console.log(options);
-
         setGroupOptions(options);
       } else {
-        setGroupOptions([]); 
+        setGroupOptions([]);
       }
+    }
+  };
+
+  const handleGroupChange = (e) => {
+    const selectedGroups = parseInt(e.target.value, 10);
+    setSelectedGroups(selectedGroups);
+
+    const minGroups = Math.ceil(teamNumber / 16);
+    const maxGroups = Math.floor(teamNumber / 3);
+
+    if (selectedGroups < minGroups || selectedGroups > maxGroups) {
+      setGroupError(`Số bảng đấu phải từ ${minGroups} đến ${maxGroups} cho ${teamNumber} đội.`);
+    } else {
+      setGroupError("");
+    }
+  };
+  const handleTeamsNextRoundChange = (e) => {
+    const selectedTeams = parseInt(e.target.value, 10);
+    setSelectedTeamsNextRound(selectedTeams);
+    validateTeamsNextRound(selectedTeams, selectedGroups);
+  };
+
+  const validateTeamsNextRound = (teams, groups) => {
+    if (teams < groups) {
+      setTeamsNextRoundError(`Số đội vào vòng trong phải bằng hoặc nhiều hơn số bảng đấu.`);
+    } else {
+      setTeamsNextRoundError("");
     }
   };
 
@@ -198,15 +226,7 @@ const CreateTournamentFormat = ({ }) => {
       setMemberNumber(teamCount);
     }
   };
-  // const handleDayRegisNumberChange = (e) => {
-  //   const input = e.target.value;
 
-  //   // Kiểm tra xem input có phải là số không, nếu đúng thì cập nhật state
-  //   if (/^\d*$/.test(input)) {
-  //     const teamCount = parseInt(input, 10); // Chuyển input sang số nguyên
-  //     setDayRegisNumber(teamCount);
-  //   }
-  // };
   const handleSubmit = () => {
     if (!startTime) {
         setStartTimeError("Vui lòng chọn ngày bắt đầu hợp lệ.");
@@ -236,6 +256,7 @@ const CreateTournamentFormat = ({ }) => {
         loseScore: losePoints || 0,
         tieScore: drawPoints || 0
     };
+    console.log(data)
 
     dispatch(addCompetitionFormat(competitionId, data))
       .then(() => {
@@ -264,6 +285,7 @@ const CreateTournamentFormat = ({ }) => {
 
   return (
     <div className="container_create_format_tournament">
+       {loadingAdd && (<LoadingComponent  borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.0)" />)}
       <div className="format_create_competition">
         <div className="competition_format">
           <div className="label_avatar">Hình Thức Thi Đấu</div>
@@ -335,21 +357,25 @@ const CreateTournamentFormat = ({ }) => {
           ref={contentRef}
         >
           <div className="label_avatar">Số bảng đấu</div>
-          <select className="format_tournament">
+          <select className="format_tournament" onChange={handleGroupChange}>
+            <option value="">Chọn số bảng</option>
             {groupOptions?.map((group, index) => (
               <option key={index} value={group}>
                 {group}
               </option>
             ))}
           </select>
+          {groupError && <div className="error_message">{groupError}</div>}
           <div className="label_avatar">Số đội vào vòng trong</div>
-          <select className="format_tournament">
-            {teamGoIn?.map((number, i) => (
-              <option key={i} value="Private">
+          <select className="format_tournament" onChange={handleTeamsNextRoundChange} value={selectedTeamsNextRound}>
+            <option value="">Chọn số đội vào vòng trong</option>
+            {teamGoIn.map((number, i) => (
+              <option key={i} value={number}>
                 {number}
               </option>
             ))}
           </select>
+          {teamsNextRoundError && <div className="error_message">{teamsNextRoundError}</div>}
           <div className="format_score">
             <div className="format_score_setup">
               <div className="label_avatar">Điểm thắng</div>

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./TeamRegister.css";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa"; // import icons from react-icons
 import { useDispatch, useSelector } from "react-redux";
-import { getTeamRegister } from "../../../../redux/actions/TeamAction";
+import { getTeamRegister, updateTeamRegister } from "../../../../redux/actions/TeamAction";
 import { useParams } from "react-router-dom";
 
 const teams = [
@@ -60,12 +60,13 @@ const TeamRegister = () => {
 
     const fetchedTeams = useSelector((state) => state.getTeamRegister.listTeamRegister?.data);
     const loading = useSelector((state) => state.getTeamRegister.loading);
+    const isAddSuccess = useSelector((state)=>state.updateTeamRegister?.success)
   
     const [teams, setTeams] = useState([]);
 
     useEffect(() => {
         dispatch(getTeamRegister(competitionId));
-    }, [competitionId, dispatch]);
+    }, [competitionId, dispatch,isAddSuccess]);
 
     useEffect(() => {
         if (fetchedTeams) {
@@ -82,6 +83,12 @@ const TeamRegister = () => {
                 return "";
         }
     };
+    const handleUpdate =(id,status)=>{
+         const updateStatus = {
+            status:status
+         }
+        dispatch(updateTeamRegister(id,competitionId,updateStatus));
+    }
 
     return (
         <div className="team-register-container">
@@ -112,11 +119,11 @@ const TeamRegister = () => {
                                 </div>
                                 <div className="team-register-table-cell">{team.name}</div>
                                 <div className="team-register-table-cell">{team.member}</div>
-                                <div className="team-register-table-cell">{team.email}</div>
+                                <div className="team-register-table-cell">{team.contactInfo}</div>
                                 <div className="team-register-table-cell">{team.phoneNumber}</div>
-                                <div className="team-register-table-cell">{team.registerTime}</div>
-                                {team.teamId !== null ? (
-                                    team.status ? (
+                                <div className="team-register-table-cell"> {team.registerTime ? new Date(team.registerTime).toISOString().split('T')[0] : ""}</div>
+                                {team.teamId !== null || team.status === "Từ chối" ? (
+                                    team.status !== "Từ chối" ? (
                                         <div className={`team-register-table-cell ${getStatusClass("Chấp nhận")}`}>
                                             Chấp nhận
                                         </div>
@@ -127,10 +134,10 @@ const TeamRegister = () => {
                                     )
                                 ) : (
                                     <div className="team-register-table-cell team-register-actions">
-                                        <button className="action-button accept-button" title="Accept">
+                                        <button className="action-button accept-button" title="Accept" onClick={()=> handleUpdate(team.id,"Chấp nhận")}>
                                             <FaCheckCircle />
                                         </button>
-                                        <button className="action-button cancel-button" title="Cancel">
+                                        <button className="action-button cancel-button" title="Cancel" onClick={()=>handleUpdate(team.id,"Từ chối")}>
                                             <FaTimesCircle />
                                         </button>
                                     </div>

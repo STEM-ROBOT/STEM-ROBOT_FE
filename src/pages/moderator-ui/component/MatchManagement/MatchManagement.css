@@ -2,9 +2,6 @@
     max-width: 100%;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .match-management-title {
@@ -20,13 +17,18 @@
 }
 
 .match-management-file-buttons button {
-    background-color: #6c63ff;
+    background: linear-gradient(to right, #224c8b, #3294cd);
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.match-management-file-buttons button:hover {
+    background: linear-gradient(to right, #1a3b6f, #2879a8); /* Darker gradient on hover */
 }
 
 .match-management-navbar,
@@ -48,20 +50,48 @@
 
 .match-management-navbar-button-active,
 .match-management-round-button-active {
-    background-color: #4CAF50;
+    background: linear-gradient(to right, #224c8b, #3294cd); /* Gradient background */
     color: white;
+    font-weight: bold;
+}
+
+.match-management-round-button:not(.match-management-round-button-active):hover {
+    background: rgba(0, 0, 0, 0.1); /* Slightly darker on hover */
 }
 
 .match-management-table-container {
     margin-bottom: 20px;
+    padding: 10px;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
 }
 
 .match-management-match-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr;
     gap: 10px;
-    margin-bottom: 10px;
     align-items: center;
+    padding: 10px 0;
+}
+
+.match-management-match-row:nth-child(odd) {
+    background-color: #f7f7f7;
+}
+
+.match-management-table-container h4 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #ddd;
+    padding-bottom: 5px;
+}
+
+.match-management-match-row input {
+    width: 80%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .match-management-input-field {
@@ -74,7 +104,6 @@
     margin-bottom: 15px;
 }
 
-/* Optional styling for custom select dropdown arrow */
 .match-management-select-field {
     appearance: none;
     background-color: #fff;
@@ -85,19 +114,20 @@
 }
 
 .match-management-save-button {
-    background: linear-gradient(90deg, #0387ac, #001f3f);
+    background: linear-gradient(to right, #224c8b, #3294cd); /* Gradient background */
     color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 20px;
     display: block;
-    margin: 0 auto;
+    margin: 20px auto 0;
+    width: 100px;
+    transition: background-color 0.3s ease;
 }
 
 .match-management-save-button:hover {
-    background: linear-gradient(90deg, #001f3f, #0387ac);
+    background: linear-gradient(to right, #1a3b6f, #2879a8); /* Darker gradient on hover */
 }
 
 /* Configuration section with dashed border */
@@ -126,9 +156,8 @@
     display: block;
 }
 
-
 .match-management-primary-button {
-    background: linear-gradient(90deg, #0387ac, #001f3f);
+    background: linear-gradient(to right, #224c8b, #3294cd); /* Gradient background */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -136,47 +165,13 @@
     cursor: pointer;
     font-size: 16px;
     margin-top: 10px;
+    transition: background-color 0.3s ease;
 }
 
 .match-management-primary-button:hover {
-    background: linear-gradient(90deg, #001f3f, #0387ac);
+    background: linear-gradient(to right, #1a3b6f, #2879a8); /* Darker gradient on hover */
 }
 
-
-.match-management-table-container {
-    padding: 10px;
-    border: 2px dashed #ddd;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.match-management-match-row {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr;
-    gap: 10px;
-    align-items: center;
-    padding: 10px 0;
-}
-
-.match-management-match-row:nth-child(odd) {
-    background-color: #f7f7f7;
-}
-
-.match-management-table-container h4 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    border-bottom: 1px dashed #ddd;
-    padding-bottom: 5px;
-}
-.match-management-match-row input{
-    width: 80%;
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-   
-}
 .match-management-select-location {
     width: 100%;
     padding: 9px;
@@ -185,19 +180,57 @@
     border-radius: 4px;
 }
 
-.match-management-save-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
+/* Round navigation container */
+.round-nav-container {
+    display: flex;
+   
+    justify-content: center;
+    gap: 10px;
+   
+}
+
+.roundsitem-nav-arrow {
     border: none;
-    border-radius: 4px;
+    color: #333;   
+    font-size: 20px;  
+    transition: background-color 0.3s;
+}
+.round-icon{
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 6px 12px;
     cursor: pointer;
-    display: block;
-    margin: 20px auto 0;
-    width: 100px;
+    border-radius: 4px;
+}
+.roundsitem-nav-arrow:disabled {
+    color: rgba(51, 51, 51, 0.3);
+    cursor: not-allowed;
 }
 
-.match-management-save-button:hover {
-    background-color: #45a049;
+
+
+/* Round button styles */
+.match-management-round-navbar {
+    display: flex;
+    gap: 8px;
 }
 
+.match-management-round-button {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: none;
+    color: #333;
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.match-management-round-button-active {
+    background: linear-gradient(to right, #224c8b, #3294cd); /* Gradient for active round button */
+    color: white;
+    font-weight: bold;
+}
+
+.match-management-round-button:not(.match-management-round-button-active):hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
