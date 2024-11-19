@@ -20,6 +20,9 @@
     max-width: 85%;
     margin: 0 auto;
 }
+.tournament_bar{
+    padding-top: 12px;
+}
 
 .bar_content{
     padding-bottom: 20px
