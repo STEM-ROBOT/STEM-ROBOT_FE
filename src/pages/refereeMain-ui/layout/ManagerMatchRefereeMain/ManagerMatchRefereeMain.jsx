@@ -377,6 +377,8 @@ const ManagerMatchRefereeMain = () => {
     };
     const handleActionTeamOne = (data) => {
       const dataString = JSON.stringify(data);
+      ewqwewq
+      
       const previousDataString = JSON.stringify(
         previousActionTeamOneRef.current
       );
@@ -433,7 +435,6 @@ const ManagerMatchRefereeMain = () => {
       api
         .get(`/api/matches/match-total-point?matchId=${matchDetail.matchId}`)
         .then((response) => {
-          console.log(response.data);
           if (response.data === "timeout") {
             if (hubConnectionResultRef.current) {
               hubConnectionResultRef.current.stop();
@@ -444,9 +445,54 @@ const ManagerMatchRefereeMain = () => {
             Array.isArray(response.data) &&
             response.data.length > 0
           ) {
-            console.log(response.data);
             setTeamMatchResult(response.data);
             previousDataRef.current = response.data;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      api
+        .get(
+          `/api/matches/match-action-referee?teamMatchId=${matchDetail.scheduleData[0].teamMatchId}&scheduleId=${schedule_Id}`
+        )
+        .then((response) => {
+          if (response.data === "timeout") {
+            if (hubConnectionActionTeamOne.current) {
+              hubConnectionActionTeamOne.current.stop();
+              previousActionTeamOneRef.current = null;
+            }
+          } else if (
+            response.data !== "notstarted" &&
+            response.data.teamMatchId
+          ) {
+            console.log(response.data);
+
+            setActionTeamOneApi(response.data);
+            previousActionTeamOneRef.current = response.data;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+        api
+        .get(
+          `/api/matches/match-action-referee?teamMatchId=${matchDetail.scheduleData[1].teamMatchId}&scheduleId=${schedule_Id}`
+        )
+        .then((response) => {
+          if (response.data === "timeout") {
+            if (hubConnectionActionTeamTow.current) {
+              hubConnectionActionTeamTow.current.stop();
+              previousActionTeamTowRef.current = null;
+            }
+          } else if (
+            response.data !== "notstarted" &&
+            response.data.teamMatchId
+          ) {
+            console.log(response.data);
+
+            setActionTeamTowApi(response.data);
+            previousActionTeamTowRef.current = response.data;
           }
         })
         .catch((err) => {
