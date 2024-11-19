@@ -59,7 +59,6 @@ const RegisterTeamStepTwo = ({ setRegisterTeam, teamInfo }) => {
       phoneNumber: teamInfo.phone,
       contactInfo: teamInfo.contactName,
       image: teamInfo.logo,
-      status: "Đang xét",
       email: teamInfo.email,
       contestants: selectedContestants,
     };
@@ -68,6 +67,7 @@ const RegisterTeamStepTwo = ({ setRegisterTeam, teamInfo }) => {
       .post(`/api/teams-register?competitionId=${competitionId}`, data)
       .then((response) => {
         setLoading(false);
+        navigate(`/league/${league_id}/team-list`);
       })
       .catch((error) => {
         console.log(error);

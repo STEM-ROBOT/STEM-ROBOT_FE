@@ -5,19 +5,23 @@ import Introduction from "../Introduction/Introduction";
 import RegisterTeam from "../RegisterTeam/RegisterTeam";
 import api from "../../../../config";
 import { api_register_time_check } from "../../api/ApiFlowView/ApiFlowView";
+import TokenService from "../../../../config/tokenservice";
+import SignIn from "../../../system-ui/component/Author/SignIn/SignIn";
+import SignUp from "../../../system-ui/component/Author/SignUp/SignUp";
 const introduction = `🏆 Lâu lâu không tạo giải cho anh em, anh em hỏi nhiều quá...`;
 
 const Countdown = () => {
   const navigate = useNavigate();
+  const [signIn, setSignIn] = useState(false);
+  const [signUp, setSignUp] = useState(false);
   const pram = useParams();
   const [registerConfigApi, setRegisterConfigApi] = useState();
   const [textBtn, setTextBtn] = useState("Bắt đầu đăng ký");
   const [outTime, setOutTime] = useState(false);
+  const fetchedUserId = TokenService.getUserId();
   const calculateTimeLeft = () => {
     const targetDate = new Date(registerConfigApi?.registerTime);
-    targetDate.setHours(24, 0, 0, 0); // Set to midnight of the next day (24:00)
-
-    // Calculate the difference between target time and current time
+    targetDate.setHours(24, 0, 0, 0);
     const now = new Date();
     const difference = targetDate - now;
     let timeLeft = {};
@@ -45,7 +49,10 @@ const Countdown = () => {
           navigate(`/404error`);
         }
         console.log(response.data);
-        sessionStorage.setItem("RegisterConfig", response.data.numberContestantTeam);
+        sessionStorage.setItem(
+          "RegisterConfig",
+          response.data.numberContestantTeam
+        );
         setRegisterConfigApi(response.data);
       })
       .catch((error) => {
@@ -64,9 +71,19 @@ const Countdown = () => {
     }, 1000);
     return () => clearInterval(timer);
   }, [registerConfigApi]);
-
+  const goRegisterCheck = () => {
+    if (fetchedUserId) {
+      if (!outTime) {
+        setRegisterTeam(true);
+      }
+    } else {
+      setSignIn(true);
+    }
+  };
   return (
     <div className="countdown_page">
+      {signIn === true && <SignIn setSignIn={setSignIn} />}
+      {signUp === true && <SignUp setSignUp={setSignUp} />}
       {showRegisterTeam ? (
         <RegisterTeam setRegisterTeam={setRegisterTeam} />
       ) : (
@@ -96,12 +113,7 @@ const Countdown = () => {
                 <div className="time_label">Giây</div>
               </div>
             </div>
-            <button
-              className="register_button"
-              onClick={() => {
-                outTime ? setRegisterTeam(false) : setRegisterTeam(true);
-              }}
-            >
+            <button className="register_button" onClick={goRegisterCheck}>
               {textBtn}
             </button>
           </div>
