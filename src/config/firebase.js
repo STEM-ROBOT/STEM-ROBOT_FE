@@ -33,7 +33,7 @@ export const FirebaseUpload = async (file) => {
 
   try {
     // Upload the file to Firebase Storage with the file's content type
-    await uploadBytes(imgRef, file, { contentType: file.type });
+    await uploadBytes(imgRef, file);
 
     // Get the URL of the uploaded image
     const url = await getDownloadURL(imgRef);
