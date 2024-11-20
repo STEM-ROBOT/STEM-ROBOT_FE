@@ -6,19 +6,22 @@ import './ListReferee.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { addReferee, getListReferee } from '../../../../redux/actions/RefereeAction';
+import NoItem from '../../../system-ui/component/NoItems/NoItem';
+import LoadingComponent from '../../../system-ui/component/Loading/LoadingComponent';
 
 const ListReferee = () => {
-    const {tournamentId } = useParams();
+    const { tournamentId } = useParams();
     const dispatch = useDispatch();
 
     const getReferees = useSelector((state) => state.getReferee);
     const refereesList = Array.isArray(getReferees?.listReferee?.success?.data) ? getReferees.listReferee.success.data : [];
 
     const [referees, setReferees] = useState([]);
-    const [newRefereesToAdd, setNewRefereesToAdd] = useState([]); 
+    const [newRefereesToAdd, setNewRefereesToAdd] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const refereesPerPage = 3;
     const [hasChanges, setHasChanges] = useState(false);
+    const loadingAdd = useSelector((state) => state.addReferee?.loading)
 
     useEffect(() => {
         dispatch(getListReferee(tournamentId));
@@ -74,7 +77,7 @@ const ListReferee = () => {
                 phoneNumber: item["Số điện thoại"],
                 image: item["Hình ảnh"] || "https://via.placeholder.com/50",
             }));
-          
+
             const newReferees = importedReferees.filter(
                 newReferee => !referees.some(existing => existing.email === newReferee.email)
             );
@@ -98,7 +101,7 @@ const ListReferee = () => {
             phoneNumber: referee.phoneNumber ? String(referee.phoneNumber) : "",
             image: referee.image,
             status: "active",
-            role:"RE"
+            role: "RE"
         }));
 
         console.log("Payload sent:", payload);
@@ -109,6 +112,9 @@ const ListReferee = () => {
 
     return (
         <div className="referee-container">
+            {loadingAdd && (
+                <LoadingComponent position="fixed" borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.5)" />
+            )}
             <div className="referee-header">
                 <div className='referee-header-left'>
                     {/* <button className="btn-add" onClick={() => { }}>Thêm trọng tài</button> */}
@@ -135,21 +141,23 @@ const ListReferee = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentReferees.map((referee, index) => (
-                        <tr key={referee.id || index}>
-                            <td>{indexOfFirstReferee + index + 1}</td>
-                            <td>
-                                <img src={referee.image} alt={referee.name} className="referee-image" />
-                            </td>
-                            <td>{referee.name}</td>
-                            <td>{referee.email}</td>
-                            <td>{referee.phoneNumber}</td>
-                        </tr>
-                    ))}
+                    {currentReferees.length > 0 && (
+                        currentReferees.map((referee, index) => (
+                            <tr key={referee.id || index}>
+                                <td>{indexOfFirstReferee + index + 1}</td>
+                                <td>
+                                    <img src={referee.image} alt={referee.name} className="referee-image" />
+                                </td>
+                                <td>{referee.name}</td>
+                                <td>{referee.email}</td>
+                                <td>{referee.phoneNumber}</td>
+                            </tr>
+                        )
+                        ))}
                 </tbody>
             </table>
-
-            <div className="pagination-controls">
+            {currentReferees.length === 0 && <NoItem message={"Chưa có thí sinh"} />}
+            {currentReferees.length > 0 && <div className="pagination-controls">
                 <button onClick={handlePreviousPage} disabled={currentPage === 1} className="pagination-btn">
                     <FaArrowLeft />
                 </button>
@@ -157,7 +165,8 @@ const ListReferee = () => {
                 <button onClick={handleNextPage} disabled={currentPage === totalPages} className="pagination-btn">
                     <FaArrowRight />
                 </button>
-            </div>
+            </div>}
+
 
             {hasChanges && (
                 <button className="btn-save-referee" onClick={saveRefereesToDB}>Lưu trọng tài</button>

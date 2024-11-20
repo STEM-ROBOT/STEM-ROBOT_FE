@@ -1,0 +1,12 @@
+.no-tournaments {
+    text-align: center;
+    padding: 40px;
+    color: #333;  
+    border-radius: 10px;
+    margin: 50px auto;
+  }
+  .no-tournament-image {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+  }

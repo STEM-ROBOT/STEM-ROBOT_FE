@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
-import "./ExcelUploadComponent.css"; // Import the CSS file
-import { useDispatch } from "react-redux";
-import { addScoreCompetition } from "../../../../redux/actions/ScoreAction";
+import "./ExcelUploadComponent.css";
+import { useDispatch, useSelector } from "react-redux";
+import { addScoreCompetition, getScoreCompetition } from "../../../../redux/actions/ScoreAction";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { MdOutlineCloudDownload, MdOutlineCloudUpload } from "react-icons/md";
+import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
 
 const ExcelUploadComponent = () => {
   const { competitionId } = useParams();
   const [data, setData] = useState([]);
-  const [fileInput, setFileInput] = useState(null); // Reference for file input
-
+  const [fileInput, setFileInput] = useState(null); 
+  const listScore = useSelector((state) => state.getScore.listScore);
+   
   const dispatch = useDispatch();
+  const isAdd = useSelector((state)=>state.addScore.success)
+  const loadingAdd = useSelector((state)=>state.addScore.loading)
+
+  useEffect(() => {
+    dispatch(getScoreCompetition(competitionId));
+  }, [competitionId, dispatch,isAdd]);
 
   // Function to handle file upload and parsing
   const handleFileUpload = (e) => {
@@ -53,46 +61,50 @@ const ExcelUploadComponent = () => {
 
   return (
     <div className="excel-upload-container-main-wrapper">
-      <div className="excel-upload-container_action">
-        <div className="excel-upload-download">
-          <a
-            href="https://firebasestorage.googleapis.com/v0/b/fine-acronym-438603-m5.firebasestorage.app/o/stem-sever%2FFA24SE121.STEM.xlsx?alt=media&token=c923f4d7-6f1e-4654-b698-f100b38cbf45"
-            className="excel-upload-container-download-link"
-            style={{ textDecoration: "none" }}
+      {loadingAdd && (<LoadingComponent  borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.0)" />)}
+      {(listScore && listScore.length === 0) && (
+        <div className="excel-upload-container_action">
+          <div className="excel-upload-download">
+            <a
+              href="https://firebasestorage.googleapis.com/v0/b/fine-acronym-438603-m5.firebasestorage.app/o/stem-sever%2FFA24SE121.STEM.xlsx?alt=media&token=c923f4d7-6f1e-4654-b698-f100b38cbf45"
+              className="excel-upload-container-download-link"
+              style={{ textDecoration: "none" }}
+            >
+              <div className="excel_container_competition upload">
+                <MdOutlineCloudDownload className="excel_upload_container_icon" />
+                Tham Khảo
+              </div>
+            </a>
+            <label>
+              <div className="excel_container_competition download">
+                <MdOutlineCloudUpload className="excel_upload_container_icon" />
+                <input
+                  style={{ display: "none" }}
+                  type="file"
+                  accept=".xlsx, .xls"
+                  onChange={handleFileUpload}
+                  ref={(input) => setFileInput(input)}
+                />
+                File Của Bạn
+              </div>
+            </label>
+          </div>
+
+          <button
+            onClick={convertToJson}
+            className="excel-upload-container-save-button"
           >
-            <div className="excel_container_competition upload">
-              <MdOutlineCloudDownload className="excel_upload_container_icon" />
-              Tham Khảo
-              {/* File Của Bạn */}
-            </div>
-          </a>
-          <label>
-            <div className="excel_container_competition download">
-              <MdOutlineCloudUpload className="excel_upload_container_icon" />
-              <input
-                style={{ display: "none" }}
-                type="file"
-                accept=".xlsx, .xls"
-                onChange={handleFileUpload}
-                ref={(input) => setFileInput(input)} // Set ref for input
-              />
-              File Của Bạn
-            </div>
-          </label>
+            Hoàn Tất
+          </button>
         </div>
+      )}
 
-        <button
-          onClick={convertToJson}
-          className="excel-upload-container-save-button"
-        >
-         Hoàn Tất
-        </button>
-      </div>
 
-      {data.length > 0 && (
+      {/* Conditionally display listScore if it exists, otherwise display uploaded data */}
+      {(listScore && listScore.length > 0) ? (
         <div className="excel-upload-container-data-display">
           <h3 className="excel-upload-container-heading">
-            Nội dung từ file Excel:
+            Danh sách điểm:
           </h3>
           <table className="excel-upload-container-table" border="1">
             <thead>
@@ -104,25 +116,61 @@ const ExcelUploadComponent = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((row, index) => (
+              {listScore.map((row, index) => (
                 <tr key={index} className="excel-upload-container-table-row">
                   <td className="excel-upload-container-table-data">
-                    {row["STT"]}
+                    {index + 1}
                   </td>
                   <td className="excel-upload-container-table-data">
-                    {row["MÔ TẢ"]}
+                    {row.description}
                   </td>
                   <td className="excel-upload-container-table-data">
-                    {row["ĐIỂM"]}
+                    {row.point}
                   </td>
                   <td className="excel-upload-container-table-data">
-                    {row["KIỂU"] || ""}
+                    {row.type || ""}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+      ) : (
+        data.length > 0 && (
+          <div className="excel-upload-container-data-display">
+            <h3 className="excel-upload-container-heading">
+              Danh sách điểm:
+            </h3>
+            <table className="excel-upload-container-table" border="1">
+              <thead>
+                <tr>
+                  <th className="excel-upload-container-table-header">STT</th>
+                  <th className="excel-upload-container-table-header">MÔ TẢ</th>
+                  <th className="excel-upload-container-table-header">ĐIỂM</th>
+                  <th className="excel-upload-container-table-header">Kiểu</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((row, index) => (
+                  <tr key={index} className="excel-upload-container-table-row">
+                    <td className="excel-upload-container-table-data">
+                      {index + 1}
+                    </td>
+                    <td className="excel-upload-container-table-data">
+                      {row["MÔ TẢ"]}
+                    </td>
+                    <td className="excel-upload-container-table-data">
+                      {row["ĐIỂM"]}
+                    </td>
+                    <td className="excel-upload-container-table-data">
+                      {row["KIỂU"] || ""}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
       )}
     </div>
   );
