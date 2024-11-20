@@ -90,8 +90,6 @@ const ManagerMatchRefereeMain = () => {
     };
     const handleActionTeamOne = (data) => {
       const dataString = JSON.stringify(data);
-      ewqwewq;
-
       const previousDataString = JSON.stringify(
         previousActionTeamOneRef.current
       );
@@ -403,6 +401,17 @@ const ManagerMatchRefereeMain = () => {
       return () => clearInterval(timer);
     }
   }, [timeCountDown]);
+  const handleClick = (status, id) => {
+    console.log(status, id);
+
+    api
+      .put(
+        `http://157.66.27.69:5000/api/actions/confirm-action?actionId=${id}&status=${status}&scheduleId=${schedule_Id}`
+      )
+      .then((response) => {
+        console.log(response);
+      });
+  };
   return (
     <div
       className="schedule_referee_manager_container"
@@ -476,7 +485,11 @@ const ManagerMatchRefereeMain = () => {
             </div>
           </div>
           <div className="schedule_referee_manager_body">
-            <ManagerMatchAction halfAction={actionTeamOneApi} view={"left"} />
+            <ManagerMatchAction
+              handleClick={handleClick}
+              halfAction={actionTeamOneApi}
+              view={"left"}
+            />
             <div className="schedule_manager_detail_body">
               <div className="schedule_manager_detail_content">
                 <MatchProgess
@@ -488,7 +501,10 @@ const ManagerMatchRefereeMain = () => {
                 />
               </div>
             </div>
-            <ManagerMatchAction halfAction={actionTeamTowApi} view={"right"} />
+            <ManagerMatchAction
+              handleClick={handleClick}
+                        view={"right"}
+            />
           </div>
         </>
       )}
