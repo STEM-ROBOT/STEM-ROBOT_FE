@@ -8,7 +8,6 @@ import { api_register_time_check } from "../../api/ApiFlowView/ApiFlowView";
 import TokenService from "../../../../config/tokenservice";
 import SignIn from "../../../system-ui/component/Author/SignIn/SignIn";
 import SignUp from "../../../system-ui/component/Author/SignUp/SignUp";
-const introduction = `🏆 Lâu lâu không tạo giải cho anh em, anh em hỏi nhiều quá...`;
 
 const Countdown = () => {
   const navigate = useNavigate();
@@ -117,7 +116,7 @@ const Countdown = () => {
               {textBtn}
             </button>
           </div>
-          <Introduction introduction={introduction} />
+          <Introduction introduction={registerConfigApi?.Introduce} />
         </>
       )}
     </div>

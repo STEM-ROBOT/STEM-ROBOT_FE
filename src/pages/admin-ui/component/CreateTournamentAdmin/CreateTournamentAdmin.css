@@ -1,37 +1,41 @@
 .admin_create_tournament_container {
-    max-height: 80%; /* Đảm bảo chiều cao tối thiểu là 100vh */
-   
+  max-height: 80%; /* Đảm bảo chiều cao tối thiểu là 100vh */
 }
 
 .format_create {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .apply_create_tournament {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .btn_create_tournament {
-    padding: 10px 20px;
-    background-color: #28a745; /* Màu nền cho nút */
-    color: #fff; /* Màu chữ trắng */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    text-align: center;
-    transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  background-color: #28a745; /* Màu nền cho nút */
+  color: #fff; /* Màu chữ trắng */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color 0.3s ease;
 }
 
 .btn_create_tournament:hover {
-    background-color: #218838; /* Màu khi hover */
+  background-color: #218838; /* Màu khi hover */
 }
 
 .btn_create_tournament:active {
-    background-color: #1e7e34; /* Màu khi nhấn */
+  background-color: #1e7e34; /* Màu khi nhấn */
+}
+.container_create_competition_tournament.level {
+
+  overflow: hidden;
+  transition: max-height 1s ease;
 }
