@@ -4,7 +4,7 @@ import { IoAlertCircle } from "react-icons/io5";
 import { GiFinishLine } from "react-icons/gi";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addCompetitionFormat } from "../../../../redux/actions/CompetitionAction";
+import { addCompetitionFormat, getCompetitionInfo } from "../../../../redux/actions/CompetitionAction";
 import { getActive } from "../../../../redux/actions/FormatAction";
 import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
 
@@ -101,9 +101,12 @@ const CreateTournamentFormat = ({ }) => {
   const [teamsNextRoundError, setTeamsNextRoundError] = useState("");
   const isAddSuccess = useSelector((state) => state.addCompetitionFormat?.success);
   const loadingAdd = useSelector((state) => state.addCompetitionFormat?.loading);
+  const isPublic = useSelector((state) => state.infoTournament.tournamentInfo?.data.status);
+ 
 
   useEffect(()=>{
     dispatch(getActive(competitionId))
+    dispatch(getCompetitionInfo(competitionId));
   },[isAddSuccess])
 
   const handleTeamNumberChange = (e) => {
@@ -285,7 +288,7 @@ const CreateTournamentFormat = ({ }) => {
 
   return (
     <div className="container_create_format_tournament">
-       {loadingAdd && (<LoadingComponent  borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.0)" />)}
+       {loadingAdd && (<LoadingComponent position="fixed"  borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.5)" />)}
       <div className="format_create_competition">
         <div className="competition_format">
           <div className="label_avatar">Hình Thức Thi Đấu</div>
@@ -425,7 +428,9 @@ const CreateTournamentFormat = ({ }) => {
             onChange={handleMemberNumberChange}
           />
           <div className="competition_format_date">
-            <div style={{ width: "50%" }}>
+
+            {isPublic === "Public" && (
+              <div style={{ width: "50%" }}>
               <div className="label_avatar">
                 Thời gian đóng đăng kí
               </div>
@@ -436,6 +441,8 @@ const CreateTournamentFormat = ({ }) => {
                 onChange={handleDayRegisNumberChange}
               />
             </div>
+            )}
+            
             <div style={{ width: "50%" }}>
               <div className="label_avatar">
                 Thời gian bắt đầu thi đấu
