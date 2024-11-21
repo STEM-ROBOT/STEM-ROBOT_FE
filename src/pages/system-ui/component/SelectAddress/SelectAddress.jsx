@@ -18,10 +18,12 @@ const SelectAddress = ({
   setDistrict,
   setProvinceData,
   setDistrictData,
-
+  setSchoolData,
   setAreams,
   setProvincems,
   setMsAddress,
+  setIdShool,
+
   setIdArea,
   setIdCity,
   setIdDistrict,
@@ -29,28 +31,6 @@ const SelectAddress = ({
   setDistrictag,
   setProvincetag,
 }) => {
-  const handleArea = (event) => {
-    const areaId =
-      event.target.options[event.target.selectedIndex].getAttribute(
-        "data-area-id"
-      );
-    const AreaName = event.target.value;
-    setIdArea(areaId);
-    setArea(AreaName);
-
-    setProvince(null);
-    setDistrict(null);
-    setSchool(null);
-
-    setProvinceData([]);
-    setDistrictData([]);
-    setSchool([]);
-
-    setProvincetag(2);
-
-    // setIdDistrict(100000);
-    // setIdCity(1000000);
-  };
   const handleCity = (event) => {
     const ProvinceId =
       event.target.options[event.target.selectedIndex].getAttribute(
@@ -64,7 +44,7 @@ const SelectAddress = ({
     setSchool(null);
 
     setDistrictData([]);
-    setSchool([]);
+    setSchoolData([]);
 
     setDistrictag(2);
     setidDistrict(100000);
@@ -82,48 +62,25 @@ const SelectAddress = ({
 
     setSchool(null);
 
-    setSchool([]);
+    setSchoolData([]);
 
     setSchooltag(2);
     // setMsAddress(false);
   };
-  // const handleDistrict = (event) => {
-  //   const DistrictId =
-  //     event.target.options[event.target.selectedIndex].getAttribute(
-  //       "data-district-id"
-  //     );
-  //   const DistrictName = event.target.value;
-  //   setDistrict(DistrictName);
-  //   setidDistrict(DistrictId);
-  //   setWard(null);
-  //   setWardag(2);
-  //   setMsAddress(false);
-  // };
-  // const handleWard = (event) => {
-  //   const WardName = event.target.value;
-  //   setWard(WardName);
-  //   setMsAddress(false);
-  // };
+  const handleSchool = (event) => {
+    const SchoolId =
+      event.target.options[event.target.selectedIndex].getAttribute(
+        "data-school-id"
+      );
+    const SchoolName = event.target.value;
+    setSchool(SchoolName);
+
+    setIdShool(SchoolId);
+
+  };
 
   return (
     <div className="select-address-log1">
-      {label === "Khu Vực" && (
-        <select className="select-address" onChange={handleArea}>
-          <option
-            value=""
-            className="select-options sources"
-          >{`--Chọn ${label}`}</option>
-          {AreaData?.map((result) => (
-            <option
-              key={result.id}
-              value={result}
-              data-area-id={result.id}
-            >
-              {result.name}
-            </option>
-          ))}
-        </select>
-      )}
       {label === "Tỉnh/Thành Phố" && (
         <select className="select-address" onChange={handleCity}>
           <option
@@ -131,11 +88,7 @@ const SelectAddress = ({
             className="select-options sources"
           >{`--Chọn ${label}`}</option>
           {ProvinceData?.map((result) => (
-            <option
-              key={result.id}
-              value={result}
-              data-province-id={result.id}
-            >
+            <option key={result.id} value={result} data-province-id={result.id}>
               {result.name}
             </option>
           ))}
@@ -148,11 +101,7 @@ const SelectAddress = ({
             className="select-options sources"
           >{`--Chọn ${label}--`}</option>
           {DistrictData?.map((result) => (
-            <option
-              key={result.id}
-              value={result}
-              data-district-id={result.id}
-            >
+            <option key={result.id} value={result} data-district-id={result.id}>
               {result.name}
             </option>
           ))}
@@ -162,18 +111,14 @@ const SelectAddress = ({
       {label === "Trường của bạn" && (
         <select
           className="select-address"
-          // onChange={handleWard}
+          onChange={handleSchool}
         >
           <option
             value=""
             className="select-options sources"
           >{`--Chọn ${label}--`}</option>
           {SchoolData?.map((result) => (
-            <option
-              key={result.Id}
-              value={result}
-              data-school-id={result.id}
-            >
+            <option key={result.Id} value={result} data-school-id={result.id}>
               {result.schoolName}
             </option>
           ))}

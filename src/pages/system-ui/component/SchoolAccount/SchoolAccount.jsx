@@ -3,7 +3,7 @@ import api from "../../../../config";
 import "./SchoolAccount.css";
 import SelectAddress from "../SelectAddress/SelectAddress";
 
-const SchoolAccount = () => {
+const SchoolAccount = ({IdCity,setIdCity,IdDistrict,setIdDistrict,IdShool,setIdShool}) => {
   //Dữ liệu dùng để lưu
   const [Area, setArea] = useState(null);
   const [Province, setProvince] = useState(null);
@@ -16,13 +16,12 @@ const SchoolAccount = () => {
   const [SchoolData, setSchoolData] = useState([]);
   //ID để select theo phạm vi
   const [IdArea, setIdArea] = useState();
-  const [IdCity, setIdCity] = useState();
-  const [IdDistrict, setIdDistrict] = useState();
-  const [IdShool, setIdShool] = useState();
+
   //
   const [Provincetag, setProvincetag] = useState(1);
   const [Districtag, setDistrictag] = useState(1);
   const [Schooltag, setSchooltag] = useState(1);
+
   //Thống báo khi chưa chọn
   const [Areams, setAreams] = useState(null);
   const [Provincems, setProvincems] = useState(null);
@@ -99,79 +98,83 @@ const SchoolAccount = () => {
       setSchooltag(1);
     }
   }, [Schooltag]);
-  const handleCity = (event) => {
-    const ProvinceId =
-      event.target.options[event.target.selectedIndex].getAttribute(
-        "data-province-id"
-      );
-    const ProvinceName = event.target.value;
-    setProvince(ProvinceName);
-    setIdCity(ProvinceId);
 
+  const handleArea = (data) => {
+    const areaId = data.id;
+
+    const AreaName = data.name;
+    setIdArea(areaId);
+    setArea(AreaName);
+
+    setProvince(null);
     setDistrict(null);
     setSchool(null);
 
+    setProvinceData([]);
     setDistrictData([]);
-    setSchool([]);
+    setSchoolData([]);
 
-    setDistrictag(2);
-    setidDistrict(100000);
-    // setMsAddress(false);
+    setProvincetag(2);
+
+    // setIdDistrict(100000);
+    // setIdCity(1000000);
   };
+
   return (
     <div className="school_layout">
-      <SelectAddress
-        label="Khu Vực"
-        // data hiển thị
-        AreaData={AreaData}
-        //luu lua chon cua nguoi dung
-        setIdArea={setIdArea}
-        setArea={setArea}
-        //reset lua chon cap duoi
-        setProvince={setProvince}
-        setDistrict={setDistrict}
-        setSchool={setSchool}
-        setProvinceData={setProvinceData}
-        setDistrictData={setDistrictData}
-        setSchoolData={setSchoolData}
-        setIdCity={setIdDistrict}
-        setIdDistrict={setIdDistrict}
-        //reset du lieu
-        setSchooltag={setSchooltag}
-        setDistrictag={setDistrictag}
-        setProvincetag={setProvincetag}
-      />
+      <div className="lable_school_accout">Trường bạn thuộc khu vực</div>
+      <div className="lish_area_accout">
+        {AreaData.map((data) => (
+          <div
+            key={data.id}
+            data-area-id={data.id}
+            onClick={() => handleArea(data)}
+            className={
+              IdArea == data.id
+                ? "area_accout_item active"
+                : "area_accout_item "
+            }
+          >
+            {data.name}
+          </div>
+        ))}
+      </div>
 
-      <SelectAddress
-        label="Tỉnh/Thành Phố"
-        // data hiển thị
-        ProvinceData={ProvinceData}
-        //luu lua chon cua nguoi dung
-        setIdCity={setIdCity}
-        setProvince={setProvince}
-        //reset lua chon cap duoi
-        setDistrict={setDistrict}
-        setSchool={setSchool}
-        setDistrictData={setDistrictData}
-        setSchoolData={setSchoolData}
-        setIdDistrict={setIdDistrict}
-        //reset du lieu
-        setSchooltag={setSchooltag}
-        setDistrictag={setDistrictag}
-      />
+      <div className="lable_school_accout">Trường bạn thuộc khu vực</div>
+      <div className="address_acount_layout">
+        <SelectAddress
+          label="Tỉnh/Thành Phố"
+          // data hiển thị
+          ProvinceData={ProvinceData}
+          //luu lua chon cua nguoi dung
+          setIdCity={setIdCity}
+          setProvince={setProvince}
+          //reset lua chon cap duoi
+          setDistrict={setDistrict}
+          setSchool={setSchool}
+          setDistrictData={setDistrictData}
+          setSchoolData={setSchoolData}
+          setIdDistrict={setIdDistrict}
+          //reset du lieu
+          setSchooltag={setSchooltag}
+          setDistrictag={setDistrictag}
+        />
 
-      <SelectAddress
-        label="Huyện/Quận"
-        DistrictData={DistrictData}
-        //luu lua chon cua nguoi dung
-        setIdDistrict={setIdDistrict}
-        setDistrict={setDistrict}
-        //reset lua chon cap duoi
-        setSchool={setSchool}
-        setSchoolData={setSchoolData}
-        //reset du lieu
-        setSchooltag={setSchooltag}
-      />
+        <SelectAddress
+          label="Huyện/Quận"
+          DistrictData={DistrictData}
+          //luu lua chon cua nguoi dung
+          setIdDistrict={setIdDistrict}
+          setDistrict={setDistrict}
+          //reset lua chon cap duoi
+          setSchool={setSchool}
+          setSchoolData={setSchoolData}
+          //reset du lieu
+          setSchooltag={setSchooltag}
+        />
+      </div>
+
+      <div className="lable_school_accout">Trường bạn thuộc khu vực</div>
       <SelectAddress
         label="Trường của bạn"
         SchoolData={SchoolData}
