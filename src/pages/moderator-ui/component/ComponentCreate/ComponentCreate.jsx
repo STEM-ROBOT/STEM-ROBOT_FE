@@ -3,13 +3,14 @@ import "./ComponentCreate.css";
 import CreateTournamentInfo from "../CreateTournamentInfo/CreateTournamentInfo";
 import CreateTournamentCompetition from "../CreateTournamentCompetition/CreateTournamentCompetition";
 import logo from "/src/assets/images/logo.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createTournament } from "../../../../redux/actions/TournamentAction";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 import { FirebaseUpload } from "/src/config/firebase";
 import ReactQuill from "react-quill";
 import QuillToolbar, { formats, modules } from "../EditorToolbar/EditorToolbar";
+import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
 
 const ComponentCreate = () => {
   // Tournament Info
@@ -28,6 +29,7 @@ const ComponentCreate = () => {
   // Competition List
   const [competitionList, setCompetitionList] = useState([]);
   const [competitionError, setCompetitionError] = useState("");
+  const loadingAdd = useSelector((state)=>state.createTournamnet.loading)
   const handleChange = (value) => {
     setValue(value);
   };
@@ -84,10 +86,11 @@ const ComponentCreate = () => {
 
   return (
     <div className="create_tournament_page">
+      {loadingAdd && (<LoadingComponent position="fixed" borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.5)" />)}
       <div className="create_container">
         <div className="create_info_container">
           <div className="label_create"> Tạo Giải</div>
-
+          
           <CreateTournamentInfo
             avatarInput={avatarInput}
             setAvatarInput={setAvatarInput}
