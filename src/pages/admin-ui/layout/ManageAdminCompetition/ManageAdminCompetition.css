@@ -57,3 +57,10 @@
   }.admin_competition_main_content_section_two{
     padding: 20px;
   }
+  .admin_competition_main_content_section_two {
+    height: 90vh;              /* Đảm bảo chiều cao của phần này chiếm hết chiều cao viewport */
+    overflow-y: auto;           /* Cho phép cuộn dọc khi nội dung vượt quá chiều cao */
+}
+.admin_competition_main_content_section_two::-webkit-scrollbar {
+  display: none;  /* Ẩn thanh cuộn */
+}

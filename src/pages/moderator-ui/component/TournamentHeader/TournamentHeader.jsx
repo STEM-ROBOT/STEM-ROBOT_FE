@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaUsers, FaEye, FaHeart } from 'react-icons/fa';
+import { FaUsers, FaEye, FaHeart, FaArrowLeft } from 'react-icons/fa';
 import './TournamentHeader.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { activeCompetition, getCompetitionInfo } from '../../../../redux/actions/CompetitionAction';
@@ -23,7 +23,7 @@ const TournamentHeader = () => {
     tabs.push({ name: "XÉT DUYỆT ĐỘI", key: "team-register" });
   }
   // Lấy thông tin từ Redux store
-  
+
 
   useEffect(() => {
     if (competitionId) {
@@ -46,6 +46,9 @@ const TournamentHeader = () => {
     <div className="tournaments-header-outer">
       <div className="tournaments-header-container">
         <div className='tournaments-header-content'>
+          <div className="tournaments-back" onClick={() => navigate(`/mytournament/${tournamentId}/mycompetition`)}>
+            <FaArrowLeft className="back-icon" />
+          </div>
           <div className="tournaments-headers">
             <div className="tournaments-image">
               <img

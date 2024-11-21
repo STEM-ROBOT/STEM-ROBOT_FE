@@ -15,13 +15,13 @@ import { LoginReducer } from '../reducers/AuthenReducer';
 import { createTournamentInfoReducer, getTournamentInfoReducer, getTournamentModeratorReducer } from '../reducers/TournamentReducer';
 import { activeCompetitionReducer, addCompetitionFormatReducer, getCompetitionInfoReducer, getCompetitionModeratorReducer } from '../reducers/CompetitionReducer';
 import { addScheduleRefereeReducer, createRefereeReducer, getFreeTimeRefereeReducer, getRefereeReducer, getScheduleRefereeReducer } from '../reducers/RefereeReducer';
-import { importRuleReducer } from '../reducers/RuleReducer';
-import { addScoreReducer } from '../reducers/ScoreReducer';
+import { getRuleReducer, importRuleReducer } from '../reducers/RuleReducer';
+import { addScoreReducer, getScoreReducer } from '../reducers/ScoreReducer';
 // import {  getTeamknockoutReducer, getTeamMatchReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
 import { getLoctionReducer } from '../reducers/LocationReducer';
 import { ListAccountReducer, ListGenreReducer, ListOrderReducer } from '../reducers/AdminReducer';
 import {  ChangeInforReducer, ChangePassword, InforAccountID } from '../reducers/AccountReducer';
-import { addTeamAssignMatchReducer, addTeamKnockoutReducer, addTeamTableReducer, addTimeAssignMatchReducer, getTeamAssignMatchReducer, getTeamknockoutReducer, getTeamMatchReducer, getTeamRegisterReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
+import { addTeamAssignMatchReducer, addTeamKnockoutReducer, addTeamTableReducer, addTimeAssignMatchReducer, getTeamAssignMatchReducer, getTeamknockoutReducer, getTeamMatchReducer, getTeamRegisterReducer, getTeamsReducer, getTeamTableReducer, updateTeamRegisterReducer } from '../reducers/TeamReducer';
 import { addLoctionReducer } from '../reducers/LocationReducer';
 import { getActiveCompetitionReducer } from '../reducers/FormatReducer';
 
@@ -69,6 +69,9 @@ const rootReducer = combineReducers({
     getScheduleReferee:getScheduleRefereeReducer,
     activeCompetition:activeCompetitionReducer,
     getTeamRegister:getTeamRegisterReducer,
+    updateTeamRegister:updateTeamRegisterReducer,
+    getRule:getRuleReducer,
+    getScore:getScoreReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
