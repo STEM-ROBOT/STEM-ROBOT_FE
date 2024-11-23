@@ -14,6 +14,7 @@ const SearchFilter = ({
   setStatus,
   setProvinceCode,
   setSearch,
+  setLevel,
 }) => {
   const [province, setProvince] = useState([]);
   const [geners, setGeners] = useState([]);
@@ -64,7 +65,10 @@ const SearchFilter = ({
     setProvinceCode(e.target.value);
     setLoadApi(true);
   };
-
+  const handleLevelChange = (e) => {
+    setLevel(e.target.value);
+    setLoadApi(true);
+  };
   return (
     <div className="search_container">
       <div className="search_filter">
@@ -82,6 +86,13 @@ const SearchFilter = ({
         </div>
 
         <div className="filter_select_container">
+          <select className="filter_select" onChange={handleLevelChange}>
+            <option value="">Cấp độ thi đấu</option>
+            <option value="quốc gia">Cấp quốc gia</option>
+            <option value="khu vực">Cấp khu vực</option>
+            <option value="tỉnh">Cấp tỉnh</option>
+            <option value="trường">Cấp trường</option>
+          </select>
           <select className="filter_select" onChange={handleStatusChange}>
             <option value="">Loại giải</option>
             <option value="public">Có mở đăng ký</option>
@@ -100,7 +111,7 @@ const SearchFilter = ({
             ))}
           </select>
           <select className="filter_select" onChange={handleProvinceChange}>
-            <option value="">Khu vực</option>
+            <option value="">Tỉnh thành</option>
             {province?.map((result) => (
               <option
                 key={result.id}

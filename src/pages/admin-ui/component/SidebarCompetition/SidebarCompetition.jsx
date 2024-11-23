@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { FaUsers, FaListAlt, FaMapMarkerAlt, FaSitemap, FaUserShield, FaProjectDiagram, FaPlay, FaAngleDown, FaAngleRight, FaCheck } from "react-icons/fa";
+import { FaUsers, FaListAlt, FaMapMarkerAlt, FaSitemap, FaUserShield, FaProjectDiagram, FaPlay, FaAngleDown, FaAngleRight, FaCheck, FaTable } from "react-icons/fa";
 import { IoSettingsSharp } from 'react-icons/io5';
 import { CiLogout } from 'react-icons/ci';
 import { activeCompetition, getCompetitionInfo } from '../../../../redux/actions/CompetitionAction';
@@ -36,7 +36,7 @@ const SidebarCompetition = () => {
     }
   }, [competitionId, dispatch]);
 
-
+  
 
   const submenu = [
     { key: "CreateFormat", path: "create-format", label: "Thêm hình thức", icon: <FaListAlt />, isActive: activeData?.isFormat },
@@ -44,7 +44,7 @@ const SidebarCompetition = () => {
     { key: "CreateLocation", path: "create-location", label: "Thêm sân", icon: <FaMapMarkerAlt />, isActive: activeData?.isLocation }, 
   ]
   {
-    activeData?.formatId === 2 &&( menuItems.push({ key: "create-table", label: "Thêm bảng", icon: <FaTable />, isActive: activeIcon?.isTable }))
+    activeData?.formatId === 2 &&( submenu.push({ key: "CreateTable", path: "create-table", label: "Thêm bảng", icon: <FaTable />, isActive: activeData?.isTable }))
   }
   submenu.push(
     { key: "CreateMatchups", path: "create-matchups", label: "Thêm cặp đấu", icon: <FaProjectDiagram />, isActive: activeData?.isTeamMatch },

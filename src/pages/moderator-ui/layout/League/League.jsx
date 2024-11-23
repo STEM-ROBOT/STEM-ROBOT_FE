@@ -19,6 +19,7 @@ const League = () => {
   const [provinceCode, setProvinceCode] = useState("");
   const [status, setStatus] = useState("");
   const [gennerId, setGennerId] = useState("");
+  const [level, setLevel] = useState("");
   const [pageSize, setPageSize] = useState(10);
   const [page, setPage] = useState(1); // Đổi tên thành page để đồng nhất với Pagination
 
@@ -78,6 +79,7 @@ const League = () => {
         setStatus={setStatus}
         setGennerId={setGennerId}
         setLoadApi={setLoadApi}
+        setLevel={setLevel}
       />
       <div className="view_toggle">
         <Pagination

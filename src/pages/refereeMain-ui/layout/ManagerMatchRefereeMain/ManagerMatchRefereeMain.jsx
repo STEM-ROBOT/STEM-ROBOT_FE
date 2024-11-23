@@ -218,6 +218,52 @@ const ManagerMatchRefereeMain = () => {
         .catch((err) => {
           console.log(err);
         });
+      api
+        .get(
+          `/api/matches/match-action-referee?teamMatchId=${matchDetail.scheduleData[0].teamMatchId}&scheduleId=${schedule_Id}`
+        )
+        .then((response) => {
+          if (response.data === "timeout") {
+            if (hubConnectionActionTeamOne.current) {
+              hubConnectionActionTeamOne.current.stop();
+              previousActionTeamOneRef.current = null;
+            }
+          } else if (
+            response.data !== "notstarted" &&
+            response.data.teamMatchId
+          ) {
+            console.log(response.data);
+
+            setActionTeamOneApi(response.data);
+            previousActionTeamOneRef.current = response.data;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      api
+        .get(
+          `/api/matches/match-action-referee?teamMatchId=${matchDetail.scheduleData[1].teamMatchId}&scheduleId=${schedule_Id}`
+        )
+        .then((response) => {
+          if (response.data === "timeout") {
+            if (hubConnectionActionTeamTow.current) {
+              hubConnectionActionTeamTow.current.stop();
+              previousActionTeamTowRef.current = null;
+            }
+          } else if (
+            response.data !== "notstarted" &&
+            response.data.teamMatchId
+          ) {
+            console.log(response.data);
+
+            setActionTeamTowApi(response.data);
+            previousActionTeamTowRef.current = response.data;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     };
 
     if (loadApiConnectClient) {
@@ -240,7 +286,6 @@ const ManagerMatchRefereeMain = () => {
       }
     };
   }, [loadApiConnectClient]);
-
   useEffect(() => {
     if (matchDetail !== null && matchProgress !== "error") {
       const calculateMatchTime = () => {
@@ -363,10 +408,18 @@ const ManagerMatchRefereeMain = () => {
         if (response.data.message == "success") {
           navigate("/");
         }
-      }).catch((error) => {
-        console.log("cập nhật lỗi",error);
-        
+      })
+      .catch((error) => {
+        console.log("cập nhật lỗi", error);
       });
+  };
+  const handleClick = (status, actionId) => {
+    api
+      .put(
+        `/api/actions/confirm-action?actionId=${actionId}&status=${status}&scheduleId=${schedule_Id}`
+      )
+      .then((response) => {})
+      .catch((error) => {});
   };
   return (
     <div
@@ -442,7 +495,11 @@ const ManagerMatchRefereeMain = () => {
             </div>
           </div>
           <div className="schedule_referee_manager_body">
-            <ManagerMatchAction halfAction={actionTeamOneApi} view={"left"} />
+            <ManagerMatchAction
+              halfAction={actionTeamOneApi}
+              view={"left"}
+              handleClick={handleClick}
+            />
             <div className="schedule_manager_detail_body">
               <div className="schedule_manager_detail_content">
                 <MatchProgess
@@ -454,7 +511,11 @@ const ManagerMatchRefereeMain = () => {
                 />
               </div>
             </div>
-            <ManagerMatchAction halfAction={actionTeamTowApi} view={"right"} />
+            <ManagerMatchAction
+              halfAction={actionTeamTowApi}
+              view={"right"}
+              handleClick={handleClick}
+            />
           </div>
         </>
       )}
