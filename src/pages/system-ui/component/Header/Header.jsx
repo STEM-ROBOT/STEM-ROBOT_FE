@@ -217,7 +217,7 @@ const Header = () => {
           <div className="cta-buttons">
             <div ref={pagesRef} className="account_action_header">
               <img
-                src="https://static-images.vnncdn.net/files/publish/2023/5/5/mmw-4-956.jpg"
+                src={TokenService.getUserImage()}
                 alt={TokenService.getUserName()}
                 className="account_avatar"
                 onClick={togglePagesDropdown}

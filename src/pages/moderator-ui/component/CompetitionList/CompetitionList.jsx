@@ -24,31 +24,48 @@ const CompetitionList = () => {
   }, []);
   const tagStatuses = (competition) => {
     const now = new Date(); // Lấy thời gian hiện tại
-    const endDate = new Date(competition.endDate);
+    const endDate = new Date(competition.endTime);
+    const startDate = new Date(competition.startTime);
+    const registerTimeDate = new Date(competition.registerTime);
     if (competition.isActive === false) {
       return "Chưa kích hoạt";
-    } else if (competition.isActive === true && now <= endDate) {
+    } else if (
+      competition.isActive === true &&
+      now <= registerTimeDate &&
+      competition.mode.toString().toLowerCase() === "public"
+    ) {
       return "Đang đăng ký";
-    } else if (competition.isActive === true && now > endDate) {
+    } else if (
+      competition.isActive === true &&
+      now >= startDate &&
+      now <= endDate
+    ) {
       return "Đang diển ra";
     }
+    return "Đang kết thúc";
   };
   const activeStatuses = (competition) => {
     const now = new Date(); // Lấy thời gian hiện tại
-    const endDate = new Date(competition.endDate);
+    const endDate = new Date(competition.registerTime);
+    const startDate = new Date(competition.startTime);
     if (competition.isActive === false) {
       return "competition_status_competition";
     } else if (competition.isActive === true && now <= endDate) {
       return "competition_status_competition rg";
+    } else if (
+      competition.isActive === true &&
+      now >= startDate &&
+      now <= endDate
+    ) {
+      return "competition_status_competition done";
     } else if (competition.isActive === true && now > endDate) {
       return "competition_status_competition done";
     }
   };
   const GoCompetition = (competition) => {
     // if (competition.isActive === true) {
-      localStorage.setItem("competitionName", competition.name),
-        localStorage.setItem("competitionEndDate", competition.endDate),
-        navigate(`${competition.id}`)}
+    navigate(`${competition.id}`);
+  };
   // };
   return (
     <div className="competition_container">

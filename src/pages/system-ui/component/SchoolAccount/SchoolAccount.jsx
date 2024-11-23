@@ -3,7 +3,7 @@ import api from "../../../../config";
 import "./SchoolAccount.css";
 import SelectAddress from "../SelectAddress/SelectAddress";
 
-const SchoolAccount = () => {
+const SchoolAccount = ({IdCity,setIdCity,IdDistrict,setIdDistrict,IdShool,setIdShool}) => {
   //Dữ liệu dùng để lưu
   const [Area, setArea] = useState(null);
   const [Province, setProvince] = useState(null);
@@ -16,9 +16,7 @@ const SchoolAccount = () => {
   const [SchoolData, setSchoolData] = useState([]);
   //ID để select theo phạm vi
   const [IdArea, setIdArea] = useState();
-  const [IdCity, setIdCity] = useState();
-  const [IdDistrict, setIdDistrict] = useState();
-  const [IdShool, setIdShool] = useState();
+
   //
   const [Provincetag, setProvincetag] = useState(1);
   const [Districtag, setDistrictag] = useState(1);

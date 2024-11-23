@@ -67,23 +67,17 @@ const SelectAddress = ({
     setSchooltag(2);
     // setMsAddress(false);
   };
-  // const handleDistrict = (event) => {
-  //   const DistrictId =
-  //     event.target.options[event.target.selectedIndex].getAttribute(
-  //       "data-district-id"
-  //     );
-  //   const DistrictName = event.target.value;
-  //   setDistrict(DistrictName);
-  //   setidDistrict(DistrictId);
-  //   setWard(null);
-  //   setWardag(2);
-  //   setMsAddress(false);
-  // };
-  // const handleWard = (event) => {
-  //   const WardName = event.target.value;
-  //   setWard(WardName);
-  //   setMsAddress(false);
-  // };
+  const handleSchool = (event) => {
+    const SchoolId =
+      event.target.options[event.target.selectedIndex].getAttribute(
+        "data-school-id"
+      );
+    const SchoolName = event.target.value;
+    setSchool(SchoolName);
+
+    setIdShool(SchoolId);
+
+  };
 
   return (
     <div className="select-address-log1">
@@ -117,7 +111,7 @@ const SelectAddress = ({
       {label === "Trường của bạn" && (
         <select
           className="select-address"
-          onChange={(e) => setSchool(e.target.value.name)}
+          onChange={handleSchool}
         >
           <option
             value=""

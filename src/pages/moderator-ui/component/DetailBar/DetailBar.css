@@ -23,6 +23,11 @@
     ),
     linear-gradient(90deg, #024a70 0%, #1f6c96 100%);
 }
+.league_status_level.bar {
+  right: 200px;
+  padding: 3px 10px;
+  top: 0;
+}
 .detail_bar_content {
   margin: 0 8% 0 8%;
 }
@@ -50,6 +55,15 @@
 }
 .bar_content {
   display: flex;
+  position: relative;
+}
+.progress_bar_container_detail {
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 0;
 }
 .bar_content_img {
   width: 10%;

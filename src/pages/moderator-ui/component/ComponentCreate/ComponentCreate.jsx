@@ -62,7 +62,7 @@ const ComponentCreate = () => {
     const image = await FirebaseUpload(avatarInput);
 
     const tournamentData = {
-      tournamentLevel: "Cấp trường",
+      tournamentLevel: "trường",
       name: nameTournament,
       location: address,
       image: image,

@@ -4,8 +4,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { BiLogOutCircle } from "react-icons/bi";
 const DetailBar = ({ league, setTabActive, tabActive }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const currentSubPath = location.pathname.split("/").pop();
   const tabs = [
     {
       name: "NỘI DUNG THI ĐẤU",
@@ -27,7 +25,8 @@ const DetailBar = ({ league, setTabActive, tabActive }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
+  const progressPercentage =
+    (league?.competitionActivateNumber / league?.competitionNumber) * 100;
   return (
     <div className="detail_bar">
       <div className="detail_bar_content">
@@ -47,8 +46,43 @@ const DetailBar = ({ league, setTabActive, tabActive }) => {
             <div className="bar_title">
               <span>{league?.name}</span>
             </div>
-            <div className="bar_detail">
-              <span>{league?.location}</span>
+            <div className={"league_status_level bar"}>
+              CẤP {league?.tournamentLevel}
+            </div>
+            <div
+              className="bar_detail"
+              style={{
+                marginBottom: "10px",
+              }}
+            >
+              <span
+                style={{
+                  backgroundColor: "#fff",
+                  color: "#024a70",
+                  borderRadius: "7px",
+                  padding: "0 5px",
+                  marginBottom: "5px",
+                }}
+              >
+                {league?.location}
+              </span>
+            </div>
+            <div
+              className={`league_detail`}
+              style={{
+                marginBottom: "10px",
+              }}
+            >
+              <span
+                style={{
+                  backgroundColor: "#fff",
+                  color: "#024a70",
+                  borderRadius: "7px",
+                  padding: "0 5px",
+                }}
+              >
+                {league?.createDate?.replace("T", " ").slice(0, -3)}'
+              </span>
             </div>
             <div className="bar_stats">
               <div className="tooltip">
@@ -63,16 +97,39 @@ const DetailBar = ({ league, setTabActive, tabActive }) => {
               </div>
             </div>
           </div>
+          <div className={`progress_bar_container_detail`}>
+            <div
+              className={`progress_bar ${"list"}`}
+              style={{
+                border: "1px solid #000",
+              }}
+            >
+              <div
+                className={`progress_fill ${"list"}`}
+                style={{
+                  width: `${progressPercentage}%`,
+                }}
+              ></div>
+
+              <div className={`progress_text ${"list"}`}>
+                {league?.competitionActivateNumber} /{" "}
+                {league?.competitionNumber}
+              </div>
+            </div>
+            <div className={`progress_detail ${"list"}`}>
+              Số nội dung thi đấu đã kích hoạt
+            </div>
+          </div>
         </div>
       </div>
       <div className="tab_navigation">
-        {tabs.map((tab, i) => {
-          // Kiểm tra điều kiện để hiển thị tab "ĐĂNG KÝ THÍ SINH"
+        {tabs.map((tab, i) => {        
           if (
-            tab.path === "register-contestant" &&
-            league?.status !== "Public"
+            (tab.path === "register-contestant" &&
+              league?.status !== "Public") ||
+            (league?.status !== "Public" && tab.path === "team-list")
           ) {
-            return null; // Không render tab nếu điều kiện không phù hợp
+            return null;
           }
 
           return (

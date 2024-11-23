@@ -53,6 +53,13 @@ const RegisterTeamStepTwo = ({ setRegisterTeam, teamInfo }) => {
     setIsSelectAll(!isSelectAll);
   };
   const submitRegister = () => {
+    if (selectedContestants.length !== maxContestants) {
+      alert(
+        `Vui lòng chọn đủ ${maxContestants} thí sinh trước khi đăng ký. Hiện tại bạn đã chọn ${selectedContestants.length} thí sinh.`
+      );
+      return;
+    }
+  
     setLoading(true);
     const data = {
       name: teamInfo.teamName,
@@ -62,7 +69,7 @@ const RegisterTeamStepTwo = ({ setRegisterTeam, teamInfo }) => {
       email: teamInfo.email,
       contestants: selectedContestants,
     };
-    //setLoading(true);
+  
     api
       .post(`/api/teams-register?competitionId=${competitionId}`, data)
       .then((response) => {
@@ -70,6 +77,7 @@ const RegisterTeamStepTwo = ({ setRegisterTeam, teamInfo }) => {
         navigate(`/league/${league_id}/team-list`);
       })
       .catch((error) => {
+        setLoading(false);
         console.log(error);
       });
     console.log(data);
@@ -89,7 +97,7 @@ const RegisterTeamStepTwo = ({ setRegisterTeam, teamInfo }) => {
       </div>
       <div className="register_warning">
         <IoAlertCircleSharp className="icon_contestant" />
-        {`Nội dung thi đấu yêu cầu số lượng thành viên mỗi đội nhiều nhất là ${maxContestants}.`}
+        {`Nội dung thi đấu yêu cầu số lượng thành viên mỗi đội phải đủ ${maxContestants}.`}
       </div>
       <div className="register_action_option">
         <div

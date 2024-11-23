@@ -9,7 +9,6 @@ import connectHub from "../../../../config/connectHub";
 import ManagerMatchAction from "./ManagerMatchAction";
 import MatchWaitStart from "../../../moderator-ui/component/MatchDetailView/MatchWaitStart";
 import MatchProgess from "../../../moderator-ui/component/MatchDetailView/MatchProgess";
-
 const ManagerMatchRefereeMain = () => {
   const { schedule_Id } = useParams();
   const [popupActive, setActive] = useState(false);
@@ -146,6 +145,7 @@ const ManagerMatchRefereeMain = () => {
       api
         .get(`/api/matches/match-total-point?matchId=${matchDetail.matchId}`)
         .then((response) => {
+          console.log(response.data);
           if (response.data === "timeout") {
             if (hubConnectionResultRef.current) {
               hubConnectionResultRef.current.stop();
@@ -156,54 +156,9 @@ const ManagerMatchRefereeMain = () => {
             Array.isArray(response.data) &&
             response.data.length > 0
           ) {
+            console.log(response.data);
             setTeamMatchResult(response.data);
             previousDataRef.current = response.data;
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      api
-        .get(
-          `/api/matches/match-action-referee?teamMatchId=${matchDetail.scheduleData[0].teamMatchId}&scheduleId=${schedule_Id}`
-        )
-        .then((response) => {
-          if (response.data === "timeout") {
-            if (hubConnectionActionTeamOne.current) {
-              hubConnectionActionTeamOne.current.stop();
-              previousActionTeamOneRef.current = null;
-            }
-          } else if (
-            response.data !== "notstarted" &&
-            response.data.teamMatchId
-          ) {
-            console.log(response.data);
-
-            setActionTeamOneApi(response.data);
-            previousActionTeamOneRef.current = response.data;
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      api
-        .get(
-          `/api/matches/match-action-referee?teamMatchId=${matchDetail.scheduleData[1].teamMatchId}&scheduleId=${schedule_Id}`
-        )
-        .then((response) => {
-          if (response.data === "timeout") {
-            if (hubConnectionActionTeamTow.current) {
-              hubConnectionActionTeamTow.current.stop();
-              previousActionTeamTowRef.current = null;
-            }
-          } else if (
-            response.data !== "notstarted" &&
-            response.data.teamMatchId
-          ) {
-            console.log(response.data);
-
-            setActionTeamTowApi(response.data);
-            previousActionTeamTowRef.current = response.data;
           }
         })
         .catch((err) => {
@@ -263,6 +218,52 @@ const ManagerMatchRefereeMain = () => {
         .catch((err) => {
           console.log(err);
         });
+      api
+        .get(
+          `/api/matches/match-action-referee?teamMatchId=${matchDetail.scheduleData[0].teamMatchId}&scheduleId=${schedule_Id}`
+        )
+        .then((response) => {
+          if (response.data === "timeout") {
+            if (hubConnectionActionTeamOne.current) {
+              hubConnectionActionTeamOne.current.stop();
+              previousActionTeamOneRef.current = null;
+            }
+          } else if (
+            response.data !== "notstarted" &&
+            response.data.teamMatchId
+          ) {
+            console.log(response.data);
+
+            setActionTeamOneApi(response.data);
+            previousActionTeamOneRef.current = response.data;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      api
+        .get(
+          `/api/matches/match-action-referee?teamMatchId=${matchDetail.scheduleData[1].teamMatchId}&scheduleId=${schedule_Id}`
+        )
+        .then((response) => {
+          if (response.data === "timeout") {
+            if (hubConnectionActionTeamTow.current) {
+              hubConnectionActionTeamTow.current.stop();
+              previousActionTeamTowRef.current = null;
+            }
+          } else if (
+            response.data !== "notstarted" &&
+            response.data.teamMatchId
+          ) {
+            console.log(response.data);
+
+            setActionTeamTowApi(response.data);
+            previousActionTeamTowRef.current = response.data;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     };
 
     if (loadApiConnectClient) {
@@ -285,7 +286,6 @@ const ManagerMatchRefereeMain = () => {
       }
     };
   }, [loadApiConnectClient]);
-
   useEffect(() => {
     if (matchDetail !== null && matchProgress !== "error") {
       const calculateMatchTime = () => {
@@ -401,16 +401,25 @@ const ManagerMatchRefereeMain = () => {
       return () => clearInterval(timer);
     }
   }, [timeCountDown]);
-  const handleClick = (status, id) => {
-    console.log(status, id);
-
+  const SaveResultMatch = () => {
+    api
+      .put(`/api/schedules/schedule-confirm?scheduleId=${schedule_Id}`)
+      .then((response) => {
+        if (response.data.message == "success") {
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        console.log("cập nhật lỗi", error);
+      });
+  };
+  const handleClick = (status, actionId) => {
     api
       .put(
-        `http://157.66.27.69:5000/api/actions/confirm-action?actionId=${id}&status=${status}&scheduleId=${schedule_Id}`
+        `/api/actions/confirm-action?actionId=${actionId}&status=${status}&scheduleId=${schedule_Id}`
       )
-      .then((response) => {
-        console.log(response);
-      });
+      .then((response) => {})
+      .catch((error) => {});
   };
   return (
     <div
@@ -478,6 +487,7 @@ const ManagerMatchRefereeMain = () => {
               ) : (
                 <div
                   className={`btn_manager_head ${isMatchOver ? "active" : ""}`}
+                  onClick={SaveResultMatch}
                 >
                   Lưu Kết Quả và Thoát
                 </div>
@@ -486,9 +496,9 @@ const ManagerMatchRefereeMain = () => {
           </div>
           <div className="schedule_referee_manager_body">
             <ManagerMatchAction
-              handleClick={handleClick}
               halfAction={actionTeamOneApi}
               view={"left"}
+              handleClick={handleClick}
             />
             <div className="schedule_manager_detail_body">
               <div className="schedule_manager_detail_content">
@@ -502,8 +512,9 @@ const ManagerMatchRefereeMain = () => {
               </div>
             </div>
             <ManagerMatchAction
+              halfAction={actionTeamTowApi}
+              view={"right"}
               handleClick={handleClick}
-                        view={"right"}
             />
           </div>
         </>
