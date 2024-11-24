@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Pricing.css';
-import { FaCheckCircle } from 'react-icons/fa'; 
 import Payments from '../Payments/Payments';
-import { useState } from 'react';
+
 const packages = [
     {
-        id:"1",
-        name: ' Giải đấu hoàn toàn Miễn phí',
+        id: "0",
+        name: 'Giải đấu hoàn toàn Miễn phí',
         type: 'Dưới 5 trận đấu',
         price: '0',
         currency: 'đ',
@@ -23,7 +22,7 @@ const packages = [
         icon: '🆓',
     },
     {
-        id:"2",
+        id: "1",
         name: 'Giải đấu đồng đội Cơ bản',
         type: 'Từ 5 - 19 trận đấu',
         price: '199,000',
@@ -41,7 +40,7 @@ const packages = [
         icon: '💰',
     },
     {
-        id:"3",
+        id: "2",
         name: 'Giải đấu đồng đội Tiêu chuẩn',
         type: 'Từ 20 - 49 trận đấu',
         price: '499,000',
@@ -59,7 +58,7 @@ const packages = [
         icon: '💎',
     },
     {
-        id:"4",
+        id: "3",
         name: 'Giải đấu đồng đội Nâng cao',
         type: 'Từ 50 trận đấu trở lên',
         price: '999,000',
@@ -88,6 +87,7 @@ const Pricing = () => {
     const handleClose = () => {
         setSelectedPackage(null);
     };
+
     return (
         <div className="pricing-outer-container">
             <div className="pricing-container">
@@ -110,8 +110,12 @@ const Pricing = () => {
                                 <span className="price">{pkg.price}đ</span>
                                 <span className="currency"> / giải đấu</span>
                             </div>
-                            <button className="buy-button" onClick={() => handleBuyClick(pkg)}>
-                                Mua ngay
+                            <button
+                                className="buy-button"
+                                onClick={() => handleBuyClick(pkg)}
+                                disabled={pkg.id === "0"} // Disable nút cho gói miễn phí
+                            >
+                                {pkg.id === "0" ? "Miễn phí" : "Mua ngay"}
                             </button>
                         </div>
                     ))}

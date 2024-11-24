@@ -24,6 +24,7 @@ import {  ChangeInforReducer, ChangePassword, InforAccountID } from '../reducers
 import { addTeamAssignMatchReducer, addTeamKnockoutReducer, addTeamTableReducer, addTimeAssignMatchReducer, getTeamAssignMatchReducer, getTeamknockoutReducer, getTeamMatchReducer, getTeamRegisterReducer, getTeamsReducer, getTeamTableReducer, updateTeamRegisterReducer } from '../reducers/TeamReducer';
 import { addLoctionReducer } from '../reducers/LocationReducer';
 import { getActiveCompetitionReducer } from '../reducers/FormatReducer';
+import { createPaymentReducer } from '../reducers/PaymentReducer';
 
 const persistConfig = {
     key: 'root',
@@ -72,6 +73,7 @@ const rootReducer = combineReducers({
     updateTeamRegister:updateTeamRegisterReducer,
     getRule:getRuleReducer,
     getScore:getScoreReducer,
+    createPayment:createPaymentReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

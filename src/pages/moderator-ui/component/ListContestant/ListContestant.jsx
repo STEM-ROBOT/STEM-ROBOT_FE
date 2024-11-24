@@ -14,69 +14,41 @@ import LoadingComponent from '../../../system-ui/component/Loading/LoadingCompon
 const ListContestant = () => {
     const { tournamentId } = useParams();
     const schoolName = TokenService.getSchoolName();
+    const role = TokenService.getUserRole();
+
     const dispatch = useDispatch();
-    const contestantData = useSelector((state) => state.getContestants);
-    const contestants = Array.isArray(contestantData?.listContestant?.data?.data) ? contestantData.listContestant.data.data : [];
+    const { listContestant, loading: loadingList } = useSelector((state) => state.getContestants);
+    const { success: isAddSuccess, loading: loadingAdd } = useSelector((state) => state.addContestant);
+
     const [updatedContestants, setUpdatedContestants] = useState([]);
     const [newContestantsToAdd, setNewContestantsToAdd] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const contestantsPerPage = 5;
     const [hasChanges, setHasChanges] = useState(false);
-    const isAddSuccess = useSelector((state) => state.addContestant?.success)
-    const loadingAdd = useSelector((state) => state.addContestant?.loading)
+
+    const contestantsPerPage = 5;
 
     useEffect(() => {
         dispatch(getListContestant(tournamentId));
     }, [dispatch, tournamentId, isAddSuccess]);
 
     useEffect(() => {
-        // Only update if contestants array has changed
-        if (JSON.stringify(updatedContestants) !== JSON.stringify(contestants)) {
-            setUpdatedContestants(contestants);
+        if (listContestant?.data?.data) {
+            setUpdatedContestants(listContestant.data.data);
         }
-    }, [contestants]);
+    }, [listContestant]);
 
-    useEffect(() => {
-        setUpdatedContestants(updatedContestants);
-    }, [updatedContestants]);
-
-    const uniqueContestantsWithDetails = updatedContestants.map(contestant => ({
-        tournamentId,
-        name: contestant.name,
-        email: contestant.email,
-        gender: contestant.gender,
-        phone: contestant.phone,
-        image: contestant.image,
-        schoolName
-    }));
-
-    const totalPages = Math.ceil(uniqueContestantsWithDetails.length / contestantsPerPage);
-    const indexOfLastContestant = currentPage * contestantsPerPage;
-    const indexOfFirstContestant = indexOfLastContestant - contestantsPerPage;
-    const currentContestants = uniqueContestantsWithDetails.slice(indexOfFirstContestant, indexOfLastContestant);
-
-    const handleNextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    const handlePagination = (direction) => {
+        setCurrentPage((prev) => prev + direction);
     };
-
-    const handlePreviousPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
-    };
-
-    const toggleModal = () => setIsModalOpen(!isModalOpen);
 
     const downloadTemplate = () => {
-        const templateData = [
-            ["STT", "Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại"],
-        ];
-
+        const templateData = [["STT", "Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại"]];
         const worksheet = XLSX.utils.aoa_to_sheet(templateData);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Contestants");
         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-        const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
-        saveAs(blob, "contestant_data.xlsx");
+        saveAs(new Blob([excelBuffer], { type: "application/octet-stream" }), "contestant_data.xlsx");
     };
 
     const handleFileUpload = (event) => {
@@ -85,12 +57,10 @@ const ListContestant = () => {
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, { type: 'array' });
+            const workbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
             const sheetName = workbook.SheetNames[0];
-            const worksheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
 
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
             const importedData = jsonData.map((item, index) => ({
                 stt: index + 1,
                 image: item["Ảnh"] || "https://via.placeholder.com/100",
@@ -99,56 +69,45 @@ const ListContestant = () => {
                 gender: item["Giới tính"] || "N/A",
                 phone: item["Số điện thoại"] || "N/A",
                 tournamentId,
-                schoolName
+                schoolName: role === "AD" ? item["Trường"] || "N/A" : schoolName,
             }));
 
             const newContestants = importedData.filter(
-                newContestant => !updatedContestants.some(existing => existing.email === newContestant.email)
+                (newContestant) => !updatedContestants.some((existing) => existing.email === newContestant.email)
             );
-            if (newContestants.length > 0) {
-                const mappedNewContestants = newContestants.map((item) => ({
-                    name: item.name,
-                    email: item.email,
-                    gender: item.gender,
-                    phone: item.phone,
-                    image: item.image,
-                    schoolName
-                }));
-                setUpdatedContestants(prev => [...prev, ...mappedNewContestants]);
-                setNewContestantsToAdd(mappedNewContestants);
+
+            if (newContestants.length) {
+                setUpdatedContestants((prev) => [...prev, ...newContestants]);
+                setNewContestantsToAdd(newContestants);
                 setHasChanges(true);
             }
         };
-
         reader.readAsArrayBuffer(file);
     };
 
     const saveContestantsToDB = () => {
-        const payload = newContestantsToAdd.map(contestant => ({
-            name: contestant.name,
-            email: contestant.email,
-            gender: contestant.gender,
-            phone: contestant.phone ? String(contestant.phone) : "",
-            image: contestant.image,
-            schoolName: contestant.schoolName,
+        const payload = newContestantsToAdd.map(({ name, email, gender, phone, image, schoolName }) => ({
+            name, email, gender, phone: String(phone), image, schoolName,
         }));
-
         dispatch(addContestant(tournamentId, payload));
         setHasChanges(false);
     };
 
+    const totalPages = Math.ceil(updatedContestants.length / contestantsPerPage);
+    const indexOfLastContestant = currentPage * contestantsPerPage;
+    const indexOfFirstContestant = indexOfLastContestant - contestantsPerPage;
+    const currentContestants = updatedContestants.slice(indexOfFirstContestant, indexOfLastContestant);
+
     return (
         <div className="contestant-container">
-             {loadingAdd && (
-                <LoadingComponent position="fixed" borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.5)" />
-            )}
+            {loadingAdd && <LoadingComponent position="fixed" borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.5)" />}
+            
             <div className="contestant-header">
-                <div className='contestant-header-left'>
-                </div>
-                <div className='contestant-header-right'>
-                    <label className="btn-import" onClick={downloadTemplate}>
+                <div className="contestant-header-left"></div>
+                <div className="contestant-header-right">
+                    <button className="btn-import" onClick={downloadTemplate}>
                         <FaDownload className="icon-download" /> Tải file Excel
-                    </label>
+                    </button>
                     <label htmlFor="file-upload" className="btn-import">
                         <FaFileImport className="icon-import" /> Nhập từ Excel
                     </label>
@@ -173,9 +132,7 @@ const ListContestant = () => {
                         currentContestants.map((contestant, index) => (
                             <tr key={index}>
                                 <td>{indexOfFirstContestant + index + 1}</td>
-                                <td>
-                                    <img src={contestant.image} alt={contestant.name} className="contestant-image" />
-                                </td>
+                                <td><img src={contestant.image} alt={contestant.name} className="contestant-image" /></td>
                                 <td>{contestant.name}</td>
                                 <td>{contestant.email}</td>
                                 <td>{contestant.gender}</td>
@@ -183,31 +140,31 @@ const ListContestant = () => {
                                 <td>{contestant.schoolName}</td>
                             </tr>
                         ))
-                    ) : null}
+                    ) : (
+                        <tr>
+                            <td colSpan="7" className="no-data">Không có dữ liệu để hiển thị.</td>
+                        </tr>
+                    )}
                 </tbody>
             </table>
 
-            {currentContestants.length === 0 && <NoItem message={"Chưa có thí sinh"} />}
-            {
-                currentContestants.length > 0 &&
+            {currentContestants.length === 0 && <NoItem message="Chưa có thí sinh" />}
+
+            {updatedContestants.length > 0 && (
                 <div className="pagination-controls">
-                    <button onClick={handlePreviousPage} disabled={currentPage === 1} className="pagination-btn">
+                    <button onClick={() => handlePagination(-1)} disabled={currentPage === 1} className="pagination-btn">
                         <FaArrowLeft /> Trước
                     </button>
                     <span>Trang {currentPage} / {totalPages}</span>
-                    <button onClick={handleNextPage} disabled={currentPage === totalPages} className="pagination-btn">
+                    <button onClick={() => handlePagination(1)} disabled={currentPage === totalPages} className="pagination-btn">
                         Tiếp <FaArrowRight />
                     </button>
                 </div>
-            }
-
-
-            {hasChanges && (
-                <button className="btn-save-contestant" onClick={saveContestantsToDB}>Lưu thí sinh</button>
             )}
 
+            {hasChanges && <button className="btn-save-contestant" onClick={saveContestantsToDB}>Lưu thí sinh</button>}
 
-            {isModalOpen && <AddContestant onClose={toggleModal} />}
+            {isModalOpen && <AddContestant onClose={() => setIsModalOpen(false)} />}
         </div>
     );
 };

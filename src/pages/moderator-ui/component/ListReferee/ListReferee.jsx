@@ -109,7 +109,7 @@ const ListReferee = () => {
         setHasChanges(false);
         setNewRefereesToAdd([]);
     };
-
+    console.log(currentReferees)
     return (
         <div className="referee-container">
             {loadingAdd && (

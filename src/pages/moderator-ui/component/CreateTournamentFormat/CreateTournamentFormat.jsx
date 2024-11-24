@@ -101,7 +101,7 @@ const CreateTournamentFormat = ({ }) => {
   const [teamsNextRoundError, setTeamsNextRoundError] = useState("");
   const isAddSuccess = useSelector((state) => state.addCompetitionFormat?.success);
   const loadingAdd = useSelector((state) => state.addCompetitionFormat?.loading);
-  const isPublic = useSelector((state) => state.infoTournament.tournamentInfo?.data.status);
+  const isPublic = useSelector((state) => state.infoTournament.tournamentInfo?.data?.status);
  
 
   useEffect(()=>{
