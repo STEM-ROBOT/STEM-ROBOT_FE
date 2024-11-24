@@ -116,7 +116,7 @@ const Countdown = () => {
               {textBtn}
             </button>
           </div>
-          <Introduction introduction={registerConfigApi?.Introduce} />
+          <Introduction introduction={registerConfigApi?.introduce} />
         </>
       )}
     </div>

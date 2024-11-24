@@ -6,8 +6,6 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import Header from "../../../system-ui/component/Header/Header";
-import Footer from "../../../system-ui/component/Footer/Footer";
 import { competition_detail_router } from "../../../../router/ModeratorRouter";
 import { IoLogoGameControllerB } from "react-icons/io";
 import "./CompetitionDetail.css";
@@ -42,6 +40,7 @@ const allTabs = [
 
 const CompetitionDetail = () => {
   const [status, setStatus] = useState("");
+  const [name, setName] = useState("");
   const [formatId, setFormatId] = useState(null);
   const path = useParams();
   const navigate = useNavigate();
@@ -54,9 +53,9 @@ const CompetitionDetail = () => {
         `/api/competitions/config-register?competitionID=${path.competitionId}`
       )
       .then((response) => {
-        
-        const { status, formatId,image } = response.data;
+        const { status, formatId, image, name } = response.data;
         sessionStorage.setItem("ImageCompetition", image);
+        setName(name);
         setStatus(status);
         setFormatId(formatId);
       })

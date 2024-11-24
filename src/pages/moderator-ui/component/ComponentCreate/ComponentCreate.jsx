@@ -25,14 +25,11 @@ const ComponentCreate = () => {
   const [phoneError, setPhoneError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [value, setValue] = useState("");
   // Competition List
   const [competitionList, setCompetitionList] = useState([]);
   const [competitionError, setCompetitionError] = useState("");
   const loadingAdd = useSelector((state)=>state.createTournamnet.loading)
-  const handleChange = (value) => {
-    setValue(value);
-  };
+  const [introduce, setIntroduce] = useState("");
   // Validation and API Call
   const handleSubmit = async () => {
     let hasError = false;
@@ -65,11 +62,12 @@ const ComponentCreate = () => {
     const image = await FirebaseUpload(avatarInput);
 
     const tournamentData = {
-      tournamentLevel: "Cấp trường",
+      tournamentLevel: "trường",
       name: nameTournament,
       location: address,
       image: image,
       status: mode,
+      introduce: introduce,
       phone: phone,
       competition: formattedCompetitions,
     };
@@ -122,11 +120,11 @@ const ComponentCreate = () => {
             <div className="competition_create">
               <div className="label_avatar">Giới thiệu giải </div>
               <div className="text-editor">
-                <QuillToolbar/>
+                <QuillToolbar />
                 <ReactQuill
                   theme="snow"
-                  value={value}
-                  onChange={handleChange}
+                  value={introduce}
+                  onChange={(value) => setIntroduce(value)}
                   placeholder={"Write something awesome..."}
                   modules={modules}
                   formats={formats}

@@ -5,6 +5,8 @@ import { IoClose } from "react-icons/io5";
 import logoImg from "~/assets/images/logo-dask.png";
 import "./SignUp.css";
 import SchoolAccount from "../../SchoolAccount/SchoolAccount";
+import api from "../../../../../config";
+
 const SignUp = ({ setSignUp }) => {
   const [googleInfo, setGoogleInfo] = useState(null);
   const [Email, SetEmail] = useState("");
@@ -13,9 +15,47 @@ const SignUp = ({ setSignUp }) => {
   const [Cfpass, SetCfpass] = useState("");
   const [btnSp, SetBtnSp] = useState("Đăng Kí");
   const [showPassword, setShowPassword] = useState(false);
+  const [IdCity, setIdCity] = useState();
+  const [IdDistrict, setIdDistrict] = useState();
+  const [IdShool, setIdShool] = useState();
   const CloseSignUp = () => {
     setSignUp(false);
   };
+  const SignUpModerator = () => {
+   
+    
+    if (Password !== Cfpass) {
+      alert("Mật khẩu và xác nhận mật khẩu không khớp.");
+      return;
+    }
+    const formattedSchoolId = parseInt(IdShool, 10);
+
+    if (isNaN(formattedSchoolId)) {
+      alert("Mã trường phải là một số hợp lệ.");
+      return;
+    }
+
+    const data = {
+      name: "Giáo Viên",
+      email: Email,
+      password: Password,
+      schoolId: formattedSchoolId,
+      provinceCode: IdCity,
+      districtCode: IdDistrict,
+      phoneNumber: "0300000000",
+      image:
+        "https://static.vecteezy.com/system/resources/previews/009/734/564/non_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg",
+    };
+    api.post(`/api/accounts/signup-moderator`, data).then((response) => {
+      if (response.data == "Success") {
+        setSignUp(false);
+      }
+    });
+  };
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
   return (
     <div className="author_modal">
       <div className="login_view">
@@ -32,7 +72,14 @@ const SignUp = ({ setSignUp }) => {
         <div className="login_Welcome">STEM xin chào</div>
         <div className="sign_up_layout_view">
           <div className="sign_up_layout1">
-            <SchoolAccount />
+            <SchoolAccount
+              IdCity={IdCity}
+              setIdCity={setIdCity}
+              IdDistrict={IdDistrict}
+              setIdDistrict={setIdDistrict}
+              IdShool={IdShool}
+              setIdShool={setIdShool}
+            />
           </div>
           <div className="sign_up_layout2">
             <div className="login_info">
@@ -47,9 +94,9 @@ const SignUp = ({ setSignUp }) => {
                     placeholder="Email"
                     type="email"
                     value={Email}
-                    //    onChange={(e) => {
-                    //      ChangeEmail(e.target.value);
-                    //    }}
+                    onChange={(e) => {
+                      SetEmail(e.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -61,13 +108,13 @@ const SignUp = ({ setSignUp }) => {
                     placeholder="Mật Khẩu"
                     type={showPassword ? "text" : "password"}
                     value={Password}
-                    //    onChange={(e) => {
-                    //      ChangePassword(e.target.value);
-                    //    }}
+                    onChange={(e) => {
+                      SetPassword(e.target.value);
+                    }}
                   />
                   <button
                     className="password-toggle-icon"
-                    //    onClick={togglePasswordVisibility}
+                    onClick={togglePasswordVisibility}
                   >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
@@ -81,13 +128,13 @@ const SignUp = ({ setSignUp }) => {
                     placeholder="Nhập lại mật khẩu của bạn"
                     type={showPassword ? "text" : "password"}
                     value={Cfpass}
-                    //    onChange={(e) => {
-                    //      ChangeCFPassword(e.target.value);
-                    //    }}
+                    onChange={(e) => {
+                      SetCfpass(e.target.value);
+                    }}
                   />
                   <button
                     className="password-toggle-icon"
-                    //    onClick={togglePasswordVisibility}
+                    onClick={togglePasswordVisibility}
                   >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                   </button>
@@ -97,9 +144,9 @@ const SignUp = ({ setSignUp }) => {
             <div className="login_btn">
               <button
                 className="btn_log_user"
-                //     onClick={() => {
-                //       handleSignUp();
-                //     }}
+                onClick={() => {
+                  SignUpModerator();
+                }}
               >
                 {btnSp}
               </button>

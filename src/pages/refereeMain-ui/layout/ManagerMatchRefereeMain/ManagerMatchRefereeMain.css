@@ -317,8 +317,10 @@
   padding: 5px 7px;
   font-weight: 500;
   font-size: 16px;
-  height: 30px;
   position: relative;
+}
+.match_score_description_re {
+  display: none;
 }
 
 .schedule_view_action_item.data:nth-child(even) {
@@ -380,7 +382,10 @@
   transform: translateX(0%);
   transition: transform 0.5s ease-in-out;
 }
-
+.schedule_view_action_item.data:hover .match_score_description {
+  opacity: 1;
+  scale: 1;
+}
 .view_action_haft_btn_layout {
   position: absolute;
   right: -40px;
