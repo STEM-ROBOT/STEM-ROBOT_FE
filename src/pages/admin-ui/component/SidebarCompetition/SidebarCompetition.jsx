@@ -28,21 +28,28 @@ const SidebarCompetition = () => {
   const [openNestedSubmenu, setOpenNestedSubmenu] = useState(null);
   const audioRef = React.useRef(null);
   const navigate = useNavigate();
+  const isSuccess =useSelector((state)=>state.activeCompetition.success);
 
   useEffect(() => {
     if (competitionId) {
       dispatch(getCompetitionInfo(competitionId));
       dispatch(getActive(competitionId));
     }
-  }, [competitionId, dispatch]);
+  }, [competitionId, dispatch,isSuccess]);
 
   
 
   const submenu = [
     { key: "CreateFormat", path: "create-format", label: "Thêm hình thức", icon: <FaListAlt />, isActive: activeData?.isFormat },
+ 
+  ]
+  {
+    competitionInfo?.status === "Public" &&( submenu.push({ key: "TeamRegister", path: "team-register", label: "Đội Đăng Kí", icon: <FaTable /> }))
+  }
+  submenu.push(
     { key: "CreateTeam", path: "create-team", label: "Thêm đội", icon: <FaUsers />, isActive: activeData?.isTeam },
     { key: "CreateLocation", path: "create-location", label: "Thêm sân", icon: <FaMapMarkerAlt />, isActive: activeData?.isLocation }, 
-  ]
+  )
   {
     activeData?.formatId === 2 &&( submenu.push({ key: "CreateTable", path: "create-table", label: "Thêm bảng", icon: <FaTable />, isActive: activeData?.isTable }))
   }
