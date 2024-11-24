@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CreateTournamentInfo.css";
 import logo from "/src/assets/images/logo.png";
 const CreateTournamentInfo = ({
@@ -21,6 +21,10 @@ const CreateTournamentInfo = ({
   phoneError,
   setPhoneError,
 }) => {
+  const [results, setResults] = useState([]);
+  const [debouncedAddress, setDebouncedAddress] = useState(address);
+  const [checkAddress, setCheckAddress] = useState(false);
+
   const handleModeChange = (e) => {
     setMode(e.target.value);
   };
@@ -57,11 +61,45 @@ const CreateTournamentInfo = ({
     setNameTournament(e.target.value);
     setNameError("");
   };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (address !== "") {
+        setDebouncedAddress(address);
+        setCheckAddress(true); // Update debounced value
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer); // Cleanup on re-render
+  }, [address]);
+  useEffect(() => {
+    const fetchAddressResults = async () => {
+      if (!debouncedAddress.trim()) return; // Skip empty inputs
+
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+            debouncedAddress
+          )}&format=json&addressdetails=1&accept-language=vi`
+        );
+        const data = await response.json();
+        setResults(data); // Save results
+      } catch (error) {
+        console.error("Error fetching data from Nominatim API:", error);
+      }
+    };
+
+    fetchAddressResults();
+  }, [debouncedAddress]);
   const handleAddressChange = (e) => {
     setAddress(e.target.value);
+    // Update live address value
     setLocationError("");
   };
-
+  const handleAddressSelect = (address) => {
+    setAddress(address);
+    setCheckAddress(false);
+    setLocationError("");
+  };
   return (
     <div className="container_create_info_tournament">
       <div className="info_create">
@@ -123,6 +161,28 @@ const CreateTournamentInfo = ({
               value={address}
               onChange={handleAddressChange}
             />
+            {checkAddress == true ? (
+              <div className="input_tournament_data">
+                {results.length > 0 ? (
+                  <div className="input_tournament_data_option">
+                    {results.map((result, index) => (
+                      <div
+                        className="input_tournament_item"
+                        key={index}
+                        onClick={() => handleAddressSelect(result.display_name)}
+                      >
+                        {result.display_name}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p>Không có kết quả phù hợp.</p>
+                )}
+              </div>
+            ) : (
+              <></>
+            )}
+
             {locationError && (
               <div className="error_message">{locationError}</div>
             )}

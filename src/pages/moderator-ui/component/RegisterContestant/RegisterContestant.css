@@ -62,3 +62,15 @@
   min-height: 300px;
 }
 
+.competition_container.none {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.countdown_container {
+}
+.label_create_none {
+  font-size: 19px;
+  font-weight: 600;
+}
