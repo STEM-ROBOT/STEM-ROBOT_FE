@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import "./EditTeamPopup.css";
-import api from "../../../../config"; // API config
+import api from "../../../../config";
 import { toast } from "react-toastify";
 import { FirebaseUpload } from "/src/config/firebase";
 

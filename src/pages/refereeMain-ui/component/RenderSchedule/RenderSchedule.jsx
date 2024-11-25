@@ -25,12 +25,12 @@ const RenderSchedule = ({ week, scheduleData, setMatchView, setShowPopup }) => {
     const startHour = parseInt(start.split(":")[0], 10);
     const endHour = parseInt(end.split(":")[0], 10);
     const timeList = [];
-  
+
     for (let hour = startHour; hour <= endHour; hour++) {
       const timeString = hour < 10 ? `0${hour}:00` : `${hour}:00`;
       timeList.push({ time: timeString });
     }
-  
+
     return timeList;
   };
   // Tính chiều cao mỗi giờ (đơn vị: pixel)
@@ -43,8 +43,10 @@ const RenderSchedule = ({ week, scheduleData, setMatchView, setShowPopup }) => {
     hourHeight;
   console.log(totalDayHeight);
   const ShowMatchCard = (match) => {
-    setMatchView(match);
-    setShowPopup(true);
+    if (match.status) {
+      setMatchView(match);
+      setShowPopup(true);
+    }
   };
   return (
     <div className="schedule_week">
@@ -143,27 +145,152 @@ const RenderSchedule = ({ week, scheduleData, setMatchView, setShowPopup }) => {
                             style={{
                               top: `${topPosition}px`,
                               height: `${matchHeight}px`,
+                              backgroundColor: (() => {
+                                const now = new Date();
+                                const startTimeDate = new Date(match.startTime);
+
+                                if (
+                                  startTimeDate.toDateString() ===
+                                  now.toDateString()
+                                ) {
+                                  // Cùng ngày và trong vòng 1 giờ tới
+                                  return "#04ff007d"; // Màu xanh lá cây
+                                } else if (startTimeDate < now) {
+                                  return "#008cff7d"; // Màu xanh nước biển
+                                } else if (startTimeDate > now) {
+                                  return "#ff73007d"; // Màu cam
+                                }
+                              })(),
+                              border: (() => {
+                                const now = new Date();
+                                const startTimeDate = new Date(match.startTime);
+
+                                if (
+                                  startTimeDate.toDateString() ===
+                                  now.toDateString()
+                                ) {
+                                  // Cùng ngày và trong vòng 1 giờ tới
+                                  return "#2px solid #035b7b9c"; // Màu xanh lá cây
+                                } else if (startTimeDate < now) {
+                                  return "2px solid #035b7b9c"; // Màu xanh nước biển
+                                } else if (startTimeDate > now) {
+                                  return "2px solid #7b2f039c"; // Màu cam
+                                }
+                              })(),
                             }}
                             onClick={() => ShowMatchCard(match)}
                           >
                             <div className="match_time_referee">
-                              <div className="match_time_referee_item">
+                              <div
+                                className="match_time_referee_item"
+                                style={{
+                                  backgroundColor: (() => {
+                                    const now = new Date();
+                                    const startTimeDate = new Date(
+                                      match.startTime
+                                    );
+
+                                    if (
+                                      startTimeDate.toDateString() ===
+                                      now.toDateString()
+                                    ) {
+                                      // Cùng ngày và trong vòng 1 giờ tới
+                                      return "#037b1db7"; // Màu xanh lá cây
+                                    } else if (startTimeDate < now) {
+                                      return "#035b7bb7"; // Màu xanh nước biển
+                                    } else if (startTimeDate > now) {
+                                      return "#7b2f03b7"; // Màu cam
+                                    }
+                                  })(),
+                                }}
+                              >
                                 {startTime.toLocaleTimeString("vi-VN", {
                                   hour: "2-digit",
                                   minute: "2-digit",
                                 })}
                               </div>
-                              <div className="match_time_referee_item">
+                              <div
+                                className="match_time_referee_item"
+                                style={{
+                                  backgroundColor: (() => {
+                                    const now = new Date();
+                                    const startTimeDate = new Date(
+                                      match.startTime
+                                    );
+
+                                    if (
+                                      startTimeDate.toDateString() ===
+                                      now.toDateString()
+                                    ) {
+                                      // Cùng ngày và trong vòng 1 giờ tới
+                                      return "#037b1db7"; // Màu xanh lá cây
+                                    } else if (startTimeDate < now) {
+                                      return "#035b7bb7"; // Màu xanh nước biển
+                                    } else if (startTimeDate > now) {
+                                      return "#7b2f03b7"; // Màu cam
+                                    }
+                                  })(),
+                                }}
+                              >
                                 {endTime.toLocaleTimeString("vi-VN", {
                                   hour: "2-digit",
                                   minute: "2-digit",
                                 })}
                               </div>
+                              {match.status ? (
+                                <div className="match_now_status">
+                                  Đến giờ
+                                </div>
+                              ) : null}
                             </div>
 
                             <div className="match_location_referee">
-                              <div className="match_location_referee_item">
-                                <FaLocationDot className="match_location_referee_icon" />
+                              <div
+                                className="match_location_referee_item"
+                                style={{
+                                  color: (() => {
+                                    const now = new Date();
+                                    const startTimeDate = new Date(
+                                      match.startTime
+                                    );
+
+                                    if (
+                                      startTimeDate.toDateString() ===
+                                      now.toDateString()
+                                    ) {
+                                      // Cùng ngày và trong vòng 1 giờ tới
+                                      return "#037b1db7"; // Màu xanh lá cây
+                                    } else if (startTimeDate < now) {
+                                      return "#035b7bb7"; // Màu xanh nước biển
+                                    } else if (startTimeDate > now) {
+                                      return "#7b2f03b7"; // Màu cam
+                                    }
+                                  })(),
+                                }}
+                              >
+                                <FaLocationDot
+                                  className="match_location_referee_icon"
+                                  style={{
+                                    color: (() => {
+                                      const now = new Date();
+                                      const startTimeDate = new Date(
+                                        match.startTime
+                                      );
+
+                                      if (
+                                        startTimeDate.toDateString() ===
+                                        now.toDateString()
+                                      ) {
+                                        // Cùng ngày và trong vòng 1 giờ tới
+                                        return "#037b1db7"; // Màu xanh lá cây
+                                      } else if (startTimeDate < now) {
+                                        return "#035b7bb7"; // Màu xanh nước biển
+                                      } else if (startTimeDate > now) {
+                                        return "#7b2f03b7"; // Màu cam
+                                      }
+                                    })(),
+                                  }}
+                                />
                                 {match.location}
                               </div>
                             </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./CompetitionList.css";
 import { IoLogoGameControllerB } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "/src/config";
+import api from "../../../../config";
 import { competitions_tournament } from "../../api/ApiFlowView/ApiFlowView";
 
 const CompetitionList = () => {
@@ -12,7 +12,7 @@ const CompetitionList = () => {
   const navigate = useNavigate();
   const [competitions, setCompetitions] = useState([]);
   useEffect(() => {
-    api
+    api     
       .get(`${competitions_tournament + path.league_id}`)
       .then((competition) => {
         console.log(competition);
@@ -42,7 +42,7 @@ const CompetitionList = () => {
     ) {
       return "Đang diển ra";
     }
-    return "Đang kết thúc";
+    return "Đã kết thúc";
   };
   const activeStatuses = (competition) => {
     const now = new Date(); // Lấy thời gian hiện tại

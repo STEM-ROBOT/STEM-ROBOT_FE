@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import SidebarCompetition from '../../component/SidebarCompetition/SidebarCompetition';
 import { adminCompetitionChildren } from '../../../../router/AdminRouter';
 import './ManageAdminCompetition.css';
-import TokenService from '../../../../Config/tokenservice';
+import TokenService from '../../../../config/tokenservice';
 import GroupMatch from '../../../moderator-ui/component/GroupMatchDraw/GroupMatch';
 import KnockoutTournament from '../../../moderator-ui/component/KnockoutTournament/KnockoutTournament';
 import PrivateRoute from '../../../../router/PrivateRoute';

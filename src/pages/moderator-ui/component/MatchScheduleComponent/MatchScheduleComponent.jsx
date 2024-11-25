@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./MatchScheduleComponent.css";
 import MatchDetailView from "../MatchDetailView/MatchDetailView";
 import { useParams } from "react-router-dom";
-import api from "/src/Config";
+import api from "../../../../config";
 import { match_schedule_view } from "../../api/ApiFlowView/ApiFlowView";
 
 const roundMode = [
@@ -146,7 +146,7 @@ const MatchScheduleComponent = () => {
                       </div>
                       <div className="match_item_startDate">
                         {match.startTime
-                          ? match.startTime
+                          ? match.startTime.replace("T", " ").slice(0, -3) 
                           : " Chưa có lịch thi đấu"}
                       </div>
                     </div>
