@@ -9,5 +9,8 @@ export default defineConfig({
       "~": path.resolve(__dirname, "./src"), // This sets '~' to point to the 'src' directory
     },
   },
+  server: {
+    host: "0.0.0.0",
+    port: 5173,
+  },
 });
-
