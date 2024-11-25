@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./MatchScheduleComponent.css";
 import MatchDetailView from "../MatchDetailView/MatchDetailView";
 import { useParams } from "react-router-dom";
-import api from "/src/Config";
+import api from "../../../../config";
 import { match_schedule_view } from "../../api/ApiFlowView/ApiFlowView";
 
 const roundMode = [
