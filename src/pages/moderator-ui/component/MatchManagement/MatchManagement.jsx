@@ -229,25 +229,43 @@ const MatchManagement = () => {
 
     const prepareDataForSave = () => {
         if (!isAssigned) {
-            toast.error("Vui lòng sắp xếp trước khi lưu !");
+            toast.error("Vui lòng sắp xếp trước khi lưu!");
             return;
         }
-
+    
         const { startDate, startTime, endTime, breakTimeMatch, breakTimeHaft, haftDuration, numberHaft } = config;
-        console.log(config)
+    
+        // Validation for configuration values
+        if (!startDate) {
+            toast.error("Ngày bắt đầu không được để trống!");
+            return;
+        }
+        if (!startTime || !endTime) {
+            toast.error("Thời gian bắt đầu và kết thúc không được để trống!");
+            return;
+        }
+        if (new Date(`1970-01-01T${startTime}:00`) >= new Date(`1970-01-01T${endTime}:00`)) {
+            toast.error("Thời gian bắt đầu phải trước thời gian kết thúc!");
+            return;
+        }
+        if (breakTimeMatch < 0 || breakTimeHaft < 0 || haftDuration <= 0 || numberHaft <= 0) {
+            toast.error("Thời gian và số hiệp phải lớn hơn 0!");
+            return;
+        }
+    
         const matchDuration = (numberHaft * haftDuration) + ((numberHaft - 1) * breakTimeHaft);
-
+    
         const convertMinutesToTimeSpan = (minutes) => {
             const hours = Math.floor(minutes / 60);
             const mins = minutes % 60;
             return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:00`;
         };
-
+    
         const convertTimeToTimeSpan = (time) => {
             const [hours, minutes] = time.split(':').map(Number);
             return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`;
         };
-
+    
         const mappedData = {
             timeOfMatch: convertMinutesToTimeSpan(matchDuration),
             timeBreak: convertMinutesToTimeSpan(breakTimeMatch),
@@ -259,27 +277,86 @@ const MatchManagement = () => {
             startTime: new Date(startDate).toISOString(),
             matchs: []
         };
-
+    
+        let isValid = true;
+        const matchesByLocation = {}; // To store matches grouped by location for validation
+    
         Object.keys(data).forEach((stageKey) => {
             const stage = data[stageKey];
             (stage.rounds || []).forEach((round) => {
                 round.matchrounds.forEach((table) => {
                     table.matches.forEach((match) => {
+                        // Check if match date is valid
+                        if (new Date(match.date) < new Date(startDate)) {
+                            isValid = false;
+                            toast.error(`Trận đấu ${match.teamA} - ${match.teamB} có ngày nhỏ hơn ngày bắt đầu!`);
+                        }
+    
+                        // Group matches by location for same-location time overlap validation
+                        const locationId = match.locationId;
+                        if (!matchesByLocation[locationId]) {
+                            matchesByLocation[locationId] = [];
+                        }
+    
+                        matchesByLocation[locationId].push({
+                            matchId: match.matchId,
+                            date: match.date,
+                            time: match.time,
+                            round: round.round,
+                        });
+    
                         mappedData.matchs.push({
                             id: match.matchId,
-                            startDate: match.date ? new Date(match.date).toISOString() : new Date(match.date).toISOString(),
+                            startDate: match.date ? new Date(match.date).toISOString() : new Date().toISOString(),
                             locationId: match.locationId || 0,
                             timeIn: convertTimeToTimeSpan(match.time || startTime),
-                            timeOut: convertTimeToTimeSpan(addTime(match?.time || startTime, matchDuration))
+                            timeOut: convertTimeToTimeSpan(addTime(match?.time || startTime, matchDuration)),
                         });
                     });
                 });
             });
         });
-        console.log(mappedData)
-
+    
+        // Validate matches within the same location for time overlap
+        Object.keys(matchesByLocation).forEach((locationId) => {
+            const matches = matchesByLocation[locationId];
+            matches.sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`)); // Sort matches by date and time
+    
+            for (let i = 0; i < matches.length - 1; i++) {
+                const currentMatchEndTime = addTime(matches[i].time, matchDuration);
+                const nextMatchStartTime = matches[i + 1].time;
+    
+                if (
+                    matches[i].date === matches[i + 1].date &&
+                    new Date(`${matches[i].date}T${currentMatchEndTime}`) > new Date(`${matches[i + 1].date}T${nextMatchStartTime}`)
+                ) {
+                    isValid = false;
+                    toast.error(
+                        `Trận đấu ${matches[i].matchId} và ${matches[i + 1].matchId} diễn ra cùng lúc trên sân ${locationId}!`
+                    );
+                }
+            }
+        });
+    
+        // Validate that matches in later rounds don't start before matches in earlier rounds
+        const allMatches = mappedData.matchs.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+        for (let i = 0; i < allMatches.length - 1; i++) {
+            if (allMatches[i + 1].round < allMatches[i].round) {
+                isValid = false;
+                toast.error("Trận đấu ở vòng sau không được diễn ra trước vòng trước!");
+            }
+        }
+    
+        if (!isValid) {
+            return; // Stop if validation fails
+        }
+    
+        console.log(mappedData);
+    
+        // Dispatch the data to save
         dispatch(addTimeAssignMatch(competitionId, mappedData));
     };
+    
 
     const stageData = data[currentStage]?.rounds || [];
 

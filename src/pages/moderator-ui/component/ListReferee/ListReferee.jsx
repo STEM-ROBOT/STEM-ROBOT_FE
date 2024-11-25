@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { addReferee, getListReferee } from '../../../../redux/actions/RefereeAction';
 import NoItem from '../../../system-ui/component/NoItems/NoItem';
 import LoadingComponent from '../../../system-ui/component/Loading/LoadingComponent';
+import { toast } from 'react-toastify';
 
 const ListReferee = () => {
     const { tournamentId } = useParams();
@@ -63,35 +64,48 @@ const ListReferee = () => {
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         if (!file) return;
-
+    
         const reader = new FileReader();
         reader.onload = (e) => {
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: 'array' });
             const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-
+    
+            // Extract column headers from the first row of the sheet
+            const headers = XLSX.utils.sheet_to_json(worksheet, { header: 1 })[0];
+            const expectedHeaders = ["STT", "Tên trọng tài", "Email", "Số điện thoại", "Hình ảnh"];
+    
+            // Validate the headers
+            const isValidFormat = expectedHeaders.every((header) => headers?.includes(header));
+    
+            if (!isValidFormat) {
+                toast.error("File Excel không đúng định dạng! Vui lòng kiểm tra và sử dụng file mẫu được cung cấp.");
+                return;
+            }
+    
+            // Parse data only if format is valid
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
-            const importedReferees = jsonData.map(item => ({
+            const importedReferees = jsonData.map((item) => ({
                 name: item["Tên trọng tài"],
                 email: item["Email"],
                 phoneNumber: item["Số điện thoại"],
                 image: item["Hình ảnh"] || "https://via.placeholder.com/50",
             }));
-
+    
             const newReferees = importedReferees.filter(
-                newReferee => !referees.some(existing => existing.email === newReferee.email)
+                (newReferee) => !referees.some((existing) => existing.email === newReferee.email)
             );
-            console.log(newReferees)
-
+    
             if (newReferees.length > 0) {
                 setReferees((prev) => [...prev, ...newReferees]);
                 setNewRefereesToAdd(newReferees);
                 setHasChanges(true);
             }
         };
-
+    
         reader.readAsArrayBuffer(file);
     };
+    
 
     const saveRefereesToDB = () => {
         const payload = newRefereesToAdd.map(referee => ({

@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import TokenService from '../../../../config/tokenservice';
 import NoItem from '../../../system-ui/component/NoItems/NoItem';
 import LoadingComponent from '../../../system-ui/component/Loading/LoadingComponent';
+import { toast } from 'react-toastify';
 
 const ListContestant = () => {
     const { tournamentId } = useParams();
@@ -54,13 +55,31 @@ const ListContestant = () => {
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         if (!file) return;
-
+    
         const reader = new FileReader();
         reader.onload = (e) => {
             const workbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
             const sheetName = workbook.SheetNames[0];
-            const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
-
+            const worksheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+    
+            // Expected column headers
+            const expectedHeaders = ["STT", "Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại", "Trường"];
+            const fileHeaders = XLSX.utils.sheet_to_json(worksheet, { header: 1 })[0] || [];
+    
+            // Normalize headers to lowercase and trim spaces for robust comparison
+            const normalizedExpectedHeaders = expectedHeaders.map((header) => header.toLowerCase().trim());
+            const normalizedFileHeaders = fileHeaders.map((header) => String(header).toLowerCase().trim());
+    
+            // Check if file headers match the expected headers
+            const isValidFile = normalizedExpectedHeaders.every((header) => normalizedFileHeaders.includes(header));
+    
+            if (!isValidFile) {
+                toast.error("File Excel không đúng định dạng! Vui lòng sử dụng tệp mẫu được cung cấp.");
+                return;
+            }
+    
+            // Process the valid data
             const importedData = jsonData.map((item, index) => ({
                 stt: index + 1,
                 image: item["Ảnh"] || "https://via.placeholder.com/100",
@@ -68,22 +87,24 @@ const ListContestant = () => {
                 email: item["Email"] || "N/A",
                 gender: item["Giới tính"] || "N/A",
                 phone: item["Số điện thoại"] || "N/A",
-                tournamentId,
                 schoolName: role === "AD" ? item["Trường"] || "N/A" : schoolName,
+                tournamentId,
             }));
-
+    
             const newContestants = importedData.filter(
                 (newContestant) => !updatedContestants.some((existing) => existing.email === newContestant.email)
             );
-
-            if (newContestants.length) {
+    
+            if (newContestants.length > 0) {
                 setUpdatedContestants((prev) => [...prev, ...newContestants]);
                 setNewContestantsToAdd(newContestants);
                 setHasChanges(true);
             }
         };
+    
         reader.readAsArrayBuffer(file);
     };
+    
 
     const saveContestantsToDB = () => {
         const payload = newContestantsToAdd.map(({ name, email, gender, phone, image, schoolName }) => ({
@@ -105,9 +126,9 @@ const ListContestant = () => {
             <div className="contestant-header">
                 <div className="contestant-header-left"></div>
                 <div className="contestant-header-right">
-                    <button className="btn-import" onClick={downloadTemplate}>
+                    <label className="btn-import" onClick={downloadTemplate}>
                         <FaDownload className="icon-download" /> Tải file Excel
-                    </button>
+                    </label>
                     <label htmlFor="file-upload" className="btn-import">
                         <FaFileImport className="icon-import" /> Nhập từ Excel
                     </label>
