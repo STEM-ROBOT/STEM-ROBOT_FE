@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./Dashboard.css";
+import "../../../../pages/admin-ui/component/DashBoard/Dashboard.css";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { IoCartOutline } from "react-icons/io5";
 import { FaRegUser, FaTrophy } from "react-icons/fa";
