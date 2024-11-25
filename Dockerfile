@@ -1,35 +1,35 @@
-# Stage 1: Build
-FROM node:18-alpine as BUILD_IMAGE
+# Stage 1: Build ?ng d?ng
+FROM node:18-slim as BUILD_IMAGE
 
-# Set working directory
+# Cài d?t các công c? c?n thi?t
+RUN apt-get update && apt-get install -y python3 make g++ && apt-get clean
+
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Sao chép package.json và cài d?t dependencies
 COPY package*.json ./
-
-# Install dependencies
 RUN npm install --force
 
-# Copy toàn bộ mã nguồn vào container
+# Cài d?t terser d? h? tr? Vite build
+
+
+# Sao chép toàn b? mã ngu?n
 COPY . .
 
-# Build dự án
-RUN npm run build
+# Build ?ng d?ng v?i b? nh? t?i uu
+RUN NODE_OPTIONS="--max-old-space-size=2048" npm run build
 
-# Stage 2: Serve
-FROM node:18-alpine as SERVE_IMAGE
+# Stage 2: Serve ?ng d?ng
+FROM node:18-slim as SERVE_IMAGE
 
-# Set working directory
 WORKDIR /app
-
-# Copy từ bước build
 COPY --from=BUILD_IMAGE /app/dist ./dist
 
-# Cài đặt một trình phục vụ đơn giản
+# Cài d?t serve d? ch?y ?ng d?ng
 RUN npm install -g serve
 
-# Expose port 5173
+
 EXPOSE 5173
 
-# Command để chạy server
+# Ch?y server
 CMD ["serve", "-s", "dist", "-l", "5173"]
