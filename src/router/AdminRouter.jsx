@@ -22,6 +22,7 @@ import RefereeAssignment from '../pages/moderator-ui/component/RefereeAssignment
 import GroupAllocation from '../pages/moderator-ui/component/GroupAllocation/GroupAllocation';
 import PrivateRoute from './PrivateRoute';
 import ManageArena from '../pages/moderator-ui/component/ManageArena/ManageArena';
+import TeamRegister from '../pages/moderator-ui/component/TeamRegister/TeamRegister';
 
 export const adminChildren = [
     { path: "dashboard", element: <DashBoard /> },
@@ -65,6 +66,7 @@ export const adminCompetitionChildren =[
     { path: "create-referee", element: <PrivateRoute element={<RefereeAssignment />} requiredRole="AD" /> },
     { path: "create-location", element: <PrivateRoute element={<ManageArena />} requiredRole="AD" /> },
     { path: "create-table", element: <PrivateRoute element={<GroupAllocation />} requiredRole="AD" /> },
+    { path: "team-register", element: <PrivateRoute element={<TeamRegister />} requiredRole="AD" /> },
 
 ]
 

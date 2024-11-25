@@ -49,7 +49,12 @@ const MatchManagement = () => {
             setCurrentRound(initialRound);
 
             setFiledCount(clonedData?.locations?.length || 1);
-            setStartDate(clonedData?.startTime);
+            if (clonedData?.startTime) {
+                const date = new Date(clonedData.startTime);
+                date.setDate(date.getDate() + 1); 
+                
+                setStartDate(date.toISOString().split('T')[0]); 
+            }
         }
     }, [dataTeamMatch]);
 
@@ -58,7 +63,7 @@ const MatchManagement = () => {
         const date = new Date(dateString);
         return !isNaN(date) ? date.toISOString().split('T')[0] : '';
     };
-
+    console.log(startDate)
     const [config, setConfig] = useState({
         fieldCount,
         startDate: getCurrentDate(startDate),
@@ -246,6 +251,7 @@ const MatchManagement = () => {
         const mappedData = {
             timeOfMatch: convertMinutesToTimeSpan(matchDuration),
             timeBreak: convertMinutesToTimeSpan(breakTimeMatch),
+            timeOfHaft: convertMinutesToTimeSpan(haftDuration),
             numberHaft,
             breakTimeHaft,
             timeStartPlay: convertTimeToTimeSpan(startTime),
