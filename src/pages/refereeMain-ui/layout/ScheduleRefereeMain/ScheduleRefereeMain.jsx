@@ -6,7 +6,7 @@ import ConfirmPopupReferee from "../../component/ConfirmPopupReferee/ConfirmPopu
 import api from "/src/config";
 import { useParams } from "react-router-dom";
 const ScheduleRefereeMain = () => {
-  const path = useParams();
+  const storedCompetitionId = sessionStorage.getItem("competitionId");
   const [scheduleData, setScheduleData] = useState();
   const [weeks, setWeeks] = useState([]);
   const [currentWeekIndex, setCurrentWeekIndex] = useState(0);
@@ -46,7 +46,7 @@ const ScheduleRefereeMain = () => {
   useEffect(() => {
     api
       .get(
-        `/api/refereecompetition/schedules-referee-competition?competitionID=${path.referee_competition_Id}`
+        `/api/refereecompetition/schedules-referee-competition?competitionID=${storedCompetitionId}`
       )
       .then((response) => {
         const data = response.data.data;

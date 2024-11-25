@@ -1,52 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./TeamList.css";
-const fakeTeams = [
-  {
-    id: 1,
-    name: "Team Alpha",
-    members: 10,
-    competition: "Soccer",
-    contactPerson: "Nguyễn Văn A",
-    contactPhone: "0909123456",
-    registrationTime: "2024-10-05 12:00",
-    status: "Đang xét",
-  },
-  {
-    id: 2,
-    name: "Team Beta",
-    members: 8,
-    competition: "Soccer",
-    contactPerson: "Trần Thị B",
-    contactPhone: "0909234567",
-    registrationTime: "2024-10-06 15:30",
-    status: "Chấp nhận",
-  },
-  {
-    id: 3,
-    name: "Team Gamma",
-    members: 12,
-    competition: "Soccer",
-    contactPerson: "Lê Văn C",
-    contactPhone: "0909345678",
-    registrationTime: "2024-10-07 10:45",
-    status: "Được mời",
-  },
-  {
-    id: 4,
-    name: "Team Gamma",
-    members: 12,
-    competition: "Soccer",
-    contactPerson: "Lê Văn C",
-    contactPhone: "0909345678",
-    registrationTime: "2024-10-07 10:45",
-    status: "Từ chối lời mời",
-  },
-];
+import { useParams } from "react-router-dom";
+import api from "../../../../config";
 
 const TeamList = ({ isPublic }) => {
+  const { league_id } = useParams();
+  const [teamRegister, setTeamRegister] = useState();
   const getStatusClass = (status) => {
     switch (status) {
-      case "Đang xét":
+      case "Đang xử lý":
         return "status review";
       case "Chấp nhận":
         return "status accepted";
@@ -61,18 +23,14 @@ const TeamList = ({ isPublic }) => {
     }
   };
   useEffect(() => {
-    // api
-    //   .get(
-    //     `/api/competitions/config-register?competitionID=${path.competitionId}`
-    //   )
-    //   .then((response) => {
-    //     const { status, formatId } = response.data;
-    //     setStatus(status);
-    //     setFormatId(formatId);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    api
+      .get(`/api/teams-register/by-tournament/${league_id}`)
+      .then((response) => {
+        setTeamRegister(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     const targetPosition = 285;
     const startPosition = window.scrollY;
@@ -103,18 +61,11 @@ const TeamList = ({ isPublic }) => {
         </span>
         <button className="guide_button">Hướng dẫn</button>
       </div>
-      {isPublic ? (
-        <div className="status_badges">
-          <span className="badge review">Đang xét: 0</span>
-          <span className="badge accepted">Chấp nhận: 0</span>
-          <span className="badge rejected">Từ chối: 0</span>
-        </div>
-      ) : (
-        <div className="status_badges">
-          <span className="badge invited">Được mời: 0</span>
-          <span className="badge declined">Từ chối lời mời: 0</span>
-        </div>
-      )}
+      <div className="status_badges">
+        <span className="badge review">Đang xét: 0</span>
+        <span className="badge accepted">Chấp nhận: 0</span>
+        <span className="badge rejected">Từ chối: 0</span>
+      </div>
       <div className="team_table">
         <div className="table_header">
           <div className="column_header">#</div>
@@ -127,16 +78,18 @@ const TeamList = ({ isPublic }) => {
           <div className="column_header">Trạng Thái</div>
         </div>
         <div className="table_body">
-          {fakeTeams.length > 0 ? (
-            fakeTeams.map((team) => (
+          {teamRegister?.length > 0 ? (
+            teamRegister?.map((team, i) => (
               <div key={team.id} className="table_row">
-                <div className="table_cell">{team.id}</div>
+                <div className="table_cell">{i + 1}</div>
                 <div className="table_cell">{team.name}</div>
                 <div className="table_cell">{team.members}</div>
                 <div className="table_cell">{team.competition}</div>
                 <div className="table_cell">{team.contactPerson}</div>
                 <div className="table_cell">{team.contactPhone}</div>
-                <div className="table_cell">{team.registrationTime}</div>
+                <div className="table_cell">
+                  {team.registerTime.replace("T", " ").slice(0, -3)}
+                </div>
                 <div className={`table_cell ${getStatusClass(team.status)}`}>
                   {team.status}
                 </div>

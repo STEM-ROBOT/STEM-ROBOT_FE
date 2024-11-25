@@ -42,7 +42,7 @@ const CompetitionList = () => {
     ) {
       return "Đang diển ra";
     }
-    return "Đang kết thúc";
+    return "Đã kết thúc";
   };
   const activeStatuses = (competition) => {
     const now = new Date(); // Lấy thời gian hiện tại
