@@ -318,6 +318,7 @@
   font-weight: 500;
   font-size: 16px;
   position: relative;
+  min-height: 46px;
 }
 .match_score_description_re {
   display: none;
@@ -431,4 +432,12 @@
   scale: 1.06;
   border-radius: 100%;
   box-shadow: 3px 3px 4px rgba(1, 164, 228, 0.3);
+}
+.action_confirm_load {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
