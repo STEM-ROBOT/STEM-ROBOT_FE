@@ -150,6 +150,9 @@
   min-height: 90px;
 }
 .match_now_status {
+  position: absolute;
+  right: -20px;
+  top: -10px;
   margin-left: 5px;
   background-color: #fc1818;
   color: #fff;
@@ -162,6 +165,7 @@
   display: flex;
   width: 100%;
   padding: 5px 0;
+  position: relative;
 }
 .match_time_referee_item {
   margin-left: 5px;
@@ -173,9 +177,9 @@
 
 .match_location_referee {
   width: 100%;
-
   color: #035b7b9c;
 }
+
 .match_location_referee_item {
   padding: 0 5px;
   display: flex;

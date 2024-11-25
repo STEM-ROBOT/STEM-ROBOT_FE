@@ -38,6 +38,7 @@ const ManagerMatchRefereeMain = () => {
   const [loadApiConnectClient, setLoadApiConnectClient] = useState(false);
   const [teamMatchResult, setTeamMatchResult] = useState([]);
   const [noPlayMatch, setNoPlayMatch] = useState(false);
+  const [idLoadAction, setIdLoadAction] = useState(false);
 
   const [timeLeft, setTimeLeft] = useState({
     hours: 0,
@@ -96,6 +97,7 @@ const ManagerMatchRefereeMain = () => {
       if (dataString !== previousDataString) {
         console.log(data);
         setActionTeamOneApi(data);
+        setIdLoadAction();
         previousActionTeamOneRef.current = data;
       }
     };
@@ -108,6 +110,7 @@ const ManagerMatchRefereeMain = () => {
       if (dataString !== previousDataString) {
         console.log(data);
         setActionTeamTowApi(data);
+        setIdLoadAction();
         previousActionTeamTowRef.current = data;
       }
     };
@@ -414,12 +417,18 @@ const ManagerMatchRefereeMain = () => {
       });
   };
   const handleClick = (status, actionId) => {
+    setIdLoadAction(actionId);
     api
       .put(
         `/api/actions/confirm-action?actionId=${actionId}&status=${status}&scheduleId=${schedule_Id}`
       )
-      .then((response) => {})
-      .catch((error) => {});
+      .then((response) => {
+        if (response.data === "Update success") {
+        }
+      })
+      .catch((error) => {
+        alert("Thao tác thất bại", error.message);
+      });
   };
   return (
     <div
@@ -499,6 +508,7 @@ const ManagerMatchRefereeMain = () => {
               halfAction={actionTeamOneApi}
               view={"left"}
               handleClick={handleClick}
+              idLoadAction={idLoadAction}
             />
             <div className="schedule_manager_detail_body">
               <div className="schedule_manager_detail_content">
@@ -515,6 +525,7 @@ const ManagerMatchRefereeMain = () => {
               halfAction={actionTeamTowApi}
               view={"right"}
               handleClick={handleClick}
+              idLoadAction={idLoadAction}
             />
           </div>
         </>

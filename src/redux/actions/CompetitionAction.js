@@ -31,7 +31,8 @@ export const getCompetitionbyTournament = (id) => async (dispatch) => {
       dispatch({ type: GET_COMPETITION_INFO_REQUEST });
   
       const { data } = await api.get(`/api/competitions/Infor?id=${id}`);
-  
+      console.log(data);
+      
       dispatch({ type: GET_COMPETITION_INFO_SUCCESS, payload: data });
     } catch (error) {
       const message =

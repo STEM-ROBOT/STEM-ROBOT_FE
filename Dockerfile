@@ -17,7 +17,7 @@ RUN npm install --force
 COPY . .
 
 # Build ?ng d?ng v?i b? nh? t?i uu
-RUN NODE_OPTIONS="--max-old-space-size=2048" npm run build
+RUN npm run build
 
 # Stage 2: Serve ?ng d?ng
 FROM node:18-slim as SERVE_IMAGE

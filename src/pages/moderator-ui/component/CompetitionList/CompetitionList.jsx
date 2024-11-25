@@ -12,7 +12,7 @@ const CompetitionList = () => {
   const navigate = useNavigate();
   const [competitions, setCompetitions] = useState([]);
   useEffect(() => {
-    api     
+    api
       .get(`${competitions_tournament + path.league_id}`)
       .then((competition) => {
         console.log(competition);
@@ -41,6 +41,8 @@ const CompetitionList = () => {
       now <= endDate
     ) {
       return "Đang diển ra";
+    } else if (competition.isActive === true && now < startDate) {
+      return "Đã kích hoạt";
     }
     return "Đã kết thúc";
   };
