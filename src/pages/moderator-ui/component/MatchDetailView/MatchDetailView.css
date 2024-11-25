@@ -220,10 +220,14 @@
   scale: 1;
 }
 .score_team_item_time {
-  margin-left: 180px;
+  flex: 1;
+  text-align: right;
+  margin-right: 30%;
 }
 .score_team_item_time_away {
-  margin-right: 180px;
+  flex: 1;
+  text-align: left;
+  margin-left: 30%;
 }
 
 .score_team_item_info {

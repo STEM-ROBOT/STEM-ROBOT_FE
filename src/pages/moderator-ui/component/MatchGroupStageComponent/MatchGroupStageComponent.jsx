@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MatchDetailView from "../MatchDetailView/MatchDetailView";
 import { match_group_stage_view } from "../../api/ApiFlowView/ApiFlowView";
-import api from "../../../../Config";
+import api from "../../../../config";
 import { useParams } from "react-router-dom";
 
 const roundMode = [
@@ -223,7 +223,7 @@ const MatchGroupStageComponent = () => {
                         <div className="item_team_name">{match.awayTeam}</div>
                       </div>
                       <div className="match_item_time">
-                        {match.startTime ? match.startTime : " Chưa có lịch thi đấu"}
+                        {match.startTime ? match.startTime.replace("T", " ").slice(0, -3) : " Chưa có lịch thi đấu"}
                       </div>
                     </div>
                   </div>

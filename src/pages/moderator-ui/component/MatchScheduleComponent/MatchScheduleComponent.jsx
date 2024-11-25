@@ -146,7 +146,7 @@ const MatchScheduleComponent = () => {
                       </div>
                       <div className="match_item_startDate">
                         {match.startTime
-                          ? match.startTime
+                          ? match.startTime.replace("T", " ").slice(0, -3) 
                           : " Chưa có lịch thi đấu"}
                       </div>
                     </div>
