@@ -14,7 +14,7 @@ import CompetitionList from "../../component/CompetitionList/CompetitionList";
 import Countdown from "../../component/Countdown/Countdown";
 import TeamList from "../../component/TeamList/TeamList";
 import { league_detail } from "../../../../router/ModeratorRouter";
-import api from "/src/Config";
+import api from "../../../../config";
 import { tournament_view } from "../../api/ApiFlowView/ApiFlowView";
 
 const LeagueDetail = () => {

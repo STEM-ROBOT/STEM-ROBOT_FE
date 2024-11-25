@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "../../../../redux/actions/AuthenAction";
 import connectHub from "../../../../config/connectHub";
 import api from "../../../../config";
+import logo from "~/assets/images/logo.png";
 // const user = {
 //   accountId: "2",
 //   moderatorName: "Hoàng Dương",
@@ -155,7 +156,7 @@ const Header = () => {
       <div className="header-container">
         <div className="logo-container">
           <img
-            src="/src/assets/images/logo.png"
+            src={logo}
             alt="STEM Logo"
             className="logo-image"
             onClick={() => navigate("/home")}

@@ -196,8 +196,6 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
     return () => clearTimeout(timer);
   };
 
-
-
   return (
     <div
       className={
@@ -221,7 +219,7 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
           <div className="match_detail_item">
             <div className="match_time_location_view">
               <MdAccessTime className="icon_match_time" />
-              {matchData.startTime || "Chưa có lịch thi đấu"}
+              {matchData.startTime.replace("T", " ").slice(0, -3) || "Chưa có lịch thi đấu"}
             </div>
             <div className="match_time_location_view">
               <IoLocationOutline className="icon_match_time" />
@@ -238,7 +236,9 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
               <div>{matchData.homeTeam}</div>
             </div>
             <div className="match_team_item_score">
-              {`${team1Score} - ${team2Score}`}
+              {`${team1Score ? team1Score : 0} - ${
+                team2Score ? team2Score : 0
+              }`}
             </div>
             <div className="match_team_item">
               <img

@@ -3,11 +3,12 @@ import "./RuleRefereeMain.css";
 import api from "/src/config";
 
 const RuleRefereeMain = () => {
+  const storedCompetitionId = sessionStorage.getItem("competitionId");
   const [ruleCompetition, setRuleCompetition] = useState(null);
   useEffect(() => {
     const RuleApi = () => {
       api
-        .get(`/api/competitions/score-competition?competitionID=${22}`)
+        .get(`/api/competitions/score-competition?competitionID=${storedCompetitionId}`)
         .then((response) => {
           console.log(response.data.data.data.regulation);
           

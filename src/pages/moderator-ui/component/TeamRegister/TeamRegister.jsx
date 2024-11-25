@@ -6,54 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTeamRegister, updateTeamRegister } from "../../../../redux/actions/TeamAction";
 import { useParams } from "react-router-dom";
 
-const teams = [
-    {
-        id: 1,
-        image: "https://ephoto360.com/uploads/w450/2018/08/16/logo-avat-min5b7543d71cf6d_14dfbfa7e7fd2d65c95470c8cd01c651.jpg",
-        name: "Team Alpha",
-        members: 10,
-        competition: "Soccer",
-        contactPerson: "Nguyễn Văn A",
-        contactPhone: "0909123456",
-        registrationTime: "2024-10-05 12:00",
-        status: false,
-        isSetup: true,
-    },
-    {
-        id: 2,
-        image: "https://ephoto360.com/uploads/w450/2018/08/16/logo-avat-min5b7543d71cf6d_14dfbfa7e7fd2d65c95470c8cd01c651.jpg",
-        name: "Team Beta",
-        members: 8,
-        contactPerson: "Trần Thị B",
-        contactPhone: "0909234567",
-        registrationTime: "2024-10-06 15:30",
-        status: false,
-        isSetup: false,
-    },
-    {
-        id: 3,
-        image: "https://ephoto360.com/uploads/w450/2018/08/16/logo-avat-min5b7543d71cf6d_14dfbfa7e7fd2d65c95470c8cd01c651.jpg",
-        name: "Team Gamma",
-        members: 12,
-        contactPerson: "Lê Văn C",
-        contactPhone: "0909345678",
-        registrationTime: "2024-10-07 10:45",
-        status: true,
-        isSetup: false,
-    },
-    {
-        id: 4,
-        image: "https://ephoto360.com/uploads/w450/2018/08/16/logo-avat-min5b7543d71cf6d_14dfbfa7e7fd2d65c95470c8cd01c651.jpg",
-        name: "Team Delta",
-        members: 12,
-        contactPerson: "Lê Văn C",
-        contactPhone: "0909345678",
-        registrationTime: "2024-10-07 10:45",
-        status: true,
-        isSetup: true,
-    },
-];
-
 const TeamRegister = () => {
     const {competitionId} = useParams();
     const dispatch = useDispatch();
