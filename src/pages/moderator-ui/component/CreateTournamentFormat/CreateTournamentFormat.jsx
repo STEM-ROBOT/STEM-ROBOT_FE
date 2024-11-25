@@ -4,7 +4,10 @@ import { IoAlertCircle } from "react-icons/io5";
 import { GiFinishLine } from "react-icons/gi";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addCompetitionFormat, getCompetitionInfo } from "../../../../redux/actions/CompetitionAction";
+import {
+  addCompetitionFormat,
+  getCompetitionInfo,
+} from "../../../../redux/actions/CompetitionAction";
 import { getActive } from "../../../../redux/actions/FormatAction";
 import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
 
@@ -53,37 +56,37 @@ const formats = [
     teamMin: 6,
     teamMax: 128,
   },
-  {
-    id: 3,
-    name: "Đua tranh top",
-    image: (
-      <svg
-        width="38"
-        height="38"
-        viewBox="0 0 512 512"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          fill="white"
-          d="M23 24v464h18V386.9c152.3 29.4 277.6 29.4 430 0V488h18V24h-18v16h-23v32h23v32h-23v32h23v232.6c-153.3 29.9-276.7 29.9-430 0V104h23V72H41V24H23zm41 48h32V40H64v32zm32 0v32h32V72H96zm32 0h32V40h-32v32zm32 0v32h32V72h-32zm32 0h32V40h-32v32zm32 0v32h32V72h-32zm32 0h32V40h-32v32zm32 0v32h32V72h-32zm32 0h32V40h-32v32zm32 0v32h32V72h-32zm32 0h32V40h-32v32zm32 0v32h32V72h-32zm0 32h-32v32h32v-32zm-64 0h-32v32h32v-32zm-64 0h-32v32h32v-32zm-64 0h-32v32h32v-32zm-64 0h-32v32h32v-32zm-64 0H64v32h32v-32z"
-        />
-      </svg>
-    ),
-    teamMin: 2,
-    teamMax: 128,
-  },
+  // {
+  //   id: 3,
+  //   name: "Đua tranh top",
+  //   image: (
+  //     <svg
+  //       width="38"
+  //       height="38"
+  //       viewBox="0 0 512 512"
+  //       xmlns="http://www.w3.org/2000/svg"
+  //     >
+  //       <path
+  //         fill-rule="evenodd"
+  //         clip-rule="evenodd"
+  //         fill="white"
+  //         d="M23 24v464h18V386.9c152.3 29.4 277.6 29.4 430 0V488h18V24h-18v16h-23v32h23v32h-23v32h23v232.6c-153.3 29.9-276.7 29.9-430 0V104h23V72H41V24H23zm41 48h32V40H64v32zm32 0v32h32V72H96zm32 0h32V40h-32v32zm32 0v32h32V72h-32zm32 0h32V40h-32v32zm32 0v32h32V72h-32zm32 0h32V40h-32v32zm32 0v32h32V72h-32zm32 0h32V40h-32v32zm32 0v32h32V72h-32zm32 0h32V40h-32v32zm32 0v32h32V72h-32zm0 32h-32v32h32v-32zm-64 0h-32v32h32v-32zm-64 0h-32v32h32v-32zm-64 0h-32v32h32v-32zm-64 0h-32v32h32v-32zm-64 0H64v32h32v-32z"
+  //       />
+  //     </svg>
+  //   ),
+  //   teamMin: 2,
+  //   teamMax: 128,
+  // },
 ];
 const teamGoIn = [2, 4, 8, 16, 32, 64];
-const CreateTournamentFormat = ({ }) => {
+const CreateTournamentFormat = ({}) => {
   const { competitionId } = useParams();
   const dispatch = useDispatch();
   const [formatCompetition, setFormatCompetition] = useState(formats[0]);
   const [teamNumber, setTeamNumber] = useState(8);
   const [memberNumber, setMemberNumber] = useState(1);
-  const [dayRegisNumber, setDayRegisNumber] = useState(2);
-  const [startTime ,setStartTime] = useState();
+  const [dayRegisNumber, setDayRegisNumber] = useState("");
+  const [startTime, setStartTime] = useState();
   const [showSetupTable, setShowSetupTable] = useState(false); // State để lưu số đội
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef(null);
@@ -95,19 +98,29 @@ const CreateTournamentFormat = ({ }) => {
   const [errorDraw, setErrorDraw] = useState("");
   const [errorLose, setErrorLose] = useState("");
   const [startTimeError, setStartTimeError] = useState("");
+  const [regisTimeError, setRegisTimeError] = useState("");
   const [selectedGroups, setSelectedGroups] = useState();
   const [groupError, setGroupError] = useState("");
   const [selectedTeamsNextRound, setSelectedTeamsNextRound] = useState("");
   const [teamsNextRoundError, setTeamsNextRoundError] = useState("");
-  const isAddSuccess = useSelector((state) => state.addCompetitionFormat?.success);
-  const loadingAdd = useSelector((state) => state.addCompetitionFormat?.loading);
-  const isPublic = useSelector((state) => state.infoTournament.tournamentInfo?.data?.status);
- 
+  const isAddSuccess = useSelector(
+    (state) => state.addCompetitionFormat?.success
+  );
+  const loadingAdd = useSelector(
+    (state) => state.addCompetitionFormat?.loading
+  );
+  const isPublic = useSelector(
+    (state) => state.infoCompetition.infoCompetition?.data?.status
+  );
+  const IsFormat = useSelector(
+    (state) => state?.getActiveFormat?.data?.data?.isFormat
+  );
+  console.log(IsFormat);
 
-  useEffect(()=>{
-    dispatch(getActive(competitionId))
+  useEffect(() => {
     dispatch(getCompetitionInfo(competitionId));
-  },[isAddSuccess])
+    dispatch(getActive(competitionId));
+  }, [isAddSuccess]);
 
   const handleTeamNumberChange = (e) => {
     const input = e.target.value;
@@ -129,42 +142,69 @@ const CreateTournamentFormat = ({ }) => {
   const handleGroupChange = (e) => {
     const selectedGroups = parseInt(e.target.value, 10);
     setSelectedGroups(selectedGroups);
-
     const minGroups = Math.ceil(teamNumber / 16);
     const maxGroups = Math.floor(teamNumber / 3);
-
     if (selectedGroups < minGroups || selectedGroups > maxGroups) {
-      setGroupError(`Số bảng đấu phải từ ${minGroups} đến ${maxGroups} cho ${teamNumber} đội.`);
+      setGroupError(
+        `Số bảng đấu phải từ ${minGroups} đến ${maxGroups} cho ${teamNumber} đội.`
+      );
     } else {
       setGroupError("");
     }
   };
   const handleTeamsNextRoundChange = (e) => {
-    const selectedTeams = parseInt(e.target.value, 10);
-    setSelectedTeamsNextRound(selectedTeams);
-    validateTeamsNextRound(selectedTeams, selectedGroups);
-  };
-
-  const validateTeamsNextRound = (teams, groups) => {
-    if (teams < groups) {
-      setTeamsNextRoundError(`Số đội vào vòng trong phải bằng hoặc nhiều hơn số bảng đấu.`);
+    if (selectedGroups) {
+      const selectedTeams = parseInt(e.target.value, 10);
+      if (selectedTeams < selectedGroups) {
+        setTeamsNextRoundError(
+          `Số đội đi vào vòng trong phải lớn hoặc bằng  ${selectedGroups}`
+        );
+      } else if (selectedTeams >= teamNumber) {
+        setTeamsNextRoundError(
+          `Số đội đi vào vòng trong phải bé hơn ${teamNumber}`
+        );
+      } else {
+        setTeamsNextRoundError("");
+        setSelectedTeamsNextRound(selectedTeams);
+      }
     } else {
-      setTeamsNextRoundError("");
+      setGroupError(`Chưa chọn số bảng`);
     }
   };
+
+  // const validateTeamsNextRound = (teams, groups) => {
+  //   if (teams < groups) {
+  //     setTeamsNextRoundError(
+  //       `Số đội vào vòng trong phải bằng hoặc nhiều hơn số bảng đấu.`
+  //     );
+  //   } else {
+  //     setTeamsNextRoundError("");
+  //   }
+  // };
 
   const handleStartTimeChange = (e) => {
+    const now = new Date();
     const selectedStartTime = new Date(e.target.value);
-    const currentRegisterTime = new Date();
+    const currentRegisterTime = new Date(dayRegisNumber);
 
-    if (selectedStartTime <= currentRegisterTime) {
-        setStartTimeError("Ngày bắt đầu (startTime) phải sau ngày đăng ký (registerTime).");
+    if (isPublic == "Public") {
+      if (selectedStartTime <= currentRegisterTime) {
+        setStartTimeError("Ngày bắt đầu phải sau ngày đăng ký .");
         setStartTime(""); // Optionally reset startTime if invalid
-    } else {
+      } else {
         setStartTimeError(""); // Clear error if valid
         setStartTime(e.target.value); // Update startTime
+      }
+    } else {
+      if (selectedStartTime >= now) {
+        setStartTimeError(""); // Clear error if valid
+        setStartTime(e.target.value);
+      } else {
+        setStartTimeError("Ngày bắt đầu không hợp lệ .");
+        setStartTime("");
+      }
     }
-};
+  };
 
   const selectFormat = (format) => {
     setFormatCompetition(format);
@@ -182,6 +222,7 @@ const CreateTournamentFormat = ({ }) => {
       setIsExpanded(false);
     }
   };
+
   const handlePointsChange = (type, value) => {
     const parsedValue = parseInt(value, 10);
 
@@ -218,8 +259,17 @@ const CreateTournamentFormat = ({ }) => {
     }
   };
   const handleDayRegisNumberChange = (e) => {
-    setDayRegisNumber(e.target.value); // Set the date value directly
-};
+    const selectedStartTime = new Date(e.target.value);
+    const now = new Date();
+    if (selectedStartTime >= now) {
+      setDayRegisNumber(e.target.value);
+      setRegisTimeError("");
+    } else {
+      setDayRegisNumber("");
+      setRegisTimeError("Ngày đăng ký không hợp lệ.");
+    }
+    // Set the date value directly
+  };
   const handleMemberNumberChange = (e) => {
     const input = e.target.value;
 
@@ -231,35 +281,73 @@ const CreateTournamentFormat = ({ }) => {
   };
 
   const handleSubmit = () => {
-    if (!startTime) {
-        setStartTimeError("Vui lòng chọn ngày bắt đầu hợp lệ.");
-        return;
+    let hasError = false;
+
+    // Kiểm tra nếu trường dữ liệu bắt buộc bị bỏ trống
+    if (!teamNumber || teamNumber < formatCompetition.teamMin) {
+      alert(
+        `Số đội tham gia phải từ ${formatCompetition.teamMin} đến ${formatCompetition.teamMax}.`
+      );
+      hasError = true;
     }
 
+    if (formatCompetition.id === 2) {
+      // Nếu là "Chia bảng đấu", kiểm tra các giá trị liên quan
+      if (!selectedGroups) {
+        setGroupError("Vui lòng chọn số bảng đấu.");
+        hasError = true;
+      }
+      if (!selectedTeamsNextRound) {
+        setTeamsNextRoundError("Vui lòng chọn số đội vào vòng trong.");
+        hasError = true;
+      }
+    }
+
+    if (isPublic === "Public") {
+      if (!dayRegisNumber) {
+        setRegisTimeError("Vui lòng chọn thời gian đóng đăng ký.");
+        hasError = true;
+      }
+      if (!startTime) {
+        setStartTimeError("Vui lòng chọn thời gian bắt đầu thi đấu.");
+        hasError = true;
+      }
+    }
+
+    if (
+      (winPoints === "" || drawPoints === "" || losePoints === "") &&
+      formatCompetition.id == 2
+    ) {
+      alert("Vui lòng nhập điểm thắng, hòa và thua.");
+      hasError = true;
+    }
+    if (hasError) return;
+
+    // Chuẩn bị dữ liệu gửi đi nếu không có lỗi
     const registerTime = new Date().toISOString();
     const selectedStartTime = new Date(startTime);
 
-    if (selectedStartTime <= new Date()) {
-        setStartTimeError("Ngày bắt đầu phải sau ngày đăng ký.");
-        return;
-    } else {
-        setStartTimeError("");
-    }
-
     const data = {
-        formatId: formatCompetition.id,
-        registerTime: registerTime,
-        startTime: selectedStartTime.toISOString(),
-        numberContestantTeam: memberNumber || 0,
-        isTop: formatCompetition.id === 3,
-        numberTeam: teamNumber,
-        numberTeamNextRound: parseInt(document.querySelector(".format_tournament").value) || 0,
-        numberTable: parseInt(document.querySelector(".format_tournament").value) || 0,
-        winScore: winPoints || 0,
-        loseScore: losePoints || 0,
-        tieScore: drawPoints || 0
+      formatId: formatCompetition.id,
+      registerTime: registerTime,
+      startTime: selectedStartTime.toISOString(),
+      numberContestantTeam: memberNumber || 0,
+      isTop: formatCompetition.id === 3,
+      numberTeam: teamNumber,
+      numberTeamNextRound:
+        formatCompetition.id === 2
+          ? parseInt(document.querySelector(".format_tournament").value) || 0
+          : 0,
+      numberTable:
+        formatCompetition.id === 2
+          ? parseInt(document.querySelector(".format_tournament").value) || 0
+          : 0,
+      winScore: winPoints || 0,
+      loseScore: losePoints || 0,
+      tieScore: drawPoints || 0,
     };
-    console.log(data)
+
+    console.log(data);
 
     dispatch(addCompetitionFormat(competitionId, data))
       .then(() => {
@@ -267,7 +355,7 @@ const CreateTournamentFormat = ({ }) => {
         setFormatCompetition(formats[0]);
         setTeamNumber(8);
         setMemberNumber(1);
-        setDayRegisNumber(2);
+        setDayRegisNumber();
         setStartTime("");
         setWinPoints("");
         setDrawPoints("");
@@ -280,193 +368,225 @@ const CreateTournamentFormat = ({ }) => {
         setShowSetupTable(false);
         setIsExpanded(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Lỗi khi thêm hình thức thi đấu:", error);
       });
-};
-
+  };
 
   return (
     <div className="container_create_format_tournament">
-       {loadingAdd && (<LoadingComponent position="fixed"  borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.5)" />)}
-      <div className="format_create_competition">
-        <div className="competition_format">
-          <div className="label_avatar">Hình Thức Thi Đấu</div>
-          <div className="competition_format_option">
-            {formats?.map((format, i) => (
-              <div
-                className={
-                  formatCompetition.id == format.id
-                    ? "format_option active"
-                    : "format_option"
-                }
-                key={i}
-              >
-                <div
-                  onClick={() => selectFormat(format)}
-                  className={
-                    formatCompetition.id == format.id
-                      ? "format_option_view active"
-                      : "format_option_view"
-                  }
-                >
+      {loadingAdd && (
+        <LoadingComponent
+          position="fixed"
+          borderRadius="8px"
+          backgroundColor="rgba(0, 0, 0, 0.5)"
+        />
+      )}
+      {IsFormat ? (
+        <div className="format_create_competition">
+          <div className="competition_format">Đã Hoàn Tất</div>
+        </div>
+      ) : (
+        <>
+          <div className="format_create_competition">
+            <div className="competition_format">
+              <div className="label_avatar">Hình Thức Thi Đấu</div>
+              <div className="competition_format_option">
+                {formats?.map((format, i) => (
                   <div
                     className={
                       formatCompetition.id == format.id
-                        ? "format_option_img active"
-                        : "format_option_img"
+                        ? "format_option active"
+                        : "format_option"
                     }
+                    key={i}
                   >
-                    {format.image}
-                  </div>
+                    <div
+                      onClick={() => selectFormat(format)}
+                      className={
+                        formatCompetition.id == format.id
+                          ? "format_option_view active"
+                          : "format_option_view"
+                      }
+                    >
+                      <div
+                        className={
+                          formatCompetition.id == format.id
+                            ? "format_option_img active"
+                            : "format_option_img"
+                        }
+                      >
+                        {format.image}
+                      </div>
 
-                  <div
-                    className={
-                      formatCompetition.id == format.id
-                        ? "format_option_name active"
-                        : "format_option_name"
-                    }
-                  >
-                    {format.name}
+                      <div
+                        className={
+                          formatCompetition.id == format.id
+                            ? "format_option_name active"
+                            : "format_option_name"
+                        }
+                      >
+                        {format.name}
+                      </div>
+                    </div>
                   </div>
+                ))}
+              </div>
+              <div className="label_avatar">{`Số đội tham gia [${formatCompetition.teamMin}-${formatCompetition.teamMax}]`}</div>
+              <input
+                type="number"
+                className="input_number_team"
+                value={teamNumber}
+                onChange={handleTeamNumberChange}
+              />
+            </div>
+          </div>
+          <div
+            className={
+              showSetupTable
+                ? `format_create_move active`
+                : `format_create_move`
+            }
+          >
+            <div
+              className="competition_format_setup"
+              style={{
+                maxHeight: isExpanded
+                  ? `${contentRef.current.scrollHeight}px`
+                  : "0px",
+                transition: "max-height 1s ease",
+                border: isExpanded ? `1px dashed #a4c1cf` : `none`,
+                padding: isExpanded ? `5px 20px` : `0`,
+              }}
+              ref={contentRef}
+            >
+              <div className="label_avatar">Số bảng đấu</div>
+              <select
+                className="format_tournament"
+                onChange={handleGroupChange}
+              >
+                <option value="">Chọn số bảng</option>
+                {groupOptions?.map((group, index) => (
+                  <option key={index} value={group}>
+                    {group}
+                  </option>
+                ))}
+              </select>
+              {groupError && <div className="error_message">{groupError}</div>}
+              <div className="label_avatar">Số đội vào vòng trong</div>
+              <select
+                className="format_tournament"
+                onChange={handleTeamsNextRoundChange}
+                value={selectedTeamsNextRound}
+              >
+                <option value="">Chọn số đội vào vòng trong</option>
+                {teamGoIn.map((number, i) => (
+                  <option key={i} value={number}>
+                    {number}
+                  </option>
+                ))}
+              </select>
+              {teamsNextRoundError && (
+                <div className="error_message">{teamsNextRoundError}</div>
+              )}
+              <div className="format_score">
+                <div className="format_score_setup">
+                  <div className="label_avatar">Điểm thắng</div>
+                  <input
+                    type="number"
+                    className="input_number_team"
+                    onChange={(e) => handlePointsChange("win", e.target.value)}
+                  />
+                  {errorWin && <div className="error_message">{errorWin}</div>}
+                </div>
+                <div className="format_score_setup">
+                  <div className="label_avatar">Điểm hòa</div>
+                  <input
+                    type="number"
+                    className="input_number_team"
+                    onChange={(e) => handlePointsChange("draw", e.target.value)}
+                  />
+                  {errorDraw && (
+                    <div className="error_message">{errorDraw}</div>
+                  )}
+                </div>
+                <div className="format_score_setup">
+                  <div className="label_avatar">Điểm thua</div>
+                  <input
+                    type="number"
+                    className="input_score_format"
+                    onChange={(e) => handlePointsChange("lose", e.target.value)}
+                  />
+                  {errorLose && (
+                    <div className="error_message">{errorLose}</div>
+                  )}
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-          <div className="label_avatar">{`Số đội tham gia [${formatCompetition.teamMin}-${formatCompetition.teamMax}]`}</div>
-          <input
-            type="number"
-            className="input_number_team"
-            value={teamNumber}
-            onChange={handleTeamNumberChange}
-          />
-        </div>
-      </div>
-      <div
-        className={
-          showSetupTable ? `format_create_move active` : `format_create_move`
-        }
-      >
-        <div
-          className="competition_format_setup"
-          style={{
-            maxHeight: isExpanded
-              ? `${contentRef.current.scrollHeight}px`
-              : "0px",
-            transition: "max-height 1s ease",
-            border: isExpanded ? `1px dashed #a4c1cf` : `none`,
-            padding: isExpanded ? `5px 20px` : `0`,
-          }}
-          ref={contentRef}
-        >
-          <div className="label_avatar">Số bảng đấu</div>
-          <select className="format_tournament" onChange={handleGroupChange}>
-            <option value="">Chọn số bảng</option>
-            {groupOptions?.map((group, index) => (
-              <option key={index} value={group}>
-                {group}
-              </option>
-            ))}
-          </select>
-          {groupError && <div className="error_message">{groupError}</div>}
-          <div className="label_avatar">Số đội vào vòng trong</div>
-          <select className="format_tournament" onChange={handleTeamsNextRoundChange} value={selectedTeamsNextRound}>
-            <option value="">Chọn số đội vào vòng trong</option>
-            {teamGoIn.map((number, i) => (
-              <option key={i} value={number}>
-                {number}
-              </option>
-            ))}
-          </select>
-          {teamsNextRoundError && <div className="error_message">{teamsNextRoundError}</div>}
-          <div className="format_score">
-            <div className="format_score_setup">
-              <div className="label_avatar">Điểm thắng</div>
+          <div className="format_create_competition">
+            <div className="total_match">
+              {`Đối với cấu hình này thì số lượng trận đấu của mỗi nội dung là: ${12}`}
+              <IoAlertCircle className="icon_total_match" />
+            </div>
+          </div>
+          <div className="format_create_competition">
+            <div className="competition_format">
+              <div className="label_avatar" style={{ width: "100%" }}>
+                Số thí sinh trong 1 đội
+              </div>
               <input
                 type="number"
                 className="input_number_team"
-                onChange={(e) => handlePointsChange("win", e.target.value)}
+                value={memberNumber}
+                onChange={handleMemberNumberChange}
               />
-              {errorWin && <div className="error_message">{errorWin}</div>}
-            </div>
-            <div className="format_score_setup">
-              <div className="label_avatar">Điểm hòa</div>
-              <input
-                type="number"
-                className="input_number_team"
-                onChange={(e) => handlePointsChange("draw", e.target.value)}
-              />
-              {errorDraw && <div className="error_message">{errorDraw}</div>}
-            </div>
-            <div className="format_score_setup">
-              <div className="label_avatar">Điểm thua</div>
-              <input
-                type="number"
-                className="input_score_format"
-                onChange={(e) => handlePointsChange("lose", e.target.value)}
-              />
-              {errorLose && <div className="error_message">{errorLose}</div>}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="format_create_competition">
-        <div className="total_match">
-          {`Đối với cấu hình này thì số lượng trận đấu của mỗi nội dung là: ${12}`}
-          <IoAlertCircle className="icon_total_match" />
-        </div>
-      </div>
-      <div className="format_create_competition">
-        <div className="competition_format">
-          <div className="label_avatar" style={{ width: "100%" }}>
-            Số thí sinh trong 1 đội
-          </div>
-          <input
-            type="number"
-            className="input_number_team"
-            value={memberNumber}
-            onChange={handleMemberNumberChange}
-          />
-          <div className="competition_format_date">
-
-            {isPublic === "Public" && (
-              <div style={{ width: "50%" }}>
-              <div className="label_avatar">
-                Thời gian đóng đăng kí
+              <div className="competition_format_date">
+                {isPublic === "Public" && (
+                  <div style={{ width: "50%" }}>
+                    <div className="label_avatar">Thời gian đóng đăng kí</div>
+                    <input
+                      type="date"
+                      className="input_date_team"
+                      value={dayRegisNumber}
+                      onChange={handleDayRegisNumberChange}
+                    />
+                    {regisTimeError && (
+                      <div className="error_message">{regisTimeError}</div>
+                    )}
+                  </div>
+                )}
+                {isPublic == "Public" && dayRegisNumber != "" && (
+                  <div style={{ width: "50%" }}>
+                    <div className="label_avatar">
+                      Thời gian bắt đầu thi đấu
+                    </div>
+                    <input
+                      type="date"
+                      className="input_date_team"
+                      value={startTime}
+                      onChange={handleStartTimeChange}
+                    />
+                    {startTimeError && (
+                      <div className="error_message">{startTimeError}</div>
+                    )}
+                  </div>
+                )}
               </div>
-              <input
-                type="date"
-                className="input_date_team"
-                value={dayRegisNumber}
-                onChange={handleDayRegisNumberChange}
-              />
             </div>
-            )}
-            
-            <div style={{ width: "50%" }}>
-              <div className="label_avatar">
-                Thời gian bắt đầu thi đấu
+          </div>
+          <div className="format_create">
+            <div className="apply_create_tournament">
+              <div
+                className="btn_create_tournament"
+                onClick={() => handleSubmit()}
+              >
+                Hoàn Tất
               </div>
-              <input
-                type="date"
-                className="input_date_team"
-                value={startTime}
-                onChange={handleStartTimeChange}
-              />
-              {startTimeError && <div className="error_message">{startTimeError}</div>}
             </div>
           </div>
-
-        </div>
-      </div>
-
-      <div className="format_create">
-        <div className="apply_create_tournament">
-          <div className="btn_create_tournament" onClick={() => handleSubmit()}>
-            Hoàn Tất
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
