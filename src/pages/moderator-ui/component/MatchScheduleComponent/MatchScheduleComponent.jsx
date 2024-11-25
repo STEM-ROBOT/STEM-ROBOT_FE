@@ -130,8 +130,8 @@ const MatchScheduleComponent = () => {
                     </div>
                     <div className="match_item_score">
                       <div className="item_score">
-                        {`${match.homeScore ? match.homeScore : ""} - ${
-                          match.awayScore ? match.awayScore : ""
+                        {`${match.homeScore != null ? match.homeScore : ""} - ${
+                          match.awayScore != null ? match.awayScore : ""
                         }`}
                       </div>
                     </div>
@@ -146,7 +146,7 @@ const MatchScheduleComponent = () => {
                       </div>
                       <div className="match_item_startDate">
                         {match.startTime
-                          ? match.startTime.replace("T", " ").slice(0, -3) 
+                          ? match.startTime.replace("T", " ").slice(0, -3)
                           : " Chưa có lịch thi đấu"}
                       </div>
                     </div>
