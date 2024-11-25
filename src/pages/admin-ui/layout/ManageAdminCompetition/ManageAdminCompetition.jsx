@@ -8,23 +8,33 @@ import GroupMatch from '../../../moderator-ui/component/GroupMatchDraw/GroupMatc
 import KnockoutTournament from '../../../moderator-ui/component/KnockoutTournament/KnockoutTournament';
 import PrivateRoute from '../../../../router/PrivateRoute';
 import LoadingComponent from '../../../system-ui/component/Loading/LoadingComponent';
+import { useSelector } from 'react-redux';
 
 const ManageAdminCompetition = () => {
-    const [formatId, setFormatId] = useState(null);  // Khởi tạo formatId là null
-    const [loading, setLoading] = useState(true);  // State loading để theo dõi quá trình lấy dữ liệu
+    const [formatId, setFormatId] = useState(null); // Ban đầu set là null
+    const [loading, setLoading] = useState(true); // Trạng thái loading ban đầu
 
-    const fetchedFormatId = TokenService.getFormatId();
+    const fetchedFormatId = TokenService.getFormatId(); // Lấy giá trị formatId từ TokenService
+    const isFormat = useSelector((state) => state.getActiveFormat.data?.data?.isFormat); // Lấy giá trị isFormat từ Redux
 
     useEffect(() => {
+      
         if (fetchedFormatId !== null) {
-            setFormatId(fetchedFormatId);  // Cập nhật formatId khi có giá trị
-            setLoading(false);  // Đặt loading thành false khi đã có giá trị
+            setFormatId(fetchedFormatId); // Cập nhật formatId
         }
     }, [fetchedFormatId]);
 
-    if (loading) {
-        return  <LoadingComponent position="fixed" borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.0)" />
-    }
+    useEffect(() => {
+      
+        if (formatId !== null) {
+            setLoading(false); 
+        }
+    }, [formatId]);
+
+   
+    // if (loading) {
+    //     return <LoadingComponent position="fixed" borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.0)" />;
+    // }
 
     const tournamentChildrenWithFormatId = adminCompetitionChildren.map((route) => {
         if (route.path === "create-matchups") {
@@ -32,7 +42,7 @@ const ManageAdminCompetition = () => {
                 ...route,
                 element: (
                     <PrivateRoute
-                        element={formatId === 2 ? <GroupMatch /> : <KnockoutTournament />}
+                        element={(formatId !== null && formatId === 2 )? <GroupMatch /> : <KnockoutTournament />}
                         requiredRole="AD"
                     />
                 ),

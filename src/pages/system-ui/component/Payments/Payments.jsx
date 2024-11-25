@@ -1,10 +1,49 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import './Payment.css';
+import { toast } from 'react-toastify';
+import api from '../../../../config';
+
 
 const Payments = ({ isOpen, onClose, packageDetails }) => {
-    console.log(packageDetails)
+    const [discountCode, setDiscountCode] = useState('');
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [totalAmount, setTotalAmount] = useState(packageDetails?.price || 0);
+
     if (!isOpen) return null;
+
+    const handlePayment = async () => {
+        setIsProcessing(true);
+        setErrorMessage('');
+        const paymentPayload = {
+            packageId: packageDetails.id,
+            discountCode,
+        };
+
+        try {
+            // Gọi API trực tiếp
+            const { data } = await api.post(`/api/orders`, paymentPayload);
+
+            if (data) {
+                window.open(data, '_blank'); 
+                onClose();
+                toast.success("Đơn hàng đã được tạo thành công!");
+            } else {
+                setErrorMessage('Không nhận được link thanh toán.');
+                toast.error("Không nhận được link thanh toán.");
+            }
+        } catch (error) {
+            const message =
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message;
+            setErrorMessage(`Thanh toán thất bại: ${message}`);
+            toast.error(`Thanh toán thất bại: ${message}`);
+            console.error('Error processing payment:', error);
+        } finally {
+            setIsProcessing(false);
+        }
+    };
 
     return (
         <div className="modal-overlay">
@@ -17,7 +56,7 @@ const Payments = ({ isOpen, onClose, packageDetails }) => {
                             <h2>{packageDetails.name}</h2>
                         </div>
                         <p className="modal-description">
-                            {packageDetails.description}
+                            {packageDetails.description || 'Không có mô tả.'}
                         </p>
                         <div className="modal-benefits">
                             <h4>Bạn nhận được gì từ gói này?</h4>
@@ -31,24 +70,35 @@ const Payments = ({ isOpen, onClose, packageDetails }) => {
                     <div className="modal-right">
                         <h4>Chi tiết thanh toán</h4>
                         <div className="price-details">
-                            {/* <div className="price-row">
-                                <span>Giá :</span>
-                                <span className="original-price">2.500.000đ</span>
-                            </div> */}
                             <div className="price-row">
                                 <span>Giá tiền:</span>
-                                <span className="discount-price">{packageDetails.price}đ</span>
+                                <span className="discount-price">{totalAmount}đ</span>
                             </div>
                         </div>
                         <div className="discount-code">
-                            <input type="text" placeholder="Nhập mã giảm giá" />
-                            <button>Áp dụng</button>
+                            <input
+                                type="text"
+                                placeholder="Nhập mã giảm giá"
+                                value={discountCode}
+                                onChange={(e) => setDiscountCode(e.target.value)}
+                                disabled={isProcessing}
+                            />
+                            <button onClick={() => toast.info('Mã giảm giá chưa được hỗ trợ')} disabled={isProcessing}>
+                                Áp dụng
+                            </button>
                         </div>
+                        {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <div className="total">
                             <span>TỔNG</span>
-                            <span>{packageDetails.price}đ</span>
+                            <span>{totalAmount}đ</span>
                         </div>
-                        <button className="pay-button">Tiếp tục thanh toán</button>
+                        <button
+                            className="pay-button"
+                            onClick={handlePayment}
+                            disabled={isProcessing}
+                        >
+                            {isProcessing ? 'Đang xử lý...' : 'Tiếp tục thanh toán'}
+                        </button>
                         <p className="sepay-info">Thanh toán an toàn với PayOS</p>
                     </div>
                 </div>

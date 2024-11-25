@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import CreateTournamentInfo from "../../../moderator-ui/component/CreateTournamentInfo/CreateTournamentInfo";
 import CreateTournamentCompetition from "../../../moderator-ui/component/CreateTournamentCompetition/CreateTournamentCompetition";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createTournament } from "../../../../redux/actions/TournamentAction";
 import logo from "/src/assets/images/logo.png";
@@ -14,6 +14,7 @@ import QuillToolbar, {
 import ReactQuill from "react-quill";
 import SelectAddress from "../../../system-ui/component/SelectAddress/SelectAddress";
 import { FirebaseUpload } from "../../../../config/firebase";
+import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
 
 const CreateTournamentAdmin = () => {
   const [avatarInputView, setAvatarInputView] = useState(logo);
@@ -28,6 +29,7 @@ const CreateTournamentAdmin = () => {
   const [competitionError, setCompetitionError] = useState("");
   const [tournamentLevel, setTournamentLevel] = useState("");
   const [tournamentFocusLevel, setTournamentFocusLevel] = useState("");
+  const loadingAdd = useSelector((state)=>state.createTournamnet.loading)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -177,6 +179,9 @@ const CreateTournamentAdmin = () => {
   };
   return (
     <div className="admin_create_tournament_container">
+      {loadingAdd && (
+                <LoadingComponent position="fixed" borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.5)" />
+            )}
       <div
         className="label_create"
         style={{ display: "flex", justifyContent: "space-between" }}
