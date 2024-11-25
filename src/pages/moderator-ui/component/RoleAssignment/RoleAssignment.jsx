@@ -19,7 +19,7 @@ const RoleAssignment = () => {
     ? getRefereesFreeTimes.listRefereefreetime.data.listRefereeRsps
     : [];
   const numLocations = getRefereesFreeTimes?.listRefereefreetime?.data?.numberLocation || 0;
-
+  const isAssign  = getRefereesFreeTimes?.listRefereefreetime?.data?.isReferee ;
   const [chiefReferees, setChiefReferees] = useState(1);
   const [referees, setReferees] = useState(1);
   const [simultaneousReferees, setSimultaneousReferees] = useState(numLocations + 1);
@@ -43,13 +43,18 @@ const RoleAssignment = () => {
 
   const isCheck = refereeList[0]?.isReferee;
 
-  useEffect(() => {
-    if (simultaneousReferees <= numLocations) {
-      toast.error(`Số đội ngũ trọng tài phải lớn hơn ${numLocations}.`);
-    }
-  }, [simultaneousReferees, numLocations]);
+  // useEffect(() => {
+  //   if (simultaneousReferees <= numLocations) {
+  //     toast.error(`Số đội ngũ trọng tài phải lớn hơn ${numLocations}.`);
+  //   }
+  // }, [simultaneousReferees, numLocations]);
 
   useEffect(() => {
+    if (isAssign) {
+      setUpdatedRefereeList(refereeList);
+      return;
+    }
+
     const requiredChiefReferees = chiefReferees * simultaneousReferees;
     const requiredRegularReferees = referees * simultaneousReferees;
 
@@ -64,13 +69,12 @@ const RoleAssignment = () => {
         regularRefereesAssigned++;
         return { ...referee, role: "SRF", selected: true };
       } else {
-        return { ...referee, selected: false };
+        return { ...referee, role: null, selected: false };
       }
     });
 
     setUpdatedRefereeList(autoAssignedReferees);
-   
-  }, [refereeList, chiefReferees, referees, simultaneousReferees]);
+  }, [refereeList, chiefReferees, referees, simultaneousReferees, isAssign]);
 
   const handleRoleChange = (id, newRole) => {
     setUpdatedRefereeList((prevList) =>
@@ -186,7 +190,7 @@ const RoleAssignment = () => {
       <div className="role-assignment-header">
         <h2>Quản lí trọng tài</h2>
         <div className="header-buttons">
-          {isCheck !== true && (
+          {isAssign !== true && (
             <button className="create-button" onClick={handleConfirm}>
               Lưu
             </button>
