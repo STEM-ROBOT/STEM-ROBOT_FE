@@ -6,7 +6,7 @@ import { IoGrid, IoListSharp } from "react-icons/io5";
 import LeagueView from "../../component/LeagueView/LeagueView";
 import SearchFilter from "../../component/SearchFilter/SearchFilter";
 import { Route, useNavigate } from "react-router-dom";
-import api from "/src/config";
+import api from "../../../../config";
 import { list_tournament_view } from "../../api/ApiFlowView/ApiFlowView";
 import Pagination from "../../../system-ui/component/Pagination/Pagination";
 

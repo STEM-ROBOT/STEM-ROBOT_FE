@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./LeagueView.css";
 import { useNavigate } from "react-router-dom";
-import api from "/src/Config";
+import api from "../../../../config";
 import { update_viewer_filter } from "../../api/ApiFlowView/ApiFlowView";
 const LeagueView = ({ viewMode, league }) => {
   const navigate = useNavigate();
