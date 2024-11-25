@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./LeagueView.css";
 import { useNavigate } from "react-router-dom";
+import api from "/src/Config";
+import { update_viewer_filter } from "../../api/ApiFlowView/ApiFlowView";
 const LeagueView = ({ viewMode, league }) => {
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -32,11 +34,33 @@ const LeagueView = ({ viewMode, league }) => {
   };
   const GoLeague = () => {
     if (league) {
-      sessionStorage.setItem("leagueData", JSON.stringify(league));
-      navigate(`${league.id}`);
+      api.put(update_viewer_filter + league.id).then((response) => {
+        console.log(response);
+        navigate(`${league.id}/`);
+      });
     } else {
       console.error("league is undefined or null");
     }
+  };
+  const truncateText = (text, maxLines = 2, lineHeight = 20) => {
+    const maxHeight = maxLines * lineHeight;
+    const dummyDiv = document.createElement("div");
+    dummyDiv.style.lineHeight = `${lineHeight}px`;
+    dummyDiv.style.width = "400px";
+    dummyDiv.innerText = text;
+    document.body.appendChild(dummyDiv);
+
+    if (dummyDiv.offsetHeight > maxHeight) {
+      let truncated = text;
+      while (dummyDiv.offsetHeight > maxHeight) {
+        truncated = truncated.slice(0, -1);
+        dummyDiv.innerText = truncated + "...";
+      }
+      document.body.removeChild(dummyDiv);
+      return truncated + "...";
+    }
+    document.body.removeChild(dummyDiv);
+    return text;
   };
   return (
     <div
@@ -53,6 +77,19 @@ const LeagueView = ({ viewMode, league }) => {
           "--background-image": `url(${league.imagesCompetition[currentImageIndex]})`,
         }}
       >
+        <div
+          className={
+            league.status == "Private"
+              ? "competition_status_competition done "
+              : "competition_status_competition rg"
+          }
+        >
+          {league.status == "Public" ? "Mở đăng ký" : "Không mở đăng ký"}
+        </div>
+        <div className={"league_status_level"}>
+          {" "}
+          CẤP {league.tournamentLevel}
+        </div>
         <img
           src={league.image}
           alt="League Image"
@@ -63,8 +100,25 @@ const LeagueView = ({ viewMode, league }) => {
         <div className={`league_title ${viewMode}`}>
           <span>{league.name}</span>
         </div>
-        <div className={`league_detail ${viewMode}`}>
-          <span>{league.location}</span>
+        <div className={`league_detail ${viewMode} location`}>
+          <span>
+            {viewMode === "grid"
+              ? truncateText(league.location)
+              : league.location}
+          </span>
+        </div>
+        <div className={`league_detail ${viewMode} `}>
+          <span
+            style={{
+              backgroundColor: "#0864b9",
+              color: "#fff",
+              width: "fit-content",
+              borderRadius: "7px",
+              padding: "0 5px",
+            }}
+          >
+            {league.createDate.replace("T", " ").slice(0, -3)}'
+          </span>
         </div>
         <div className={`league_stats ${viewMode}`}>
           <div className={`tooltip ${viewMode}`}>
@@ -76,7 +130,7 @@ const LeagueView = ({ viewMode, league }) => {
 
           {/* Tooltip for views */}
           <div className={`tooltip ${viewMode}`}>
-            <span>👁️ {league.views}</span>
+            <div>👁️ {league.views}</div>
             <div className={`tooltip_text ${viewMode}`}>Lượt xem</div>
           </div>
 

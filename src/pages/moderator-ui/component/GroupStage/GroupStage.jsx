@@ -20,9 +20,9 @@ const GroupStage = () => {
     return groups;
   };
 
-  const groups = divideTeamsIntoGroups(teams, 2); // For example, dividing into 2 groups
+  const groups = divideTeamsIntoGroups(teams, 2); 
 
-  // Function to generate matches for each group and round
+  
   const generateGroupMatches = (group, round) => {
     const matches = [];
     const half = Math.ceil(group.length / 2);

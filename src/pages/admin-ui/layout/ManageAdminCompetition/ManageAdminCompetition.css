@@ -1,0 +1,66 @@
+.admin_competition_container_full_page {
+    height: 100vh;
+  }
+  
+  .admin_competition_content_full_page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+  }
+  
+  
+  .admin_competition_sidebar_section {
+    width: 300px;
+    padding: 8px;
+    background-color: #b4c5d3;
+    border-radius: 30px 0 0 30px;
+  }
+  
+  .admin_competition_main_content_section {
+    padding: 8px;
+    flex: 1;
+    background-color: #b4c5d3;
+    border-radius: 0 30px 30px 0;
+  }
+  
+  .admin_competition_main_content_section_one {
+    flex: 1;
+    height: 98vh;
+    border-radius: 7px 30px 30px 7px;
+    background-color: #ecf3fb;
+  }
+  .submenu-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 10px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+  
+  .submenu-item.active-submenu,
+  .nested-submenu-item.active-nested-submenu {
+      background-color: #01395f;
+      color: #ffffff;
+  }
+  
+  .nested-submenu {
+      padding-left: 30px;
+  }
+  
+  .nested-submenu-item {
+      padding: 5px 10px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }.admin_competition_main_content_section_two{
+    padding: 20px;
+  }
+  .admin_competition_main_content_section_two {
+    height: 90vh;              /* Đảm bảo chiều cao của phần này chiếm hết chiều cao viewport */
+    overflow-y: auto;           /* Cho phép cuộn dọc khi nội dung vượt quá chiều cao */
+}
+.admin_competition_main_content_section_two::-webkit-scrollbar {
+  display: none;  /* Ẩn thanh cuộn */
+}

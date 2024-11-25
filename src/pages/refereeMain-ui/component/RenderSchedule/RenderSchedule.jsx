@@ -2,28 +2,16 @@ import React from "react";
 import "./RenderSchedule.css";
 import { FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 const RenderSchedule = ({ week, scheduleData, setMatchView, setShowPopup }) => {
+  const navigate = useNavigate();
   const weekStart = week.start;
   const weekEnd = week.end;
-  function formatStartTime(inputTime) {
-    // Split the date and time components from the string
-    const [datePart, timePart, period] = inputTime.split(" ");
-    const [day, month, year] = datePart.split("/").map(Number);
-    let [hour, minute, second] = timePart.split(":").map(Number);
-  
-    // Adjust hour for AM/PM (SA = AM, CH = PM)
-    if (period === "SA" && hour === 12) hour = 0; // 12 AM is 0 hours
-    if (period === "CH" && hour < 12) hour += 12; // PM, add 12 hours
-  
-    // Create a new Date object in the ISO format
-    const isoString = new Date(year, month - 1, day, hour, minute, second).toISOString();
-    return isoString.slice(0, 19); // Remove milliseconds
-  }
   const scheduleForWeek = scheduleData.scheduleReferee.filter((schedule) => {
-    const scheduleDate = new Date(formatStartTime(schedule.startTime));
+    const scheduleDate = new Date(schedule.startTime);
     console.log(scheduleDate);
-    
+
     return scheduleDate >= weekStart && scheduleDate <= weekEnd;
   });
 
@@ -37,16 +25,16 @@ const RenderSchedule = ({ week, scheduleData, setMatchView, setShowPopup }) => {
     const startHour = parseInt(start.split(":")[0], 10);
     const endHour = parseInt(end.split(":")[0], 10);
     const timeList = [];
-
+  
     for (let hour = startHour; hour <= endHour; hour++) {
       const timeString = hour < 10 ? `0${hour}:00` : `${hour}:00`;
       timeList.push({ time: timeString });
     }
-
+  
     return timeList;
   };
-
   // Tính chiều cao mỗi giờ (đơn vị: pixel)
+
   const hourHeight = 120.8; // 120px cho mỗi giờ
   const totalDayHeight =
     (parseInt(scheduleData.hourEndInDay, 10) -
@@ -127,11 +115,11 @@ const RenderSchedule = ({ week, scheduleData, setMatchView, setShowPopup }) => {
                     {scheduleForWeek
                       .filter(
                         (schedule) =>
-                          new Date(formatStartTime(schedule.startTime)).toDateString() ===
+                          new Date(schedule.startTime).toDateString() ===
                           day.toDateString()
                       )
                       .map((match) => {
-                        const startTime = new Date(formatStartTime(match.startTime));
+                        const startTime = new Date(match.startTime);
                         const endTime = new Date(
                           startTime.getTime() +
                             scheduleData.timePlayMatch * 60000

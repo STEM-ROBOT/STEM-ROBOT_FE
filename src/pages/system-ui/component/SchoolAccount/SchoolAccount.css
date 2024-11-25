@@ -1,0 +1,40 @@
+.school_layout {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.lable_school_accout {
+  margin-bottom: 15px;
+  width: 100%;
+  font-size: 19px;
+  font-weight: 600;
+}
+.lish_area_accout {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+.area_accout_item {
+  border-radius: 7px;
+  color: #0b76bd;
+  border: 1px solid #0b76bd;
+  background-color: #b4e0eb;
+  padding: 5px 20px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.area_accout_item.active {
+  background-color: #0687a7;
+  color: #fff;
+}
+.address_acount_layout {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 35px;
+}

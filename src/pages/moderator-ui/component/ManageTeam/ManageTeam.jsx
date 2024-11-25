@@ -6,6 +6,7 @@ import {
   FaArrowRight,
   FaFileExport,
   FaFileUpload,
+  FaCheck,
 } from "react-icons/fa";
 import * as XLSX from "xlsx"; // Import thư viện để xuất/nhập Excel
 import "./ManageTeam.css";
@@ -13,27 +14,31 @@ import EditTeamPopup from "../EditTeamPopup/EditTeamPopup";
 import { useDispatch, useSelector } from "react-redux";
 import { getListTeam } from "../../../../redux/actions/TeamAction";
 import { useParams } from "react-router-dom";
+import { getActive } from "../../../../redux/actions/FormatAction";
+import NoItem from "../../../system-ui/component/NoItems/NoItem";
 
 const ManageTeam = () => {
   const { competitionId } = useParams();
   const dispatch = useDispatch();
   const getteams = useSelector((state) => state.getTeams);
 
+
   // Ensure teams is always an array
   const teams = Array.isArray(getteams?.listTeam?.data?.success?.data)
     ? getteams.listTeam.data.success.data
     : [];
-    const [loadApi, setLoadApi] = useState(false);
+  const [loadApi, setLoadApi] = useState(false);
   useEffect(() => {
     dispatch(getListTeam(competitionId));
+    dispatch(getActive(competitionId))
     setLoadApi(false);
-  }, [dispatch, competitionId,loadApi]);
+  }, [dispatch, competitionId, loadApi]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [teamsPerPage] = useState(6);
   const [isEditing, setIsEditing] = useState(false);
   const [editTeam, setEditTeam] = useState(null);
-  
+
 
   // Pagination logic
   const indexOfLastTeam = currentPage * teamsPerPage;
@@ -94,9 +99,9 @@ const ManageTeam = () => {
         contactInfo: row["Người liên hệ"],
         members: row["Thành viên"]
           ? row["Thành viên"].split(", ").map((member, index) => ({
-              contestantId: index + 1,
-              contestantName: member,
-            }))
+            contestantId: index + 1,
+            contestantName: member,
+          }))
           : [],
         logo: "https://t3.ftcdn.net/jpg/07/68/91/92/360_F_768919266_4OfllVFjsr99DPeFCATa0jrTOjKnUshK.jpg", // Default logo
       }));
@@ -119,43 +124,32 @@ const ManageTeam = () => {
     reader.readAsBinaryString(file);
   };
 
+
   return (
     <div className="team-list-container">
+      <div className="team-list_title">
+        Quản lý đội
+      </div>
       <div className="team-list-header">
         <span>
           Có {teams.length} đội và{" "}
           {teams.reduce((acc, team) => acc + (team.member?.length || 0), 0)}{" "}
           người chơi tham gia giải
         </span>
-        <div className="header-buttons">
-          <button
-            className="import-button-team"
-            onClick={() => document.getElementById("hidden-file-input").click()}
-          >
-            <FaFileUpload /> Nhập tệp tin
-          </button>
-          <input
-            type="file"
-            id="hidden-file-input"
-            accept=".xlsx, .xls"
-            onChange={handleFileUpload}
-            style={{ display: "none" }}
-          />
-          <button className="export-button-team" onClick={exportToExcel}>
-            <FaFileExport /> Xuất ra file Excel
-          </button>
-        </div>
       </div>
       <div className="team-list-grid">
-        {currentTeams.map((team) => (
+        {currentTeams.length > 0 && (currentTeams.map((team) => (
           <div key={team.id} className="team-card">
+
             <div className="team-card-header">
+              {team.isSetup && <FaCheck className="check-icon-team" />}
               <img src={team.image} alt={team.name} className="team-logo" />
               <FaEdit
                 className="edit-icon"
                 onClick={() => handleEditClick(team)}
               />
             </div>
+
             <div className="team-name">{team.name}</div>
             <div className="team-members">
               <p>Thành viên</p>
@@ -174,26 +168,27 @@ const ManageTeam = () => {
               </div>
             </div>
           </div>
-        ))}
+        )))}
       </div>
+      {currentTeams.length === 0 && (<NoItem message={"Chưa có đội"} />)}
 
-      {/* Pagination controls with arrow icons */}
-      <div className="pagination">
-        <button
-          onClick={() => paginate(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="pagination-arrow"
-        >
-          <FaArrowLeft />
-        </button>
-        <button
-          onClick={() => paginate(currentPage + 1)}
-          disabled={currentPage === Math.ceil(teams.length / teamsPerPage)}
-          className="pagination-arrow"
-        >
-          <FaArrowRight />
-        </button>
-      </div>
+      {currentTeams.length > 0 &&
+        <div className="pagination">
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="pagination-arrow"
+          >
+            <FaArrowLeft />
+          </button>
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === Math.ceil(teams.length / teamsPerPage)}
+            className="pagination-arrow"
+          >
+            <FaArrowRight />
+          </button>
+        </div>}
 
       {isEditing && (
         <EditTeamPopup

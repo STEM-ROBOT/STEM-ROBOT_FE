@@ -1,7 +1,8 @@
 import { toast } from "react-toastify";
-import api from "../../config";
+
 import { ADD_SCORE_REQUEST } from "../constants/ScoreConstant";
-import { ADD_TEAM_ASSIGN_MATCH_FAIL, ADD_TEAM_ASSIGN_MATCH_REQUEST, ADD_TEAM_ASSIGN_MATCH_SUCCESS, ADD_TEAM_KNOCKOUT_FAIL, ADD_TEAM_KNOCKOUT_REQUEST, ADD_TEAM_KNOCKOUT_SUCCESS, ADD_TEAM_TABLE_FAIL, ADD_TEAM_TABLE_REQUEST, ADD_TEAM_TABLE_SUCCESS, ADD_TIME_ASSIGN_MATCH_FAIL, ADD_TIME_ASSIGN_MATCH_REQUEST, ADD_TIME_ASSIGN_MATCH_SUCCESS, GET_TEAM_ASSIGN_MATCH_FAIL, GET_TEAM_ASSIGN_MATCH_REQUEST, GET_TEAM_ASSIGN_MATCH_SUCCESS, GET_TEAM_KNOCKOUT_FAIL, GET_TEAM_KNOCKOUT_REQUEST, GET_TEAM_KNOCKOUT_SUCCESS, GET_TEAM_MATCH_GROUP_FAIL, GET_TEAM_MATCH_GROUP_REQUEST, GET_TEAM_MATCH_GROUP_SUCCESS, GET_TEAM_TABLE_FAIL, GET_TEAM_TABLE_REQUEST, GET_TEAM_TABLE_SUCCESS, GET_TEAMS_FAIL, GET_TEAMS_REQUEST, GET_TEAMS_SUCCESS } from "../constants/TeamConstant";
+import { ADD_TEAM_ASSIGN_MATCH_FAIL, ADD_TEAM_ASSIGN_MATCH_REQUEST, ADD_TEAM_ASSIGN_MATCH_SUCCESS, ADD_TEAM_KNOCKOUT_FAIL, ADD_TEAM_KNOCKOUT_REQUEST, ADD_TEAM_KNOCKOUT_SUCCESS, ADD_TEAM_TABLE_FAIL, ADD_TEAM_TABLE_REQUEST, ADD_TEAM_TABLE_SUCCESS, ADD_TIME_ASSIGN_MATCH_FAIL, ADD_TIME_ASSIGN_MATCH_REQUEST, ADD_TIME_ASSIGN_MATCH_SUCCESS, GET_TEAM_ASSIGN_MATCH_FAIL, GET_TEAM_ASSIGN_MATCH_REQUEST, GET_TEAM_ASSIGN_MATCH_SUCCESS, GET_TEAM_KNOCKOUT_FAIL, GET_TEAM_KNOCKOUT_REQUEST, GET_TEAM_KNOCKOUT_SUCCESS, GET_TEAM_MATCH_GROUP_FAIL, GET_TEAM_MATCH_GROUP_REQUEST, GET_TEAM_MATCH_GROUP_SUCCESS, GET_TEAM_TABLE_FAIL, GET_TEAM_TABLE_REQUEST, GET_TEAM_TABLE_SUCCESS, GET_TEAMS_FAIL, GET_TEAMS_REGISTER_FAIL, GET_TEAMS_REGISTER_REQUEST, GET_TEAMS_REGISTER_SUCCESS, GET_TEAMS_REQUEST, GET_TEAMS_SUCCESS, UPDATE_TEAMS_REGISTER_FAIL, UPDATE_TEAMS_REGISTER_REQUEST, UPDATE_TEAMS_REGISTER_SUCCESS } from "../constants/TeamConstant";
+import api from "/src/config";
 
 export const getListTeam = (competitionId) => async (dispatch) => {
     try {
@@ -51,6 +52,7 @@ export const getListTeamsKnockout = (competitionId) => async (dispatch) => {
     dispatch({ type: GET_TEAM_KNOCKOUT_REQUEST });
 
     const { data } = await api.get(`/api/matches/get-round-knockout-late?CompetitionID=${competitionId}`);
+    console.log(data)
 
     dispatch({ type: GET_TEAM_KNOCKOUT_SUCCESS, payload: data });
   } catch (error) {
@@ -98,6 +100,7 @@ export const AddTeamsTable = (competitionId,teamTable) => async (dispatch) => {
     const { data } = await api.post(`api/competitions/config-teamtable-stagetable?competitionId=${competitionId}`,teamTable);
 
     dispatch({ type: ADD_TEAM_TABLE_SUCCESS, payload: data });
+    toast.success("Thêm Thành Công")
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -199,6 +202,51 @@ export const addTimeAssignMatch = (competitionId,timeMatch) => async (dispatch) 
     }
     dispatch({
       type: ADD_TIME_ASSIGN_MATCH_FAIL,
+      payload: message,
+    });
+  }
+};
+
+export const getTeamRegister = (competitionId) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_TEAMS_REGISTER_REQUEST });
+
+    const { data } = await api.get(`/api/teams-register/byCompetitionId/${competitionId}`);
+
+    dispatch({ type: GET_TEAMS_REGISTER_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      // dispatch(logout());
+    }
+    dispatch({
+      type: GET_TEAMS_REGISTER_FAIL,
+      payload: message,
+    });
+  }
+};
+
+export const updateTeamRegister = (id,competitionId,status) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_TEAMS_REGISTER_REQUEST });
+
+    const { data } = await api.put(`/api/teams-register/${id}/bycompetitionId/${competitionId}`,status);
+
+    dispatch({ type: UPDATE_TEAMS_REGISTER_SUCCESS, payload: data });
+    toast.success("Thêm Thành Công")
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      // dispatch(logout());
+    }
+    dispatch({
+      type: UPDATE_TEAMS_REGISTER_FAIL,
       payload: message,
     });
   }

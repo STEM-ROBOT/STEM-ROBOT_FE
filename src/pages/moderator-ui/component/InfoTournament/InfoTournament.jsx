@@ -3,13 +3,14 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import './InfoTournament.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInfoTournament } from '../../../../redux/actions/TournamentAction';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const InfoTournament = () => {
-    const { id } = useParams();
+    const { tournamentId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-    
+
     // Tab cấu hình
     const tabs = [
         { name: "QUẢN LÍ NỘI DUNG", key: "mycompetition" },
@@ -17,19 +18,19 @@ const InfoTournament = () => {
         { name: "DANH SÁCH TRỌNG TÀI", key: "refee" },
         // { name: "TÙY CHỈNH", key: "settings" },
     ];
-    
+
     const [activeTab, setActiveTab] = useState("");
 
-  
+
     const tournamentInfo = useSelector((state) => state.infoTournament?.tournamentInfo?.data);
     const loading = useSelector((state) => state.infoTournament.loading);
     const error = useSelector((state) => state.infoTournament.error);
-   
+
     useEffect(() => {
-        if (id) {
-            dispatch(getInfoTournament(id));
+        if (tournamentId) {
+            dispatch(getInfoTournament(tournamentId));
         }
-    }, [id, dispatch]);
+    }, [tournamentId, dispatch]);
 
     useEffect(() => {
         const currentPath = location.pathname.split("/").pop();
@@ -41,14 +42,17 @@ const InfoTournament = () => {
 
     const handleTabClick = (tab) => {
         setActiveTab(tab.key);
-        navigate(`/mytournament/${id}/${tab.key}`); 
+        navigate(`/mytournament/${tournamentId}/${tab.key}`);
     };
 
     return (
         <div className="info_tournaments">
             <div className='info_tournament_container'>
+
                 <div className="info_tournament_content">
-                    {/* Thanh chứa thông tin giải đấu */}
+                    <div className="tournaments-back" onClick={() => navigate(`/account/mytournament`)}>
+                        <FaArrowLeft className="back-icon" />
+                    </div>
                     <div className="tournament_bar">
                         <div className="bar_content">
                             <div className="bar_content_img">
@@ -84,7 +88,7 @@ const InfoTournament = () => {
                     </div>
 
                     {/* Tab điều hướng */}
-                   <div className="tab-navigation">
+                    <div className="tab-navigation">
                         {tabs.map((tab) => (
                             <div
                                 key={tab.key}

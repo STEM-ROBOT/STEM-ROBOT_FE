@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { adminChildren } from '../../../router/AdminRouter';
-import SidebarAdmin from '../component/SidebarAdmin/SidebarAdmin';
+import { adminChildren } from '../../../../router/AdminRouter';
+import SidebarAdmin from '../../component/SidebarAdmin/SidebarAdmin';
 import './AdminPage.css'
 
 const AdminPage = () => {

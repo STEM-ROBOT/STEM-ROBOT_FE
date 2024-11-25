@@ -47,8 +47,19 @@
   .role-assignment-table th {
     background-color: #f2f2f2;
     font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 999;
   }
-  
+  .role-assignment-table tbody{
+    z-index: 9999;
+    position: relative;
+  }
+  .table-edit-refereecompetition-moderator{
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 10px;
+  }
   .role-assignment-table td {
     background-color: #f9f9f9;
   }

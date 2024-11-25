@@ -64,12 +64,14 @@
   );
 }
 .competition_select_option {
+  width: 100%;
+  height: 400px;
   padding: 10px;
   border: 1px solid #a4c1cf;
   background-color: #fff;
   border-radius: 7px;
   display: flex;
-  justify-content: center;
+
   flex-wrap: wrap;
   max-height: 400px;
   overflow-y: scroll;
@@ -95,6 +97,7 @@
   border-radius: 7px;
   object-fit: cover;
   transition: all 0.3s ease;
+  box-shadow: rgba(127, 177, 223, 0.45) 0px 0px 2px 2px;
 }
 .img_competition.active {
   scale: 0.95;
@@ -166,5 +169,8 @@
   .competition_choice {
     width: 170px;
     height: 225px;
+    font-size: 17px;
+    font-weight: 500;
+    color: #054068;
   }
 }

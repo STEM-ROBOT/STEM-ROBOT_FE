@@ -6,6 +6,7 @@
     margin-bottom: 20px;
 }
 
+
 .import-button-team {
     display: inline-flex;
     align-items: center;
@@ -25,6 +26,17 @@
 .import-button-team:hover {
     background-color: #8e63d1;
 }
+.team-list_title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333; 
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem; 
+    border-bottom: 2px solid #ddd; /* Optional underline for emphasis */
+   
+    
+  }
+  
 
 .export-button-team {
     display: inline-flex;
@@ -73,6 +85,12 @@
 .team-logo {
     width: 100px;
     height: 100px;
+}
+.check-icon-team{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #28a745;
 }
 
 .edit-icon {

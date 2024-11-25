@@ -3,48 +3,42 @@ import './ManageArena.css';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addLocations, getLocations } from '../../../../redux/actions/LocationAction';
+import { getActive } from '../../../../redux/actions/FormatAction';
 
 const ManageArena = () => {
-    const {competitionId} = useParams();
-
+    const { competitionId } = useParams();
     const dispatch = useDispatch();
-
-    
 
     const getListLocations = useSelector((state) => state.getLocations);
     const Data = Array.isArray(getListLocations?.listLocation?.data) ? getListLocations?.listLocation?.data : [];
-
-    // const fakeData = [
-    //     { id: 1, name: "Sân 1" },
-    //     { id: 2, name: "Sân 2" },
-    //     { id: 3, name: "Sân 3" },
-    //     { id: 4, name: "Sân 4" }
-    // ];
-
     const [arenas, setArenas] = useState([]);
     const [inputValue, setInputValue] = useState("");
-
-    useEffect(()=>{
-        dispatch(getLocations(competitionId))
-    },[dispatch,competitionId])
-
+    const isAddSuccess = useSelector((state) => state.addLocation?.success);
 
     useEffect(() => {
-      
-        if (Data.length > 0) {
-            setArenas(Data)
-        }
-    }, [Data, ]);
+        dispatch(getLocations(competitionId));
+        dispatch(getActive(competitionId));
+    }, [dispatch, competitionId, isAddSuccess]);
 
-    // Handle setting new arenas based on user input
-    const handleConfirmClick = () => {
-        const num = parseInt(inputValue);
+    useEffect(() => {
+        if (Data.length > 0) {
+            setArenas(Data);
+        }
+    }, [Data]);
+
+    // Automatically set new arenas based on user input
+    const handleInputChange = (e) => {
+        const num = parseInt(e.target.value);
+        setInputValue(e.target.value);
+        
         if (num > 0) {
             const newArenas = Array.from({ length: num }, (_, index) => ({
                 id: index + 1,
                 address: `Sân ${index + 1}`
             }));
             setArenas(newArenas);
+        } else {
+            setArenas([]); // Clear the arenas if input is not valid
         }
     };
 
@@ -61,7 +55,7 @@ const ManageArena = () => {
         const payload = arenas.map((item) => ({
             address: item.address
         }));
-       dispatch(addLocations(competitionId,payload));
+        dispatch(addLocations(competitionId, payload));
     };
 
     return (
@@ -73,12 +67,11 @@ const ManageArena = () => {
                     <input
                         type="number"
                         value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
+                        onChange={handleInputChange}
                         placeholder="Nhập số sân"
                         className="manage-arena-input-field"
                     />
                 </div>
-                <button className="manage-arena-confirm-button" onClick={handleConfirmClick}>Xác nhận</button>
             </div>
 
             {/* Render arenas with editable names */}

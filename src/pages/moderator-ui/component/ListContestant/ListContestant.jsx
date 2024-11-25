@@ -7,85 +7,60 @@ import AddContestant from '../AddContestant/AddContestant';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContestant, getListContestant } from '../../../../redux/actions/ContestantAction';
 import { useParams } from 'react-router-dom';
+import TokenService from '../../../../config/tokenservice';
+import NoItem from '../../../system-ui/component/NoItems/NoItem';
+import LoadingComponent from '../../../system-ui/component/Loading/LoadingComponent';
 
 const ListContestant = () => {
-    const { id: tournamentId } = useParams();
-    const schoolName = "Trường Di Linh";
+    const { tournamentId } = useParams();
+    const schoolName = TokenService.getSchoolName();
+    const role = TokenService.getUserRole();
 
     const dispatch = useDispatch();
-    const contestantData = useSelector((state) => state.getContestants);
-    const contestants = Array.isArray(contestantData?.listContestant?.data?.data) ? contestantData.listContestant.data.data : [];
+    const { listContestant, loading: loadingList } = useSelector((state) => state.getContestants);
+    const { success: isAddSuccess, loading: loadingAdd } = useSelector((state) => state.addContestant);
+
     const [updatedContestants, setUpdatedContestants] = useState([]);
     const [newContestantsToAdd, setNewContestantsToAdd] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const contestantsPerPage = 5;
     const [hasChanges, setHasChanges] = useState(false);
+
+    const contestantsPerPage = 5;
 
     useEffect(() => {
         dispatch(getListContestant(tournamentId));
-    }, [dispatch, tournamentId]);
+    }, [dispatch, tournamentId, isAddSuccess]);
 
     useEffect(() => {
-        // Only update if contestants array has changed
-        if (JSON.stringify(updatedContestants) !== JSON.stringify(contestants)) {
-            setUpdatedContestants(contestants);
+        if (listContestant?.data?.data) {
+            setUpdatedContestants(listContestant.data.data);
         }
-    }, [contestants]);
+    }, [listContestant]);
 
-    useEffect(() => {
-        setUpdatedContestants(updatedContestants);
-    }, [updatedContestants]);
-
-    const uniqueContestantsWithDetails = updatedContestants.map(contestant => ({
-        tournamentId,
-        name: contestant.name,
-        email: contestant.email,
-        gender: contestant.gender,
-        phone: contestant.phone,
-        image: contestant.image,
-        schoolName
-    }));
-
-    const totalPages = Math.ceil(uniqueContestantsWithDetails.length / contestantsPerPage);
-    const indexOfLastContestant = currentPage * contestantsPerPage;
-    const indexOfFirstContestant = indexOfLastContestant - contestantsPerPage;
-    const currentContestants = uniqueContestantsWithDetails.slice(indexOfFirstContestant, indexOfLastContestant);
-
-    const handleNextPage = () => {
-        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    const handlePagination = (direction) => {
+        setCurrentPage((prev) => prev + direction);
     };
-
-    const handlePreviousPage = () => {
-        if (currentPage > 1) setCurrentPage(currentPage - 1);
-    };
-
-    const toggleModal = () => setIsModalOpen(!isModalOpen);
 
     const downloadTemplate = () => {
-        const templateData = [
-            ["STT", "Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại"],
-        ];
-
+        const templateData = [["STT", "Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại"]];
         const worksheet = XLSX.utils.aoa_to_sheet(templateData);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Contestants");
         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-        const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
-        saveAs(blob, "contestant_data.xlsx");
+        saveAs(new Blob([excelBuffer], { type: "application/octet-stream" }), "contestant_data.xlsx");
     };
+
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
         if (!file) return;
-    
+
         const reader = new FileReader();
         reader.onload = (e) => {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, { type: 'array' });
+            const workbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
             const sheetName = workbook.SheetNames[0];
-            const worksheet = workbook.Sheets[sheetName];
-    
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+            const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
+
             const importedData = jsonData.map((item, index) => ({
                 stt: index + 1,
                 image: item["Ảnh"] || "https://via.placeholder.com/100",
@@ -94,59 +69,42 @@ const ListContestant = () => {
                 gender: item["Giới tính"] || "N/A",
                 phone: item["Số điện thoại"] || "N/A",
                 tournamentId,
-                schoolName
+                schoolName: role === "AD" ? item["Trường"] || "N/A" : schoolName,
             }));
-    
+
             const newContestants = importedData.filter(
-                newContestant => !updatedContestants.some(existing => existing.email === newContestant.email)
+                (newContestant) => !updatedContestants.some((existing) => existing.email === newContestant.email)
             );
-            if (newContestants.length > 0) {
-                const mappedNewContestants = newContestants.map((item) => ({
-                    name: item.name,
-                    email: item.email,
-                    gender: item.gender,
-                    phone: item.phone,
-                    image: item.image,
-                    schoolName
-                }));
-                console.log("mappedNewContestants", mappedNewContestants);
-    
-                // Dùng spread operator để thêm vào updatedContestants
-                setUpdatedContestants(prev => [...prev, ...mappedNewContestants]);
-                setNewContestantsToAdd(mappedNewContestants);
+
+            if (newContestants.length) {
+                setUpdatedContestants((prev) => [...prev, ...newContestants]);
+                setNewContestantsToAdd(newContestants);
                 setHasChanges(true);
             }
         };
-    
         reader.readAsArrayBuffer(file);
     };
-    
-    console.log(updatedContestants)
-    console.log(newContestantsToAdd)
 
     const saveContestantsToDB = () => {
-        const payload = newContestantsToAdd.map(contestant => ({
-            name: contestant.name,
-            email: contestant.email,
-            gender: contestant.gender,
-            phone: contestant.phone ? String(contestant.phone) : "",
-            image: contestant.image,
-            schoolName: contestant.schoolName,
+        const payload = newContestantsToAdd.map(({ name, email, gender, phone, image, schoolName }) => ({
+            name, email, gender, phone: String(phone), image, schoolName,
         }));
-
-        console.log("Payload sent:", payload);
-        dispatch(addContestant(tournamentId,payload));
+        dispatch(addContestant(tournamentId, payload));
         setHasChanges(false);
-        setNewContestantsToAdd([]);
     };
+
+    const totalPages = Math.ceil(updatedContestants.length / contestantsPerPage);
+    const indexOfLastContestant = currentPage * contestantsPerPage;
+    const indexOfFirstContestant = indexOfLastContestant - contestantsPerPage;
+    const currentContestants = updatedContestants.slice(indexOfFirstContestant, indexOfLastContestant);
 
     return (
         <div className="contestant-container">
+            {loadingAdd && <LoadingComponent position="fixed" borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.5)" />}
+            
             <div className="contestant-header">
-                <div className='contestant-header-left'>
-                    <button className="btn-add" onClick={toggleModal}>Thêm thí sinh</button>
-                </div>
-                <div className='contestant-header-right'>
+                <div className="contestant-header-left"></div>
+                <div className="contestant-header-right">
                     <button className="btn-import" onClick={downloadTemplate}>
                         <FaDownload className="icon-download" /> Tải file Excel
                     </button>
@@ -170,37 +128,43 @@ const ListContestant = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentContestants.map((contestant, index) => (
-                        <tr key={index}>
-                            <td>{indexOfFirstContestant + index + 1}</td>
-                            <td>
-                                <img src={contestant.image} alt={contestant.name} className="contestant-image" />
-                            </td>
-                            <td>{contestant.name}</td>
-                            <td>{contestant.email}</td>
-                            <td>{contestant.gender}</td>
-                            <td>{contestant.phone}</td>
-                            <td>{contestant.schoolName}</td>
+                    {currentContestants.length > 0 ? (
+                        currentContestants.map((contestant, index) => (
+                            <tr key={index}>
+                                <td>{indexOfFirstContestant + index + 1}</td>
+                                <td><img src={contestant.image} alt={contestant.name} className="contestant-image" /></td>
+                                <td>{contestant.name}</td>
+                                <td>{contestant.email}</td>
+                                <td>{contestant.gender}</td>
+                                <td>{contestant.phone}</td>
+                                <td>{contestant.schoolName}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="7" className="no-data">Không có dữ liệu để hiển thị.</td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
 
-            <div className="pagination-controls">
-                <button onClick={handlePreviousPage} disabled={currentPage === 1} className="pagination-btn">
-                    <FaArrowLeft /> Trước
-                </button>
-                <span>Trang {currentPage} / {totalPages}</span>
-                <button onClick={handleNextPage} disabled={currentPage === totalPages} className="pagination-btn">
-                    Tiếp <FaArrowRight />
-                </button>
-            </div>
+            {currentContestants.length === 0 && <NoItem message="Chưa có thí sinh" />}
 
-            {hasChanges && (
-                <button className="btn-save" onClick={saveContestantsToDB}>Lưu thí sinh</button>
+            {updatedContestants.length > 0 && (
+                <div className="pagination-controls">
+                    <button onClick={() => handlePagination(-1)} disabled={currentPage === 1} className="pagination-btn">
+                        <FaArrowLeft /> Trước
+                    </button>
+                    <span>Trang {currentPage} / {totalPages}</span>
+                    <button onClick={() => handlePagination(1)} disabled={currentPage === totalPages} className="pagination-btn">
+                        Tiếp <FaArrowRight />
+                    </button>
+                </div>
             )}
 
-            {isModalOpen && <AddContestant onClose={toggleModal} />}
+            {hasChanges && <button className="btn-save-contestant" onClick={saveContestantsToDB}>Lưu thí sinh</button>}
+
+            {isModalOpen && <AddContestant onClose={() => setIsModalOpen(false)} />}
         </div>
     );
 };

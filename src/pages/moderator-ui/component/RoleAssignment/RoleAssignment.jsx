@@ -3,45 +3,74 @@ import "./RoleAssignment.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getListRefereeFreeTime } from "../../../../redux/actions/RefereeAction";
-import api from "../../../../config";
+import api from "/src/config";
 import { toast } from "react-toastify";
+import { getActive } from "../../../../redux/actions/FormatAction";
 
 const RoleAssignment = () => {
   const { tournamentId, competitionId } = useParams();
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
-
-  const [chiefReferees, setChiefReferees] = useState(1);
-  const [referees, setReferees] = useState(2);
-  const [simultaneousReferees, setSimultaneousReferees] = useState(3);
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectedReferee, setSelectedReferee] = useState([]);
-
   const getRefereesFreeTimes = useSelector((state) => state.getFreetimeReferee);
   const refereeList = Array.isArray(
-    getRefereesFreeTimes?.listRefereefreetime?.data
+    getRefereesFreeTimes?.listRefereefreetime?.data?.listRefereeRsps
   )
-    ? getRefereesFreeTimes.listRefereefreetime.data
+    ? getRefereesFreeTimes.listRefereefreetime.data.listRefereeRsps
     : [];
+  const numLocations = getRefereesFreeTimes?.listRefereefreetime?.data?.numberLocation || 0;
 
+  const [chiefReferees, setChiefReferees] = useState(1);
+  const [referees, setReferees] = useState(1);
+  const [simultaneousReferees, setSimultaneousReferees] = useState(numLocations + 1);
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedReferee, setSelectedReferee] = useState([]); 
   const [updatedRefereeList, setUpdatedRefereeList] = useState([]);
+
+  const isAddSuccess = useSelector((state) => state.addScheduleReferee?.success);
+
   useEffect(() => {
     dispatch(getListRefereeFreeTime(tournamentId, competitionId));
-  }, [dispatch, tournamentId]);
-  const isCheck = refereeList[0]?.isReferee;
-  
+    dispatch(getActive(competitionId));
+  }, [dispatch, tournamentId, competitionId, loading]);
+
   useEffect(() => {
-    // Only set `updatedRefereeList` if it is different from `refereeList`
-    if (JSON.stringify(updatedRefereeList) !== JSON.stringify(refereeList)) {
-      setUpdatedRefereeList(
-        refereeList?.map((referee) => ({
-          ...referee,
-          role: referee.role || "SRF",
-          selected: false,
-        }))
-      );
+    // Set simultaneousReferees after numLocations is available
+    if (numLocations > 0) {
+      setSimultaneousReferees(numLocations + 1);
     }
-  }, [refereeList]);
+  }, [numLocations]);
+
+  const isCheck = refereeList[0]?.isReferee;
+
+  useEffect(() => {
+    if (simultaneousReferees <= numLocations) {
+      toast.error(`Số đội ngũ trọng tài phải lớn hơn ${numLocations}.`);
+    }
+  }, [simultaneousReferees, numLocations]);
+
+  useEffect(() => {
+    const requiredChiefReferees = chiefReferees * simultaneousReferees;
+    const requiredRegularReferees = referees * simultaneousReferees;
+
+    let chiefRefereesAssigned = 0;
+    let regularRefereesAssigned = 0;
+
+    const autoAssignedReferees = refereeList.map((referee) => {
+      if (chiefRefereesAssigned < requiredChiefReferees) {
+        chiefRefereesAssigned++;
+        return { ...referee, role: "MRF", selected: true };
+      } else if (regularRefereesAssigned < requiredRegularReferees) {
+        regularRefereesAssigned++;
+        return { ...referee, role: "SRF", selected: true };
+      } else {
+        return { ...referee, selected: false };
+      }
+    });
+
+    setUpdatedRefereeList(autoAssignedReferees);
+   
+  }, [refereeList, chiefReferees, referees, simultaneousReferees]);
 
   const handleRoleChange = (id, newRole) => {
     setUpdatedRefereeList((prevList) =>
@@ -50,35 +79,46 @@ const RoleAssignment = () => {
       )
     );
   };
-console.log(updatedRefereeList);
 
   const handleConfirm = () => {
     const requiredChiefReferees = chiefReferees * simultaneousReferees;
     const requiredRegularReferees = referees * simultaneousReferees;
 
-    const selectedChiefReferees = updatedRefereeList.filter(
-      (referee) => referee.selected && referee.role === "MRF"
-    ).length;
-    const selectedRegularReferees = updatedRefereeList.filter(
-      (referee) => referee.selected && referee.role === "SRF"
-    ).length;
+    let chiefRefereesAssigned = 0;
+    let regularRefereesAssigned = 0;
 
-    const chiefRefereesRemaining =
-      requiredChiefReferees - selectedChiefReferees;
-    const regularRefereesRemaining =
-      requiredRegularReferees - selectedRegularReferees;
+    const autoAssignedReferees = updatedRefereeList.map((referee) => {
+      if (chiefRefereesAssigned < requiredChiefReferees) {
+        chiefRefereesAssigned++;
+        return { ...referee, role: "MRF", selected: true };
+      } else if (regularRefereesAssigned < requiredRegularReferees) {
+        regularRefereesAssigned++;
+        return { ...referee, role: "SRF", selected: true };
+      } else {
+        return { ...referee, selected: false }; // Deselect others
+      }
+    });
+
+    setUpdatedRefereeList(autoAssignedReferees);
+
+    const chiefRefereesRemaining = requiredChiefReferees - chiefRefereesAssigned;
+    const regularRefereesRemaining = requiredRegularReferees - regularRefereesAssigned;
 
     if (chiefRefereesRemaining <= 0 && regularRefereesRemaining <= 0) {
-      saveRefereesToDB();
+      saveRefereesToDB(autoAssignedReferees);
     } else {
       alert(
-        `Invalid selection!\n- Trọng tài chính: cần ${requiredChiefReferees}, đã chọn ${selectedChiefReferees}, còn thiếu ${
-          chiefRefereesRemaining > 0 ? chiefRefereesRemaining : 0
-        }\n` +
-          `- Trọng tài viên: cần ${requiredRegularReferees}, đã chọn ${selectedRegularReferees}, còn thiếu ${
-            regularRefereesRemaining > 0 ? regularRefereesRemaining : 0
-          }`
+        `Invalid selection!\n- Trọng tài chính: cần ${requiredChiefReferees}, đã chọn ${chiefRefereesAssigned}, còn thiếu ${chiefRefereesRemaining}\n` +
+        `- Trọng tài viên: cần ${requiredRegularReferees}, đã chọn ${regularRefereesAssigned}, còn thiếu ${regularRefereesRemaining}`
       );
+    }
+  };
+
+  const handleSimultaneousRefereesChange = (value) => {
+    if (value > numLocations) {
+      setSimultaneousReferees(value);
+    } else {
+      toast.error(`Số đội ngũ trọng tài phải lớn hơn ${numLocations}.`);
     }
   };
 
@@ -102,6 +142,7 @@ console.log(updatedRefereeList);
       )
       .then((response) => {
         toast.success("Trọng tài đã được cập nhật vào cuộc thi thành công");
+        setLoading(true);
       })
       .catch((error) => {
         toast.error("Có lỗi xảy ra khi cập nhật trọng tài vào đội");
@@ -114,23 +155,15 @@ console.log(updatedRefereeList);
   const toggleSelection = (referee) => {
     setUpdatedRefereeList((prevReferees) => {
       const updatedReferees = prevReferees.map((ref) => {
-        // Chuyển đổi trạng thái chọn của referee được bấm
         if (ref.id === referee.id) {
           return { ...ref, selected: !ref.selected };
         }
         return ref;
       });
 
-      // Lọc ra các referee đã được chọn
       const selectedRefs = updatedReferees.filter((ref) => ref.selected);
-
-      // Cập nhật mảng `selectedReferee` với các trọng tài đã được chọn
       setSelectedReferee(selectedRefs);
-
-      // Cập nhật trạng thái `selectAll`
       setSelectAll(selectedRefs.length === updatedReferees.length);
-      console.log(selectedRefs);
-
       return updatedReferees;
     });
   };
@@ -139,26 +172,20 @@ console.log(updatedRefereeList);
     const newSelectAll = !selectAll;
     setSelectAll(newSelectAll);
 
-    // Tạo bản sao của danh sách referee đã cập nhật
     const updatedList = updatedRefereeList.map((referee) => ({
       ...referee,
       selected: newSelectAll,
     }));
 
-    // Cập nhật `selectedReferee` với tất cả các đối tượng referee đã chọn hoặc mảng trống nếu bỏ chọn tất cả
     setUpdatedRefereeList(updatedList);
     setSelectedReferee(newSelectAll ? updatedList : []);
-
-    console.log(newSelectAll ? updatedList : []);
   };
-
 
   return (
     <div className="role-assignment-container">
       <div className="role-assignment-header">
         <h2>Quản lí trọng tài</h2>
         <div className="header-buttons">
-          {/* <button className="import-button">Import</button> */}
           {isCheck !== true && (
             <button className="create-button" onClick={handleConfirm}>
               Lưu
@@ -185,65 +212,68 @@ console.log(updatedRefereeList);
           <input
             type="number"
             value={simultaneousReferees}
-            onChange={(e) => setSimultaneousReferees(Number(e.target.value))}
+            onChange={(e) => handleSimultaneousRefereesChange(Number(e.target.value))}
           />
         </div>
       </div>
-
-      <table className="role-assignment-table">
-        <thead>
-          <tr>
-            {isCheck !== true && (
-              <th>
-                <input
-                  type="checkbox"
-                  checked={selectAll}
-                  onChange={handleSelectAll}
-                />
-              </th>
-            )}
-            <th>Ảnh</th>
-            <th>Email</th>
-            <th>Tên</th>
-            <th>Vai trò</th>
-          </tr>
-        </thead>
-        <tbody>
-          {updatedRefereeList.map((referee) => (
-            <tr key={referee.id}>
+      <div className="table-edit-refereecompetition-moderator">
+        <table className="role-assignment-table">
+          <thead>
+            <tr>
               {isCheck !== true && (
-                <td>
+                <th>
                   <input
                     type="checkbox"
-                    checked={referee.selected}
-                    onChange={() => toggleSelection(referee)}
+                    checked={selectAll}
+                    onChange={handleSelectAll}
+                  />
+                </th>
+              )}
+              <th>Ảnh</th>
+              <th>Email</th>
+              <th>Tên</th>
+              <th>Vai trò</th>
+            </tr>
+          </thead>
+          <tbody>
+            {updatedRefereeList.map((referee) => (
+              <tr key={referee.id}>
+                {isCheck !== true && (
+                  <td>
+                    <input
+                      type="checkbox"
+                      checked={referee.selected}
+                      onChange={() => toggleSelection(referee)}
+                    />
+                  </td>
+                )}
+                <td>
+                  <img
+                    src={referee.image}
+                    alt={referee.name}
+                    className="referee-image"
                   />
                 </td>
-              )}
-
-              <td>
-                <img
-                  src={referee.image}
-                  alt={referee.name}
-                  className="referee-image"
-                />
-              </td>
-              <td>{referee.email}</td>
-              <td>{referee.name}</td>
-              <td>
-                <select
-                  value={referee.role}
-                  onChange={(e) => handleRoleChange(referee.id, e.target.value)}
-                  className="role-select"
-                >
-                  <option value="MRF">Trọng tài chính</option>
-                  <option value="SRF">Trọng tài viên</option>
-                </select>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                <td>{referee.email}</td>
+                <td>{referee.name}</td>
+                <td>
+                  <select
+                    value={referee.role}
+                    onChange={(e) =>
+                      handleRoleChange(referee.id, e.target.value)
+                    }
+                    className="role-select"
+                    disabled={isCheck}
+                  >
+                    <option value="MRF">Trọng tài chính</option>
+                    <option value="SRF">Trọng tài viên</option>
+                  </select>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

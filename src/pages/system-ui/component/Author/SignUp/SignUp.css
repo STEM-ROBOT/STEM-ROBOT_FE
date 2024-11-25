@@ -1,0 +1,37 @@
+.author_modal .login_view {
+  font-family: TrajanPro3;
+  width: auto;
+  height: auto;
+  min-height: 400px;
+  color: #031a38;
+  padding: 20px 20px 24px 20px;
+  background: #ffffff;
+  border-radius: 33px;
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 2px 10px;
+}
+.sign_up_layout_view {
+  display: flex;
+  justify-content: space-between;
+  width: 900px;
+}
+.close_logo_signUp_layout {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+.close_logo_signUp {
+  width: 55%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sign_up_layout1 {
+  width: 55%;
+  border: 2px solid #0b76bd;
+  border-radius: 13px;
+}
+.sign_up_layout2 {
+  width: 43%;
+  border: 2px solid #0b76bd;
+  border-radius: 13px;
+}

@@ -3,102 +3,10 @@ import "./ScheduleRefereeMain.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import RenderSchedule from "../../component/RenderSchedule/RenderSchedule";
 import ConfirmPopupReferee from "../../component/ConfirmPopupReferee/ConfirmPopupReferee";
-import api from "../../../../config";
-
-const scheduleData = {
-  refereeId: "123",
-  refereeEmail: "lethanhnhat@gmail.com",
-  dateStartCompetition: "2024-10-20",
-  dateEndCompetition: "2024-11-10",
-  hourStartInDay: "8",
-  hourEndInDay: "18",
-  timePlayMatch: "165",
-  scheduleReferee: [
-    {
-      scheduleId: "1",
-      startTime: "2024-10-27T09:10:00",
-      location: "Sân 1",
-      matchId: "1",
-      teamMatch: [
-        {
-          teamId: "1",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "home",
-        },
-        {
-          teamId: "2",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "away",
-        },
-      ],
-    },
-    {
-      scheduleId: "2",
-      startTime: "2024-10-27T15:00:00",
-      location: "Sân 1",
-      matchId: "2",
-      teamMatch: [
-        {
-          teamId: "3",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "home",
-        },
-        {
-          teamId: "4",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "away",
-        },
-      ],
-    },
-    {
-      scheduleId: "3",
-      startTime: "2024-10-28T13:00:00",
-      location: "Sân 1",
-      matchId: "2",
-      teamMatch: [
-        {
-          teamId: "3",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "home",
-        },
-        {
-          teamId: "4",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "away",
-        },
-      ],
-    },
-    {
-      scheduleId: "4",
-      startTime: "2024-10-29T10:00:00",
-      location: "Sân 1",
-      matchId: "2",
-      teamMatch: [
-        {
-          teamId: "3",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "home",
-        },
-        {
-          teamId: "4",
-          teamLogo:
-            "https://upload.wikimedia.org/wikipedia/vi/thumb/a/a1/Man_Utd_FC_.svg/2021px-Man_Utd_FC_.svg.png",
-          teamType: "away",
-        },
-      ],
-    },
-    // Thêm dữ liệu lịch trình
-  ],
-};
-
+import api from "/src/config";
+import { useParams } from "react-router-dom";
 const ScheduleRefereeMain = () => {
+  const path = useParams();
   const [scheduleData, setScheduleData] = useState();
   const [weeks, setWeeks] = useState([]);
   const [currentWeekIndex, setCurrentWeekIndex] = useState(0);
@@ -113,11 +21,33 @@ const ScheduleRefereeMain = () => {
     return timeString.split(":")[0]; // Take only the hour part
   };
   const extractDate = (dateTimeString) => {
-    return dateTimeString.split("T")[0]; // Take only the date part
+    const date = new Date(dateTimeString);
+    date.setDate(date.getDate() - 1); // Subtract one day
+    return date.toISOString().split("T")[0]; // Return the date part in "YYYY-MM-DD" format
   };
+  function ensureMinDateRange(dateStart, dateEnd) {
+    // Convert both dates to Date objects
+    const startDate = new Date(dateStart);
+    let endDate = new Date(dateEnd);
+ 
+    // Calculate the difference in days
+    const diffInTime = endDate - startDate;
+    const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert milliseconds to days
+    
+    // Check if the difference is less than 7 days
+    if (diffInDays < 7) {
+      // Adjust the endDate to be 7 days after the startDate
+      endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 7);
+    }
+  
+    return endDate.toISOString().split("T")[0]; // Return date in "YYYY-MM-DD" format
+  }
   useEffect(() => {
     api
-      .get("/api/refereecompetition/list-referee-competition?competitionID=1")
+      .get(
+        `/api/refereecompetition/schedules-referee-competition?competitionID=${path.referee_competition_Id}`
+      )
       .then((response) => {
         const data = response.data.data;
         // Transform data for hourStartInDay, hourEndInDay, and timePlayMatch
@@ -125,11 +55,10 @@ const ScheduleRefereeMain = () => {
           ...data,
           // Convert hour to HH:MM:SS
           timePlayMatch: convertTimeToMinutes(data.timePlayMatch),
-          hourStartInDay: extractHour(data.timePlayMatch),// Convert minutes to HH:MM:SS
+          hourStartInDay: extractHour(data.hourStartInDay),
           hourEndInDay: extractHour(data.hourEndInDay),
-          dateStartCompetition:extractDate(data.dateStartCompetition),
-          dateEndCompetition:extractDate(data.dateEndCompetition)
-
+          dateStartCompetition: extractDate(data.dateStartCompetition),
+          dateEndCompetition: ensureMinDateRange(data.dateStartCompetition,data.dateEndCompetition),
         };
         console.log(transformedData);
         setScheduleData(transformedData);
@@ -139,9 +68,7 @@ const ScheduleRefereeMain = () => {
       });
   }, []);
 
-
   useEffect(() => {
-
     if (scheduleData) {
       const splitIntoWeeks = (start, end) => {
         const startDate = new Date(start);
@@ -165,10 +92,11 @@ const ScheduleRefereeMain = () => {
           // Move to next week
           startDate.setDate(startDate.getDate() + 7);
         }
-
+        console.log(weeksArray);
+        
         return weeksArray;
       };
-
+     
       const weeksList = splitIntoWeeks(
         scheduleData.dateStartCompetition,
         scheduleData.dateEndCompetition

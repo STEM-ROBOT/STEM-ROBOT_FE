@@ -3,13 +3,19 @@ import "./ComponentCreate.css";
 import CreateTournamentInfo from "../CreateTournamentInfo/CreateTournamentInfo";
 import CreateTournamentCompetition from "../CreateTournamentCompetition/CreateTournamentCompetition";
 import logo from "/src/assets/images/logo.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createTournament } from "../../../../redux/actions/TournamentAction";
+import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
+import { FirebaseUpload } from "/src/config/firebase";
+import ReactQuill from "react-quill";
+import QuillToolbar, { formats, modules } from "../EditorToolbar/EditorToolbar";
+import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
 
 const ComponentCreate = () => {
   // Tournament Info
-  const [avatarInput, setAvatarInput] = useState(logo);
+  const [avatarInputView, setAvatarInputView] = useState(logo);
+  const [avatarInput, setAvatarInput] = useState();
   const [nameTournament, setNameTournament] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -19,16 +25,15 @@ const ComponentCreate = () => {
   const [phoneError, setPhoneError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   // Competition List
   const [competitionList, setCompetitionList] = useState([]);
   const [competitionError, setCompetitionError] = useState("");
-
+  const loadingAdd = useSelector((state)=>state.createTournamnet.loading)
+  const [introduce, setIntroduce] = useState("");
   // Validation and API Call
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let hasError = false;
 
-    // Validate fields
     if (!nameTournament) {
       setNameError("Tên giải đấu không được để trống.");
       hasError = true;
@@ -51,32 +56,44 @@ const ComponentCreate = () => {
 
     // Format competition list to match API structure
     const formattedCompetitions = competitionList.map((competition) => ({
-      genreId: competition.id, 
-      mode:""// Assuming each competition has an `id` field for genreId
+      genreId: competition.id,
+      mode: "", // Assuming each competition has an `id` field for genreId
     }));
+    const image = await FirebaseUpload(avatarInput);
 
-    // Tournament data to be sent
     const tournamentData = {
-      tournamentLevel: "Cấp trường",
+      tournamentLevel: "trường",
       name: nameTournament,
       location: address,
-      image: avatarInput,
-      status: mode, // Set status as needed
-      phone:phone,
+      image: image,
+      status: mode,
+      introduce: introduce,
+      phone: phone,
       competition: formattedCompetitions,
     };
 
-    // Dispatch action to create tournament
-    dispatch(createTournament(tournamentData,navigate));
+    await dispatch(createTournament(tournamentData, navigate))
+      .then(() => {
+        console.log(tournamentData);
+        navigate("/account/mytournament");
+      })
+      .catch((error) => {
+        console.error("Lỗi khi tạo giải đấu:", error);
+      });
   };
 
   return (
     <div className="create_tournament_page">
+      {loadingAdd && (<LoadingComponent position="fixed" borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.5)" />)}
       <div className="create_container">
         <div className="create_info_container">
+          <div className="label_create"> Tạo Giải</div>
+          
           <CreateTournamentInfo
             avatarInput={avatarInput}
             setAvatarInput={setAvatarInput}
+            setAvatarInputView={setAvatarInputView}
+            avatarInputView={avatarInputView}
             nameTournament={nameTournament}
             setNameTournament={setNameTournament}
             phone={phone}
@@ -92,12 +109,30 @@ const ComponentCreate = () => {
             phoneError={phoneError}
             setPhoneError={setPhoneError}
           />
+
           <CreateTournamentCompetition
             competitionList={competitionList}
             setCompetitionList={setCompetitionList}
             competitionError={competitionError}
             setCompetitionError={setCompetitionError}
           />
+          <div className="container_create_competition_tournament">
+            <div className="competition_create">
+              <div className="label_avatar">Giới thiệu giải </div>
+              <div className="text-editor">
+                <QuillToolbar />
+                <ReactQuill
+                  theme="snow"
+                  value={introduce}
+                  onChange={(value) => setIntroduce(value)}
+                  placeholder={"Write something awesome..."}
+                  modules={modules}
+                  formats={formats}
+                  style={{ height: "300px" }}
+                />
+              </div>
+            </div>
+          </div>
           <div className="format_create">
             <div className="apply_create_tournament">
               <div

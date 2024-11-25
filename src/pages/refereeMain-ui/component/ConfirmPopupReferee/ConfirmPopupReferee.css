@@ -126,7 +126,8 @@
   padding: 5px 2px;
   color: #395969;
   font-weight: 500;
-  width: 22%;
+  width: fit-content;
+  min-width: 20%;
   cursor: pointer;
 }
 .confirm_info_key_action:hover {

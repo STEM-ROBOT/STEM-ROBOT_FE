@@ -16,22 +16,27 @@
   /* z-index: 1000; */
 
   padding: 81.66px 0 20px 0;
-  background-image: linear-gradient(
-    to left,
-    #022233 0%,
-    #033f60 21%,
-    #03344e 41%,
-    #022233 61%,
-    #00121c 81%,
-    #000f16 100%
-  );
+  
+  background: linear-gradient(
+      130deg,
+      transparent 0% 87%,
+      rgb(255, 255, 255) 87.1% 100%
+    ),
+    linear-gradient(130deg, transparent 0% 75%, #033f60 75.1% 100%),
+    linear-gradient(90deg, transparent 0% 35%, #03344e 65.1% 100%),
+    linear-gradient(
+      130deg,
+      transparent 0% 60%,
+      rgba(255, 255, 255, 0.2) 60.1% 100%
+    ),
+    linear-gradient(90deg, #022233 0%, #022233 100%);
   min-height: 100vh;
 }
 /* Option view */
 .view_toggle {
   margin: 0 8% 20px 8%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 .btn_option {
   width: auto;

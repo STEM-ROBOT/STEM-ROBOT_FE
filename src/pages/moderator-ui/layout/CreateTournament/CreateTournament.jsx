@@ -6,9 +6,7 @@ const CreateTournament = () => {
   
   return (
     <>
-      <Header />
       <ComponentCreate  />
-      <Footer />
     </>
   );
 };

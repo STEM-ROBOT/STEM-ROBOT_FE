@@ -1,0 +1,76 @@
+.contestant-list-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.contestant-list-container {
+  padding: 20px 10%;
+}
+
+.contestant-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.contestant-table-header {
+  display: flex;
+  background-color: #f2f2f2;
+  font-weight: bold;
+  color: #333;
+}
+
+.header-cell {
+  padding: 10px;
+  text-align: center;
+  flex: 1;
+}
+
+.contestant-table-body {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.table-row {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+}
+
+.body-cell {
+  padding: 10px;
+  text-align: center;
+  flex: 1;
+}
+
+.contestant-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.no-data-message {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #888;
+}
+.view_layout_componentLoad {
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+}
+
+.competition_container.none {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.countdown_container {
+}
+.label_create_none {
+  font-size: 19px;
+  font-weight: 600;
+}

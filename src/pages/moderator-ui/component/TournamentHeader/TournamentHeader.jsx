@@ -1,40 +1,54 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; 
-import { FaUsers, FaEye, FaHeart } from 'react-icons/fa';
+import { useNavigate, useParams } from 'react-router-dom';
+import { FaUsers, FaEye, FaHeart, FaArrowLeft } from 'react-icons/fa';
 import './TournamentHeader.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCompetitionInfo } from '../../../../redux/actions/CompetitionAction';
+import { activeCompetition, getCompetitionInfo } from '../../../../redux/actions/CompetitionAction';
 
 const TournamentHeader = () => {
-  const { tournamentId, competitionId } = useParams(); 
+  const { tournamentId, competitionId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("settings");
+  const [activeTab, setActiveTab] = useState("settings/format");
+  const isPubic = true;
 
-  const tabs = [
-    { name: "TÙY CHỈNH", key: "settings" },
-  ];
-
-  // Lấy thông tin từ Redux store
   const competitionInfo = useSelector((state) => state.infoCompetition?.infoCompetition?.data);
   const loading = useSelector((state) => state.infoTournament.loading);
   const error = useSelector((state) => state.infoTournament.error);
 
+  const tabs = [
+    { name: "TÙY CHỈNH", key: "settings/format" },
+  ];
+  if (competitionInfo?.status === "Public") {
+    tabs.push({ name: "XÉT DUYỆT ĐỘI", key: "team-register" });
+  }
+  // Lấy thông tin từ Redux store
+
+
   useEffect(() => {
-      if (competitionId) {
-          dispatch(getCompetitionInfo(competitionId));
-      }
+    if (competitionId) {
+      dispatch(getCompetitionInfo(competitionId));
+    }
   }, [competitionId, dispatch]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab.key);
-    navigate(`/mytournament/${tournamentId}/mycompetition/${competitionId}/${tab.key}`); 
+    navigate(`/mytournament/${tournamentId}/mycompetition/${competitionId}/${tab.key}`);
+
+
   };
+
+  const handleActive = () => {
+    dispatch(activeCompetition(competitionId))
+  }
 
   return (
     <div className="tournaments-header-outer">
       <div className="tournaments-header-container">
         <div className='tournaments-header-content'>
+          <div className="tournaments-back" onClick={() => navigate(`/mytournament/${tournamentId}/mycompetition`)}>
+            <FaArrowLeft className="back-icon" />
+          </div>
           <div className="tournaments-headers">
             <div className="tournaments-image">
               <img
@@ -43,9 +57,9 @@ const TournamentHeader = () => {
               />
             </div>
             <div className="tournaments-detail">
-              <h2>{competitionInfo?.tournamentName || "Tournament Name"}</h2>
+              <h2>{competitionInfo?.name || "Tournament Name"}</h2>
               <p>
-                {competitionInfo?.name || "Loại Trực Tiếp"} || {competitionInfo?.location || "Location"}
+                {competitionInfo?.tournamentName || "Loại Trực Tiếp"} || {competitionInfo?.location || "Location"}
               </p>
               <div className="tournaments-stats">
                 <span><FaUsers /> {competitionInfo?.numberTeam || 0} Đội</span>
@@ -53,12 +67,15 @@ const TournamentHeader = () => {
                 <FaHeart className="favorite-icon" /> */}
               </div>
             </div>
-            <div className="activation-section">
-              <button className="activate-button">Kích hoạt</button>
-              <div className="progress-bar">
-                <span>0 / 2</span>
-              </div>
-            </div>
+            {
+              !competitionInfo?.isActive && (
+                <div className="activation-section">
+                  <button className="activate-button" onClick={handleActive}>Kích hoạt</button>
+                </div>
+              )
+
+            }
+
           </div>
 
           {/* Điều hướng Tab */}

@@ -1,0 +1,45 @@
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.pagination-arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pagination-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px 10px;
+  color: #707070;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination-number.active {
+  background-color: #18b5e4; /* Màu của số trang đang chọn */
+  color: #fff;
+  border-radius: 50%;
+}
+
+.pagination-arrow:disabled {
+  border-radius: 40%;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination-arrow:hover:not(:disabled),
+.pagination-number:hover {
+  background-color: #18b4e45e;
+  border-radius: 50%;
+}
+.icon_next_page_view {
+  width: 30px;
+  height: 30px;
+}

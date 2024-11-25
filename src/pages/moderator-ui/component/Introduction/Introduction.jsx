@@ -24,7 +24,7 @@ const Introduction = ({ introduction }) => {
         }}
         ref={contentRef}
       >
-        <p>{introduction}</p>
+        <div dangerouslySetInnerHTML={{ __html: introduction }} />
       </div>
       <button className="toggle_button" onClick={toggleExpand}>
         {isExpanded ? "Thu gọn" : "Xem thêm"}

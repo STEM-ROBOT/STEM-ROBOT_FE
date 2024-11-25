@@ -22,6 +22,25 @@
     padding-top: 20px;
     margin: 0 auto;
 }
+.tournaments-back {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem; /* Adjust size as needed */
+    height: 2rem; /* Same as width for a perfect circle */
+    font-size: 1.2rem; /* Adjust icon size if needed */
+    color: #044a5f; /* Icon color */
+    border: 2px solid #044a5f; /* Border color */
+    border-radius: 50%; /* Makes the border circular */
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .back-icon:hover {
+    color: #007bff; /* Icon hover color */
+    border-color: #007bff; /* Border hover color */
+  }
+  
 .tournaments-headers {
     display: flex;
     justify-content: space-between;
@@ -80,11 +99,13 @@
 }
 
 .activate-button {
-    background-color: #4caf50;
+    background-color: #28a745;
+    border-radius: 5px;
     color: #fff;
+    font-weight: bold;
+    font-size: 16px;
     border: none;
     padding: 5px 10px;
-    border-radius: 5px;
     cursor: pointer;
     margin-bottom: 5px;
 }
