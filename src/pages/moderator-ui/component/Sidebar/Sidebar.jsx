@@ -12,7 +12,7 @@ const Sidebar = ({ activeItem, onMenuClick, isGroupStage }) => {
     const { competitionId } = useParams();
     const dispatch = useDispatch();
     const [activeIcon, setActiveIcon] = useState();
-
+    const formatCompetiton = TokenService.getFormatId();
     
     const activeFormatData = useSelector((state) => state.getActiveFormat);
     const activeData = activeFormatData?.data?.data;
@@ -36,7 +36,7 @@ const Sidebar = ({ activeItem, onMenuClick, isGroupStage }) => {
     ];
 
    {
-      isGroupStage === 2&&( menuItems.push({ key: "groupstage", label: "Quản lý bảng đấu", icon: <FaTable />, isActive: activeIcon?.isTable }))
+    formatCompetiton === 2 &&( menuItems.push({ key: "groupstage", label: "Quản lý bảng đấu", icon: <FaTable />, isActive: activeIcon?.isTable }))
    }
        
     

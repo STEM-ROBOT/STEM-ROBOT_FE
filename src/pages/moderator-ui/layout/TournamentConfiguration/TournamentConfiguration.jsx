@@ -22,6 +22,7 @@ const TournamentConfiguration = () => {
     useEffect(() => {
         setFormatId(fetchedFormatId); 
     }, [fetchedFormatId]);
+    console.log(formatId)
 
     const tournamentChildrenWithFormatId = tournamentChildren.map((route) => {
         if (route.path === "matchups") {
