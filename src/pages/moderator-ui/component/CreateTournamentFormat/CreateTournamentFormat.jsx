@@ -187,24 +187,38 @@ const CreateTournamentFormat = ({}) => {
     const selectedStartTime = new Date(e.target.value);
     const currentRegisterTime = new Date(dayRegisNumber);
 
+    // Làm tròn thời gian về đầu ngày (00:00:00)
+    const nowDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const selectedStartDateOnly = new Date(
+        selectedStartTime.getFullYear(),
+        selectedStartTime.getMonth(),
+        selectedStartTime.getDate()
+    );
+    const registerDateOnly = new Date(
+        currentRegisterTime.getFullYear(),
+        currentRegisterTime.getMonth(),
+        currentRegisterTime.getDate()
+    );
+
     if (isPublic == "Public") {
-      if (selectedStartTime <= currentRegisterTime) {
-        setStartTimeError("Ngày bắt đầu phải sau ngày đăng ký .");
-        setStartTime(""); // Optionally reset startTime if invalid
-      } else {
-        setStartTimeError(""); // Clear error if valid
-        setStartTime(e.target.value); // Update startTime
-      }
+        if (selectedStartDateOnly <= registerDateOnly) {
+            setStartTimeError("Ngày bắt đầu phải sau ngày đăng ký.");
+            setStartTime(""); // Reset startTime nếu không hợp lệ
+        } else {
+            setStartTimeError(""); // Xóa lỗi nếu hợp lệ
+            setStartTime(e.target.value); // Cập nhật startTime
+        }
     } else {
-      if (selectedStartTime >= now) {
-        setStartTimeError(""); // Clear error if valid
-        setStartTime(e.target.value);
-      } else {
-        setStartTimeError("Ngày bắt đầu không hợp lệ .");
-        setStartTime("");
-      }
+        if (selectedStartDateOnly >= nowDateOnly) {
+            setStartTimeError(""); // Xóa lỗi nếu hợp lệ
+            setStartTime(e.target.value);
+        } else {
+            setStartTimeError("Ngày bắt đầu không hợp lệ.");
+            setStartTime("");
+        }
     }
-  };
+};
+
 
   const selectFormat = (format) => {
     setFormatCompetition(format);
@@ -556,23 +570,22 @@ const CreateTournamentFormat = ({}) => {
                     )}
                   </div>
                 )}
-                {(dayRegisNumber != "" ||
-                  isPublic === "Private") && (
-                    <div style={{ width: "50%" }}>
-                      <div className="label_avatar">
-                        Thời gian bắt đầu thi đấu
-                      </div>
-                      <input
-                        type="date"
-                        className="input_date_team"
-                        value={startTime}
-                        onChange={handleStartTimeChange}
-                      />
-                      {startTimeError && (
-                        <div className="error_message">{startTimeError}</div>
-                      )}
+                {(dayRegisNumber !== "" || isPublic === "Private") && (
+                  <div style={{ width: "50%" }}>
+                    <div className="label_avatar">
+                      Thời gian bắt đầu thi đấu
                     </div>
-                  )}
+                    <input
+                      type="date"
+                      className="input_date_team"
+                      value={startTime}
+                      onChange={handleStartTimeChange}
+                    />
+                    {startTimeError && (
+                      <div className="error_message">{startTimeError}</div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
