@@ -12,7 +12,8 @@ const ExcelUploadComponent = () => {
   const { competitionId } = useParams();
   const [data, setData] = useState([]);
   const [fileInput, setFileInput] = useState(null); 
-  const listScore = useSelector((state) => state.getScore.listScore);
+  const listScore = useSelector((state) => state.getScore?.listScore?.listScore);
+  const hintScore = useSelector((state) => state.getScore?.listScore?.hintScore);
    
   const dispatch = useDispatch();
   const isAdd = useSelector((state)=>state.addScore.success)
@@ -66,7 +67,7 @@ const ExcelUploadComponent = () => {
         <div className="excel-upload-container_action">
           <div className="excel-upload-download">
             <a
-              href="https://firebasestorage.googleapis.com/v0/b/fine-acronym-438603-m5.firebasestorage.app/o/stem-sever%2FFA24SE121.STEM.xlsx?alt=media&token=c923f4d7-6f1e-4654-b698-f100b38cbf45"
+              href={hintScore}
               className="excel-upload-container-download-link"
               style={{ textDecoration: "none" }}
             >

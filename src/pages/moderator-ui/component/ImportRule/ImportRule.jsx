@@ -12,10 +12,11 @@ const ImportRule = () => {
   const { competitionId } = useParams();
   const [file, setFile] = useState(null);
   const [fileUrl, setFileUrl] = useState(null);
-  const filefromDB = useSelector((state) => state.getRule?.rule?.data); 
+  const filefromDB = useSelector((state) => state.getRule?.rule?.data?.regulation);
+  const hintfromDB = useSelector((state) => state.getRule?.rule?.data?.regulationExample);  
   const addSuccess =useSelector((state)=> state.addRule.success);
   const laodingAdd =useSelector((state)=> state.addRule.loading);
-  const suggestedFileUrl = "https://firebasestorage.googleapis.com/v0/b/fine-acronym-438603-m5.firebasestorage.app/o/stem-sever%2Fbca47182-f3b0-4d5a-a10c-cb66240698ca?alt=media&token=3369419c-6ef2-40c0-8de8-e25baa383c3f";
+  const suggestedFileUrl = hintfromDB;
   const dispatch = useDispatch();
 
   useEffect(() => {
