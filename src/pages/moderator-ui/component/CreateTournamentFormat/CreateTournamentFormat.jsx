@@ -556,22 +556,23 @@ const CreateTournamentFormat = ({}) => {
                     )}
                   </div>
                 )}
-                {isPublic == "Public" && dayRegisNumber != "" && (
-                  <div style={{ width: "50%" }}>
-                    <div className="label_avatar">
-                      Thời gian bắt đầu thi đấu
+                {(dayRegisNumber != "" ||
+                  isPublic === "Private") && (
+                    <div style={{ width: "50%" }}>
+                      <div className="label_avatar">
+                        Thời gian bắt đầu thi đấu
+                      </div>
+                      <input
+                        type="date"
+                        className="input_date_team"
+                        value={startTime}
+                        onChange={handleStartTimeChange}
+                      />
+                      {startTimeError && (
+                        <div className="error_message">{startTimeError}</div>
+                      )}
                     </div>
-                    <input
-                      type="date"
-                      className="input_date_team"
-                      value={startTime}
-                      onChange={handleStartTimeChange}
-                    />
-                    {startTimeError && (
-                      <div className="error_message">{startTimeError}</div>
-                    )}
-                  </div>
-                )}
+                  )}
               </div>
             </div>
           </div>
