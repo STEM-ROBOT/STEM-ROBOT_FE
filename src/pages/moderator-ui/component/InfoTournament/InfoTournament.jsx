@@ -58,7 +58,7 @@ const InfoTournament = () => {
                             <div className="bar_content_img">
                                 <img
                                     // src={tournamentInfo?.image || "https://th.bing.com/th/id/OIP.hxGHyd4kfFtlAo7snGkXLgAAAA?rs=1&pid=ImgDetMain"} 
-                                    src="https://th.bing.com/th/id/OIP.hxGHyd4kfFtlAo7snGkXLgAAAA?rs=1&pid=ImgDetMain"
+                                    src={tournamentInfo?.image || "https://th.bing.com/th/id/OIP.hxGHyd4kfFtlAo7snGkXLgAAAA?rs=1&pid=ImgDetMain"}
                                     alt={tournamentInfo?.name || "Tournament"}
                                     className="bar_img"
                                 />
