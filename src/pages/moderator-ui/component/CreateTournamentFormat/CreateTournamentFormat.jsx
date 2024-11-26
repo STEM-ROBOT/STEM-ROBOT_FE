@@ -272,18 +272,32 @@ const CreateTournamentFormat = ({}) => {
       }
     }
   };
+
   const handleDayRegisNumberChange = (e) => {
     const selectedStartTime = new Date(e.target.value);
     const now = new Date();
-    if (selectedStartTime >= now) {
-      setDayRegisNumber(e.target.value);
-      setRegisTimeError("");
+
+    // Làm tròn thời gian về đầu ngày (00:00:00)
+    const selectedDateOnly = new Date(
+        selectedStartTime.getFullYear(),
+        selectedStartTime.getMonth(),
+        selectedStartTime.getDate()
+    );
+    const nowDateOnly = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+    );
+
+    if (selectedDateOnly >= nowDateOnly) {
+        setDayRegisNumber(e.target.value);
+        setRegisTimeError("");
     } else {
-      setDayRegisNumber("");
-      setRegisTimeError("Ngày đăng ký không hợp lệ.");
+        setDayRegisNumber("");
+        setRegisTimeError("Ngày đăng ký không hợp lệ.");
     }
-    // Set the date value directly
-  };
+};
+
   const handleMemberNumberChange = (e) => {
     const input = e.target.value;
 
