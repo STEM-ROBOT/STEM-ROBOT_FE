@@ -40,11 +40,11 @@ const CompetitionList = () => {
       now >= startDate &&
       now <= endDate
     ) {
-      return "Đang diển ra";
+      return "Đang diễn ra";
     } else if (competition.isActive === true && now < startDate) {
       return "Đã kích hoạt";
     }
-    return "Đã kết thúc";
+    return "Đang diễn ra";
   };
   const activeStatuses = (competition) => {
     const now = new Date(); // Lấy thời gian hiện tại
@@ -65,10 +65,10 @@ const CompetitionList = () => {
     }
   };
   const GoCompetition = (competition) => {
-    // if (competition.isActive === true) {
-    navigate(`${competition.id}`);
+    if (competition.isActive === true) {
+      navigate(`${competition.id}`);
+    }
   };
-  // };
   return (
     <div className="competition_container">
       <div className="introduction_header">
