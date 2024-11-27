@@ -8,7 +8,7 @@ export const getCompetitionbyTournament = (id) => async (dispatch) => {
     try {
       dispatch({ type: GET_COMPETITION_MODERATOR_REQUEST });
   
-      const { data } = await api.get(`/api/competitions/tournament?id=${id}`);
+      const { data } = await api.get(`/api/competitions/${id}`);
   
       dispatch({ type: GET_COMPETITION_MODERATOR_SUCCESS, payload: data });
     } catch (error) {
@@ -53,7 +53,7 @@ export const getCompetitionbyTournament = (id) => async (dispatch) => {
     try {
       dispatch({ type: ADD_COMPETITION_FORMAT_REQUEST });
   
-      const { data } = await api.put(`/api/competitions/format-config?competitionId=${competitionId}`,format);
+      const { data } = await api.put(`/api/competitions/config-format?competitionId=${competitionId}`,format);
   
       dispatch({ type: ADD_COMPETITION_FORMAT_SUCCESS, payload: data });
       toast.success("Thêm thành công")

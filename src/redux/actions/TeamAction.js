@@ -97,7 +97,7 @@ export const AddTeamsTable = (competitionId,teamTable) => async (dispatch) => {
     dispatch({ type: ADD_TEAM_TABLE_REQUEST });
     console.log(competitionId,teamTable)
 
-    const { data } = await api.post(`api/competitions/config-teamtable-stagetable?competitionId=${competitionId}`,teamTable);
+    const { data } = await api.put(`api/competitions/config-teamtable-stagetable?competitionId=${competitionId}`,teamTable);
 
     dispatch({ type: ADD_TEAM_TABLE_SUCCESS, payload: data });
     toast.success("Thêm Thành Công")

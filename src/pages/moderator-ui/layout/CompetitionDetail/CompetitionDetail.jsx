@@ -50,7 +50,7 @@ const CompetitionDetail = () => {
   useEffect(() => {
     api
       .get(
-        `/api/competitions/config-register?competitionID=${path.competitionId}`
+        `/api/competitions/register-config?competitionID=${path.competitionId}`
       )
       .then((response) => {
         const { status, formatId, image, name } = response.data;

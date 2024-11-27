@@ -6,7 +6,7 @@ export const addRuleCompetition = (competitionId, file) => async (dispatch) => {
     console.log(file)
     try {
         dispatch({ type: IMPORT_RULE_REQUEST });
-        const { newdata } = await api.post(`/api/competitions/addRegulation/${competitionId}`,file);
+        const { newdata } = await api.put(`/api/competitions/addRegulation/${competitionId}`,file);
         dispatch({ type: IMPORT_RULE_SUCCESS, payload: newdata });
         toast.success("Thêm Thành Công")
 

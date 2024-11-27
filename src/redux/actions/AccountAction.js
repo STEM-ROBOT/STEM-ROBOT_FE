@@ -11,7 +11,7 @@ export const InforAccountID = () =>async(dispatch) =>{
         console.log(token);
         const decode = jwtDecode(token);
         const userID = decode.userId;
-        const { data } = await api.get(`/api/accounts/userId`, {
+        const { data } = await api.get(`/api/accounts/info`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -38,10 +38,10 @@ export const ChangePasswordUser = (pasword) =>async(dispatch) =>{
   try {
       dispatch ({type : GET_ACCOUNTID_REQUEST });
       const token = TokenService.getLocalAccessToken();
-      console.log(token);
+
       const decode = jwtDecode(token);
       const userID = decode.userId;
-      const { data } = await api.put(`/api/accounts/change-password`,{
+      const { data } = await api.put(`/api/accounts/forgot-password`,{
         passwordOld : pasword.passwordOld,
         newPassword : pasword.newPassword,
         confirmPass : pasword.confirmPass
@@ -78,7 +78,7 @@ export const ChangeInfor = (infor) => (dispatch) =>{
         email: infor.email
       };
   
-      const { data } =  api.put(`/api/accounts/update-account`,
+      const { data } =  api.put(`/api/accounts`,
         updatedInfo
       )
       console.log(data);
