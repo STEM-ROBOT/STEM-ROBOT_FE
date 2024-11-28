@@ -409,6 +409,8 @@ const ManagerMatchRefereeMain = () => {
       .put(`/api/schedules/schedule-confirm?scheduleId=${schedule_Id}`)
       .then((response) => {
         if (response.data.message == "success") {
+          console.log(response.data.message);
+
           navigate("/");
         }
       })

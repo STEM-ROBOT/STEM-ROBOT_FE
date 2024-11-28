@@ -46,7 +46,7 @@ const SignUp = ({ setSignUp }) => {
       image:
         "https://static.vecteezy.com/system/resources/previews/009/734/564/non_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg",
     };
-    api.post(`/api/accounts/signup-moderator`, data).then((response) => {
+    api.post(`/api/accounts`, data).then((response) => {
       if (response.data == "Success") {
         setSignUp(false);
       }
