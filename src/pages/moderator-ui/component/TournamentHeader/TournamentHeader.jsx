@@ -15,6 +15,7 @@ const TournamentHeader = () => {
   const competitionInfo = useSelector((state) => state.infoCompetition?.infoCompetition?.data);
   const loading = useSelector((state) => state.infoTournament.loading);
   const error = useSelector((state) => state.infoTournament.error);
+  const isSuccess =useSelector((state)=>state.activeCompetition.success);
 
   const tabs = [
     { name: "TÙY CHỈNH", key: "settings/format" },
@@ -29,7 +30,7 @@ const TournamentHeader = () => {
     if (competitionId) {
       dispatch(getCompetitionInfo(competitionId));
     }
-  }, [competitionId, dispatch]);
+  }, [competitionId, dispatch,isSuccess]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab.key);
