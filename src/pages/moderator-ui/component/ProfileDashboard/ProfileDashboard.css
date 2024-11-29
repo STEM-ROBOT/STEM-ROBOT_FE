@@ -31,24 +31,57 @@
 }
 
 .profile-avatar {
-    background-color: #4caf50;
-    border-radius: 50%;
     width: 80px;
     height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #4caf50;
+    color: #fff;
+    font-size: 32px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-right: 20px;
+}
+
+.avatar-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.avatar-initial {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
-    margin-right: 20px;
+    width: 100%;
+    height: 100%;
 }
+
 
 .profile-details h3 {
     margin: 0;
     font-size: 1.5rem;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .profile-details p {
     margin: 5px 0;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-details p i {
+    font-size: 1.2rem; /* Kích thước biểu tượng */
+    color: #4caf50; /* Màu biểu tượng */
 }
 
 .email-warning {

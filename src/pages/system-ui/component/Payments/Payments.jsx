@@ -5,6 +5,7 @@ import api from '../../../../config';
 
 
 const Payments = ({ isOpen, onClose, packageDetails }) => {
+    console.log(packageDetails)
     const [discountCode, setDiscountCode] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -72,7 +73,7 @@ const Payments = ({ isOpen, onClose, packageDetails }) => {
                         <div className="price-details">
                             <div className="price-row">
                                 <span>Giá tiền:</span>
-                                <span className="discount-price">{totalAmount}đ</span>
+                                <span className="discount-price">{packageDetails.price}đ</span>
                             </div>
                         </div>
                         <div className="discount-code">
@@ -90,7 +91,7 @@ const Payments = ({ isOpen, onClose, packageDetails }) => {
                         {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <div className="total">
                             <span>TỔNG</span>
-                            <span>{totalAmount}đ</span>
+                            <span>{packageDetails.price}đ</span>
                         </div>
                         <button
                             className="pay-button"

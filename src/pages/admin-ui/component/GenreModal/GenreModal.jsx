@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './GenreModal.css';
+import FirebaseUpload from '../../../../config/firebase';
+import ReactQuill from 'react-quill'; // Import React Quill
+import 'react-quill/dist/quill.snow.css'; // Import Quill CSS
 
-const GenreModal = ({ isOpen, onClose, onSave, genre }) => {
+const GenreModal = ({ isOpen, onClose, onSave, genre, mode }) => {
   const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const [ruleFile, setRuleFile] = useState(null);
   const [scoreFile, setScoreFile] = useState(null);
@@ -11,16 +15,18 @@ const GenreModal = ({ isOpen, onClose, onSave, genre }) => {
   const [currentScoreFileUrl, setCurrentScoreFileUrl] = useState('');
 
   useEffect(() => {
-    if (genre) {
-      setTitle(genre.title);
-      setCurrentImageUrl(genre.imageUrl);
-      setCurrentRuleFileUrl(genre.ruleFile);
-      setCurrentScoreFileUrl(genre.scoreFile);
+    if (mode === 'edit' && genre) {
+      setTitle(genre.name || '');
+      setDescription(genre.description || '');
+      setCurrentImageUrl(genre.image || '');
+      setCurrentRuleFileUrl(genre.hintRule || '');
+      setCurrentScoreFileUrl(genre.hintScore || '');
       setImageFile(null);
       setRuleFile(null);
       setScoreFile(null);
     } else {
       setTitle('');
+      setDescription('');
       setCurrentImageUrl('');
       setCurrentRuleFileUrl('');
       setCurrentScoreFileUrl('');
@@ -28,24 +34,40 @@ const GenreModal = ({ isOpen, onClose, onSave, genre }) => {
       setRuleFile(null);
       setScoreFile(null);
     }
-  }, [genre]);
+  }, [genre, mode]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImageFile(file);
     if (file) {
-      setCurrentImageUrl(URL.createObjectURL(file)); // Preview the selected image
+      setCurrentImageUrl(URL.createObjectURL(file));
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    let imageUrl = currentImageUrl;
+    let ruleFileUrl = currentRuleFileUrl;
+    let scoreFileUrl = currentScoreFileUrl;
+
+    if (imageFile) {
+      imageUrl = await FirebaseUpload(imageFile);
+    }
+    if (ruleFile) {
+      ruleFileUrl = await FirebaseUpload(ruleFile);
+    }
+    if (scoreFile) {
+      scoreFileUrl = await FirebaseUpload(scoreFile);
+    }
+
     const updatedGenre = {
-      id: genre ? genre.id : Date.now(),
+      ...(genre ? { id: genre.id } : {}),
       title,
-      imageUrl: imageFile ? URL.createObjectURL(imageFile) : currentImageUrl,
-      ruleFile: ruleFile ? URL.createObjectURL(ruleFile) : currentRuleFileUrl,
-      scoreFile: scoreFile ? URL.createObjectURL(scoreFile) : currentScoreFileUrl,
+      description,
+      imageUrl,
+      ruleFile: ruleFileUrl,
+      scoreFile: scoreFileUrl,
     };
+
     onSave(updatedGenre);
     onClose();
   };
@@ -55,54 +77,104 @@ const GenreModal = ({ isOpen, onClose, onSave, genre }) => {
   return (
     <div className="genre_modal_overlay">
       <div className="genre_modal">
-        <h3 className="genre_modal_title">{genre ? 'Chỉnh sửa nội dung' : 'Thêm nội dung mới'}</h3>
-        
-        <label className="genre_modal_label">Tên nội dung</label>
-        <input
-          type="text"
-          placeholder="Tên nội dung"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="genre_modal_input"
-        />
+        <h3 className="genre_modal_title">
+          {mode === "edit" ? "Chỉnh sửa nội dung" : "Thêm nội dung mới"}
+        </h3>
 
-        <label className="genre_modal_label">Hình ảnh hiện tại</label>
-        {currentImageUrl && (
-          <img src={currentImageUrl} alt="Current" className="genre_modal_current_image" />
-        )}
-        <input
-          type="file"
-          onChange={handleImageChange}
-          className="genre_modal_input"
-        />
+        <div className="genre_modal_container">
+          <div className="genre_modal_left">
+            <label className="genre_modal_label">Tên nội dung</label>
+            <input
+              type="text"
+              placeholder="Tên nội dung"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="genre_modal_input"
+            />
 
-        <label className="genre_modal_label">Quy tắc (Rule) File Hiện tại</label>
-        {currentRuleFileUrl && (
-          <a href={currentRuleFileUrl} target="_blank" rel="noopener noreferrer" className="genre_modal_link">
-            Xem quy tắc hiện tại
-          </a>
-        )}
-        <input
-          type="file"
-          onChange={(e) => setRuleFile(e.target.files[0])}
-          className="genre_modal_input"
-        />
+            <label className="genre_modal_label">Hình ảnh </label>
+            {currentImageUrl && (
+              <img
+                src={currentImageUrl}
+                alt="Current"
+                className="genre_modal_current_image"
+              />
+            )}
+            <label htmlFor="image-upload" className="genre_modal_file_button">
+              Tải lên hình ảnh
+              <input
+                id="image-upload"
+                type="file"
+                onChange={handleImageChange}
+                style={{ display: 'none' }} // Ẩn input
+              />
+            </label>
+          </div>
 
-        <label className="genre_modal_label">Điểm số (Score) File Hiện tại</label>
-        {currentScoreFileUrl && (
-          <a href={currentScoreFileUrl} target="_blank" rel="noopener noreferrer" className="genre_modal_link">
-            Xem điểm số hiện tại
-          </a>
-        )}
-        <input
-          type="file"
-          onChange={(e) => setScoreFile(e.target.files[0])}
-          className="genre_modal_input"
-        />
+
+          <div className="genre_modal_right">
+            <label className="genre_modal_label">File Quy tắc</label>
+            {currentRuleFileUrl && (
+              <a
+                href={currentRuleFileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="genre_modal_link"
+              >
+                Xem quy tắc hiện tại
+              </a>
+            )}
+            <label htmlFor="rule-upload" className="genre_modal_file_button">
+              Tải lên quy tắc
+              <input
+                id="rule-upload"
+                type="file"
+                onChange={(e) => setRuleFile(e.target.files[0])}
+                style={{ display: 'none' }} // Ẩn input
+              />
+            </label>
+
+            <label className="genre_modal_label">File Điểm số</label>
+            {currentScoreFileUrl && (
+              <a
+                href={currentScoreFileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="genre_modal_link"
+              >
+                Xem điểm số hiện tại
+              </a>
+            )}
+            <label htmlFor="score-upload" className="genre_modal_file_button">
+              Tải lên điểm số
+              <input
+                id="score-upload"
+                type="file"
+                onChange={(e) => setScoreFile(e.target.files[0])}
+                style={{ display: 'none' }} // Ẩn input
+              />
+            </label>
+          </div>
+
+        </div>
+
+        <div className="genre_modal_bottom">
+          <label className="genre_modal_label">Giới thiệu giải</label>
+          <ReactQuill
+            value={description}
+            onChange={setDescription}
+            theme="snow"
+            placeholder="Nhập mô tả nội dung..."
+          />
+        </div>
 
         <div className="genre_modal_actions">
-          <button onClick={onClose} className="genre_modal_button genre_modal_cancel">Hủy</button>
-          <button onClick={handleSave} className="genre_modal_button genre_modal_save">Lưu</button>
+          <button className="genre_modal_button genre_modal_cancel" onClick={onClose}>
+            Hủy
+          </button>
+          <button className="genre_modal_button genre_modal_save" onClick={handleSave}>
+            Lưu
+          </button>
         </div>
       </div>
     </div>
