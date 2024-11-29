@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import './GerneManage.css';
-import GenreModal from '../GenreModal/GenreModal';
 import {ListGenre} from '../../../../redux/actions/AdminAction';
 import { useDispatch, useSelector } from 'react-redux';
+import GenreModal from '../GenreModal/GenreModal';
 
 // const initialPackages = [
 //     {
@@ -30,54 +30,42 @@ import { useDispatch, useSelector } from 'react-redux';
 // ];
 
 const GerneManage = () => {
-    
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedGenre, setSelectedGenre] = useState(null);
+    const [mode, setMode] = useState("add"); // Thêm trạng thái mode
     const dispatch = useDispatch();
     const ListGenreData = useSelector((state) => state.getListGenre);
-    console.log(ListGenreData)
     const AccountArrayData = Array.isArray(ListGenreData.success?.data) ? ListGenreData.success?.data : [];
-    console.log(AccountArrayData)
-   
+
     useEffect(() => {
-      dispatch(ListGenre()); 
-      
-  }, [dispatch]);
- 
+        dispatch(ListGenre());
+    }, [dispatch]);
+
     const handleAddClick = () => {
         setSelectedGenre(null); // Clear any selected genre to open modal for adding new content
+        setMode("add"); // Mode là "add"
         setIsModalOpen(true);
     };
 
     const handleEditClick = (genre) => {
         setSelectedGenre(genre); // Set the selected genre for editing
+        setMode("edit"); // Mode là "edit"
         setIsModalOpen(true);
     };
 
     const handleSaveGenre = (updatedGenre) => {
-        setPackages((prevPackages) => {
-            const genreIndex = prevPackages.findIndex((pkg) => pkg.id === updatedGenre.id);
-            if (genreIndex >= 0) {
-                const newPackages = [...prevPackages];
-                newPackages[genreIndex] = updatedGenre;
-                return newPackages;
-            } else {
-                return [...prevPackages, updatedGenre];
-            }
-        });
-        setIsModalOpen(false); // Close modal after saving
+        // Xử lý lưu genre ở đây
+        console.log(updatedGenre);
+        setIsModalOpen(false); // Đóng modal
     };
 
-   return (
-        <div className='genre_manage_container'>
-            <div className='genre_manage_container_title'>
-                Nội dung thi đấu
-            </div>
-            <div className='genre_manage_container_header'>
+    return (
+        <div className="genre_manage_container">
+            <div className="genre_manage_container_title">Nội dung thi đấu</div>
+            <div className="genre_manage_container_header">
                 <div className="genre_manage_search_container">
                     <input type="text" placeholder="Tìm kiếm nội dung" className="genre_manage_search_input" />
                 </div>
-
                 <div className="genre_manage_action_buttons">
                     <button className="genre_manage_add_button" onClick={handleAddClick}>+ Thêm nội dung</button>
                 </div>
@@ -100,9 +88,10 @@ const GerneManage = () => {
                 onClose={() => setIsModalOpen(false)}
                 onSave={handleSaveGenre}
                 genre={selectedGenre}
+                mode={mode} // Truyền mode qua GenreModal
             />
         </div>
     );
 };
 
-export default GerneManage;
+export default GerneManage

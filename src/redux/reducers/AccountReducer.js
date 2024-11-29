@@ -19,9 +19,9 @@ export const ChangePassword = (state = {}, action) =>{
         case CHANGE_PASSWORD_REQUEST:
             return { loading: true };
         case CHANGE_PASSWORD_SUCCESS:
-            return { loading: false, success: action.payload };
+            return { loading: false, success: true };
         case CHANGE_PASSWORD_FAIL:
-            return { loading: false, error: action.payload };
+            return { loading: false, error: false };
         case CHANGE_PASSWORD_RESET:
             return {loading : false, error: action.payload}
         default:
@@ -34,9 +34,9 @@ export const ChangeInforReducer = (state = {}, action) =>{
         case CHANGE_INFOR_REQUEST:
             return { loading: true };
         case CHANGE_INFOR_SUCCESS:
-            return { loading: false, success: action.payload };
+            return { loading: false, success: true };
         case CHANGE_INFOR_FAIL:
-            return { loading: false, error: action.payload };
+            return { loading: false, error: false };
         case CHANGE_INFOR_RESET:
             return {loading : false, error: action.payload}
         default:

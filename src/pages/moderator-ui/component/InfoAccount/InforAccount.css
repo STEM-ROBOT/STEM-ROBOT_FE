@@ -1,59 +1,74 @@
+.profile-container-outer {
+    background-image: linear-gradient(
+        to left, 
+        #022233 0%,
+        #033f60 21%,
+        #03344e 41%,
+        #022233 61%,
+        #00121c 81%,
+        #000f16 100%
+    );
+}
 
-.profile-container-parent{
-    display: flex;
+.profile-container-parent {
+    max-width: 85%;   
+    margin: 0 auto;
+    padding-top: 20px;  
+    color: #000;
 }
 
 .profile-container {
     margin-top: 90px;
-    width: 50%;
-    max-width: 1200px;
-    margin: 100px auto;
     padding: 30px;
     background-color: #fcfcfc;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
 }
 
 .profile-header {
-    font-size: 24px; 
-    color: #4a4a4a;
+    font-size: 28px;
+    color: #000; /* Đặt thành màu đen */
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    font-weight: bold;
 }
 
 .profile-header i {
-    margin-right: 8px;
-    color: #6a4ac5;
+    margin-right: 10px;
+    color: #6a4ac5; /* Không đổi vì đây là màu biểu tượng */
 }
 
 .profile-content {
     display: flex;
+    gap: 20px;
     flex-wrap: wrap;
 }
 
 .profile-left {
-    flex: 0.5;
-    min-width: 200px;
+    flex: 1;
+    min-width: 300px;
     text-align: center;
-    padding: 10px;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .profile-picture-section {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
 }
 
 .profile-picture {
-    width: 150px;
-    height: 150px;
+    width: 250px;
+    height: 250px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid #e0e0e0;
+    border: 3px solid #4caf50;
     cursor: pointer;
     position: relative;
+    background-color: #f0f0f0;
 }
 
 .profile-picture img {
@@ -62,60 +77,42 @@
     object-fit: cover;
 }
 
-.change-picture-text {
-    position: absolute;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: #fff;
+.profile-initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    font-size: 12px;
-    padding: 5px;
-    text-align: center;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #4caf50;
+    color: white;
+    font-size: 100px;
+    font-weight: bold;
 }
 
-.profile-email {
-    font-size: 16px;
-    color: #4caf50;
+.change-picture-text {
+    font-size: 14px;
+    color: #000; /* Đặt thành màu đen */
+    cursor: pointer;
     margin-top: 10px;
 }
 
 .change-password {
     font-size: 14px;
-    color: #4caf50;
+    color: #000; /* Đặt thành màu đen */
     cursor: pointer;
-    margin-top: 5px;
-}
-
-.email-warning {
-    display: flex;
-    align-items: center;
-    color: #ff9800;
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-.email-warning i {
-    margin-right: 5px;
-}
-
-.resend-email-btn {
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 10px;
+    margin-top: 15px;
+    text-decoration: underline;
 }
 
 .profile-right {
     flex: 2;
-    padding: 10px;
+    padding: 20px;
 }
 
 form {
     display: grid;
-    gap: 10px;
+    gap: 15px;
 }
 
 .form-group {
@@ -124,38 +121,64 @@ form {
 }
 
 .form-group label {
-    font-size: 14px;
-    color: #4a4a4a;
-    margin-bottom: 4px;
+    font-size: 16px;
+    color: #000; /* Đặt thành màu đen */
+    margin-bottom: 5px;
 }
 
 .form-group input,
 .form-group textarea {
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #fff;
+    border: 1px solid #4caf50;
+    border-radius: 6px;
     outline: none;
+    color: #000; /* Đặt thành màu đen */
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-    color: #b0b0b0;
+    color: #000; /* Đặt thành màu đen */
 }
 
 .form-group textarea {
     resize: vertical;
-    height: 100px;
+    height: 120px;
 }
 
 .save-button {
-    padding: 10px;
-    font-size: 16px;
-    color: #fff;
+    padding: 12px;
+    font-size: 18px;
+    color: #fff; /* Giữ nút màu trắng cho dễ nhìn */
     background-color: #4caf50;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    margin-top: 10px;
-    width: 100%;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+    background-color: #45a049;
+}
+
+.profile-container-footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #fcfcfc; /* Nền sáng hơn */
+    border-top: 1px solid #4caf50;
+    color: #000; /* Đặt thành màu đen */
+    font-size: 14px;
+}
+.change-email-text {
+    display: block; 
+    font-size: 16px; 
+    color: #4caf50; 
+    margin-top: 10px; 
+    text-align: center; 
+    font-weight: bold; 
+    text-decoration: none; 
+    cursor: pointer; 
 }
