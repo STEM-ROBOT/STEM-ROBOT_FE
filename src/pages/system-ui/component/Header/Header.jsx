@@ -180,6 +180,7 @@ const Header = () => {
   useEffect(() => {
     setAuInfo(TokenService.getUser());
   }, [signIn]);
+ 
 
   return (
     <div className={`header-outer ${isVisible ? "header-visible" : ""}`}>
