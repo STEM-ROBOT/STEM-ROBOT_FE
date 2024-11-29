@@ -231,7 +231,7 @@ const Header = () => {
               </div>
               {pagesDropdownOpen && (
                 <div className="dropdown-account-content">
-                  <a href="/account/profile" className="dropdown-item">
+                  <a href="/profile" className="dropdown-item">
                     Thông Tin Tài Khoản
                   </a>
                   <a href="/account/mytournament" className="dropdown-item">
