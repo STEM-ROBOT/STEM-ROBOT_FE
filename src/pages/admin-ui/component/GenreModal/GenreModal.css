@@ -1,85 +1,189 @@
 .genre_modal_overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.genre_modal {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  width: 80%;
+  max-width: 700px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.genre_modal_title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0078d7;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.genre_modal_container {
+  display: flex;
+  gap: 20px;
+}
+.genre_modal_left{
+  margin-right: 20px;
+}
+.genre_modal_left, .genre_modal_right {
+  flex: 1;
+}
+
+.genre_modal_label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.genre_modal_input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.genre_modal_file_button {
+  display: inline-block;
+  background: #d3e9ff;
+  color: #0078d7;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #0078d7;
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.genre_modal_file_button input {
+  display: none;
+}
+
+.genre_modal_bottom {
+  margin-top: 20px;
+}
+
+.genre_modal_actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.genre_modal_current_image{
+  width: 150px;
+}
+.genre_modal_button {
+  margin-top: 10px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.genre_modal_cancel {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.genre_modal_save {
+  background: #0c4a7c;
+  color: white;
+}
+.genre_modal_link {
+  display: block;
+  color: #0000008c;
+  text-decoration: underline;
+  cursor: pointer;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  font-style: italic; /* Làm cho chữ in nghiêng */
+}
+
+
+.genre_modal_link:hover {
+  color: #0056a1;
+}
+
+.genre_modal_current_image {
+  display: block;
+  margin: 10px 0;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.genre_modal_button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.genre_modal_cancel:hover {
+  background: #e5e5e5;
+}
+
+.genre_modal_save:hover {
+  background: #085487;
+}
+
+.genre_modal_quill {
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.genre_modal_actions {
+  margin-top: 20px;
+}
+
+.genre_modal_file_button:hover {
+  background: #cce4ff;
+}
+
+.genre_modal_input:focus {
+  border-color: #0078d7;
+  outline: none;
+}
+
+.genre_modal {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.genre_modal_overlay {
+  animation: fadeInOverlay 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  .genre_modal {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 400px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 1001;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .genre_modal_title {
-    margin-top: 0;
-    margin-bottom: 15px;
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
   }
-  
-  .genre_modal_label {
-    font-size: 0.9em;
-    color: #333;
-    margin-bottom: 5px;
-    display: block;
-    font-weight: bold;
+  to {
+    opacity: 1;
   }
-  
-  .genre_modal_input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-  }
-  
-  .genre_modal_current_image {
-    width: 100px;
-    height: auto;
-    margin-bottom: 15px;
-    border-radius: 5px;
-  }
-  
-  .genre_modal_link {
-    display: block;
-    color: #007bff;
-    margin-bottom: 15px;
-    text-decoration: none;
-  }
-  
-  .genre_modal_link:hover {
-    text-decoration: underline;
-  }
-  
-  .genre_modal_actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-  }
-  
-  .genre_modal_button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .genre_modal_cancel {
-    background-color: #ccc;
-    color: #fff;
-  }
-  
-  .genre_modal_save {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
+}

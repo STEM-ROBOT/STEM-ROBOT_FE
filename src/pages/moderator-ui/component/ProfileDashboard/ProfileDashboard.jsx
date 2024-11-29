@@ -1,24 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './ProfileDashboard.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { InforAccountID } from '../../../../redux/actions/AccountAction';
+import { FaEnvelope, FaPhone, FaSchool, FaUser } from 'react-icons/fa';
 
 const ProfileDashboard = () => {
+    const [profileInfo, setProfileInfo] = useState({
+        name: '',
+        phoneNumber: '',
+        email: '',
+        image: ''
+    });
     const tabs = [
         { name: "QUẢN LÍ GIẢI ĐẤU", key: "mytournament" },
+        { name: "NỘI DUNG THI ĐẤU ĐÃ THAM GIA", key: "competition-participated" },
         { name: "QUẢN LÝ GÓI", key: "myinvoice" },
     ];
 
     const navigate = useNavigate();
     const location = useLocation();
     const [activeTab, setActiveTab] = useState("");
+    const dispatch = useDispatch();
+    const InforAccountIDs = useSelector((state) => state.getAccountID);
+    useEffect(() => {
+        dispatch(InforAccountID());
+    }, [dispatch]);
 
+    useEffect(() => {
+        if (InforAccountIDs.success) {
+            setProfileInfo({
+                name: InforAccountIDs.success.name || '',
+                phoneNumber: InforAccountIDs.success.phoneNumber || '',
+                email: InforAccountIDs.success.email || '',
+                image: InforAccountIDs.success.image || ''
+            });
+        }
+    }, [InforAccountIDs.success]);
+    const getInitial = (name) => {
+        if (!name) return '';
+        return name.charAt(0).toUpperCase();
+    };
     useEffect(() => {
         const currentPath = location.pathname.split("/").pop();
         const matchedTab = tabs.find(tab => tab.key === currentPath);
         if (matchedTab) {
             setActiveTab(matchedTab.key);
         } else {
-           
+
         }
     }, [location.pathname, navigate]);
 
@@ -33,17 +62,44 @@ const ProfileDashboard = () => {
                 <div className='profile-dashboard-content'>
                 <div className="profile-info">
                         <div className="profile-avatar">
-                            <span className="avatar-initial">T</span>
+                            {profileInfo.image ? (
+                                <img
+                                    src={profileInfo.image}
+                                    alt="Avatar"
+                                    className="avatar-image"
+                                />
+                            ) : (
+                                <span className="avatar-initial">
+                                    {getInitial(profileInfo.name || profileInfo.email)}
+                                </span>
+                            )}
                         </div>
                         <div className="profile-details">
-                            <h3>Thành Lê Đình <span className="edit-icon">✎</span></h3>
-                            <p><i className="fa fa-envelope"></i> xuanthanh01122003@gmail.com</p>
-                            <p><i className="fa fa-phone"></i> Chưa cập nhật</p>
-                            <p><i className="fa fa-calendar"></i> Chưa cập nhật</p>
-                            <div className="email-warning">
-                                <i className="fa fa-exclamation-triangle"></i> Chưa kích hoạt email
-                                <button className="resend-email-btn">Gửi lại Email</button>
-                            </div>
+                            {profileInfo.name && (
+                                <h3>
+                                    <FaUser /> {profileInfo.name}
+                                    <span className="edit-icon" onClick={()=>{navigate("/profile")}}>✎</span>
+                                </h3>
+                            )}
+                            {profileInfo.email && (
+                                <p>
+                                    <FaEnvelope /> {profileInfo.email}
+                                </p>
+                            )}
+                            {profileInfo.phoneNumber && (
+                                <p>
+                                    <FaPhone /> {profileInfo.phoneNumber}
+                                </p>
+                            )}
+                            {profileInfo.schoolName ? (
+                                <p>
+                                    <FaSchool /> {profileInfo.schoolName}
+                                </p>
+                            ) : (
+                                <p>
+                                    <FaSchool /> Chưa có thông tin trường
+                                </p>
+                            )}
                         </div>
                     </div>
 

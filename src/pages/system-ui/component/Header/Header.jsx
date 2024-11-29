@@ -5,11 +5,12 @@ import "./Header.css";
 import { useState, useEffect, useRef } from "react";
 import { MdNotificationsActive } from "react-icons/md";
 import TokenService from "../../../../config/tokenservice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../../redux/actions/AuthenAction";
 import connectHub from "../../../../config/connectHub";
 import api from "../../../../config";
 import logo from "~/assets/images/logo.png";
+import { InforAccountID } from "../../../../redux/actions/AccountAction";
 // const user = {
 //   accountId: "2",
 //   moderatorName: "Hoàng Dương",
@@ -35,6 +36,14 @@ const Header = () => {
   const fetchedUserId = TokenService.getUserId();
   const useRole = TokenService.getUserRole();
   const hubConnectionRef = useRef(null);
+  const [profileInfo, setProfileInfo] = useState({
+    name: '',
+    phoneNumber: '',
+    email: '',
+    image: ''
+  });
+  const InforAccountIDs = useSelector((state) => state.getAccountID);
+  const isAdd = useSelector((state)=>state.ChangeInfor.success)
   useEffect(() => {
     if (useRole === "AD") {
       navigate("/admin");
@@ -42,6 +51,27 @@ const Header = () => {
       navigate("/referee-main");
     }
   }, [useRole]);
+  const getInitial = (name) => {
+    if (!name) return '';
+    return name.charAt(0).toUpperCase();
+  };
+
+  // Lấy thông tin tài khoản khi component render
+  useEffect(() => {
+    dispatch(InforAccountID());
+  }, [isAdd]);
+
+
+  useEffect(() => {
+    if (InforAccountIDs.success) {
+      setProfileInfo({
+        name: InforAccountIDs.success.name || '',
+        phoneNumber: InforAccountIDs.success.phoneNumber || '',
+        email: InforAccountIDs.success.email || '',
+        image: InforAccountIDs.success.image || ''
+      });
+    }
+  }, [InforAccountIDs.success]);
   useEffect(() => {
     console.log(fetchedUserId);
 
@@ -217,17 +247,26 @@ const Header = () => {
         {fetchedUserId ? (
           <div className="cta-buttons">
             <div ref={pagesRef} className="account_action_header">
-              <img
-                src={TokenService.getUserImage()}
-                alt={TokenService.getUserName()}
-                className="account_avatar"
-                onClick={togglePagesDropdown}
-              />
+              {profileInfo.image ? (
+                <img
+                  src={profileInfo.image}
+                  alt={profileInfo.email}
+                  className="account_avatar"
+                  onClick={togglePagesDropdown}
+                />
+              ) : (
+                <div
+                  className="account_avatar_placeholder"
+                  onClick={togglePagesDropdown}
+                >
+                  {getInitial(profileInfo.email)}
+                </div>
+              )}
               <div
                 className="account_name_moderator"
                 onClick={togglePagesDropdown}
               >
-                {TokenService.getUserName()}▾
+                {profileInfo.name ? profileInfo.name : profileInfo.email} ▾
               </div>
               {pagesDropdownOpen && (
                 <div className="dropdown-account-content">
@@ -236,6 +275,9 @@ const Header = () => {
                   </a>
                   <a href="/account/mytournament" className="dropdown-item">
                     Quản Lí Giải Đấu
+                  </a>
+                  <a href="/account/mytournament" className="dropdown-item">
+                    Giải Đấu Đã Tham Gia
                   </a>
                   <a href="" className="dropdown-item">
                     Quản Lý Đơn hàng
