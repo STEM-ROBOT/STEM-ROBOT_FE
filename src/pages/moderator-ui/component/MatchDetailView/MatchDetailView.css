@@ -132,7 +132,7 @@
   padding: 0px 20px;
 }
 .match_display_match_play {
-  height: 300px;
+  min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import RandomTeamWinner from "../../../system-ui/component/RandomTeamWinner/RandomTeamWinner";
 const MatchProgess = ({
   timeCountDown,
   noPlayMatch,
@@ -71,6 +72,7 @@ const MatchProgess = ({
   }
   return (
     <div className="view_data_match_container" ref={containerRef}>
+      {/* <RandomTeamWinner/> */}
       {timeCountDown ? (
         <div className="match_display_match_play">
           Trận đấu sắp bắt đầu
