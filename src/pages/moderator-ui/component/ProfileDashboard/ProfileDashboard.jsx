@@ -15,7 +15,7 @@ const ProfileDashboard = () => {
     const tabs = [
         { name: "QUẢN LÍ GIẢI ĐẤU", key: "mytournament" },
         { name: "NỘI DUNG THI ĐẤU ĐÃ THAM GIA", key: "competition-participated" },
-        { name: "QUẢN LÝ GÓI", key: "myinvoice" },
+        { name: "QUẢN LÝ GIAO DỊCH", key: "mytransaction" },
     ];
 
     const navigate = useNavigate();

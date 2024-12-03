@@ -43,7 +43,8 @@ const Header = () => {
     image: ''
   });
   const InforAccountIDs = useSelector((state) => state.getAccountID);
-  const isAdd = useSelector((state)=>state.ChangeInfor.success)
+  const isAdd = useSelector((state)=>state.ChangeInfor.loading)
+  console.log(isAdd)
   useEffect(() => {
     if (useRole === "AD") {
       navigate("/admin");
@@ -71,7 +72,7 @@ const Header = () => {
         image: InforAccountIDs.success.image || ''
       });
     }
-  }, [InforAccountIDs.success]);
+  }, [InforAccountIDs.success,isAdd]);
   useEffect(() => {
     console.log(fetchedUserId);
 
@@ -280,7 +281,7 @@ const Header = () => {
                     Giải Đấu Đã Tham Gia
                   </a>
                   <a href="" className="dropdown-item">
-                    Quản Lý Đơn hàng
+                    Quản Lý Giao Dịch
                   </a>
                   <div className="dropdown-item" onClick={() => handleLogout()}>
                     Đăng Xuất

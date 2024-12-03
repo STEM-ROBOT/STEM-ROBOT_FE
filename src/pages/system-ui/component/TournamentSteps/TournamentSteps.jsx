@@ -4,7 +4,7 @@ import robotImage from '/src/assets/images/service-reboticon.png'; // Replace wi
 const TournamentSteps = () => {
     return (
         <div className="tournament-steps-wrapper">
-            <div className="tournament-header">
+            <div className="tournament-steps-header">
                 <h2 className="tournament-title">Điều hành giải</h2>
                 <p className="tournament-subtitle">Có 3 giai đoạn để điều hành một giải đấu</p>
             </div>

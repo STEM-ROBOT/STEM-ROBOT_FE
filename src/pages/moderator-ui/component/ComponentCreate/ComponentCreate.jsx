@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import "./ComponentCreate.css";
 import CreateTournamentInfo from "../CreateTournamentInfo/CreateTournamentInfo";
 import CreateTournamentCompetition from "../CreateTournamentCompetition/CreateTournamentCompetition";
 import logo from "/src/assets/images/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { createTournament } from "../../../../redux/actions/TournamentAction";
+import {  InforAccountID } from '../../../../redux/actions/AccountAction';
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 import { FirebaseUpload } from "/src/config/firebase";
 import ReactQuill from "react-quill";
 import QuillToolbar, { formats, modules } from "../EditorToolbar/EditorToolbar";
 import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
+import { toast } from "react-toastify";
 
 const ComponentCreate = () => {
   // Tournament Info
@@ -30,10 +32,34 @@ const ComponentCreate = () => {
   const [competitionError, setCompetitionError] = useState("");
   const loadingAdd = useSelector((state)=>state.createTournamnet.loading)
   const [introduce, setIntroduce] = useState("");
+  const InforAccountIDs = useSelector((state) => state.getAccountID);
+  const [tournamentPackage, setTournamentPackage] = useState({
+    maxTournatment: 0,
+    maxTeam: 0,
+    maxMatch: 0,
+  });
+  useEffect(() => {
+    dispatch(InforAccountID());
+  }, [dispatch]);
+
+  // Đồng bộ thông tin tài khoản vào state
+  useEffect(() => {
+    if (InforAccountIDs.success) {
+      setTournamentPackage({
+        maxTournatment: InforAccountIDs.success.maxTournatment || 0,
+        maxTeam: InforAccountIDs.success.maxTeam || 0,
+        maxMatch: InforAccountIDs.success.maxMatch || 0,
+      });
+    }
+  }, [InforAccountIDs.success]);
+  console.log(tournamentPackage)
   // Validation and API Call
   const handleSubmit = async () => {
     let hasError = false;
-
+    if(tournamentPackage.maxTournatment < 1){
+      toast.error("Vui lòng mua thêm gói. Bạn đã sử dụng hết lượt tạo giải đấu !")
+      return;
+    }
     if (!nameTournament) {
       setNameError("Tên giải đấu không được để trống.");
       hasError = true;
