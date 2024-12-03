@@ -75,7 +75,7 @@ const ComponentCreate = () => {
     await dispatch(createTournament(tournamentData, navigate))
       .then(() => {
         console.log(tournamentData);
-        navigate("/account/mytournament");
+        navigate("/account/my-tournament");
       })
       .catch((error) => {
         console.error("Lỗi khi tạo giải đấu:", error);

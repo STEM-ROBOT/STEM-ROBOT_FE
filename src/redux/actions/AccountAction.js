@@ -84,7 +84,6 @@ export const ChangeInfor = (infor) => (dispatch) =>{
       )
       console.log(data);
       dispatch({ type: CHANGE_INFOR_SUCCESS, payload: data });
-  
    
   } catch (error) {
       const message =

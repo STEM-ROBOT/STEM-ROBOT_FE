@@ -61,7 +61,7 @@ const InforAccount = () => {
     }
 
     dispatch(ChangeInfor({ ...profileInfo, image: imageUrl }));
-    toast.success("Thông tin đã được cập nhật!");
+   
   };
 
   // Xử lý thay đổi ảnh
