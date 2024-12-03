@@ -73,6 +73,7 @@ export const ChangeInfor = (infor) => (dispatch) =>{
   try {
       dispatch ({type : CHANGE_INFOR_REQUEST });   
       const updatedInfo = {
+        image : infor.image,
         name: infor.name,
         phoneNumber: infor.phoneNumber,
         email: infor.email
@@ -83,7 +84,6 @@ export const ChangeInfor = (infor) => (dispatch) =>{
       )
       console.log(data);
       dispatch({ type: CHANGE_INFOR_SUCCESS, payload: data });
-  
    
   } catch (error) {
       const message =

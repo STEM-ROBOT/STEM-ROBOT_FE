@@ -10,7 +10,7 @@ const ManageTournament = () => {
   const location = useLocation(); 
 
   const sidebarItems = [
-    { key: "mytournament", icon: <FaPencilAlt />, label: "Giải đấu đã tạo", component: <TournamentList /> },
+    { key: "my-tournament", icon: <FaPencilAlt />, label: "Giải đấu đã tạo", component: <TournamentList /> },
     { key: "assigned", icon: <FaUsers />, label: "Được phân công", component: <div>Component for Được phân công</div> },
     { key: "interested", icon: <FaHeart />, label: "Đang quan tâm", component: <div>Component for Đang quan tâm</div> },
     { key: "participating", icon: <FaFlag />, label: "Đang tham gia", component: <div>Component for Đang tham gia</div> },
