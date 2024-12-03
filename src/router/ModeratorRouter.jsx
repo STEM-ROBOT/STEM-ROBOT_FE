@@ -127,10 +127,7 @@ export const profileChildren = [
     path: "tournament-adhesion",
     element: <PrivateRoute element={<TournamentAdhesion/>} requiredRole="MD" />,
   },
-  {
-    path: "tournament-adhesion/:tournamentAdhesionId",
-    element: <PrivateRoute element={<TournamentDetailView/>} requiredRole="MD" />,
-  },
+
   {
     path: "my-invoice",
     element: <PrivateRoute element={<></>} requiredRole="MD" />,
@@ -154,7 +151,10 @@ const moderatorRouter = [
     path: "/league/*",
     element: <LeagueRouter />,
   },
-
+  {
+    path: "tournament-adhesion/:tournamentAdhesionId",
+    element: <PrivateRoute element={<TournamentDetailView/>} requiredRole="MD" />,
+  },
   {
     path: "/my-tournament/:tournamentId/mycompetition/:competitionId/*",
     element: <PrivateRoute element={<Competition />} requiredRole="MD" />,

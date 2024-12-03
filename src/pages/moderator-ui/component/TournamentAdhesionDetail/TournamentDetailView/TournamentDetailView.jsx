@@ -8,13 +8,13 @@ import {
   useParams,
 } from "react-router-dom";
 
-
-
 import api from "../../../../../config";
 import { tournament_view } from "../../../api/ApiFlowView/ApiFlowView";
+import DetailBar from "../../DetailBar/DetailBar";
+import DetailBarAdhesion from "../DetailBarAdhesion/DetailBarAdhesion";
 
 const TournamentDetailView = () => {
-  const {tournamentAdhesionId} = useParams();
+  const { tournamentAdhesionId } = useParams();
   const [league, setLeague] = useState();
   const [tabActive, setTabActive] = useState("competition");
   useEffect(() => {
@@ -29,13 +29,13 @@ const TournamentDetailView = () => {
     });
   return (
     <div className="league_detail_container">
-      <DetailBar
+      <DetailBarAdhesion
         league={league}
         tabActive={tabActive}
         setTabActive={setTabActive}
       />
       <div className="league_detail_option">
-        <Routes>{renderRoutes(league_detail)}</Routes>
+        {/* <Routes>{renderRoutes(league_detail)}</Routes> */}
       </div>
     </div>
   );
