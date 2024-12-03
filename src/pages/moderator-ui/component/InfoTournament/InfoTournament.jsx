@@ -42,7 +42,7 @@ const InfoTournament = () => {
 
     const handleTabClick = (tab) => {
         setActiveTab(tab.key);
-        navigate(`/mytournament/${tournamentId}/${tab.key}`);
+        navigate(`/my-tournament/${tournamentId}/${tab.key}`);
     };
 
     return (
@@ -50,7 +50,7 @@ const InfoTournament = () => {
             <div className='info_tournament_container'>
 
                 <div className="info_tournament_content">
-                    <div className="tournaments-back" onClick={() => navigate(`/account/mytournament`)}>
+                    <div className="tournaments-back" onClick={() => navigate(`/account/my-tournament`)}>
                         <FaArrowLeft className="back-icon" />
                     </div>
                     <div className="tournament_bar">

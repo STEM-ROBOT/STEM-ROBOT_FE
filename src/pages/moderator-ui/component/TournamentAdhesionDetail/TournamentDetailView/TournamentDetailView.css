@@ -1,0 +1,30 @@
+.league_detail_page {
+  /* padding: 20px;*/
+  /* background-image: url("../../../../assets/images/banner-background.png"); */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 120vh;
+  width: 100%;
+}
+.league_detail_container {
+  width: 100%;
+  z-index: 1000;
+  padding: 81.66px 0 20px 0;
+  background-image: linear-gradient(
+    to left,
+    #022233 0%,
+    #033f60 21%,
+    #03344e 41%,
+    #022233 61%,
+    #00121c 81%,
+    #000f16 100%
+  );
+  min-height: 100vh;
+}
+.league_detail_option {
+  background-color: #ffffffde;
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}

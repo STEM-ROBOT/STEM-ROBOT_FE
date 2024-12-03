@@ -34,7 +34,7 @@ const TournamentHeader = () => {
 
   const handleTabClick = (tab) => {
     setActiveTab(tab.key);
-    navigate(`/mytournament/${tournamentId}/mycompetition/${competitionId}/${tab.key}`);
+    navigate(`/my-tournament/${tournamentId}/mycompetition/${competitionId}/${tab.key}`);
 
 
   };
@@ -47,7 +47,7 @@ const TournamentHeader = () => {
     <div className="tournaments-header-outer">
       <div className="tournaments-header-container">
         <div className='tournaments-header-content'>
-          <div className="tournaments-back" onClick={() => navigate(`/mytournament/${tournamentId}/mycompetition`)}>
+          <div className="tournaments-back" onClick={() => navigate(`/my-tournament/${tournamentId}/mycompetition`)}>
             <FaArrowLeft className="back-icon" />
           </div>
           <div className="tournaments-headers">

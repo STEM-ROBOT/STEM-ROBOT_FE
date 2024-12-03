@@ -13,9 +13,9 @@ const ProfileDashboard = () => {
         image: ''
     });
     const tabs = [
-        { name: "QUẢN LÍ GIẢI ĐẤU", key: "mytournament" },
-        { name: "NỘI DUNG THI ĐẤU ĐÃ THAM GIA", key: "competition-participated" },
-        { name: "QUẢN LÝ GÓI", key: "myinvoice" },
+        { name: "QUẢN LÍ GIẢI ĐẤU", key: "my-tournament" },
+        { name: "GIẢI ĐẤU ĐÃ THAM GIA", key: "tournament-adhesion" },
+        { name: "QUẢN LÝ GÓI", key: "my-invoice"},
     ];
 
     const navigate = useNavigate();

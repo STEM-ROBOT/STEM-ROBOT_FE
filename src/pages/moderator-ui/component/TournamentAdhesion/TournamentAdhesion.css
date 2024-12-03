@@ -2,7 +2,7 @@
 
 
 
-.competition-participated-title:before {
+.tournament-adhesion-title:before {
     content: "🏆";
     /* Biểu tượng trước tiêu đề */
     font-size: 28px;
@@ -11,7 +11,7 @@
     /* Màu vàng đậm */
 }
 
-.competition-participated {
+.tournament-adhesion {
     margin-top: 20px;
     padding: 20px;
     background-color: #f9f9f9;
@@ -19,14 +19,14 @@
     border: 1px dashed #ddd;
   }
   
-  .competition-participated-header {
+  .tournament-adhesion-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
   }
   
-  .competition-participated-title {
+  .tournament-adhesion-title {
     font-size: 24px;
     font-weight: bold;
     color: #333;
