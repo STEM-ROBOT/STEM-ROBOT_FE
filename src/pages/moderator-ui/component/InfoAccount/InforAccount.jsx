@@ -147,7 +147,7 @@ const InforAccount = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Email</label>
+                    <label>Trường</label>
                     <input
                       type="text"
                       name="email"

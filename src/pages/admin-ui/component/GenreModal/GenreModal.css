@@ -167,6 +167,18 @@
 .genre_modal_overlay {
   animation: fadeInOverlay 0.3s ease-out;
 }
+.uploaded-file-name {
+  font-size: 14px; /* Kích thước chữ */
+  color: #555; /* Màu chữ */
+  margin: 10px 0; /* Khoảng cách phía trên và dưới */
+  font-weight: bold; /* Chữ đậm */
+  display: flex; /* Sử dụng flexbox */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  gap: 8px; /* Khoảng cách giữa icon và tên file */
+}
+
+
+
 
 @keyframes fadeIn {
   from {

@@ -40,6 +40,7 @@ import LeagueRouter from "../pages/moderator-ui/layout/LeagueRouter/LeagueRouter
 import TeamRegister from "../pages/moderator-ui/component/TeamRegister/TeamRegister";
 import TournamentAdhesion from "../pages/moderator-ui/component/TournamentAdhesion/TournamentAdhesion";
 import TournamentDetailView from "../pages/moderator-ui/component/TournamentAdhesionDetail/TournamentDetailView/TournamentDetailView";
+import Transaction from "../pages/moderator-ui/component/Transaction/Transaction";
 
 
 export const tournamentChildren = [
@@ -132,8 +133,8 @@ export const profileChildren = [
     element: <PrivateRoute element={<TournamentDetailView/>} requiredRole="MD" />,
   },
   {
-    path: "my-invoice",
-    element: <PrivateRoute element={<></>} requiredRole="MD" />,
+    path: "mytransaction",
+    element: <PrivateRoute element={<Transaction/>} requiredRole="MD" />,
   },
 ];
 
