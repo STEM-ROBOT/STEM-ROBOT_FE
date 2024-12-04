@@ -78,3 +78,12 @@
   background-color: #28a745;
   color: #fff;
 }
+.input-error {
+  border: 1px solid #ff4d4f;
+}
+
+.error-text {
+  color: #ff4d4f;
+  font-size: 0.85em;
+  margin-top: 5px;
+}

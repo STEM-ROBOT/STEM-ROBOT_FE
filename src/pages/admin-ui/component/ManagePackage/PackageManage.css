@@ -52,9 +52,8 @@
 }
 
 .package_manage_container_wrapper {
-    display: flex;
-    border-radius: 10px;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     max-height: 75vh; /* Giới hạn chiều cao cho khung chứa các gói */
     overflow-y: auto; /* Thêm thanh cuộn dọc nếu vượt quá chiều cao */
@@ -62,65 +61,93 @@
 }
 
 .package_card_wrapper {
-    background-color: #fff;
+    background-color: #f8f9fa;
+    border: 2px solid #134b79;
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     position: relative;
-    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .package_card_wrapper:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-.package_card_edit_icon {
-    position: absolute;
-    top: 27%;
-    right: 10%;
-    background-color: #01395f;
-    color: #fff;
-    border-radius: 10px;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 0.9em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 .package_card_delete_icon {
-    position: absolute;
-    top: 55%;
-    right: 10%;
-    background-color: #ff0000;
-    color: #fff;
-    border-radius: 15%;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 0.9em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-color: #ff4d4f;
+    top: 50px;
 }
 
 .package_card_edit_icon:hover {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #0056b3;
+}
+
+.package_card_delete_icon:hover {
+    background-color: #ff0000;
 }
 
 .package_card_content_wrapper {
-    padding: 10px 0;
-    margin-left: 10%;
+    text-align: left;
+    width: 100%;
 }
 
 .package_card_title_text {
     font-size: 1.2em;
-    color: #333;
-    margin: 0 0 10px;
+    color: #d9534f;
     font-weight: bold;
+    margin: 0 0 10px;
+    text-align: center;
 }
 
 .package_card_content_wrapper p {
-    margin: 10px 0 0 30px;
-    font-size: 1em;
+    margin: 5px 0;
+    font-size: 0.95em;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+}
+
+.package_card_wrapper p span {
     color: #555;
+    font-weight: normal;
+}
+.package_card_actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px; /* Khoảng cách phía trên */
+    width: 100%;
+}
+
+.package_card_edit_icon,
+.package_card_delete_icon {
+    background-color: #01395f;
+    color: #fff;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 1.4em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+    width: 10%;
+    text-align: center;
+}
+
+.package_card_delete_icon {
+    background-color: #ff4d4f;
+}
+
+.package_card_edit_icon:hover {
+    background-color: #0056b3;
+}
+
+.package_card_delete_icon:hover {
+    background-color: #ff0000;
 }

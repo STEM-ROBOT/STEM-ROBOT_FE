@@ -10,6 +10,8 @@ import {
 } from "../../../../redux/actions/CompetitionAction";
 import { getActive } from "../../../../redux/actions/FormatAction";
 import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
+import { InforAccountID } from "../../../../redux/actions/AccountAction";
+import { toast } from "react-toastify";
 
 const formats = [
   {
@@ -103,6 +105,7 @@ const CreateTournamentFormat = ({}) => {
   const [groupError, setGroupError] = useState("");
   const [selectedTeamsNextRound, setSelectedTeamsNextRound] = useState("");
   const [teamsNextRoundError, setTeamsNextRoundError] = useState("");
+  const InforAccountIDs = useSelector((state) => state.getAccountID);
   const isAddSuccess = useSelector(
     (state) => state.addCompetitionFormat?.success
   );
@@ -115,7 +118,27 @@ const CreateTournamentFormat = ({}) => {
   const IsFormat = useSelector(
     (state) => state?.getActiveFormat?.data?.data?.isFormat
   );
-  console.log(IsFormat);
+  
+  const [tournamentPackage, setTournamentPackage] = useState({
+    maxTournatment: 0,
+    maxTeam: 0,
+    maxMatch: 0,
+  });
+  useEffect(() => {
+    dispatch(InforAccountID());
+  }, [dispatch]);
+
+  // Đồng bộ thông tin tài khoản vào state
+  useEffect(() => {
+    if (InforAccountIDs.success) {
+      setTournamentPackage({
+        maxTournatment: InforAccountIDs.success.maxTournatment || 0,
+        maxTeam: InforAccountIDs.success.maxTeam || 0,
+        maxMatch: InforAccountIDs.success.maxMatch || 0,
+      });
+    }
+  }, [InforAccountIDs.success]);
+  console.log(tournamentPackage)
 
   useEffect(() => {
     dispatch(getCompetitionInfo(competitionId));
@@ -310,7 +333,10 @@ const CreateTournamentFormat = ({}) => {
 
   const handleSubmit = () => {
     let hasError = false;
-
+    if(teamNumber > tournamentPackage.maxTeam){
+      toast.error(`Số lượng đội vượt quá giới hạn! Bạn chỉ có thể thêm tối đa ${tournamentPackage.maxTeam} đội.`)
+      return;
+    }
     // Kiểm tra nếu trường dữ liệu bắt buộc bị bỏ trống
     if (!teamNumber || teamNumber < formatCompetition.teamMin) {
       alert(
