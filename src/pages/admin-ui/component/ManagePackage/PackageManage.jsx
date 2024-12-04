@@ -10,7 +10,7 @@ const PackageManage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  
+
   // Fetch packages from API
 
   useEffect(() => {
@@ -18,9 +18,9 @@ const PackageManage = () => {
       .get("api/packages")
       .then((response) => {
         if (response.data.success.data) {
-            setPackages(response.data.success.data);
-            console.log(packages);
-          } else {
+          setPackages(response.data.success.data);
+          console.log(packages);
+        } else {
           navigate(`/404error`);
         }
 
@@ -86,18 +86,28 @@ const PackageManage = () => {
       <div className="package_manage_container_wrapper">
         {packages.map((pkg) => (
           <div key={pkg.id} className="package_card_wrapper">
-            <div className="package_card_edit_icon" onClick={() => handleEditClick(pkg)}>
-              Chỉnh sửa <CiEdit />
-            </div>
-            <div className="package_card_delete_icon" onClick={() => handleDeleteClick(pkg)}>
-              Xóa <CiCircleRemove />
-            </div>
+
             <div className="package_card_content_wrapper">
               <h3 className="package_card_title_text">{pkg.name}</h3>
               <p>Số trận đấu: {pkg.maxMatch}</p>
-              <p>Giá: {pkg.price.toLocaleString()}</p>
+              <p>Giá: {pkg.price.toLocaleString()} đ</p>
               <p>Số lần tạo giải đấu: {pkg.maxTournament}</p>
               <p>Số đội tối đa: {pkg.maxTeam}</p>
+            </div>
+            <div className="package_card_actions">
+
+              <div
+                className="package_card_delete_icon"
+                onClick={() => handleDeleteClick(pkg)}
+              >
+                <CiCircleRemove />
+              </div>
+              <div
+                className="package_card_edit_icon"
+                onClick={() => handleEditClick(pkg)}
+              >
+                <CiEdit />
+              </div>
             </div>
           </div>
         ))}

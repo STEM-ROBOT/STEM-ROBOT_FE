@@ -19,7 +19,7 @@ import { getRuleReducer, importRuleReducer } from '../reducers/RuleReducer';
 import { addScoreReducer, getScoreReducer } from '../reducers/ScoreReducer';
 // import {  getTeamknockoutReducer, getTeamMatchReducer, getTeamsReducer, getTeamTableReducer } from '../reducers/TeamReducer';
 import { getLoctionReducer } from '../reducers/LocationReducer';
-import { ListAccountReducer, ListGenreReducer, ListOrderReducer } from '../reducers/AdminReducer';
+import { addGenreReducer, ListAccountReducer, ListGenreReducer, ListOrderReducer, updateGenreReducer } from '../reducers/AdminReducer';
 import {  ChangeInforReducer, ChangePassword, InforAccountID } from '../reducers/AccountReducer';
 import { addTeamAssignMatchReducer, addTeamKnockoutReducer, addTeamTableReducer, addTimeAssignMatchReducer, getTeamAssignMatchReducer, getTeamknockoutReducer, getTeamMatchReducer, getTeamRegisterReducer, getTeamsReducer, getTeamTableReducer, updateTeamRegisterReducer } from '../reducers/TeamReducer';
 import { addLoctionReducer } from '../reducers/LocationReducer';
@@ -74,6 +74,8 @@ const rootReducer = combineReducers({
     getRule:getRuleReducer,
     getScore:getScoreReducer,
     createPayment:createPaymentReducer,
+    addGenre:addGenreReducer,
+    updateGenre:updateGenreReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

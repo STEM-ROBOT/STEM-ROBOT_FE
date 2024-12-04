@@ -12,6 +12,8 @@ const PackagesModal = ({ isOpen, onClose, onSave, packageData }) => {
   const [maxTournament, setMaxTournament] = useState("");
   const [maxTeam, setMaxTeam] = useState("");
 
+  const [errors, setErrors] = useState({}); // Thêm state để lưu lỗi
+
   useEffect(() => {
     if (packageData) {
       setName(packageData.name);
@@ -19,16 +21,39 @@ const PackagesModal = ({ isOpen, onClose, onSave, packageData }) => {
       setPrice(packageData.price);
       setMaxTournament(packageData.maxTournament);
       setMaxTeam(packageData.maxTeam);
+      setErrors({});
     } else {
       setName("");
       setMaxMatch("");
       setPrice("");
       setMaxTournament("");
       setMaxTeam("");
+      setErrors({});
     }
   }, [packageData]);
 
+  const validateFields = () => {
+    const newErrors = {};
+
+    if (!name.trim()) newErrors.name = "Tên gói dịch vụ không được để trống.";
+    if (!maxMatch || isNaN(maxMatch) || maxMatch <= 0)
+      newErrors.maxMatch = "Số trận đấu phải là số dương.";
+    if (!price || isNaN(price) || price <= 0)
+      newErrors.price = "Giá phải là số dương.";
+    if (!maxTournament || isNaN(maxTournament) || maxTournament <= 0)
+      newErrors.maxTournament = "Số lần tạo giải phải là số dương.";
+    if (!maxTeam || isNaN(maxTeam) || maxTeam <= 0)
+      newErrors.maxTeam = "Số đội tối đa phải là số dương.";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Trả về true nếu không có lỗi
+  };
+
   const handleSave = () => {
+    if (!validateFields()) {
+      return; // Dừng lại nếu có lỗi
+    }
+
     const updatedPackage = {
       name,
       maxMatch,
@@ -39,7 +64,6 @@ const PackagesModal = ({ isOpen, onClose, onSave, packageData }) => {
 
     if (packageData) {
       // Update existing package
-
       api
         .put(`/api/packages/${packageData.id}`, updatedPackage, {
           headers: {
@@ -47,8 +71,9 @@ const PackagesModal = ({ isOpen, onClose, onSave, packageData }) => {
           },
         })
         .then((response) => {
+        
+          onSave({ ...updatedPackage, id: packageData.id }); 
           toast.success("Cập nhật gói dịch vụ thành công!");
-          onSave({ ...updatedPackage, id: packageData.id }); // Pass the ID back to the parent
           onClose();
         })
         .catch((error) => {
@@ -57,8 +82,7 @@ const PackagesModal = ({ isOpen, onClose, onSave, packageData }) => {
         });
     } else {
       // Add new package
-
-      const response = api
+      api
         .post("/api/packages", updatedPackage, {
           headers: {
             "Content-Type": "application/json",
@@ -92,8 +116,9 @@ const PackagesModal = ({ isOpen, onClose, onSave, packageData }) => {
           placeholder="Tên gói dịch vụ"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="packages_modal_input"
+          className={`packages_modal_input ${errors.name ? "input-error" : ""}`}
         />
+        {errors.name && <span className="error-text">{errors.name}</span>}
 
         <label className="packages_modal_label">Số trận đấu tối đa</label>
         <input
@@ -101,8 +126,11 @@ const PackagesModal = ({ isOpen, onClose, onSave, packageData }) => {
           placeholder="Số trận đấu tối đa"
           value={maxMatch}
           onChange={(e) => setMaxMatch(e.target.value)}
-          className="packages_modal_input"
+          className={`packages_modal_input ${
+            errors.maxMatch ? "input-error" : ""
+          }`}
         />
+        {errors.maxMatch && <span className="error-text">{errors.maxMatch}</span>}
 
         <label className="packages_modal_label">Giá</label>
         <input
@@ -110,8 +138,9 @@ const PackagesModal = ({ isOpen, onClose, onSave, packageData }) => {
           placeholder="Giá gói dịch vụ"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
-          className="packages_modal_input"
+          className={`packages_modal_input ${errors.price ? "input-error" : ""}`}
         />
+        {errors.price && <span className="error-text">{errors.price}</span>}
 
         <label className="packages_modal_label">Lượt tạo giải đấu tối đa</label>
         <input
@@ -119,8 +148,13 @@ const PackagesModal = ({ isOpen, onClose, onSave, packageData }) => {
           placeholder="Lượt tạo giải đấu tối đa"
           value={maxTournament}
           onChange={(e) => setMaxTournament(e.target.value)}
-          className="packages_modal_input"
+          className={`packages_modal_input ${
+            errors.maxTournament ? "input-error" : ""
+          }`}
         />
+        {errors.maxTournament && (
+          <span className="error-text">{errors.maxTournament}</span>
+        )}
 
         <label className="packages_modal_label">Số đội tối đa tham gia</label>
         <input
@@ -128,8 +162,11 @@ const PackagesModal = ({ isOpen, onClose, onSave, packageData }) => {
           placeholder="Số đội tối đa tham gia"
           value={maxTeam}
           onChange={(e) => setMaxTeam(e.target.value)}
-          className="packages_modal_input"
+          className={`packages_modal_input ${
+            errors.maxTeam ? "input-error" : ""
+          }`}
         />
+        {errors.maxTeam && <span className="error-text">{errors.maxTeam}</span>}
 
         <div className="packages_modal_actions">
           <button

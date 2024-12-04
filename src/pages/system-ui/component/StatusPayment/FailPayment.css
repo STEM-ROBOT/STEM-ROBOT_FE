@@ -1,0 +1,86 @@
+.fail-payment-container {
+    background-image: linear-gradient(
+        to left, 
+        #022233 0%,
+        #033f60 21%,
+        #03344e 41%,
+        #022233 61%,
+        #00121c 81%,
+        #000f16 100%
+      );
+    padding-top: 90px;
+    padding-bottom: 20px;
+  }
+  
+  .fail-payment-card {
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 85%;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .fail-icon {
+    background-color: #dc3545;
+    color: #fff;
+    font-size: 48px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px auto;
+  }
+  
+  .fail-icon span {
+    font-size: 36px;
+    font-weight: bold;
+  }
+  
+  .fail-titile {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .error-details {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .error-details li {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  .error-details li strong {
+    color: #333;
+  }
+  
+  .error-message {
+    font-size: 14px;
+    color: #666;
+    margin-top: 20px;
+  }
+  
+  .try-again-button {
+    background-color: #17a2b8;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
+  .try-again-button:hover {
+    background-color: #17a2b8;
+  }
+  
