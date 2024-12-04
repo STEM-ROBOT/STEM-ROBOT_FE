@@ -7,9 +7,8 @@ const DetailBarAdhesion = ({ league, setTabActive, tabActive }) => {
   const tabs = [
     {
       name: "NỘI DUNG THAM GIA",
-      path: "competition",
+      path: "competitions-adhesion",
     },
-
   ];
   const handleTabClick = (tab) => {
     setTabActive(tab.path);
@@ -26,14 +25,20 @@ const DetailBarAdhesion = ({ league, setTabActive, tabActive }) => {
         <div
           className="back_view_leagues"
           onClick={() => {
-            navigate("/league");
+            navigate("/account/tournament-adhesion");
           }}
         >
           <BiLogOutCircle className="back_view_leagues_icon" /> Trở lại
         </div>
         <div className="bar_content">
           <div className="bar_content_img">
-            <img src={league?.image} className="bar_img" />
+            <img
+              style={{
+                backgroundColor: "#fff",
+              }}
+              src={league?.image}
+              className="bar_img"
+            />
           </div>
           <div className="bar_content_info">
             <div className="bar_title">

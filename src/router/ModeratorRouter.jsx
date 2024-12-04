@@ -40,7 +40,11 @@ import LeagueRouter from "../pages/moderator-ui/layout/LeagueRouter/LeagueRouter
 import TeamRegister from "../pages/moderator-ui/component/TeamRegister/TeamRegister";
 import TournamentAdhesion from "../pages/moderator-ui/component/TournamentAdhesion/TournamentAdhesion";
 import TournamentDetailView from "../pages/moderator-ui/component/TournamentAdhesionDetail/TournamentDetailView/TournamentDetailView";
-
+import ViewCompetitions from "../pages/moderator-ui/component/TournamentAdhesionDetail/ViewCompetitions/ViewCompetitions";
+import CompetitionAdhesionDetail from "../pages/moderator-ui/component/TournamentAdhesionDetail/CompetitionAdhesionDetail/CompetitionAdhesionDetail";
+import TeamCompetitionAdhesion from "../pages/moderator-ui/component/TournamentAdhesionDetail/TeamCompetitionAdhesion/TeamCompetitionAdhesion";
+import TeamAdhesionView from "../pages/moderator-ui/component/TournamentAdhesionDetail/TeamAdhesionView/TeamAdhesionView";
+import TeamSchedule from "../pages/moderator-ui/component/TournamentAdhesionDetail/TeamSchedule/TeamSchedule";
 
 export const tournamentChildren = [
   {
@@ -99,7 +103,6 @@ export const tournamentRoutes = [
 ];
 
 export const competitionChildren = [
-  
   {
     path: "settings",
     element: (
@@ -108,9 +111,7 @@ export const competitionChildren = [
   },
   {
     path: "team-register",
-    element: (
-      <PrivateRoute element={<TeamRegister />} requiredRole="MD" />
-    ),
+    element: <PrivateRoute element={<TeamRegister />} requiredRole="MD" />,
   },
 ];
 
@@ -125,7 +126,9 @@ export const profileChildren = [
   },
   {
     path: "tournament-adhesion",
-    element: <PrivateRoute element={<TournamentAdhesion/>} requiredRole="MD" />,
+    element: (
+      <PrivateRoute element={<TournamentAdhesion />} requiredRole="MD" />
+    ),
   },
 
   {
@@ -152,8 +155,10 @@ const moderatorRouter = [
     element: <LeagueRouter />,
   },
   {
-    path: "tournament-adhesion/:tournamentAdhesionId",
-    element: <PrivateRoute element={<TournamentDetailView/>} requiredRole="MD" />,
+    path: "tournament-adhesion/:tournamentAdhesionId/*",
+    element: (
+      <PrivateRoute element={<TournamentDetailView />} requiredRole="MD" />
+    ),
   },
   {
     path: "/my-tournament/:tournamentId/mycompetition/:competitionId/*",
@@ -171,7 +176,6 @@ const moderatorRouter = [
   },
 ];
 export const moderatorRouterLeagues = [
-
   {
     path: "",
     element: <League />,
@@ -202,6 +206,48 @@ export const league_detail = [
   {
     path: "register-contestant",
     element: <RegisterContestant />,
+  },
+];
+export const competitions_adhesion_detail = [
+  {
+    path: "",
+    element: <Navigate to="competitions-adhesion" />,
+  },
+  {
+    path: "competitions-adhesion",
+    element: <ViewCompetitions />,
+  },
+  {
+    path: "competitions-adhesion/:competitionId/*",
+    element: <CompetitionAdhesionDetail />,
+  },
+  {
+    path: "team-competition-adhesion/:teamId/*",
+    element: <TeamAdhesionView />,
+  },
+];
+export const team_adhesion_detail_router = [
+  {
+    path: "",
+    element: <Navigate to="schedule-team" />,
+  },
+  {
+    path: "game-rule",
+    element: <TeamSchedule />,
+  },
+];
+export const competition_adhesion_detail_router = [
+  {
+    path: "",
+    element: <Navigate to="game-rule" />,
+  },
+  {
+    path: "game-rule",
+    element: <GameRuleComponent />,
+  },
+  {
+    path: "team-competition-adhesion",
+    element: <TeamCompetitionAdhesion />,
   },
 ];
 export const competition_detail_router = [
