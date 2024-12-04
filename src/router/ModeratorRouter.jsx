@@ -38,7 +38,8 @@ import InforAccount from "../pages/moderator-ui/component/InfoAccount/InforAccou
 import PrivateRoute from "./PrivateRoute";
 import LeagueRouter from "../pages/moderator-ui/layout/LeagueRouter/LeagueRouter";
 import TeamRegister from "../pages/moderator-ui/component/TeamRegister/TeamRegister";
-import CompetionParticipated from "../pages/moderator-ui/component/CompetionParticipated/CompetionParticipated";
+import TournamentAdhesion from "../pages/moderator-ui/component/TournamentAdhesion/TournamentAdhesion";
+import TournamentDetailView from "../pages/moderator-ui/component/TournamentAdhesionDetail/TournamentDetailView/TournamentDetailView";
 import Transaction from "../pages/moderator-ui/component/Transaction/Transaction";
 
 
@@ -116,16 +117,20 @@ export const competitionChildren = [
 
 export const profileChildren = [
   {
-    path: "mytournament",
+    path: "my-tournament",
     element: <PrivateRoute element={<TournamentList />} requiredRole="MD" />,
   },
   {
-    path: "mytournament/:id",
+    path: "my-tournament/:id",
     element: <PrivateRoute element={<TournamentDetail />} requiredRole="MD" />,
   },
   {
-    path: "competition-participated",
-    element: <PrivateRoute element={<CompetionParticipated/>} requiredRole="MD" />,
+    path: "tournament-adhesion",
+    element: <PrivateRoute element={<TournamentAdhesion/>} requiredRole="MD" />,
+  },
+  {
+    path: "tournament-adhesion/:tournamentAdhesionId",
+    element: <PrivateRoute element={<TournamentDetailView/>} requiredRole="MD" />,
   },
   {
     path: "mytransaction",
@@ -152,15 +157,15 @@ const moderatorRouter = [
   },
 
   {
-    path: "/mytournament/:tournamentId/mycompetition/:competitionId/*",
+    path: "/my-tournament/:tournamentId/mycompetition/:competitionId/*",
     element: <PrivateRoute element={<Competition />} requiredRole="MD" />,
   },
   {
-    path: "/mytournament/:tournamentId/*",
+    path: "/my-tournament/:tournamentId/*",
     element: <PrivateRoute element={<Tournament />} requiredRole="MD" />,
   },
   {
-    path: "/mytournament/:tournamentId/mycompetition/:competitionId/settings/*",
+    path: "/my-tournament/:tournamentId/mycompetition/:competitionId/settings/*",
     element: (
       <PrivateRoute element={<TournamentConfiguration />} requiredRole="MD" />
     ),

@@ -19,7 +19,7 @@ const ManageCompetition = () => {
   }, [dispatch, tournamentId]);
 
   const handleCompetitionClick = (competitionId) => {
-    navigate(`/mytournament/${tournamentId}/mycompetition/${competitionId}/settings/format`);
+    navigate(`/my-tournament/${tournamentId}/mycompetition/${competitionId}/settings/format`);
   };
 
   const activeStatuses = (competition) => {

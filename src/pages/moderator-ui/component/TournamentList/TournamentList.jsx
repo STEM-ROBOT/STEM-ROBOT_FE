@@ -32,7 +32,7 @@ const TournamentList = () => {
     const totalPages = Math.ceil(tournaments.length / tournamentsPerPage);
 
     const handleTournamentClick = (id) => {
-        navigate(`/mytournament/${id}/mycompetition`);
+        navigate(`/my-tournament/${id}/mycompetition`);
     };
 
 

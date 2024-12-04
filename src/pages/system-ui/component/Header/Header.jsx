@@ -181,6 +181,7 @@ const Header = () => {
   useEffect(() => {
     setAuInfo(TokenService.getUser());
   }, [signIn]);
+ 
 
   return (
     <div className={`header-outer ${isVisible ? "header-visible" : ""}`}>
@@ -274,10 +275,10 @@ const Header = () => {
                   <a href="/profile" className="dropdown-item">
                     Thông Tin Tài Khoản
                   </a>
-                  <a href="/account/mytournament" className="dropdown-item">
+                  <a href="/account/my-tournament" className="dropdown-item">
                     Quản Lí Giải Đấu
                   </a>
-                  <a href="/account/mytournament" className="dropdown-item">
+                  <a href="/account/tournament-adhesion" className="dropdown-item">
                     Giải Đấu Đã Tham Gia
                   </a>
                   <a href="" className="dropdown-item">

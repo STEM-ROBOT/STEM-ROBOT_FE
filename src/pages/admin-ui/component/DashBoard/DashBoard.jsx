@@ -74,7 +74,7 @@ const Dashboard = () => {
       .then((response) => {
         // Ensure that response.data.data is defined before mapping
         if (response.data) {
-          // Chuyển đổi dữ liệu
+         console.log(response.data)
           const monthlyRevenue = response.data.map((item) => ({
             month: new Date(item.year, item.month - 1).toLocaleString(
               "default",
@@ -84,7 +84,7 @@ const Dashboard = () => {
             ),
             revenue: item.revenue,
           }));
-          setRevenueByTimeData(monthlyRevenue);
+          setRevenueByTimeData(response.data);
         } else {
           console.error(
             "Expected data format is missing in response",

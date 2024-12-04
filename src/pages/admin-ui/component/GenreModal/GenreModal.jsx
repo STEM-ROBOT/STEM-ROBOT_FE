@@ -3,6 +3,9 @@ import './GenreModal.css';
 import FirebaseUpload from '../../../../config/firebase';
 import ReactQuill from 'react-quill'; // Import React Quill
 import 'react-quill/dist/quill.snow.css'; // Import Quill CSS
+import { useDispatch, useSelector } from 'react-redux';
+import { addGenreAction, updateGenreAction } from '../../../../redux/actions/AdminAction';
+import LoadingComponent from '../../../system-ui/component/Loading/LoadingComponent';
 
 const GenreModal = ({ isOpen, onClose, onSave, genre, mode }) => {
   const [title, setTitle] = useState('');
@@ -13,6 +16,11 @@ const GenreModal = ({ isOpen, onClose, onSave, genre, mode }) => {
   const [currentImageUrl, setCurrentImageUrl] = useState('');
   const [currentRuleFileUrl, setCurrentRuleFileUrl] = useState('');
   const [currentScoreFileUrl, setCurrentScoreFileUrl] = useState('');
+  const [ruleFileName, setRuleFileName] = useState(''); // State for rule file name
+  const [scoreFileName, setScoreFileName] = useState(''); // State for score file name
+  const dispatch = useDispatch();
+  const loadingAdd = useSelector((state) => state.addGenre.loading)
+  const loadingUpdate = useSelector((state) => state.updateGenre.loading)
 
   useEffect(() => {
     if (mode === 'edit' && genre) {
@@ -24,6 +32,8 @@ const GenreModal = ({ isOpen, onClose, onSave, genre, mode }) => {
       setImageFile(null);
       setRuleFile(null);
       setScoreFile(null);
+      setRuleFileName('');
+      setScoreFileName('');
     } else {
       setTitle('');
       setDescription('');
@@ -33,6 +43,8 @@ const GenreModal = ({ isOpen, onClose, onSave, genre, mode }) => {
       setImageFile(null);
       setRuleFile(null);
       setScoreFile(null);
+      setRuleFileName('');
+      setScoreFileName('');
     }
   }, [genre, mode]);
 
@@ -41,6 +53,22 @@ const GenreModal = ({ isOpen, onClose, onSave, genre, mode }) => {
     setImageFile(file);
     if (file) {
       setCurrentImageUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const handleRuleFileChange = (e) => {
+    const file = e.target.files[0];
+    setRuleFile(file);
+    if (file) {
+      setRuleFileName(file.name); // Set the file name
+    }
+  };
+
+  const handleScoreFileChange = (e) => {
+    const file = e.target.files[0];
+    setScoreFile(file);
+    if (file) {
+      setScoreFileName(file.name); // Set the file name
     }
   };
 
@@ -58,27 +86,48 @@ const GenreModal = ({ isOpen, onClose, onSave, genre, mode }) => {
     if (scoreFile) {
       scoreFileUrl = await FirebaseUpload(scoreFile);
     }
-
-    const updatedGenre = {
-      ...(genre ? { id: genre.id } : {}),
-      title,
-      description,
-      imageUrl,
-      ruleFile: ruleFileUrl,
-      scoreFile: scoreFileUrl,
-    };
-
-    onSave(updatedGenre);
-    onClose();
+    if (mode === 'edit') {
+      const updatedGenre = {
+        name: title,
+        description,
+        image: imageUrl,
+        hintRule: ruleFileUrl,
+        hintScore: scoreFileUrl,
+        isTop:false
+      };
+      dispatch(updateGenreAction(genre.id, updatedGenre));
+      setRuleFileName('')
+      setScoreFileName('')
+      onSave(updatedGenre);
+      onClose();
+    } else {
+      const addGenre = {
+        name: title,
+        description,
+        image: imageUrl,
+        hintRule: ruleFileUrl,
+        hintScore: scoreFileUrl,
+        isTop: false,
+      };
+      dispatch(addGenreAction(addGenre));
+      onSave(addGenre);
+      onClose();
+    }
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="genre_modal_overlay">
+      {loadingAdd && (
+        <LoadingComponent position="fixed"  borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.5)" />
+      )}
+       {loadingUpdate && (
+        <LoadingComponent position="fixed"  borderRadius="8px" backgroundColor="rgba(0, 0, 0, 0.5)" />
+      )}
       <div className="genre_modal">
         <h3 className="genre_modal_title">
-          {mode === "edit" ? "Chỉnh sửa nội dung" : "Thêm nội dung mới"}
+          {mode === 'edit' ? 'Chỉnh sửa nội dung' : 'Thêm nội dung mới'}
         </h3>
 
         <div className="genre_modal_container">
@@ -106,11 +155,10 @@ const GenreModal = ({ isOpen, onClose, onSave, genre, mode }) => {
                 id="image-upload"
                 type="file"
                 onChange={handleImageChange}
-                style={{ display: 'none' }} // Ẩn input
+                style={{ display: 'none' }}
               />
             </label>
           </div>
-
 
           <div className="genre_modal_right">
             <label className="genre_modal_label">File Quy tắc</label>
@@ -124,15 +172,19 @@ const GenreModal = ({ isOpen, onClose, onSave, genre, mode }) => {
                 Xem quy tắc hiện tại
               </a>
             )}
-            <label htmlFor="rule-upload" className="genre_modal_file_button">
-              Tải lên quy tắc
-              <input
-                id="rule-upload"
-                type="file"
-                onChange={(e) => setRuleFile(e.target.files[0])}
-                style={{ display: 'none' }} // Ẩn input
-              />
-            </label>
+            {ruleFileName ? (
+              <p className="uploaded-file-name">📂 {ruleFileName}</p>
+            ) : (
+              <label htmlFor="rule-upload" className="genre_modal_file_button">
+                Tải lên quy tắc
+                <input
+                  id="rule-upload"
+                  type="file"
+                  onChange={handleRuleFileChange}
+                  style={{ display: 'none' }}
+                />
+              </label>
+            )}
 
             <label className="genre_modal_label">File Điểm số</label>
             {currentScoreFileUrl && (
@@ -145,17 +197,20 @@ const GenreModal = ({ isOpen, onClose, onSave, genre, mode }) => {
                 Xem điểm số hiện tại
               </a>
             )}
-            <label htmlFor="score-upload" className="genre_modal_file_button">
-              Tải lên điểm số
-              <input
-                id="score-upload"
-                type="file"
-                onChange={(e) => setScoreFile(e.target.files[0])}
-                style={{ display: 'none' }} // Ẩn input
-              />
-            </label>
+            {scoreFileName ? (
+              <p className="uploaded-file-name">📂 {scoreFileName}</p>
+            ) : (
+              <label htmlFor="score-upload" className="genre_modal_file_button">
+                Tải lên điểm số
+                <input
+                  id="score-upload"
+                  type="file"
+                  onChange={handleScoreFileChange}
+                  style={{ display: 'none' }}
+                />
+              </label>
+            )}
           </div>
-
         </div>
 
         <div className="genre_modal_bottom">
@@ -169,10 +224,16 @@ const GenreModal = ({ isOpen, onClose, onSave, genre, mode }) => {
         </div>
 
         <div className="genre_modal_actions">
-          <button className="genre_modal_button genre_modal_cancel" onClick={onClose}>
+          <button
+            className="genre_modal_button genre_modal_cancel"
+            onClick={onClose}
+          >
             Hủy
           </button>
-          <button className="genre_modal_button genre_modal_save" onClick={handleSave}>
+          <button
+            className="genre_modal_button genre_modal_save"
+            onClick={handleSave}
+          >
             Lưu
           </button>
         </div>
