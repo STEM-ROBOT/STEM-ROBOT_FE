@@ -7,8 +7,10 @@ import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import connectHub from "../../../../config/connectHub";
 import api from "../../../../config";
 import MatchProgess from "./MatchProgess";
+import Parameter from "../Parameter/Parameter";
 
 const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
+  const [activeTab, setActiveTab] = useState("score");
   const [popupActive, setActive] = useState(false);
   const [scoreTeamDetailApi, setScoreTeamDetailApi] = useState([]);
   const [team1Score, setTeam1Score] = useState(0);
@@ -196,6 +198,10 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
     return () => clearTimeout(timer);
   };
 
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
   return (
     <div
       className={
@@ -236,9 +242,8 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
               <div>{matchData.homeTeam}</div>
             </div>
             <div className="match_team_item_score">
-              {`${team1Score ? team1Score : 0} - ${
-                team2Score ? team2Score : 0
-              }`}
+              {`${team1Score ? team1Score : 0} - ${team2Score ? team2Score : 0
+                }`}
             </div>
             <div className="match_team_item">
               <img
@@ -250,13 +255,43 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
             </div>
           </div>
         </div>
-        <MatchProgess
-          timeCountDown={timeCountDown}
-          noPlayMatch={noPlayMatch}
-          timeLeft={timeLeft}
-          scoreTeamDetailApi={scoreTeamDetailApi}
-          setActive={setActive}
-        />
+        <div className="match-detail-tab-buttons">
+          <button
+            className={`match-detail-tab-button ${activeTab === "score" ? "active" : ""
+              }`}
+            onClick={() => handleTabChange("score")}
+          >
+            Điểm số
+          </button>
+          <button
+            className={`match-detail-tab-button ${activeTab === "stats" ? "active" : ""
+              }`}
+            onClick={() => handleTabChange("stats")}
+          >
+            Thông số
+          </button>
+        </div>
+
+
+
+        <div className="match-detail-content">
+          {activeTab === "score" ? (
+            <div className="match-detail-score-section">
+              <MatchProgess
+                timeCountDown={timeCountDown}
+                noPlayMatch={noPlayMatch}
+                timeLeft={timeLeft}
+                scoreTeamDetailApi={scoreTeamDetailApi}
+                setActive={setActive}
+              />
+            </div>
+          ) : (
+            <div className="match-detail-stats-section">
+               <Parameter/>
+            </div>
+          )}
+        </div>
+
       </div>
     </div>
   );

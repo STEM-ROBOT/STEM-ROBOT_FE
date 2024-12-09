@@ -1,0 +1,78 @@
+.parameter-container {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    /* Đẩy hai đội sang hai bên */
+    gap: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.parameter-item {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 255, 0, 0.5);
+    /* Thêm hiệu ứng box-shadow */
+    border: 1px solid rgba(0, 255, 0, 0.5);
+    /* Viền xanh nhạt */
+    transition: all 0.3s ease-in-out;
+    /* Hiệu ứng chuyển đổi */
+    width: 45%;
+    /* Mỗi đội chiếm 45% chiều rộng container */
+}
+
+.parameter-team-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 10px;
+    text-align: center;
+    /* Canh giữa tên đội */
+}
+
+.parameter-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.parameter-stat {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #fff;
+}
+
+.parameter-label {
+    font-weight: bold;
+}
+
+.parameter-value {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.parameter-value.positive {
+    background-color: #43aa8b;
+    /* Màu xanh cho điểm cộng */
+    color: #fff;
+}
+
+.parameter-value.negative {
+    background-color: #ff6347;
+    /* Màu đỏ cho điểm trừ */
+    color: #fff;
+}
+
+.parameter-value.neutral {
+    background-color: #f4d03f;
+    /* Màu vàng cho trung lập */
+    color: #000;
+}

@@ -2,25 +2,23 @@ import React, { useEffect, useState } from "react";
 import "./TeamCompetition.css";
 import { IoClose } from "react-icons/io5";
 import api from "../../../../config";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { team_competitions } from "../../api/ApiFlowView/ApiFlowView";
 
 const TeamCompetition = () => {
   const pram = useParams();
-
+  const {league_id, competitionId}= useParams();
+  console.log(league_id,competitionId)
+  const navigate = useNavigate();
   const [teams, setTeams] = useState([]);
   const [filteredTeams, setFilteredTeams] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showMember, setShowMember] = useState(false);
   const [memberView, setMemberView] = useState([]);
 
-  const ViewMember = (team) => {
-    if (team.length > 0) {
-      setMemberView(team);
-      setShowMember(true);
-    }
+  const ViewSchedule = (teamId) => {
+     navigate(`/league/${league_id}/competition/${competitionId}/team-schedule/${teamId}`)
   };
-
   const CloseMemberPopup = () => {
     setShowMember(false);
   };
@@ -67,7 +65,7 @@ const TeamCompetition = () => {
           <div
             key={team.id}
             className="team-card-view"
-            onClick={() => ViewMember(team.members)}
+            onClick={() => ViewSchedule(team.id)}
           >
             <div className="team-logo-competition">
               <img
@@ -79,7 +77,7 @@ const TeamCompetition = () => {
             <h3 className="team-name">{team.name}</h3>
             <p className="team-played">{team.played} Trận đã chơi</p>
             <div className="team-stats">
-              <span className="won">{team.won} thắng</span>
+              <span className="won">{team.win} thắng</span>
               <span className="draw">{team.draw} hòa</span>
               <span className="lost">{team.lost} thua</span>
             </div>

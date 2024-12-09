@@ -39,7 +39,7 @@ const TeamRegister = () => {
          const updateStatus = {
             status:status
          }
-        dispatch(updateTeamRegister(id,competitionId,updateStatus));
+        dispatch(updateTeamRegister(id,updateStatus));
     }
 
     return (

@@ -8,6 +8,8 @@ const teams = [
       "https://www.pngmart.com/files/22/Manchester-United-Transparent-Images-PNG.png",
     teamMatchResultPlay: "0",
     tolalScore: 1,
+    averageMinus:1,
+    averageBonus:2,
   },
   {
     id: 18442,
@@ -15,7 +17,9 @@ const teams = [
     teamImage:
       "https://th.bing.com/th/id/R.21cb08ff62b3208df56c62f757f23af3?rik=rGpjNFUtqu73vw&riu=http%3a%2f%2ftous-logos.com%2fwp-content%2fuploads%2f2017%2f06%2fManchester-City-logo.png&ehk=6huTPTynrb3KWgriG1H7%2fzwSkam0KhU%2bYd2Kug8FPws%3d&risl=&pid=ImgRaw&r=0",
     teamMatchResultPlay: "0",
-    tolalScore: 0,
+    tolalScore: 1,
+    averageMinus:1,
+    averageBonus:2,
   },
 ];
 const RandomTeamWinner = () => {

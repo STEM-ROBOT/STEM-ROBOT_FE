@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import "./ScheduleRefereeMain.css";
+import "./TeamSchedule.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import RenderSchedule from "../../component/RenderSchedule/RenderSchedule";
-import ConfirmPopupReferee from "../../component/ConfirmPopupReferee/ConfirmPopupReferee";
+
 import api from "/src/config";
 import { useParams } from "react-router-dom";
-const ScheduleRefereeMain = () => {
+
+import RenderScheduleTeam from "../RenderScheduleTeam/RenderScheduleTeam";
+import ConfirmPopupReferee from "../../../../refereeMain-ui/component/ConfirmPopupReferee/ConfirmPopupReferee";
+import ViewChartAndAction from "../ViewChartAndAction/ViewChartAndAction";
+const TeamSchedule = () => {
   const storedCompetitionId = sessionStorage.getItem("competitionId");
+  const { teamId } = useParams();
   const [scheduleData, setScheduleData] = useState();
   const [weeks, setWeeks] = useState([]);
   const [currentWeekIndex, setCurrentWeekIndex] = useState(0);
@@ -29,27 +33,27 @@ const ScheduleRefereeMain = () => {
     // Convert both dates to Date objects
     const startDate = new Date(dateStart);
     let endDate = new Date(dateEnd);
- 
+
     // Calculate the difference in days
     const diffInTime = endDate - startDate;
     const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert milliseconds to days
-    
+
     // Check if the difference is less than 7 days
     if (diffInDays < 7) {
       // Adjust the endDate to be 7 days after the startDate
       endDate = new Date(startDate);
       endDate.setDate(startDate.getDate() + 7);
     }
-  
-    return endDate.toISOString().split("T")[0]; 
+
+    return endDate.toISOString().split("T")[0]; // Return date in "YYYY-MM-DD" format
   }
   useEffect(() => {
     api
-      .get(
-        `/api/refereecompetition/schedules-referee-competition?competitionID=${storedCompetitionId}`
-      )
+      .get(`/api/teams/schedules-team-adhesion/${teamId}`)
       .then((response) => {
-        const data = response.data.data;
+        console.log(response);
+
+        const data = response.data;
         // Transform data for hourStartInDay, hourEndInDay, and timePlayMatch
         const transformedData = {
           ...data,
@@ -58,7 +62,10 @@ const ScheduleRefereeMain = () => {
           hourStartInDay: extractHour(data.hourStartInDay),
           hourEndInDay: extractHour(data.hourEndInDay),
           dateStartCompetition: extractDate(data.dateStartCompetition),
-          dateEndCompetition: ensureMinDateRange(data.dateStartCompetition,data.dateEndCompetition),
+          dateEndCompetition: ensureMinDateRange(
+            data.dateStartCompetition,
+            data.dateEndCompetition
+          ),
         };
         console.log(transformedData);
         setScheduleData(transformedData);
@@ -93,10 +100,10 @@ const ScheduleRefereeMain = () => {
           startDate.setDate(startDate.getDate() + 7);
         }
         console.log(weeksArray);
-        
+
         return weeksArray;
       };
-     
+
       const weeksList = splitIntoWeeks(
         scheduleData.dateStartCompetition,
         scheduleData.dateEndCompetition
@@ -137,11 +144,6 @@ const ScheduleRefereeMain = () => {
     <div className="rule_competition_referee">
       <div className="score_competition_referee_layout">
         <div className="score_competition_referee_item_layout">
-          <div className="rule_competition_referee_head">
-            <div className="rule_referee_head">
-              Lịch trình điều hành trận đấu
-            </div>
-          </div>
           <div className="rule_score_referee_container">
             <div className="rule_score_referee_view">
               <div className="schedule_referee_view_head">
@@ -187,7 +189,7 @@ const ScheduleRefereeMain = () => {
               </div>
               <div className="schedule_referee_view_body">
                 {weeks.length > 0 && (
-                  <RenderSchedule
+                  <RenderScheduleTeam
                     week={weeks[currentWeekIndex]}
                     scheduleData={scheduleData}
                     setMatchView={setMatchView}
@@ -195,11 +197,9 @@ const ScheduleRefereeMain = () => {
                   />
                 )}
                 {showPopup && (
-                  <ConfirmPopupReferee
-                    match_view={matchView}
+                  <ViewChartAndAction
+                    matchData={matchView}
                     setShowPopup={setShowPopup}
-                    email={scheduleData?.refereeEmail}
-                    refereeId={scheduleData?.refereeId}
                   />
                 )}
               </div>
@@ -211,4 +211,4 @@ const ScheduleRefereeMain = () => {
   );
 };
 
-export default ScheduleRefereeMain;
+export default TeamSchedule;
