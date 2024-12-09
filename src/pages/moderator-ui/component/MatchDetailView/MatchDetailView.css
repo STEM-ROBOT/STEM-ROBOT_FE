@@ -79,7 +79,6 @@
   background-color: rgba(5, 36, 66, 0.692);
   border-radius: 7px;
   color: #fff;
-  margin-bottom: 15px;
 }
 .match_detail_item {
   display: flex;
@@ -300,3 +299,44 @@
   width: 20px;
   height: 20px;
 }
+
+
+
+
+.match-detail-tab-buttons {
+  display: flex;
+  justify-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+  border-radius: 7px;
+}
+
+.match-detail-tab-button {
+  flex: 1;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.match-detail-tab-button.active {
+  color: #fff;
+  background-color: #43aa8b;
+  border-radius: 7px;
+}
+
+.match-detail-tab-button:hover {
+  background-color: #43aa8b;
+  border-radius: 7px;
+  color: #fff;
+}
+
+
+
+
+
+

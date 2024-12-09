@@ -267,3 +267,86 @@
   text-transform: uppercase;
   margin-right: 10px;
 }
+
+.notification-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.notification-icon {
+  font-size: 24px;
+  color: #555;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #ff0000;
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: 40px; /* Điều chỉnh vị trí theo yêu cầu */
+  right: 0;
+  width: 300px; /* Chiều rộng dropdown */
+  max-height: 400px; /* Chiều cao tối đa, thêm cuộn nếu vượt quá */
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow-y: scroll; /* Kích hoạt cuộn nội dung */
+  scrollbar-width: none; /* Ẩn thanh cuộn trên Firefox */
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f4f4f4;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.notification-item {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-user {
+  color: #333;
+}
+
+.notification-message {
+  color: #555;
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.notification-time {
+  color: #999;
+  font-size: 12px;
+}
+.notification-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.notification-dropdown::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.notification-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}

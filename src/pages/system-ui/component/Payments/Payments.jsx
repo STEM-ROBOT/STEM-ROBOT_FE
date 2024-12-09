@@ -28,7 +28,6 @@ const Payments = ({ isOpen, onClose, packageDetails }) => {
             if (data) {
                 window.open(data, '_blank'); 
                 onClose();
-                toast.success("Đơn hàng đã được tạo thành công!");
             } else {
                 setErrorMessage('Không nhận được link thanh toán.');
                 toast.error("Không nhận được link thanh toán.");

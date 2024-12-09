@@ -75,15 +75,6 @@ const Dashboard = () => {
         // Ensure that response.data.data is defined before mapping
         if (response.data) {
          console.log(response.data)
-          const monthlyRevenue = response.data.map((item) => ({
-            month: new Date(item.year, item.month - 1).toLocaleString(
-              "default",
-              {
-                month: "short",
-              }
-            ),
-            revenue: item.revenue,
-          }));
           setRevenueByTimeData(response.data);
         } else {
           console.error(

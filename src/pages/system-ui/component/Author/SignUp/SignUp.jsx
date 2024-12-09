@@ -6,6 +6,8 @@ import logoImg from "~/assets/images/logo-dask.png";
 import "./SignUp.css";
 import SchoolAccount from "../../SchoolAccount/SchoolAccount";
 import api from "../../../../../config";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../../../../redux/actions/AuthenAction";
 
 const SignUp = ({ setSignUp }) => {
   const [googleInfo, setGoogleInfo] = useState(null);
@@ -18,12 +20,13 @@ const SignUp = ({ setSignUp }) => {
   const [IdCity, setIdCity] = useState();
   const [IdDistrict, setIdDistrict] = useState();
   const [IdShool, setIdShool] = useState();
+  const dispatch = useDispatch();
   const CloseSignUp = () => {
     setSignUp(false);
   };
   const SignUpModerator = () => {
-   
-    
+
+
     if (Password !== Cfpass) {
       alert("Mật khẩu và xác nhận mật khẩu không khớp.");
       return;
@@ -46,11 +49,7 @@ const SignUp = ({ setSignUp }) => {
       image:
         "https://static.vecteezy.com/system/resources/previews/009/734/564/non_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg",
     };
-    api.post(`/api/accounts`, data).then((response) => {
-      if (response.data == "Success") {
-        setSignUp(false);
-      }
-    });
+    dispatch(registerUser(data, setSignUp));
   };
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);

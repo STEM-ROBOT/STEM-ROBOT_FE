@@ -1,13 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import ReactApexChart from "react-apexcharts";
 
 const ChartPerformance = () => {
   const series = [50]; // Giá trị hiệu suất (%)
 
-  const options = {
-    // chart: {
-    //   type: "radialBar",
-    // },
+  const radialBarOptions = {
     plotOptions: {
       radialBar: {
         startAngle: -120,
@@ -28,6 +35,9 @@ const ChartPerformance = () => {
             color: "#333",
             offsetY: 60,
             text: "Hiệu suất",
+            style: {
+              fontFamily: "Arial, sans-serif", // Đổi phông chữ
+            },
           },
           value: {
             show: true,
@@ -35,147 +45,130 @@ const ChartPerformance = () => {
             fontWeight: 600,
             color: "#000",
             formatter: (val) => `${val}%`,
+            style: {
+              fontFamily: "Arial, sans-serif", // Đổi phông chữ
+            },
           },
         },
-        colors: {
-          function({ value }) {
-            if (value < 40) return "#f94144"; // Red
-            if (value >= 40 && value < 70) return "#f9c74f"; // Yellow
-            return "#43aa8b"; // Green
-          },
-        },
+        colors: ["#43aa8b"],
       },
     },
     labels: ["Hiệu suất"],
   };
 
-  const matchTime = [1, 2, 3, 4, 5, 6, 7, 8]; // Thời gian ghi điểm (phút)
-  const positivePoints = [1, 0, 3, 1, 0, 10, 1, 2]; // Điểm cộng
-  const negativePoints = [0, -1, 0, 0, -1, 0, -4, 0]; // Điểm trừ
+  const matchTime = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9,
+    "10:30", 11, 12, 13, 14, 15,
+    16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+    26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+    36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+    46, 47, 48, 49, 50, 51, 52, 53, 54, 55,
+    56, 57, 58, 59, 60
+  ]
+  
+  const positivePoints = [1, 0, 3, 1, 0, 10, 1, 2, 5, 3, 4, 0, 2, 6, 8]; // Thêm điểm cộng
+  const negativePoints = [0, -1, 0, 0, -1, 0, -4, 0, -2, -3, -1, 0, -2, 0, -5]; // Thêm điểm trừ
 
-  // Tính hiệu suất thi đấu
-  // const performance = positivePoints.map(
-  //   (value, index) => value + (negativePoints[index] || 0)
-  // );
-
-  const [state, setState] = useState({
-    series: [
-      {
-        name: "Điểm cộng",
-        data: positivePoints,
-      },
-      {
-        name: "Điểm trừ",
-        data: negativePoints,
-      },
-      // {
-      //   name: "Hiệu suất",
-      //   data: performance,
-      // },
-    ],
-    options: {
-      chart: {
-        // type: "area",
-        stacked: false,
-        //    height: 350,
-
-        zoom: {
-          enabled: false,
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      markers: {
-        size: 4,
-      },
-      fill: {
-        type: "gradient",
-        gradient: {
-          shadeIntensity: 1,
-          inverseColors: false,
-          opacityFrom: 0.45,
-          opacityTo: 0.05,
-          stops: [20, 100, 100, 100],
-        },
-      },
-      yaxis: {
-        min: Math.min(...negativePoints, 0) - 1, // Hiển thị dư ra 2 giá trị phía dưới
-        max: Math.max(...positivePoints) + 1, // Hiển thị dư ra 2 giá trị phía trên
-        title: {
-          text: "Điểm",
-        },
-      },
-      xaxis: {
-        rotate: 0,
-        categories: matchTime, // Sử dụng thời gian ghi điểm
-        title: {
-          text: "Thời gian (phút)",
-        },
-      },
-      title: {
-        text: "Biểu đồ thống kê",
-        align: "left",
-        offsetX: 14,
-      },
-      tooltip: {
-        shared: true,
-        intersect: false,
-      },
-      legend: {
-        position: "top",
-        horizontalAlign: "right",
-        offsetX: -10,
-      },
-    },
-  });
+  // Dữ liệu cho Recharts
+  const chartData = matchTime.map((time, index) => ({
+    time,
+    positive: positivePoints[index],
+    negative: negativePoints[index],
+  }));
 
   return (
     <div
       style={{
-        flex: 1,
-        display: "flex",
+        // display: "flex",
+        marginLeft:'20px',
+        width:'80%',
+        height:"87vh",
+        justifyContent: "space-around",
+        alignItems: "center",
+        gap: "20px",
+        padding: "20px",
+        backgroundColor: "#f4f4f4",
+        borderRadius: "10px",
       }}
     >
+      {/* Biểu đồ LineChart (Recharts) */}
       <div
         style={{
-          width: "60%",
-          height: "fit-content",
+          width: "100%",
+          height: "400px",
+          marginBottom:'20px',
           backgroundColor: "#fff",
           borderRadius: "7px",
+          padding: "10px",
+          boxSizing: "border-box",
+          overflow: "hidden",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <ReactApexChart
-          options={state.options}
-          series={state.series}
-          type="area"
-          height={380}
-        />
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="time"
+              label={{
+                value: "Thời gian (phút)",
+                position: "insideBottom",
+                offset: -5,
+              }}
+              tick={{ fontSize: 12 }}
+            />
+            <YAxis
+              label={{
+                value: "Điểm",
+                angle: -90,
+                position: "insideLeft",
+              }}
+              tick={{ fontSize: 12 }}
+            />
+            <Tooltip
+              formatter={(value, name, props) => [
+                value,
+                `${name}`,
+              ]}
+              labelFormatter={(label) => `Phút thứ ${label}`}
+            />
+            <Legend verticalAlign="top" height={36} />
+            <Line
+              type="monotone"
+              dataKey="positive"
+              stroke="#82ca9d"
+              name="Điểm cộng"
+              activeDot={{ r: 8 }}
+            />
+            <Line
+              type="monotone"
+              dataKey="negative"
+              stroke="#ff6347"
+              name="Điểm trừ"
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
+
+      {/* Biểu đồ hiệu suất (ApexCharts) */}
       <div
         style={{
-          width: "300px",
-          height: "300px",
+          width: "220px",
+          height: "220px",
           backgroundColor: "#fff",
           borderRadius: "7px",
+          padding: "10px",
+          boxSizing: "border-box",
+          overflow: "hidden",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
         }}
       >
         <ReactApexChart
-          options={options} // Fallback nếu options chưa sẵn sàng
-          series={series} // Fallback giá trị series
+          options={radialBarOptions}
+          series={series}
           type="radialBar"
-          height={350}
+          height={300}
         />
-      </div>
-      <div
-        style={{
-          width: "300px",
-          height: "300px",
-          backgroundColor: "#fff",
-          borderRadius: "7px",
-        }}
-      >
-        <Gauge data={data} options={options} />
       </div>
     </div>
   );
