@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const TournamentAdhesion = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
   const [Loading, setLoading] = useState(true);
   useEffect(() => {
     if (Loading) {
@@ -14,7 +14,7 @@ const TournamentAdhesion = () => {
         .get(`api/tournaments/tournament-adhesion?page=1&pageSize=10`)
         .then((response) => {
           console.log(response.data.data);
-          setData(response.data.data);
+          setData(response.data.data.tournamentRep);
           setLoading(false);
         })
         .catch((error) => {
@@ -22,19 +22,7 @@ const TournamentAdhesion = () => {
         });
     }
   }, [Loading]);
-  const getStatus = (startTime, endTime) => {
-    const now = new Date();
-    const start = new Date(startTime);
-    const end = new Date(endTime);
 
-    if (now < start) {
-      return "Chưa diễn ra";
-    } else if (now >= start && now <= end) {
-      return "Đang diễn ra";
-    } else {
-      return "Đã kết thúc";
-    }
-  };
   const tournamentAdhesionDetail = (id) => {
     navigate("/tournament-adhesion/" + id);
   };
@@ -46,7 +34,7 @@ const TournamentAdhesion = () => {
         <button className="create-competition">Tạo Giải Đấu</button>
       </div>
 
-      {data?.tournamentRep?.map((item) => (
+      {data?.map((item) => (
         <div
           key={item.id}
           className="competition-card adhesion"

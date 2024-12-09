@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 
 import RenderScheduleTeam from "../RenderScheduleTeam/RenderScheduleTeam";
 import ConfirmPopupReferee from "../../../../refereeMain-ui/component/ConfirmPopupReferee/ConfirmPopupReferee";
+import ViewChartAndAction from "../ViewChartAndAction/ViewChartAndAction";
 const TeamSchedule = () => {
   const storedCompetitionId = sessionStorage.getItem("competitionId");
   const { teamId } = useParams();
@@ -143,7 +144,6 @@ const TeamSchedule = () => {
     <div className="rule_competition_referee">
       <div className="score_competition_referee_layout">
         <div className="score_competition_referee_item_layout">
-          
           <div className="rule_score_referee_container">
             <div className="rule_score_referee_view">
               <div className="schedule_referee_view_head">
@@ -197,11 +197,9 @@ const TeamSchedule = () => {
                   />
                 )}
                 {showPopup && (
-                  <ConfirmPopupReferee
-                    match_view={matchView}
+                  <ViewChartAndAction
+                    matchData={matchView}
                     setShowPopup={setShowPopup}
-                   email={scheduleData?.refereeEmail}
-                   refereeId={scheduleData?.refereeId}
                   />
                 )}
               </div>

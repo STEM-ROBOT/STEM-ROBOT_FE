@@ -1,37 +1,33 @@
 import React from "react";
+import "./ViewMatchDetailTeamAdhesion.css";
 import { FaCheckCircle } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
-import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
-const ViewMatchDetailTeamAdhesion = ({
-  halfAction,
-  view,
-  handleClick,
-  idLoadAction,
-}) => {
-  const sortedActions = halfAction?.halfActionTeam?.sort((a, b) => {
-    if (
-      a.status?.toLocaleLowerCase() === "pending" &&
-      b.status?.toLocaleLowerCase() !== "pending"
-    ) {
-      return 1; // Đưa "pending" xuống dưới
-    }
-    if (
-      a.status?.toLocaleLowerCase() !== "pending" &&
-      b.status?.toLocaleLowerCase() === "pending"
-    ) {
-      return -1; // Đưa các trạng thái khác lên trên
-    }
-    return 0; // Giữ nguyên thứ tự nếu cả hai đều "pending" hoặc không
-  });
+import LoadingComponent from "../../../../system-ui/component/Loading/LoadingComponent";
+const ViewMatchDetailTeamAdhesion = ({ halfAction, view }) => {
+  // const sortedActions = halfAction?.halfActionTeam?.sort((a, b) => {
+  //   if (
+  //     a.status?.toLocaleLowerCase() === "pending" &&
+  //     b.status?.toLocaleLowerCase() !== "pending"
+  //   ) {
+  //     return 1; // Đưa "pending" xuống dưới
+  //   }
+  //   if (
+  //     a.status?.toLocaleLowerCase() !== "pending" &&
+  //     b.status?.toLocaleLowerCase() === "pending"
+  //   ) {
+  //     return -1; // Đưa các trạng thái khác lên trên
+  //   }
+  //   return 0; // Giữ nguyên thứ tự nếu cả hai đều "pending" hoặc không
+  // });
 
   return (
-    <div className="schedule_manager_body_item ">
+    <div className="schedule_manager_body_item team">
       {view === "left" ? (
         <div className={`schedule_manager_head_body left`}>
           <img
             src={halfAction?.teamImage}
             alt=""
-            className="manager_body_team_img"
+            className="manager_body_team_img team"
           />
           <div className="manager_body_team_name">{halfAction?.teamName}</div>
           <div className="manager_body_team_result">
@@ -54,14 +50,35 @@ const ViewMatchDetailTeamAdhesion = ({
 
       <div className="schedule_body_view_action">
         <div className="schedule_view_action_item">
-          <div className="view_action_name_referee">Gửi từ</div>
-          <div className="view_action_time_referee">Thời gian</div>
-          <div className="view_action_haft_referee">Hiệp</div>
-          <div className="view_action_score_referee">Điểm</div>
+          {/* //<div className="view_action_name_referee">Gửi từ</div> */}
+          <div
+            className="view_action_time_referee"
+            style={{
+              width: "20%",
+            }}
+          >
+            Thời gian
+          </div>
+          <div
+            className="view_action_haft_referee"
+            style={{
+              width: "20%",
+            }}
+          >
+            Hiệp
+          </div>
+          <div
+            className="view_action_score_referee"
+            style={{
+              width: "20%",
+            }}
+          >
+            Điểm
+          </div>
           <div className="view_action_status_referee">Trạng thái</div>
         </div>
-        <div className="view_action_body_table">
-          {sortedActions?.map((action, i) => (
+        <div className="view_action_body_table team">
+          {halfAction?.halfActionTeam?.map((action, i) => (
             <div key={i} className="schedule_view_action_item data">
               {idLoadAction == action.id ? (
                 <img
@@ -83,16 +100,31 @@ const ViewMatchDetailTeamAdhesion = ({
                   >
                     {action.scoreDescription}
                   </div>
-                  <div className="view_action_name_referee">
+                  {/* <div className="view_action_name_referee">
                     TT {action.refereeCompetitionName}
-                  </div>
-                  <div className="view_action_time_referee">
+                  </div> */}
+                  <div
+                    className="view_action_time_referee"
+                    style={{
+                      width: "20%",
+                    }}
+                  >
                     {action.scoreTime}
                   </div>
-                  <div className="view_action_haft_referee">
+                  <div
+                    className="view_action_haft_referee"
+                    style={{
+                      width: "20%",
+                    }}
+                  >
                     Hiệp {action.halfName}
                   </div>
-                  <div className="view_action_score_referee data">
+                  <div
+                    className="view_action_score_referee data"
+                    style={{
+                      width: "20%",
+                    }}
+                  >
                     {action.scoreType.toLocaleLowerCase() == "điểm cộng" ? (
                       <div className="score_point_action  bonus">
                         +{action.scorePoint}

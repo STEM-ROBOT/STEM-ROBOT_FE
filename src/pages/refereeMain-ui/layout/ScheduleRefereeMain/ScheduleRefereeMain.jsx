@@ -41,7 +41,7 @@ const ScheduleRefereeMain = () => {
       endDate.setDate(startDate.getDate() + 7);
     }
   
-    return endDate.toISOString().split("T")[0]; // Return date in "YYYY-MM-DD" format
+    return endDate.toISOString().split("T")[0]; 
   }
   useEffect(() => {
     api

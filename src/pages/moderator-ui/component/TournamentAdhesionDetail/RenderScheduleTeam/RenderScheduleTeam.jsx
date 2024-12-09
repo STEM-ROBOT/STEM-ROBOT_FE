@@ -4,7 +4,7 @@ import { FaClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-const RenderScheduleTeam = ({ week, scheduleData, setMatchView }) => {
+const RenderScheduleTeam = ({ week, scheduleData, setMatchView,setShowPopup }) => {
   const navigate = useNavigate();
   const weekStart = week.start;
   const weekEnd = week.end;
@@ -43,10 +43,10 @@ const RenderScheduleTeam = ({ week, scheduleData, setMatchView }) => {
     hourHeight;
   console.log(totalDayHeight);
   const ShowMatchCard = (match) => {
-    if (match.status) {
+    // if (match.status) {
       setMatchView(match);
       setShowPopup(true);
-    }
+    // }
   };
   return (
     <div className="schedule_week">

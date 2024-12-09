@@ -39,6 +39,11 @@ const ManagerMatchRefereeMain = () => {
   const [teamMatchResult, setTeamMatchResult] = useState([]);
   const [noPlayMatch, setNoPlayMatch] = useState(false);
   const [idLoadAction, setIdLoadAction] = useState(false);
+  const [extraTime, setExtraTime] = useState(5 * 60); // 5 phút tính bằng giây
+  const [isInExtraTime, setIsInExtraTime] = useState(false);
+  const [isOutExtraTime, setIsOutExtraTime] = useState(false);
+  const [extraTimeProgress, setExtraTimeProgress] = useState(0);
+  const [extraTimeDisplay, setExtraTimeDisplay] = useState("00:00");
 
   const [timeLeft, setTimeLeft] = useState({
     hours: 0,
@@ -54,7 +59,6 @@ const ManagerMatchRefereeMain = () => {
         .then((response) => {
           if (response.data !== "error") {
             setMatchDetail(response.data);
-            console.log(response.data);
 
             setLoadApiConnectClient(true);
           } else {
@@ -307,12 +311,53 @@ const ManagerMatchRefereeMain = () => {
 
         const matchEndTime = new Date();
         matchEndTime.setHours(hoursOut, minutesOut, secondsOut);
-
+        const extraTimeEnd = new Date(matchEndTime.getTime() + 5 * 60 * 1000);
+        if (isInExtraTime) {
+          if (now > extraTimeEnd) {
+            clearInterval(timer); // Dừng đếm ngược khi hết thời gian
+            setIsInExtraTime(false); // Thoát trạng thái chờ
+            setIsOutExtraTime(true); // Đánh dấu trận đấu kết thúc
+          } else {
+            const elapsedWait = Math.floor((now - matchEndTime) / 1000);
+            if (elapsedWait >= 0) {
+              // Cập nhật thời gian hiển thị (phút:giây)
+              const minutes = Math.floor(elapsedWait / 60);
+              const seconds = elapsedWait % 60;
+              setExtraTimeDisplay(
+                `${minutes.toString().padStart(2, "0")}:${seconds
+                  .toString()
+                  .padStart(2, "0")}`
+              );
+              const progress = Math.min((elapsedWait / 300) * 100, 100); // 300 giây = 5 phút
+              setExtraTimeProgress(progress);
+            } else {
+              clearInterval(timer); // Dừng đếm ngược khi hết thời gian
+              setIsInExtraTime(false); // Thoát trạng thái chờ
+              setIsOutExtraTime(true);
+              api
+                .put(
+                  `/api/schedules/schedule-confirm?scheduleId=${schedule_Id}`
+                )
+                .then((response) => {
+                  console.log(response.data);
+                  if (response.data.message == "success") {
+                    console.log(response.data.message);
+                    navigate("/");
+                  }
+                })
+                .catch((error) => {
+                  console.log("cập nhật lỗi", error);
+                });
+            }
+          }
+          return;
+        }
         // Kiểm tra nếu trận đấu đã kết thúc
         if (now > matchEndTime) {
           setIsMatchOver(true);
-          setMatchProgress(100);
-          return; // Dừng tính toán nếu trận đấu đã kết thúc
+          setIsInExtraTime(true);
+          // Bắt đầu thời gian thêm
+          return;
         }
 
         // Tính số giây đã trôi qua kể từ khi trận đấu bắt đầu
@@ -365,7 +410,8 @@ const ManagerMatchRefereeMain = () => {
     }
 
     // Dọn dẹp khi component bị unmount hoặc khi trận đấu kết thúc
-  }, [matchDetail, isMatchOver]);
+  }, [matchDetail, isMatchOver, isInExtraTime]);
+
   useEffect(() => {
     if (timeCountDown != null) {
       if (hubConnectionRef.current) {
@@ -408,9 +454,9 @@ const ManagerMatchRefereeMain = () => {
     api
       .put(`/api/schedules/schedule-confirm?scheduleId=${schedule_Id}`)
       .then((response) => {
+        console.log(response.data);
         if (response.data.message == "success") {
           console.log(response.data.message);
-
           navigate("/");
         }
       })
@@ -422,10 +468,11 @@ const ManagerMatchRefereeMain = () => {
     setIdLoadAction(actionId);
     api
       .put(
-        `/api/actions/confirm-action?actionId=${actionId}&status=${status}&scheduleId=${schedule_Id}`
+        `/api/actions/confirm-action/${actionId}?status=${status}&scheduleId=${schedule_Id}`
       )
       .then((response) => {
-        if (response.data === "Update success") {
+        if (response.data === "timeout") {
+          alert("Thời gian xử lí đã kết thức ");
         }
       })
       .catch((error) => {
@@ -469,31 +516,53 @@ const ManagerMatchRefereeMain = () => {
                 </div>
               ))}
             </div>
-            <div className="schedule_manager_head_time">
-              <div className="haft_name_view">Hiệp {currentHalf}</div>
+            <div
+              className="schedule_manager_head_time"
+              style={{
+                width: isOutExtraTime ? "fit-content" : "7%",
+              }}
+            >
+              <div className="haft_name_view">
+                {!isMatchOver
+                  ? `Hiệp ${currentHalf}`
+                  : isInExtraTime && !isOutExtraTime
+                  ? `Chờ Xử Lí`
+                  : `Hết Thời Gian`}
+              </div>
             </div>
-            <div className="schedule_manager_head_percent">
-              <div className="progress_bar">
+            {!isOutExtraTime && (
+              <div className="schedule_manager_head_percent">
+                <div className="progress_bar">
+                  <div
+                    className="progress_bar_fill"
+                    style={{
+                      width: isInExtraTime
+                        ? `${extraTimeProgress}%`
+                        : `${matchProgress}%`,
+                    }}
+                  ></div>
+                </div>
                 <div
-                  className="progress_bar_fill"
-                  style={{ width: `${matchProgress + 5}%` }}
-                ></div>
+                  className="progress_bar_time"
+                  style={
+                    !isMatchOver
+                      ? {
+                          left: isInExtraTime
+                            ? `${extraTimeProgress - 1}%`
+                            : `${matchProgress - 1}%`,
+                        }
+                      : { left: `${extraTimeProgress - 5}%` }
+                  }
+                >
+                  {isInExtraTime ? extraTimeDisplay : currentTime}
+                </div>
               </div>
-              <div
-                className="progress_bar_time"
-                style={
-                  !isMatchOver
-                    ? { left: `${matchProgress}%` }
-                    : { left: `${matchProgress - 5}%` }
-                }
-              >
-                {currentTime}
-              </div>
-            </div>
+            )}
+
             <div className="schedule_manager_head_action">
               {!isMatchOver ? (
                 <div className="btn_manager_head_none">
-                  Trận đấu đang diển ra
+                  Trận đấu đang diễn ra
                 </div>
               ) : (
                 <div
