@@ -37,10 +37,10 @@ const Header = () => {
   const useRole = TokenService.getUserRole();
   const hubConnectionRef = useRef(null);
   const [profileInfo, setProfileInfo] = useState({
-    name: '',
-    phoneNumber: '',
-    email: '',
-    image: ''
+    name: "",
+    phoneNumber: "",
+    email: "",
+    image: "",
   });
   const InforAccountIDs = useSelector((state) => state.getAccountID);
   const isAdd = useSelector((state)=>state.ChangeInfor.loading)
@@ -53,7 +53,7 @@ const Header = () => {
     }
   }, [useRole]);
   const getInitial = (name) => {
-    if (!name) return '';
+    if (!name) return "";
     return name.charAt(0).toUpperCase();
   };
 
@@ -62,14 +62,13 @@ const Header = () => {
     dispatch(InforAccountID());
   }, [isAdd]);
 
-
   useEffect(() => {
     if (InforAccountIDs.success) {
       setProfileInfo({
-        name: InforAccountIDs.success.name || '',
-        phoneNumber: InforAccountIDs.success.phoneNumber || '',
-        email: InforAccountIDs.success.email || '',
-        image: InforAccountIDs.success.image || ''
+        name: InforAccountIDs.success.name || "",
+        phoneNumber: InforAccountIDs.success.phoneNumber || "",
+        email: InforAccountIDs.success.email || "",
+        image: InforAccountIDs.success.image || "",
       });
     }
   }, [InforAccountIDs.success,isAdd]);
@@ -93,6 +92,9 @@ const Header = () => {
         .get("/api/notification/notification")
         .then((response) => {
           if (response.data == "timeout") {
+            if (hubConnectionRef.current) {
+              hubConnectionRef.current.stop();
+            }
             setLoadApiConnectClient(true);
           }
         })
@@ -108,6 +110,11 @@ const Header = () => {
     if (fetchedUserId && fetchedUserId !== userId) {
       setLoadApiConnectClient(true);
     }
+    return () => {
+      if (hubConnectionRef.current) {
+        hubConnectionRef.current.stop();
+      }
+    };
   }, [fetchedUserId, loadApiConnectClient]);
 
   const toggleTournamentDropdown = () => {
@@ -181,7 +188,6 @@ const Header = () => {
   useEffect(() => {
     setAuInfo(TokenService.getUser());
   }, [signIn]);
- 
 
   return (
     <div className={`header-outer ${isVisible ? "header-visible" : ""}`}>
@@ -278,7 +284,10 @@ const Header = () => {
                   <a href="/account/my-tournament" className="dropdown-item">
                     Quản Lí Giải Đấu
                   </a>
-                  <a href="/account/tournament-adhesion" className="dropdown-item">
+                  <a
+                    href="/account/tournament-adhesion"
+                    className="dropdown-item"
+                  >
                     Giải Đấu Đã Tham Gia
                   </a>
                   <a href="" className="dropdown-item">

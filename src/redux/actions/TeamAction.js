@@ -229,11 +229,11 @@ export const getTeamRegister = (competitionId) => async (dispatch) => {
   }
 };
 
-export const updateTeamRegister = (id,competitionId,status) => async (dispatch) => {
+export const updateTeamRegister = (id,status) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_TEAMS_REGISTER_REQUEST });
 
-    const { data } = await api.put(`/api/teams-register/${id}/bycompetitionId/${competitionId}`,status);
+    const { data } = await api.put(`/api/teams-register/${id}`,status);
 
     dispatch({ type: UPDATE_TEAMS_REGISTER_SUCCESS, payload: data });
     toast.success("Thêm Thành Công")

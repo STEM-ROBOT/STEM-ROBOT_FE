@@ -1,5 +1,8 @@
 .match_detail_container_popup {
   position: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   top: 0;
   left: 0;
   width: 100%;
@@ -15,9 +18,7 @@
 .match_detail_container_popup.active {
   /* background-color: rgba(155, 187, 197, 0.293); */
   /* background-image: url(https://firebasestorage.googleapis.com/v0/b/fine-acronym-438603-m5.firebasestorage.app/o/stem-sever%2FDALL%C2%B7E%202024-11-11%2011.51.21%20-%20A%20vibrant%20scene%20of%20a%20STEM%20robot%20soccer%20competition%20set%20in%20a%20spacious%20arena.%20The%20field%20is%20designed%20with%20a%20large%20green%20and%20yellow%20soccer%20pitch%2C%20with%20cle.webp?alt=media&token=af66e483-0009-4652-8d4d-7c473e314f8c); */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+
   scale: 1;
 }
 
