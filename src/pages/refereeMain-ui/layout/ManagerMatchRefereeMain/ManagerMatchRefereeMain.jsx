@@ -9,6 +9,8 @@ import connectHub from "../../../../config/connectHub";
 import ManagerMatchAction from "./ManagerMatchAction";
 import MatchWaitStart from "../../../moderator-ui/component/MatchDetailView/MatchWaitStart";
 import MatchProgess from "../../../moderator-ui/component/MatchDetailView/MatchProgess";
+import { IoClose } from "react-icons/io5";
+import RandomTeamWinner from "../../../system-ui/component/RandomTeamWinner/RandomTeamWinner";
 const ManagerMatchRefereeMain = () => {
   const { schedule_Id } = useParams();
   const [popupActive, setActive] = useState(false);
@@ -44,7 +46,8 @@ const ManagerMatchRefereeMain = () => {
   const [isOutExtraTime, setIsOutExtraTime] = useState(false);
   const [extraTimeProgress, setExtraTimeProgress] = useState(0);
   const [extraTimeDisplay, setExtraTimeDisplay] = useState("00:00");
-
+  const [radomTeam, setRadomTeam] = useState(false);
+  const [randomTeamData, setRandomTeamData] = useState();
   const [timeLeft, setTimeLeft] = useState({
     hours: 0,
     minutes: 0,
@@ -70,6 +73,11 @@ const ManagerMatchRefereeMain = () => {
       CallApi();
     }
   }, []);
+  useEffect(() => {
+    if (radomTeam) {
+      setActive(true);
+    }
+  }, [radomTeam]);
   useEffect(() => {
     const handleData = (data) => {
       const dataString = JSON.stringify(data);
@@ -458,6 +466,9 @@ const ManagerMatchRefereeMain = () => {
         if (response.data.message == "success") {
           console.log(response.data.message);
           navigate("/");
+        } else if (response.data.message == "randome") {
+          setRadomTeam(true);
+          setRandomTeamData(response.data.data);
         }
       })
       .catch((error) => {
@@ -478,6 +489,13 @@ const ManagerMatchRefereeMain = () => {
       .catch((error) => {
         alert("Thao tác thất bại", error.message);
       });
+  };
+  const CloseMatchDetail = () => {
+    setActive(false);
+    const timer = setTimeout(() => {
+      setRadomTeam(false);
+    }, 500);
+    return () => clearTimeout(timer);
   };
   return (
     <div
@@ -564,13 +582,15 @@ const ManagerMatchRefereeMain = () => {
                 <div className="btn_manager_head_none">
                   Trận đấu đang diễn ra
                 </div>
-              ) : (
+              ) : isMatchOver && !radomTeam ? (
                 <div
                   className={`btn_manager_head ${isMatchOver ? "active" : ""}`}
                   onClick={SaveResultMatch}
                 >
                   Lưu Kết Quả và Thoát
                 </div>
+              ) : (
+                <></>
               )}
             </div>
           </div>
@@ -600,6 +620,32 @@ const ManagerMatchRefereeMain = () => {
             />
           </div>
         </>
+      )}
+      {radomTeam && (
+        <div
+          className={
+            popupActive
+              ? "match_detail_container_popup active random"
+              : "match_detail_container_popup"
+          }
+        >
+          <div className="random_team_confirm_container">
+            <div className="match_head_detail">
+              <div className="match_head_content">
+                Chọn ngẫu nhiên đội thắng - {randomTeamData.formatName}
+              </div>
+              <div className="match_head_close">
+                <IoClose
+                  className="close_head_close"
+                  onClick={() => CloseMatchDetail()}
+                />
+              </div>
+            </div>
+            <div className="match_body_detail">
+              <RandomTeamWinner teams={randomTeamData?.teamRanDom} teamMatchWinId= {randomTeamData.teamMatchWinId}/>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

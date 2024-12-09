@@ -441,3 +441,13 @@
   width: 100%;
   object-fit: cover;
 }
+.match_detail_container_popup.active.random {
+  background-color: #022942ab;
+}
+.random_team_confirm_container {
+  width: 70%;
+
+  padding: 10px;
+  background-color: #ffffffce;
+  border-radius: 7px;
+}

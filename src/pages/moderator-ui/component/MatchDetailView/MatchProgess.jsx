@@ -20,7 +20,7 @@ const MatchProgess = ({
   }, [scoreTeamDetailApi]);
   useEffect(() => {
     const timer = setTimeout(() => {}, 2000);
-    setActive(true);
+    // setActive(true);
     const container = containerRef.current;
     // Hàm kiểm tra vị trí cuộn trang của view_data_match_container
     const handleScroll = () => {

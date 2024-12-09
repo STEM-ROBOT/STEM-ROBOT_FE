@@ -249,7 +249,7 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
               <div>{matchData.awayTeam}</div>
             </div>
           </div>
-        </div>
+        </div>        
         <MatchProgess
           timeCountDown={timeCountDown}
           noPlayMatch={noPlayMatch}
