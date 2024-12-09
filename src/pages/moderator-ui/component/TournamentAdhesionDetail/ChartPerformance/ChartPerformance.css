@@ -1,0 +1,11 @@
+.chart_team_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  background-color: #fff;
+  padding: 0;
+}
