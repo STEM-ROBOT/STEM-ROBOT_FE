@@ -43,6 +43,7 @@ const Header = () => {
     image: ''
   });
   const InforAccountIDs = useSelector((state) => state.getAccountID);
+  const isLogin = useSelector((state) => state.userLogin.success);
   const isAdd = useSelector((state)=>state.ChangeInfor.loading)
   console.log(isAdd)
   useEffect(() => {
@@ -60,7 +61,7 @@ const Header = () => {
   // Lấy thông tin tài khoản khi component render
   useEffect(() => {
     dispatch(InforAccountID());
-  }, [isAdd]);
+  }, [isAdd,isLogin]);
 
 
   useEffect(() => {
@@ -72,7 +73,7 @@ const Header = () => {
         image: InforAccountIDs.success.image || ''
       });
     }
-  }, [InforAccountIDs.success,isAdd]);
+  }, [InforAccountIDs.success,isAdd,isLogin]);
   useEffect(() => {
     console.log(fetchedUserId);
 

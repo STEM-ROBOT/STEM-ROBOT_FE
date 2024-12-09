@@ -234,5 +234,9 @@ export const competition_detail_router = [
     path: "knockout",
     element: <MatchScheduleComponent />,
   },
+  {
+    path: "team-schedule",
+    element: <TeamCompetition />,
+  },
 ];
 export default moderatorRouter;
