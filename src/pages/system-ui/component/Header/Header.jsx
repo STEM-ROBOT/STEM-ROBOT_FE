@@ -20,6 +20,7 @@ import { InforAccountID } from "../../../../redux/actions/AccountAction";
 const Header = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [tournamentDropdownOpen, setTournamentDropdownOpen] = useState(false);
+  const [notificationDropdownOpen, setNotificationDropdownOpen] = useState(false);
   const [auInfo, setAuInfo] = useState(TokenService.getUser());
   const [pagesDropdownOpen, setPagesDropdownOpen] = useState(false);
   const [signIn, setSignIn] = useState(false);
@@ -43,7 +44,8 @@ const Header = () => {
     image: "",
   });
   const InforAccountIDs = useSelector((state) => state.getAccountID);
-  const isAdd = useSelector((state)=>state.ChangeInfor.loading)
+  const isLogin = useSelector((state) => state.userLogin.success);
+  const isAdd = useSelector((state) => state.ChangeInfor.loading)
   console.log(isAdd)
   useEffect(() => {
     if (useRole === "AD") {
@@ -56,11 +58,29 @@ const Header = () => {
     if (!name) return "";
     return name.charAt(0).toUpperCase();
   };
+  const notificationRef = useRef(null);
 
-  // Lấy thông tin tài khoản khi component render
+  const toggleNotificationDropdown = () => {
+    setNotificationDropdownOpen(!notificationDropdownOpen);
+  };
+
+  const handleClickOutside = (event) => {
+    if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+      setNotificationDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+
   useEffect(() => {
     dispatch(InforAccountID());
-  }, [isAdd]);
+  }, [isAdd, isLogin]);
 
   useEffect(() => {
     if (InforAccountIDs.success) {
@@ -71,11 +91,12 @@ const Header = () => {
         image: InforAccountIDs.success.image || "",
       });
     }
-  }, [InforAccountIDs.success,isAdd]);
+  }, [InforAccountIDs.success, isAdd, isLogin]);
   useEffect(() => {
     console.log(fetchedUserId);
 
     const handleData = (data) => {
+      setNotificationData(data)
       setNumberNotifications(data.length);
     };
     const connectHubClient = () => {
@@ -188,7 +209,7 @@ const Header = () => {
   useEffect(() => {
     setAuInfo(TokenService.getUser());
   }, [signIn]);
-
+  console.log(notificationData)
   return (
     <div className={`header-outer ${isVisible ? "header-visible" : ""}`}>
       <div className="header-container">
@@ -299,14 +320,34 @@ const Header = () => {
                 </div>
               )}
             </div>
-            <div className="notification_action_header">
+            <div className="notification_action_header" ref={notificationRef}>
               <MdNotificationsActive
                 className={`notification_action_icon ${shake ? "shake" : ""}`}
+                onClick={toggleNotificationDropdown} // Gắn sự kiện click
               />
-              <div className="notification_action_number">
-                {numberNotifications}
-              </div>
+              <div className="notification_action_number">{numberNotifications}</div>
+              {notificationDropdownOpen && (
+                <div className="notification-dropdown">
+                  <div className="notification-header">
+                    <span>Thông báo</span>
+                  
+                  </div>
+                  {notificationData.length > 0 ? (
+                    notificationData.map((notification) => (
+                      <div className="notification-item" key={notification.id} onClick={()=>navigate(`${notification.routerUi}`)}>
+                        <div className="notification-message">
+                          {notification.description}
+                        </div>
+                        <div className="notification-time">{notification.createDate}</div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="notification-empty">Không có thông báo</div>
+                  )}
+                </div>
+              )}
             </div>
+
           </div>
         ) : (
           <div className="cta-buttons">

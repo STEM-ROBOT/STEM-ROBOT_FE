@@ -11,7 +11,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { createContestantReducer, getContestantReducer } from '../reducers/ContestantReducer';
-import { LoginReducer } from '../reducers/AuthenReducer';
+import { LoginReducer, RegisterUserReducer } from '../reducers/AuthenReducer';
 import { createTournamentInfoReducer, getTournamentInfoReducer, getTournamentModeratorReducer } from '../reducers/TournamentReducer';
 import { activeCompetitionReducer, addCompetitionFormatReducer, getCompetitionInfoReducer, getCompetitionModeratorReducer } from '../reducers/CompetitionReducer';
 import { addScheduleRefereeReducer, createRefereeReducer, getFreeTimeRefereeReducer, getRefereeReducer, getScheduleRefereeReducer } from '../reducers/RefereeReducer';
@@ -76,6 +76,7 @@ const rootReducer = combineReducers({
     createPayment:createPaymentReducer,
     addGenre:addGenreReducer,
     updateGenre:updateGenreReducer,
+    registerUser:RegisterUserReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

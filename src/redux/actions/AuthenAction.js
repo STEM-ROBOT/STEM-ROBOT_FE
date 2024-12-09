@@ -1,5 +1,5 @@
 import jwtDecode from "jwt-decode";
-import { LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT } from "../constants/AuthenConstant";
+import { LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_USER_FAIL, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS } from "../constants/AuthenConstant";
 import { toast } from "react-toastify";
 import api from "/src/config";
 import TokenService from "../../config/tokenservice";
@@ -48,3 +48,27 @@ export const logout = (navigate) => (dispatch) => {
     dispatch({ type: LOGOUT });
     navigate("/home");
 };
+
+export const registerUser = (user,setSignUp) => async (dispatch) => {
+    try {
+      dispatch({ type: REGISTER_USER_REQUEST });
+  
+      const { data } = await api.post(`/api/accounts`,user);
+  
+      dispatch({ type: REGISTER_USER_SUCCESS, payload: data });
+      setSignUp(false)
+      toast.success("Thêm thành công")
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      if (message === "Not authorized, token failed") {
+        // dispatch(logout());
+      }
+      dispatch({
+        type: REGISTER_USER_FAIL,
+        payload: message,
+      });
+    }
+  };
