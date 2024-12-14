@@ -168,6 +168,35 @@
   padding-right: 20px;
   width: 300px;
 }
-.match_item_startDate{
+.match_item_startDate {
   padding: 0 5px;
+}
+.item_team_result_play {
+  width: 70px;
+  margin: 0 15px;
+  border-radius: 13px;
+  padding: 2% 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+}
+
+.item_team_result_play.win {
+  background-color: rgba(11, 204, 37, 0.705);
+  color: #056622;
+  border: 1.5px solid #056622;
+}
+
+.item_team_result_play.lose {
+  background-color: #ec7e16;
+  color: #6e3704;
+  border: 1.5px solid #6e3704;
+}
+
+.item_team_result_play.draw {
+  background-color: #08c0f8;
+  color: #03485e;
+  border: 1.5px solid #03485e;
 }

@@ -10,6 +10,7 @@ import { competition_detail_router } from "../../../../router/ModeratorRouter";
 import { IoLogoGameControllerB } from "react-icons/io";
 import "./CompetitionDetail.css";
 import api from "/src/config";
+import HappyTeamWin from "../../../system-ui/component/HappyTeamWin/HappyTeamWin";
 
 const allTabs = [
   {
@@ -46,7 +47,7 @@ const CompetitionDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentSubPath = location.pathname.split("/").pop();
-
+  const [showTeamWin, setShowTeamWin] = useState(true);
   useEffect(() => {
     api
       .get(
@@ -83,7 +84,7 @@ const CompetitionDetail = () => {
 
     requestAnimationFrame(step);
   }, [path.competitionId]);
-
+  useEffect(() => {}, [true]);
   const renderRoutes = (routes) =>
     routes.map((route, index) => {
       return <Route key={index} path={route.path} element={route.element} />;
@@ -132,6 +133,7 @@ const CompetitionDetail = () => {
             </div>
           ))}
         </div>
+        {/* {showTeamWin && <HappyTeamWin  onClose={() => setShowTeamWin(false)}/>} */}
         <div className="competition_detail_option">
           <Routes>{renderRoutes(competition_detail_router)}</Routes>
         </div>

@@ -225,7 +225,8 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
           <div className="match_detail_item">
             <div className="match_time_location_view">
               <MdAccessTime className="icon_match_time" />
-              {matchData.startTime.replace("T", " ").slice(0, -3) || "Chưa có lịch thi đấu"}
+              {matchData.startTime.replace("T", " ").slice(0, -3) ||
+                "Chưa có lịch thi đấu"}
             </div>
             <div className="match_time_location_view">
               <IoLocationOutline className="icon_match_time" />
@@ -239,11 +240,36 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
                 src={matchData.homeTeamLogo}
                 alt={`Logo ${matchData.homeTeam}`}
               />
-              <div>{matchData.homeTeam}</div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                {matchData.statusView == "done" && (
+                  <div
+                    className={`item_team_result_play ${
+                      matchData.homeTeamResult === "Win"
+                        ? "win"
+                        : matchData.homeTeamResult === "Lose"
+                        ? "lose"
+                        : matchData.homeTeamResult === "Draw"
+                        ? "draw"
+                        : ""
+                    }
+                            `}
+                  >
+                    {matchData.homeTeamResult === "Win"
+                      ? "Thắng"
+                      : matchData.homeTeamResult === "Lose"
+                      ? "Thua"
+                      : matchData.homeTeamResult === "Draw"
+                      ? "Hòa"
+                      : ""}
+                  </div>
+                )}
+                {matchData.homeTeam}{" "}
+              </div>
             </div>
             <div className="match_team_item_score">
-              {`${team1Score ? team1Score : 0} - ${team2Score ? team2Score : 0
-                }`}
+              {`${team1Score ? team1Score : 0} - ${
+                team2Score ? team2Score : 0
+              }`}
             </div>
             <div className="match_team_item">
               <img
@@ -251,28 +277,52 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
                 src={matchData.awayTeamLogo}
                 alt={`Logo ${matchData.awayTeam}`}
               />
-              <div>{matchData.awayTeam}</div>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                {matchData.awayTeam}{" "}
+                {matchData.statusView == "done" && (
+                  <div
+                    className={`item_team_result_play ${
+                      matchData.awayTeamResult === "Win"
+                        ? "win"
+                        : matchData.awayTeamResult === "Lose"
+                        ? "lose"
+                        : matchData.awayTeamResult === "Draw"
+                        ? "draw"
+                        : ""
+                    }
+                            }`}
+                  >
+                    {matchData.awayTeamResult === "Win"
+                      ? "Thắng"
+                      : matchData.awayTeamResult === "Lose"
+                      ? "Thua"
+                      : matchData.awayTeamResult === "Draw"
+                      ? "Hòa"
+                      : ""}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
         <div className="match-detail-tab-buttons">
           <button
-            className={`match-detail-tab-button ${activeTab === "score" ? "active" : ""
-              }`}
+            className={`match-detail-tab-button ${
+              activeTab === "score" ? "active" : ""
+            }`}
             onClick={() => handleTabChange("score")}
           >
             Điểm số
           </button>
           <button
-            className={`match-detail-tab-button ${activeTab === "stats" ? "active" : ""
-              }`}
+            className={`match-detail-tab-button ${
+              activeTab === "stats" ? "active" : ""
+            }`}
             onClick={() => handleTabChange("stats")}
           >
             Thông số
           </button>
         </div>
-
-
 
         <div className="match-detail-content">
           {activeTab === "score" ? (
@@ -287,11 +337,10 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
             </div>
           ) : (
             <div className="match-detail-stats-section">
-               <Parameter/>
+              <Parameter />
             </div>
           )}
         </div>
-
       </div>
     </div>
   );

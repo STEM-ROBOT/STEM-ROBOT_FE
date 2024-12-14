@@ -26,7 +26,7 @@ const MatchGroupStageComponent = () => {
               groupName: group.groupName,
               matchInGroup: [],
             };
-            
+
             let matchCheck = []; // Initialize for each group
             group.round.forEach((round) => {
               round.matches.forEach((match) => {
@@ -37,11 +37,11 @@ const MatchGroupStageComponent = () => {
                 matchCheck.push(updatedMatch);
               });
             });
-            
+
             matchInGroups.matchInGroup = matchCheck;
             setMatchView((prev) => [...prev, matchInGroups]);
           });
-          
+
           setMatchApi(response.data);
         })
         .catch((error) => {
@@ -198,6 +198,28 @@ const MatchGroupStageComponent = () => {
                       <div className="match_item_stt">{matchIndex + 1}</div>
                       <div>Vòng {match.roundName}</div>
                       <div className="match_item_team_left">
+                        {match.statusView == "done" && (
+                          <div
+                            className={`item_team_result_play ${
+                              match.homeTeamResult === "Win"
+                                ? "win"
+                                : match.homeTeamResult === "Lose"
+                                ? "lose"
+                                : match.homeTeamResult === "Draw"
+                                ? "draw"
+                                : ""
+                            }
+                            }`}
+                          >
+                            {match.homeTeamResult === "Win"
+                              ? "Thắng"
+                              : match.homeTeamResult === "Lose"
+                              ? "Thua"
+                              : match.homeTeamResult === "Draw"
+                              ? "Hòa"
+                              : ""}
+                          </div>
+                        )}
                         <div className="item_team_name">{match.homeTeam}</div>
                         <img
                           className="item_team_img"
@@ -221,9 +243,33 @@ const MatchGroupStageComponent = () => {
                           alt=""
                         />
                         <div className="item_team_name">{match.awayTeam}</div>
+                        {match.statusView == "done" && (
+                          <div
+                            className={`item_team_result_play ${
+                              match.awayTeamResult === "Win"
+                                ? "win"
+                                : match.awayTeamResult === "Lose"
+                                ? "lose"
+                                : match.awayTeamResult === "Draw"
+                                ? "draw"
+                                : ""
+                            }
+                            }`}
+                          >
+                            {match.awayTeamResult === "Win"
+                              ? "Thắng"
+                              : match.awayTeamResult === "Lose"
+                              ? "Thua"
+                              : match.awayTeamResult === "Draw"
+                              ? "Hòa"
+                              : ""}
+                          </div>
+                        )}
                       </div>
                       <div className="match_item_time">
-                        {match.startTime ? match.startTime.replace("T", " ").slice(0, -3) : " Chưa có lịch thi đấu"}
+                        {match.startTime
+                          ? match.startTime.replace("T", " ").slice(0, -3)
+                          : " Chưa có lịch thi đấu"}
                       </div>
                     </div>
                   </div>
