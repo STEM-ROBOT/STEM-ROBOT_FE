@@ -44,13 +44,22 @@ const ListContestant = () => {
     };
 
     const downloadTemplate = () => {
-        const templateData = [["STT", "Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại"]];
-        const worksheet = XLSX.utils.aoa_to_sheet(templateData);
+        const commonTemplateData = [
+            ["STT", "Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại"],
+        ];
+        const adminAdditionalFields = ["Trường"];
+        const templateData =
+            role === "AD"
+                ? [...commonTemplateData[0], ...adminAdditionalFields]
+                : commonTemplateData[0];
+    
+        const worksheet = XLSX.utils.aoa_to_sheet([templateData]);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Contestants");
-        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
         saveAs(new Blob([excelBuffer], { type: "application/octet-stream" }), "contestant_data.xlsx");
     };
+    
 
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
@@ -58,52 +67,65 @@ const ListContestant = () => {
     
         const reader = new FileReader();
         reader.onload = (e) => {
-            const workbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
-            const sheetName = workbook.SheetNames[0];
-            const worksheet = workbook.Sheets[sheetName];
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+            try {
+                const workbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
     
-            // Expected column headers
-            const expectedHeaders = ["STT", "Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại", "Trường"];
-            const fileHeaders = XLSX.utils.sheet_to_json(worksheet, { header: 1 })[0] || [];
+                // Define expected headers based on role
+                const baseHeaders = ["STT", "Ảnh", "Tên thí sinh", "Email", "Giới tính", "Số điện thoại"];
+                const adminHeaders = ["Trường"];
+                const expectedHeaders = role === "AD" ? [...baseHeaders, ...adminHeaders] : baseHeaders;
     
-            // Normalize headers to lowercase and trim spaces for robust comparison
-            const normalizedExpectedHeaders = expectedHeaders.map((header) => header.toLowerCase().trim());
-            const normalizedFileHeaders = fileHeaders.map((header) => String(header).toLowerCase().trim());
+                // Get headers from the file
+                const fileHeaders = XLSX.utils.sheet_to_json(worksheet, { header: 1 })[0] || [];
     
-            // Check if file headers match the expected headers
-            const isValidFile = normalizedExpectedHeaders.every((header) => normalizedFileHeaders.includes(header));
+                // Normalize headers to lowercase and trim spaces for robust comparison
+                const normalizedExpectedHeaders = expectedHeaders.map((header) => header.toLowerCase().trim());
+                const normalizedFileHeaders = fileHeaders.map((header) => String(header).toLowerCase().trim());
     
-            if (!isValidFile) {
-                toast.error("File Excel không đúng định dạng! Vui lòng sử dụng tệp mẫu được cung cấp.");
-                return;
-            }
+                // Check if file headers match the expected headers
+                const isValidFile = normalizedExpectedHeaders.every((header) => normalizedFileHeaders.includes(header));
     
-            // Process the valid data
-            const importedData = jsonData.map((item, index) => ({
-                stt: index + 1,
-                image: item["Ảnh"] || "https://via.placeholder.com/100",
-                name: item["Tên thí sinh"] || "N/A",
-                email: item["Email"] || "N/A",
-                gender: item["Giới tính"] || "N/A",
-                phone: item["Số điện thoại"] || "N/A",
-                schoolName: role === "AD" ? item["Trường"] || "N/A" : schoolName,
-                tournamentId,
-            }));
+                if (!isValidFile) {
+                    toast.error("File Excel không đúng định dạng! Vui lòng sử dụng tệp mẫu được cung cấp.");
+                    return;
+                }
     
-            const newContestants = importedData.filter(
-                (newContestant) => !updatedContestants.some((existing) => existing.email === newContestant.email)
-            );
+                // Process the valid data
+                const importedData = jsonData.map((item, index) => ({
+                    stt: index + 1,
+                    image: item["Ảnh"] || "https://via.placeholder.com/100",
+                    name: item["Tên thí sinh"] || "N/A",
+                    email: item["Email"] || "N/A",
+                    gender: item["Giới tính"] || "N/A",
+                    phone: item["Số điện thoại"] || "N/A",
+                    schoolName: role === "AD" ? item["Trường"] || "N/A" : schoolName,
+                    tournamentId,
+                }));
     
-            if (newContestants.length > 0) {
-                setUpdatedContestants((prev) => [...prev, ...newContestants]);
-                setNewContestantsToAdd(newContestants);
-                setHasChanges(true);
+                // Filter out existing contestants to prevent duplicates
+                const newContestants = importedData.filter(
+                    (newContestant) => !updatedContestants.some((existing) => existing.email === newContestant.email)
+                );
+    
+                if (newContestants.length > 0) {
+                    setUpdatedContestants((prev) => [...prev, ...newContestants]);
+                    setNewContestantsToAdd(newContestants);
+                    setHasChanges(true);
+                } else {
+                    toast.info("Không có thí sinh mới nào được thêm.");
+                }
+            } catch (error) {
+                toast.error("Đã xảy ra lỗi khi xử lý tệp. Vui lòng thử lại.");
+                console.error("File upload error:", error);
             }
         };
     
         reader.readAsArrayBuffer(file);
     };
+    
     
 
     const saveContestantsToDB = () => {

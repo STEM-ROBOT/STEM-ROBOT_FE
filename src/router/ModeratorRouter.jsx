@@ -234,7 +234,7 @@ export const team_adhesion_detail_router = [
     element: <Navigate to="schedule-team" />,
   },
   {
-    path: "game-rule",
+    path: "schedule-team",
     element: <TeamSchedule />,
   },
 ];
@@ -280,6 +280,10 @@ export const competition_detail_router = [
   {
     path: "knockout",
     element: <MatchScheduleComponent />,
+  },
+  {
+    path: "team-schedule/:teamId",
+    element: <TeamSchedule />,
   },
 ];
 export default moderatorRouter;

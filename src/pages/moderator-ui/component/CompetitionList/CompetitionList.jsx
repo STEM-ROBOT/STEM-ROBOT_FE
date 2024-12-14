@@ -65,9 +65,9 @@ const CompetitionList = () => {
     }
   };
   const GoCompetition = (competition) => {
-    // if (competition.isActive === true) {
+    if (competition.isActive === true) {
       navigate(`${competition.id}`);
-    // }
+    }
   };
   return (
     <div className="competition_container">
