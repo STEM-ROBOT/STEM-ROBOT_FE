@@ -98,14 +98,14 @@ const ComponentCreate = () => {
       competition: formattedCompetitions,
     };
 
-    // await dispatch(createTournament(tournamentData, navigate))
-    //   .then(() => {
-    //     console.log(tournamentData);
-    //     navigate("/account/my-tournament");
-    //   })
-    //   .catch((error) => {
-    //     console.error("Lỗi khi tạo giải đấu:", error);
-    //   });
+    await dispatch(createTournament(tournamentData, navigate))
+      .then(() => {
+        console.log(tournamentData);
+        navigate("/account/my-tournament");
+      })
+      .catch((error) => {
+        console.error("Lỗi khi tạo giải đấu:", error);
+      });
   };
 
   return (

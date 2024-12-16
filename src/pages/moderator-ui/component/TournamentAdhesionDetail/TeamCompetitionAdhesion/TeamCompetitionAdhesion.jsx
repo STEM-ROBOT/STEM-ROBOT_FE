@@ -38,7 +38,7 @@ const TeamCompetitionAdhesion = () => {
     );
   };
   return (
-    <div className="team-list-container-view" style={{ minHeight: "80vh" }}>
+    <div className="team-list-container-outer" style={{ minHeight: "80vh" ,backgroundColor:"#fff"}}>
       {teams?.map((team) => (
         <div
           key={team.id}
