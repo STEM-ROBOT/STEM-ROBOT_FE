@@ -120,6 +120,27 @@ const MatchScheduleComponent = () => {
                     <div className="match_item_layer">
                       <div className="match_item_stt">{i + 1}</div>
                       <div className="match_item_team_left">
+                        {match.statusView == "done" && (
+                          <div
+                            className={`item_team_result_play ${
+                              match.homeTeamResult === "Win"
+                                ? "win"
+                                : match.homeTeamResult === "Lose"
+                                ? "lose"
+                                :  match.homeTeamResult === "Draw"
+                                ? "draw"
+                                : ""}
+                            }`}
+                          >
+                            {match.homeTeamResult === "Win"
+                              ? "Thắng"
+                              : match.homeTeamResult === "Lose"
+                              ? "Thua"
+                              : match.homeTeamResult === "Draw"
+                              ? "Hòa"
+                              : ""}
+                          </div>
+                        )}
                         <div className="item_team_name">{match.homeTeam}</div>
                         <img
                           className="item_team_img"
@@ -143,6 +164,27 @@ const MatchScheduleComponent = () => {
                           alt=""
                         />
                         <div className="item_team_name">{match.awayTeam}</div>
+                        {match.statusView == "done" && (
+                          <div
+                            className={`item_team_result_play ${
+                              match.awayTeamResult === "Win"
+                                ? "win"
+                                : match.awayTeamResult === "Lose"
+                                ? "lose"
+                                : match.awayTeamResult === "Draw"
+                                ? "draw"
+                                : ""}
+                            }`}
+                          >
+                            {match.awayTeamResult === "Win"
+                              ? "Thắng"
+                              : match.awayTeamResult === "Lose"
+                              ? "Thua"
+                              : match.awayTeamResult === "Draw"
+                              ? "Hòa"
+                              : ""}
+                          </div>
+                        )}
                       </div>
                       <div className="match_item_startDate">
                         {match.startTime
