@@ -4,7 +4,6 @@ import Sidebar from '../../component/Sidebar/Sidebar';
 import { tournamentChildren } from '../../../../router/ModeratorRouter';
 import './TournamentConfiguration.css';
 import Header from '../../../system-ui/component/Header/Header';
-import InfoTournament from '../../component/InfoTournament/InfoTournament';
 import Footer from '../../../system-ui/component/Footer/Footer';
 import TournamentHeader from '../../component/TournamentHeader/TournamentHeader';
 import GroupMatch from '../../component/GroupMatchDraw/GroupMatch';
@@ -12,17 +11,16 @@ import KnockoutTournament from '../../component/KnockoutTournament/KnockoutTourn
 import PrivateRoute from '../../../../router/PrivateRoute';
 import TokenService from '../../../../config/tokenservice';
 
-
-
 const TournamentConfiguration = () => {
-    // const [activeItem, setActiveItem] = useState("format");
     const [activeItem, setActiveItem] = useState("settings/format");
-    const [formatId, setFormatId] = useState(1); 
+    const [formatId, setFormatId] = useState(null); // Giá trị khởi tạo là null
     const fetchedFormatId = TokenService.getFormatId();
+
     useEffect(() => {
         setFormatId(fetchedFormatId); 
     }, [fetchedFormatId]);
-    console.log(formatId)
+
+    console.log(formatId);
 
     const tournamentChildrenWithFormatId = tournamentChildren.map((route) => {
         if (route.path === "matchups") {
@@ -30,7 +28,13 @@ const TournamentConfiguration = () => {
                 ...route,
                 element: (
                     <PrivateRoute 
-                        element={formatId === 2 ? <GroupMatch /> : <KnockoutTournament />} 
+                        element={
+                            formatId === 2 
+                                ? <GroupMatch /> 
+                                : formatId === 1 
+                                ? <KnockoutTournament /> 
+                                : <div>Format not selected</div> // Trường hợp formatId là null
+                        }
                         requiredRole="MD" 
                     />
                 ),

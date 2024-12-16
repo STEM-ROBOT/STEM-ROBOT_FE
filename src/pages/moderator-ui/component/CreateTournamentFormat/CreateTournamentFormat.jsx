@@ -12,6 +12,7 @@ import { getActive } from "../../../../redux/actions/FormatAction";
 import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
 import { InforAccountID } from "../../../../redux/actions/AccountAction";
 import { toast } from "react-toastify";
+import TokenService from "../../../../config/tokenservice";
 
 const formats = [
   {
@@ -106,6 +107,8 @@ const CreateTournamentFormat = ({}) => {
   const [selectedTeamsNextRound, setSelectedTeamsNextRound] = useState("");
   const [teamsNextRoundError, setTeamsNextRoundError] = useState("");
   const InforAccountIDs = useSelector((state) => state.getAccountID);
+  const role = TokenService.getUserRole();
+  console.log(role)
   const isAddSuccess = useSelector(
     (state) => state.addCompetitionFormat?.success
   );
@@ -333,10 +336,12 @@ const CreateTournamentFormat = ({}) => {
 
   const handleSubmit = () => {
     let hasError = false;
-    if(teamNumber > tournamentPackage.maxTeam){
-      toast.error(`Số lượng đội vượt quá giới hạn! Bạn chỉ có thể thêm tối đa ${tournamentPackage.maxTeam} đội.`)
+    if (role !== "AD" && teamNumber > tournamentPackage.maxTeam) {
+      toast.error(
+          `Số lượng đội vượt quá giới hạn! Bạn chỉ có thể thêm tối đa ${tournamentPackage.maxTeam} đội.`
+      );
       return;
-    }
+  }
     // Kiểm tra nếu trường dữ liệu bắt buộc bị bỏ trống
     if (!teamNumber || teamNumber < formatCompetition.teamMin) {
       alert(
@@ -390,7 +395,7 @@ const CreateTournamentFormat = ({}) => {
       numberTeam: teamNumber,
       numberTeamNextRound:
         formatCompetition.id === 2
-          ? parseInt(document.querySelector(".format_tournament").value) || 0
+          ? selectedTeamsNextRound  || 0
           : 0,
       numberTable:
         formatCompetition.id === 2

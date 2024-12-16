@@ -7,7 +7,6 @@ import { getActive as fetchActiveFormat } from '../../../../redux/actions/Format
 import TokenService from '../../../../config/tokenservice';
 
 const Sidebar = ({ activeItem, onMenuClick, isGroupStage }) => {
-    console.log(isGroupStage)
     const navigate = useNavigate();
     const { competitionId } = useParams();
     const dispatch = useDispatch();

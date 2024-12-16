@@ -17,6 +17,7 @@ const SidebarCompetition = () => {
   const { tournamentId, competitionId } = useParams();
   const activeFormatData = useSelector((state) => state.getActiveFormat);
   const activeData = activeFormatData?.data?.data;
+  console.log(activeData)
   TokenService.setFormatId(activeData?.formatId);
   const competitionInfo = useSelector((state) => state.infoCompetition?.infoCompetition?.data);
   const loading = useSelector((state) => state.infoTournament.loading);

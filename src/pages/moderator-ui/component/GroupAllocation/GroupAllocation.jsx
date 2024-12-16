@@ -48,6 +48,10 @@ const GroupAllocation = () => {
         }
         setRandomizeEnabled(data?.isTable)
         setTotalTeamsToNextRound(data?.numberTeamNextRound)
+        const distributedTeams = distributeTeams(data?.numberTeamNextRound, tables.length);
+        setTeamsToNextRound(distributedTeams);
+        setError('');
+        
     }, [data, randomizeEnabled, data?.isTable]);
 
     const handleRandomizeWithPopup = () => {
@@ -110,11 +114,25 @@ const GroupAllocation = () => {
     };
 
     const handleTotalTeamsToNextRoundChange = (value) => {
+        // Tính tổng số đội trong tất cả các bảng
+        const totalTeamsInTables = tables.reduce(
+            (acc, table) => acc + table.teams.filter((team) => team.teamId).length,
+            0
+        );
+    
+        // Kiểm tra nếu số đội vượt quá tổng số đội hiện có
+        if (value >= totalTeamsInTables) {
+            setError(`Số đội vào vòng trong không thể lớn hơn tổng số đội hiện có (${totalTeamsInTables}).`);
+            return;
+        }
+    
+        // Nếu hợp lệ, cập nhật giá trị
         setTotalTeamsToNextRound(value);
         const distributedTeams = distributeTeams(value, tables.length);
         setTeamsToNextRound(distributedTeams);
         setError('');
     };
+    
 
     const distributeTeams = (totalTeams, numTables) => {
         const baseTeams = Math.floor(totalTeams / numTables);
