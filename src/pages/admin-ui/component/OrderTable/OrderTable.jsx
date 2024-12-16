@@ -6,14 +6,14 @@ import { ListOrder } from '../../../../redux/actions/AdminAction';
 const OrderTable = () => {
   const dispatch = useDispatch();
   const ListOrderData = useSelector((state) => state.getListOrder);
-  
-  const[search,setSearch]= useState('');
+
+  const [search, setSearch] = useState('');
   const AccountArrayData = Array.isArray(ListOrderData?.success?.data) ? ListOrderData?.success?.data : [];
   //console.log(ListOrderData);
 
   useEffect(() => {
-    dispatch(ListOrder(search)); 
-  }, [dispatch,search]);
+    dispatch(ListOrder(search));
+  }, [dispatch, search]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -22,6 +22,13 @@ const OrderTable = () => {
   const handleSearchChange = (e) => {
     setSearch(e.target.value); // Update search term dynamically
   };
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    }).format(amount);
+  };
+  
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -42,44 +49,46 @@ const OrderTable = () => {
             placeholder="Tìm kiếm khách hàng"
             className="order_table_search_input"
             value={search}
-            onChange={handleSearchChange} 
-            onKeyDown={handleKeyDown}/>
+            onChange={handleSearchChange}
+            onKeyDown={handleKeyDown} />
         </div>
         <div className="order_table_action_buttons">
           <button className="order_table_export_button">Xuất file</button>
-         
+
         </div>
       </div>
-
-      <table className="order_table_main">
-        <thead>
-          <tr>
-            <th><input type="checkbox" /></th>
-            <th>Mã đơn hàng</th>
-            <th>Tổng tiền</th>
-            <th>Khách hàng</th>
-            <th>Trạng thái</th>
-            <th>Ngày thanh toán</th>
-            <th>Phương thức thanh toán</th>
-          </tr>
-        </thead>
-        <tbody>
-          {AccountArrayData.map((order) => (
-            <tr key={order.id}>
-              <td><input type="checkbox" /></td>
-              <td><a href="#" className="order_table_order_id">{order.id}</a></td>
-              <td>{order.amount}</td>
-              <td className="order_table_info">
-                <img src={order.image} alt={order.customer} className="order_table_avatar" />
-                {order.nameUser}
-              </td>
-              <td><span className={`status_label ${order.status === 'Success' ? 'success' : 'failed'}`}>{order.status}</span></td>
-              <td>{formatDate(order.orderDate)}</td> {/* Chỉnh sửa ở đây */}
-              <td>{order.methodOrder}</td>
+      <div className="order_table_container_scroll">
+        <table className="order_table_main">
+          <thead>
+            <tr>
+              <th><input type="checkbox" /></th>
+              <th>Mã đơn hàng</th>
+              <th>Tổng tiền</th>
+              <th>Khách hàng</th>
+              <th>Trạng thái</th>
+              <th>Ngày thanh toán</th>
+              <th>Phương thức thanh toán</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {AccountArrayData.map((order) => (
+              <tr key={order.id}>
+                <td><input type="checkbox" /></td>
+                <td><a href="#" className="order_table_order_id">{order.id}</a></td>
+                <td>{formatCurrency(order.amount)}</td>
+                <td className="order_table_info">
+                  <img src={order.image} alt={order.customer} className="order_table_avatar" />
+                  {order.nameUser}
+                </td>
+                <td><span className={`status_label ${order.status === 'Success' ? 'success' : 'failed'}`}>{order.status === 'Success' ? "Thành Công" : "Thất Bại"}</span></td>
+                <td>{formatDate(order.orderDate)}</td> {/* Chỉnh sửa ở đây */}
+                <td>{order.methodOrder}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
     </div>
   );
 };

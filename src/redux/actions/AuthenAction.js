@@ -11,10 +11,10 @@ export const login = (user, navigate, setSignIn) => async (dispatch) => {
 
         const { data } = await api.post("/api/auth/login", user);
 
-        if (data.result.token) {
-            const token = jwtDecode(data.result.token);
+        if (data.token) {
+            const token = jwtDecode(data.token);
             console.log(token)
-            TokenService.setUser(data.result.token);
+            TokenService.setUser(data.token);
             TokenService.setUserId(token.Id);
             TokenService.setUserRole(token.role);
             TokenService.setUserName(token.unique_name);
@@ -49,7 +49,7 @@ export const logout = (navigate) => (dispatch) => {
     navigate("/home");
 };
 
-export const registerUser = (user,setSignUp) => async (dispatch) => {
+export const registerUser = (user,setSignUp,setSignIn) => async (dispatch) => {
     try {
       dispatch({ type: REGISTER_USER_REQUEST });
   
@@ -57,6 +57,7 @@ export const registerUser = (user,setSignUp) => async (dispatch) => {
   
       dispatch({ type: REGISTER_USER_SUCCESS, payload: data });
       setSignUp(false)
+      setSignIn(true)
       toast.success("Thêm thành công")
     } catch (error) {
       const message =

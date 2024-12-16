@@ -71,7 +71,7 @@ const TournamentList = () => {
                                                     <h3>{tournament.name}</h3>
                                                     <p>{tournament.location}</p>
                                                     <div className={`tournament-status ${tournament.status === "Public" ? "status-public" : "status-private"}`}>
-                                                        {tournament.status}
+                                                        {tournament.status === "Public" ? "Công Khai" : "Riêng tư"}
                                                     </div>
                                                 </div>
                                                 <div className="tournament-participants">

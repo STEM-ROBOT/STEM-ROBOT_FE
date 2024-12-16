@@ -46,7 +46,6 @@ const Header = () => {
   const InforAccountIDs = useSelector((state) => state.getAccountID);
   const isLogin = useSelector((state) => state.userLogin.success);
   const isAdd = useSelector((state) => state.ChangeInfor.loading)
-  console.log(isAdd)
   useEffect(() => {
     if (useRole === "AD") {
       navigate("/admin");
@@ -363,8 +362,8 @@ const Header = () => {
           </div>
         )}
       </div>
-      {signIn === true && <SignIn setSignIn={setSignIn} />}
-      {signUp === true && <SignUp setSignUp={setSignUp} />}
+      {signIn === true && <SignIn setSignIn={setSignIn} setSignUp={setSignUp} />}
+      {signUp === true && <SignUp setSignUp={setSignUp} setSignIn={setSignIn} />}
     </div>
   );
 };

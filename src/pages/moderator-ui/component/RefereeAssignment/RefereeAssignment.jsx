@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addRefereeSchedule, getRefereeSchedule } from '../../../../redux/actions/RefereeAction';
 import { getActive } from '../../../../redux/actions/FormatAction';
+import CountdownPopup from '../CountdownPopup/CountdownPopup';
 
 const RefereeAssignment = () => {
     const { competitionId } = useParams();
@@ -14,6 +15,7 @@ const RefereeAssignment = () => {
     const [data, setData] = useState();
     const [numMatchReferees, setNumMatchReferees] = useState(1);
     const isAddSuccess = useSelector((state) => state.addScheduleReferee?.success);
+    const [showPopup, setShowPopup] = useState(false);
 
     useEffect(() => {
         dispatch(getRefereeSchedule(competitionId));
@@ -23,7 +25,7 @@ const RefereeAssignment = () => {
     useEffect(() => {
         if (refereeData?.rounds && refereeData.rounds[0]?.matches) {
             setData(refereeData);
-            setNumMatchReferees(1);  
+            setNumMatchReferees(1);
         }
     }, [refereeData]);
 
@@ -34,15 +36,26 @@ const RefereeAssignment = () => {
         }
         return array;
     };
+    const handleRandomizeWithPopup = () => {
+        setShowPopup(true);
+    };
 
-    const checkTimeConflict = (round, matchTime, refereeId, isMainReferee) => {
+    const handleCountdownComplete = () => {
+        setShowPopup(false);
+        randomizeReferees();
+
+    };
+
+
+    const checkTimeConflict = (round, matchDate, matchTime, refereeId, isMainReferee) => {
         return round.matches.some(match => {
-            const isTimeMatch = match.timeIn === matchTime;
+            const isSameDateTime = match.date === matchDate && match.timeIn === matchTime;
             const isMainConflict = isMainReferee && match.mainReferee?.id === refereeId;
             const isSubConflict = !isMainReferee && match.matchRefereesdata?.some(ref => ref.id === refereeId);
-            return isTimeMatch && (isMainConflict || isSubConflict);
+            return isSameDateTime && (isMainConflict || isSubConflict);
         });
     };
+
 
     const randomizeReferees = () => {
         const updatedData = JSON.parse(JSON.stringify(data)); // Deep clone the data
@@ -62,7 +75,7 @@ const RefereeAssignment = () => {
                 // Assign a main referee if no time conflict
                 while (availableMainRefs.length > 0) {
                     const mainReferee = availableMainRefs.pop();
-                    if (!checkTimeConflict(round, match.timeIn, mainReferee.id, true)) {
+                    if (!checkTimeConflict(round, match.date, match.timeIn, mainReferee.id, true)) {
                         match.mainReferee = mainReferee;
                         break;
                     }
@@ -73,7 +86,7 @@ const RefereeAssignment = () => {
                 for (let i = 0; i < numMatchReferees; i++) {
                     while (availableMatchRefs.length > 0) {
                         const matchReferee = availableMatchRefs.pop();
-                        if (!checkTimeConflict(round, match.timeIn, matchReferee.id, false)) {
+                        if (!checkTimeConflict(round, match.date, match.timeIn, matchReferee.id, false)) {
                             match.matchRefereesdata.push(matchReferee);
                             break;
                         }
@@ -136,7 +149,10 @@ const RefereeAssignment = () => {
             <h2 className="referee-assignment-title-main">Sắp xếp trọng tài</h2>
 
             {data?.isSchedule !== true && (
-                <button className="referee-assignment-randomize-button" onClick={randomizeReferees}>Bốc thăm ngẫu nhiên trọng tài</button>
+                <button className="referee-assignment-randomize-button" onClick={handleRandomizeWithPopup}>
+                    Bốc thăm ngẫu nhiên trọng tài
+                </button>
+
             )}
 
             {data?.rounds.map((round, roundIndex) => (
@@ -152,8 +168,8 @@ const RefereeAssignment = () => {
                                 value={
                                     match.date
                                         ? new Date(new Date(match.date).setDate(new Date(match.date).getDate() + 1))
-                                              .toISOString()
-                                              .split('T')[0]
+                                            .toISOString()
+                                            .split('T')[0]
                                         : ''
                                 }
                                 onChange={(e) => handleUpdate(roundIndex, matchIndex, 'date', e.target.value)}
@@ -215,6 +231,7 @@ const RefereeAssignment = () => {
                     <button className="referee-assignment-save-button" onClick={prepareDataForSave}>Lưu</button>
                 )
             }
+            {showPopup && <CountdownPopup onComplete={handleCountdownComplete} />}
         </div>
     );
 };

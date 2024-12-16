@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../../../../redux/actions/AuthenAction";
 
-const SignIn = ({ setSignIn }) => {
+const SignIn = ({ setSignIn,setSignUp }) => {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -104,7 +104,7 @@ const SignIn = ({ setSignIn }) => {
             </button>
           </div>
           <div className="or_sigUp">
-            <div className="signUp_btn">Đăng Kí Tài Khoản Mới</div>
+            <div className="signUp_btn" onClick={()=>setSignUp(true)}>Đăng Kí Tài Khoản Mới</div>
           </div>
         </div>
       </div>
