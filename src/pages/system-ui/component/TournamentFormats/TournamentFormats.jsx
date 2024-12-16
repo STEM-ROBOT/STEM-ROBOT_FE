@@ -26,13 +26,13 @@ const TournamentFormats = () => {
                             Thể thức đấu loại trực tiếp. Chỉ có người chiến thắng được đi tiếp.
                         </div>
                     </div>
-                    <div className="format-block">
+                    {/* <div className="format-block">
                         <img src={format2} alt="Format 2" />
                         <div className="title">Đấu vòng tròn</div>
                         <div className="description">
                             Mỗi đội thi đấu với tất cả các đội còn lại để tính điểm.
                         </div>
-                    </div>
+                    </div> */}
                     <div className="format-block">
                         <img src={format3} alt="Format 3" />
                         <div className="title">Chia bảng đấu</div>
@@ -40,7 +40,7 @@ const TournamentFormats = () => {
                             Các đội được chia thành nhiều bảng đấu và thi đấu trong bảng của mình.
                         </div>
                     </div>
-                    <div className="format-block">
+                    {/* <div className="format-block">
                         <img src={format4} alt="Format 4" />
                         <div className="title">Nhánh thắng - Nhánh thua</div>
                         <div className="description">
@@ -53,7 +53,7 @@ const TournamentFormats = () => {
                         <div className="description">
                             Kết hợp giữa vòng tròn và đấu loại trực tiếp để chọn đội xuất sắc nhất.
                         </div>
-                    </div>
+                    </div> */}
                  
                 </div>
             </div>

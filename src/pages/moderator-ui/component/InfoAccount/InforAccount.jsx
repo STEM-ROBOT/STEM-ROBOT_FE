@@ -7,6 +7,7 @@ import Header from '../../../system-ui/component/Header/Header';
 import Footer from '../../../system-ui/component/Footer/Footer';
 import FirebaseUpload from '../../../../config/firebase';
 import { toast } from 'react-toastify';
+import TokenService from '../../../../config/tokenservice';
 
 const InforAccount = () => {
   const [profileInfo, setProfileInfo] = useState({
@@ -151,7 +152,7 @@ const InforAccount = () => {
                     <input
                       type="text"
                       name="email"
-                      value={profileInfo.email}
+                      value={TokenService.getSchoolName()}
                       disabled
                     />
                   </div>

@@ -4,6 +4,7 @@ import './ProfileDashboard.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { InforAccountID } from '../../../../redux/actions/AccountAction';
 import { FaEnvelope, FaPhone, FaSchool, FaUser } from 'react-icons/fa';
+import TokenService from '../../../../config/tokenservice';
 
 const ProfileDashboard = () => {
     const [profileInfo, setProfileInfo] = useState({
@@ -23,6 +24,7 @@ const ProfileDashboard = () => {
     const [activeTab, setActiveTab] = useState("");
     const dispatch = useDispatch();
     const InforAccountIDs = useSelector((state) => state.getAccountID);
+    
     useEffect(() => {
         dispatch(InforAccountID());
     }, [dispatch]);
@@ -91,9 +93,9 @@ const ProfileDashboard = () => {
                                     <FaPhone /> {profileInfo.phoneNumber}
                                 </p>
                             )}
-                            {profileInfo.schoolName ? (
+                            {TokenService.getSchoolName() ? (
                                 <p>
-                                    <FaSchool /> {profileInfo.schoolName}
+                                    <FaSchool /> {TokenService.getSchoolName()}
                                 </p>
                             ) : (
                                 <p>
