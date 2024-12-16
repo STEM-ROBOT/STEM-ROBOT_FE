@@ -22,27 +22,54 @@ const ListCompetitionAdmin = () => {
   };
 
   const activeStatuses = (competition) => {
-    const now = new Date();
-    const endDate = new Date(competition.endDate);
-
-    if (!competition.isActive) return "competition_status_competition";
-    if (competition.isActive && now <= endDate && competition.mode === "public") return "competition_status_competition rg";
-    if (competition.isActive && (competition.mode === "Private" || now > endDate)) return "competition_status_competition done";
+    const now = new Date(); // Lấy thời gian hiện tại
+    const endDate = new Date(competition.registerTime);
+    const startDate = new Date(competition.startTime);
+    if (competition.isActive === false) {
+      return "competition_status_competition";
+    } else if (competition.isActive === true && now <= endDate) {
+      return "competition_status_competition rg";
+    } else if (
+      competition.isActive === true &&
+      now >= startDate &&
+      now <= endDate
+    ) {
+      return "competition_status_competition done";
+    } else if (competition.isActive === true && now > endDate) {
+      return "competition_status_competition done";
+    }
   };
 
   const tagStatuses = (competition) => {
-    const now = new Date();
-    const endDate = new Date(competition.endDate);
-
-    if (!competition.isActive) return "Chưa kích hoạt";
-    if (competition.isActive && now <= endDate && competition.mode === "Public") return "Đang đăng ký";
+    const now = new Date(); // Lấy thời gian hiện tại
+    const endDate = new Date(competition.endTime);
+    const startDate = new Date(competition.startTime);
+    const registerTimeDate = new Date(competition.registerTime);
+    if (competition.isActive === false) {
+      return "Chưa kích hoạt";
+    } else if (
+      competition.isActive === true &&
+      now <= registerTimeDate &&
+      competition.mode.toString().toLowerCase() === "public"
+    ) {
+      return "Đang đăng ký";
+    } else if (
+      competition.isActive === true &&
+      now >= startDate &&
+      now <= endDate
+    ) {
+      return "Đang diễn ra";
+    } else if (competition.isActive === true && now < startDate) {
+      return "Đã kích hoạt";
+    }
     return "Đang diễn ra";
   };
   return (
-  
+
     <div
-      className="manage_competition_grid"
-      style={{ gridTemplateColumns: `repeat(${Math.min(competitions.length, 5)}, 1fr)` }}
+      className={
+        competitions.length >= 6 ? "competition_grid" : "competition_grid_1"
+      }
     >
       {competitions.map((competition) => (
         <div
@@ -62,8 +89,8 @@ const ListCompetitionAdmin = () => {
           </div>
         </div>
       ))}
-   
-  </div>
+
+    </div>
   )
 }
 

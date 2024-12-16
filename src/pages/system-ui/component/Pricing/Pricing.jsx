@@ -68,12 +68,13 @@ const Pricing = () => {
                                 <span className="currency"> / giải đấu</span>
                             </div>
                             <button
-                                className="buy-button"
-                                onClick={() => handleBuyClick(pkg)}
-                                disabled={pkg.id === "0"}
+                                className={`buy-button ${id === 0 ? 'disabled' : ''}`}
+                                onClick={() => id !== 0 && handleBuyClick(pkg)} // Prevent click for first package
+                                disabled={id === 0} // Disable button for the first package
                             >
-                                {pkg.id === "0" ? "Miễn phí" : "Mua ngay"}
+                                {id === 0 ? "Miễn phí" : "Mua ngay"}
                             </button>
+
                         </div>
                     ))}
                 </div>

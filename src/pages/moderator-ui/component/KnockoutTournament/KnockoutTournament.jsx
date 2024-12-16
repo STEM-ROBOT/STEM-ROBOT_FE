@@ -4,21 +4,23 @@ import CountdownPopup from '../CountdownPopup/CountdownPopup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { addTeamAssignMatch, getListTeamsKnockout } from '../../../../redux/actions/TeamAction';
+import { getActive } from '../../../../redux/actions/FormatAction';
 
 const KnockoutTournament = () => {
   const dispatch = useDispatch();
   const { competitionId } = useParams();
   const getTeamsmatch = useSelector((state) => state.getTeamknockout);
   const tournamentData = getTeamsmatch?.listTeams?.data?.data;
- console.log(tournamentData)
   const [rounds, setRounds] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const isAddSuccess = useSelector((state) => state.addTeamAssignMatch?.success);
 
   useEffect(() => {
     dispatch(getListTeamsKnockout(competitionId));
-  }, [competitionId, dispatch]);
+    dispatch(getActive(competitionId));
+  }, [competitionId, dispatch,isAddSuccess]);
 
   useEffect(() => {
     if (Array.isArray(tournamentData?.rounds)) {
@@ -121,7 +123,7 @@ const KnockoutTournament = () => {
         ].filter((team) => team.teamId !== 0)
       )
     );
-    
+
     console.log(dataToSave);
     dispatch(addTeamAssignMatch(competitionId, dataToSave))
     setTimeout(() => {
@@ -137,11 +139,11 @@ const KnockoutTournament = () => {
         {
           !tournamentData?.isTeamMatch && (
             <button className="random-draw-button-custom" onClick={handleRandomDraw}>
-            Bốc thăm ngẫu nhiên
-          </button>
+              Bốc thăm ngẫu nhiên
+            </button>
           )
         }
-       
+
 
         {successMessage && <p className="success-message">{successMessage}</p>}
       </div>
@@ -169,13 +171,13 @@ const KnockoutTournament = () => {
         </div>
       ))}
       {
-          !tournamentData?.isTeamMatch && (
-            <button className="save-button-custom" onClick={saveMatchesToDB} disabled={isSaving}>
-        {isSaving ? 'Đang lưu...' : 'Lưu'}
-      </button>
-          )
-        }
-     
+        !tournamentData?.isTeamMatch && (
+          <button className="save-button-custom" onClick={saveMatchesToDB} disabled={isSaving}>
+            {isSaving ? 'Đang lưu...' : 'Lưu'}
+          </button>
+        )
+      }
+
 
       {showPopup && <CountdownPopup onComplete={handleCountdownComplete} />}
     </div>
