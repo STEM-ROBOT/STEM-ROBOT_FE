@@ -22,7 +22,7 @@ const RoleAssignment = () => {
   const isAssign  = getRefereesFreeTimes?.listRefereefreetime?.data?.isReferee ;
   const [chiefReferees, setChiefReferees] = useState(1);
   const [referees, setReferees] = useState(1);
-  const [simultaneousReferees, setSimultaneousReferees] = useState(numLocations + 1);
+  const [simultaneousReferees, setSimultaneousReferees] = useState(numLocations);
   const [selectAll, setSelectAll] = useState(false);
   const [selectedReferee, setSelectedReferee] = useState([]); 
   const [updatedRefereeList, setUpdatedRefereeList] = useState([]);
@@ -37,7 +37,7 @@ const RoleAssignment = () => {
   useEffect(() => {
     // Set simultaneousReferees after numLocations is available
     if (numLocations > 0) {
-      setSimultaneousReferees(numLocations + 1);
+      setSimultaneousReferees(numLocations );
     }
   }, [numLocations]);
 
@@ -77,52 +77,75 @@ const RoleAssignment = () => {
   }, [refereeList, chiefReferees, referees, simultaneousReferees, isAssign]);
 
   const handleRoleChange = (id, newRole) => {
-    setUpdatedRefereeList((prevList) =>
-      prevList.map((referee) =>
-        referee.id === id ? { ...referee, role: newRole } : referee
-      )
+    const requiredChiefReferees = chiefReferees * simultaneousReferees;
+    const requiredRegularReferees = referees * simultaneousReferees;
+  
+    const updatedList = updatedRefereeList.map((referee) =>
+      referee.id === id ? { ...referee, role: newRole } : referee
     );
+  
+    const chiefRefereesAssigned = updatedList.filter(
+      (referee) => referee.role === "MRF"
+    ).length;
+    const regularRefereesAssigned = updatedList.filter(
+      (referee) => referee.role === "SRF"
+    ).length;
+  
+    if (chiefRefereesAssigned < requiredChiefReferees) {
+      toast.error(
+        `Không đủ số trọng tài chính! Cần ${requiredChiefReferees}, hiện tại chỉ có ${chiefRefereesAssigned}.`
+      );
+      return;
+    }
+  
+    if (regularRefereesAssigned < requiredRegularReferees) {
+      toast.error(
+        `Không đủ số trọng tài viên! Cần ${requiredRegularReferees}, hiện tại chỉ có ${regularRefereesAssigned}.`
+      );
+      return;
+    }
+  
+    setUpdatedRefereeList(updatedList);
   };
+  
 
   const handleConfirm = () => {
     const requiredChiefReferees = chiefReferees * simultaneousReferees;
     const requiredRegularReferees = referees * simultaneousReferees;
 
-    let chiefRefereesAssigned = 0;
-    let regularRefereesAssigned = 0;
+    const chiefRefereesAssigned = updatedRefereeList.filter(
+        (referee) => referee.role === "MRF" && referee.selected
+    ).length;
 
-    const autoAssignedReferees = updatedRefereeList.map((referee) => {
-      if (chiefRefereesAssigned < requiredChiefReferees) {
-        chiefRefereesAssigned++;
-        return { ...referee, role: "MRF", selected: true };
-      } else if (regularRefereesAssigned < requiredRegularReferees) {
-        regularRefereesAssigned++;
-        return { ...referee, role: "SRF", selected: true };
-      } else {
-        return { ...referee, selected: false }; // Deselect others
-      }
-    });
+    const regularRefereesAssigned = updatedRefereeList.filter(
+        (referee) => referee.role === "SRF" && referee.selected
+    ).length;
 
-    setUpdatedRefereeList(autoAssignedReferees);
-
-    const chiefRefereesRemaining = requiredChiefReferees - chiefRefereesAssigned;
-    const regularRefereesRemaining = requiredRegularReferees - regularRefereesAssigned;
-
-    if (chiefRefereesRemaining <= 0 && regularRefereesRemaining <= 0) {
-      saveRefereesToDB(autoAssignedReferees);
-    } else {
-      alert(
-        `Invalid selection!\n- Trọng tài chính: cần ${requiredChiefReferees}, đã chọn ${chiefRefereesAssigned}, còn thiếu ${chiefRefereesRemaining}\n` +
-        `- Trọng tài viên: cần ${requiredRegularReferees}, đã chọn ${regularRefereesAssigned}, còn thiếu ${regularRefereesRemaining}`
-      );
+    // Kiểm tra số lượng trọng tài chính
+    if (chiefRefereesAssigned < requiredChiefReferees) {
+        toast.error(
+            `Không đủ số trọng tài chính! Yêu cầu ${requiredChiefReferees}, hiện tại chỉ chọn ${chiefRefereesAssigned}.`
+        );
+        return;
     }
+
+    // Kiểm tra số lượng trọng tài viên
+    if (regularRefereesAssigned < requiredRegularReferees) {
+        toast.error(
+            `Không đủ số trọng tài viên! Yêu cầu ${requiredRegularReferees}, hiện tại chỉ chọn ${regularRefereesAssigned}.`
+        );
+        return;
+    }
+
+    // Nếu số lượng hợp lệ, tiếp tục lưu vào cơ sở dữ liệu
+    saveRefereesToDB();
   };
 
   const handleSimultaneousRefereesChange = (value) => {
-    if (value > numLocations) {
+    if (value >= numLocations) {
       setSimultaneousReferees(value);
     } else {
-      toast.error(`Số đội ngũ trọng tài phải lớn hơn ${numLocations}.`);
+      toast.error(`Số đội ngũ trọng tài phải lớn hơn hoặc bằng ${numLocations}.`);
     }
   };
 
@@ -133,7 +156,7 @@ const RoleAssignment = () => {
         refereeId: referee.id,
         role: referee.role || "SRF",
       }));
-
+     console.log(selectedReferees)
     api
       .post(
         `/api/referees/${competitionId}/assign-referees?numberTeamReferee=${simultaneousReferees}&numberSubReferee=${referees}`,

@@ -48,6 +48,7 @@ import TeamCompetitionAdhesion from "../pages/moderator-ui/component/TournamentA
 import TeamAdhesionView from "../pages/moderator-ui/component/TournamentAdhesionDetail/TeamAdhesionView/TeamAdhesionView";
 import TeamSchedule from "../pages/moderator-ui/component/TournamentAdhesionDetail/TeamSchedule/TeamSchedule";
 
+
 export const tournamentChildren = [
   {
     path: "format",
@@ -81,6 +82,7 @@ export const tournamentChildren = [
     path: "groupstage",
     element: <PrivateRoute element={<GroupAllocation />} requiredRole="MD" />,
   },
+  
 ];
 
 export const tournamentRoutes = [

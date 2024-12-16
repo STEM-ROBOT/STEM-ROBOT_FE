@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addRefereeSchedule, getRefereeSchedule } from '../../../../redux/actions/RefereeAction';
 import { getActive } from '../../../../redux/actions/FormatAction';
 import CountdownPopup from '../CountdownPopup/CountdownPopup';
+import { toast } from 'react-toastify';
 
 const RefereeAssignment = () => {
     const { competitionId } = useParams();
@@ -101,27 +102,43 @@ const RefereeAssignment = () => {
     const handleUpdate = (roundIndex, matchIndex, field, value) => {
         const updatedData = JSON.parse(JSON.stringify(data)); // Deep clone data
         const selectedMatch = updatedData.rounds[roundIndex].matches[matchIndex];
-
-        // Check for time conflicts before updating
-        const isMainReferee = field === 'mainReferee';
-        const matchTime = selectedMatch.timeIn;
-
-        if (checkTimeConflict(updatedData.rounds[roundIndex], matchTime, value.id, isMainReferee)) {
-            alert('Trọng tài này đã được sắp xếp cho trận đấu khác tại cùng thời gian!');
+    
+        // Kiểm tra nếu trọng tài đã được gán trong trận đấu
+        const isAlreadyAssigned =
+            selectedMatch.mainReferee?.id === value?.id || // Đã là trọng tài chính
+            selectedMatch.matchRefereesdata.some((ref) => ref.id === value?.id); // Đã là trọng tài phụ
+    
+        if (isAlreadyAssigned) {
+            toast.error('Trọng tài này đã được gán cho trận đấu này!');
             return;
         }
-
-        // Proceed with update if no conflict
+    
+        // Kiểm tra xung đột thời gian trước khi cập nhật
+        const isMainReferee = field === 'mainReferee';
+        const matchTime = selectedMatch.timeIn;
+    
+        if (checkTimeConflict(updatedData.rounds[roundIndex], selectedMatch.date, matchTime, value.id, isMainReferee)) {
+            toast.error('Trọng tài này đã bị trùng lịch tại trận khác!');
+            return;
+        }
+    
+        // Cập nhật nếu không có xung đột
         if (isMainReferee) {
             updatedData.rounds[roundIndex].matches[matchIndex][field] = value;
         } else {
             updatedData.rounds[roundIndex].matches[matchIndex].matchRefereesdata[value.index] = value.ref;
         }
-
+    
         setData(updatedData);
     };
+    
+    
 
     const prepareDataForSave = () => {
+        if (!data || data.rounds.some(round => round.matches.some(match => !match.mainReferee || match.matchRefereesdata.length < numMatchReferees))) {
+            toast.error('Vui lòng bốc thăm trọng tài trước khi lưu!');
+            return;
+        }
         const result = [];
 
         data?.rounds.forEach((round) => {
@@ -193,6 +210,7 @@ const RefereeAssignment = () => {
                             <select
                                 className="referee-assignment-main-referee-select"
                                 value={match.mainReferee?.id || ''}
+                                disabled
                                 onChange={(e) =>
                                     handleUpdate(roundIndex, matchIndex, 'mainReferee', data.referees.find(ref => ref.id === parseInt(e.target.value, 10)))
                                 }
@@ -209,6 +227,7 @@ const RefereeAssignment = () => {
                                 <select
                                     className="referee-assignment-match-referee-select"
                                     key={refIndex}
+                                    disabled
                                     value={match.matchRefereesdata[refIndex]?.id || ''}
                                     onChange={(e) =>
                                         handleUpdate(roundIndex, matchIndex, 'matchRefereesdata', { index: refIndex, ref: data.matchReferees.find(ref => ref.id === parseInt(e.target.value, 10)) })

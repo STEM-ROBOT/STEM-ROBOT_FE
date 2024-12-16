@@ -84,6 +84,23 @@ const DetailBar = ({ league, setTabActive, tabActive }) => {
                 {league?.createDate?.replace("T", " ").slice(0, -3)}'
               </span>
             </div>
+            <div
+              className={`league_detail`}
+              style={{
+                marginBottom: "10px",
+              }}
+            >
+              <span
+                style={{
+                  backgroundColor: "#fff",
+                  color: "#024a70",
+                  borderRadius: "7px",
+                  padding: "0 5px",
+                }}
+              >
+                {league?.phoneNumber}'
+              </span>
+            </div>
             <div className="bar_stats">
               <div className="tooltip">
                 <span>👥 {league?.contestant}</span>
