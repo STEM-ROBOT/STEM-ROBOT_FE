@@ -20,7 +20,7 @@ const MatchProgess = ({
   }, [scoreTeamDetailApi]);
   useEffect(() => {
     const timer = setTimeout(() => {}, 2000);
-    setActive(true);
+     setActive(true);
     const container = containerRef.current;
     // Hàm kiểm tra vị trí cuộn trang của view_data_match_container
     const handleScroll = () => {
@@ -66,9 +66,10 @@ const MatchProgess = ({
 
     // Sort by timeScore in ascending order
     mergedActivities.sort((a, b) => {
-      return parseInt(a.timeScore) - parseInt(b.timeScore);
+      return parseInt(a.timeScore.replace(":", "")) - parseInt(b.timeScore.replace(":", ""));
     });
     return mergedActivities;
+    
   }
   return (
     <div className="view_data_match_container" ref={containerRef}>

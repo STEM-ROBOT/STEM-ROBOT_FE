@@ -93,7 +93,7 @@ const Header = () => {
     }
   }, [InforAccountIDs.success, isAdd, isLogin]);
   useEffect(() => {
-    console.log(fetchedUserId);
+ 
 
     const handleData = (data) => {
       setNotificationData(data)
@@ -209,7 +209,7 @@ const Header = () => {
   useEffect(() => {
     setAuInfo(TokenService.getUser());
   }, [signIn]);
-  console.log(notificationData)
+ 
   return (
     <div className={`header-outer ${isVisible ? "header-visible" : ""}`}>
       <div className="header-container">
