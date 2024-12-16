@@ -49,7 +49,7 @@ export const logout = (navigate) => (dispatch) => {
     navigate("/home");
 };
 
-export const registerUser = (user,setSignUp) => async (dispatch) => {
+export const registerUser = (user,setSignUp,setSignIn) => async (dispatch) => {
     try {
       dispatch({ type: REGISTER_USER_REQUEST });
   
@@ -57,6 +57,7 @@ export const registerUser = (user,setSignUp) => async (dispatch) => {
   
       dispatch({ type: REGISTER_USER_SUCCESS, payload: data });
       setSignUp(false)
+      setSignIn(true)
       toast.success("Thêm thành công")
     } catch (error) {
       const message =

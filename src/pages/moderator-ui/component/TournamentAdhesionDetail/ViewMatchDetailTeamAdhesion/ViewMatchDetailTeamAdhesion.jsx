@@ -3,22 +3,60 @@ import "./ViewMatchDetailTeamAdhesion.css";
 import { FaCheckCircle } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
 import LoadingComponent from "../../../../system-ui/component/Loading/LoadingComponent";
-const ViewMatchDetailTeamAdhesion = ({ halfAction, view }) => {
-  // const sortedActions = halfAction?.halfActionTeam?.sort((a, b) => {
-  //   if (
-  //     a.status?.toLocaleLowerCase() === "pending" &&
-  //     b.status?.toLocaleLowerCase() !== "pending"
-  //   ) {
-  //     return 1; // Đưa "pending" xuống dưới
-  //   }
-  //   if (
-  //     a.status?.toLocaleLowerCase() !== "pending" &&
-  //     b.status?.toLocaleLowerCase() === "pending"
-  //   ) {
-  //     return -1; // Đưa các trạng thái khác lên trên
-  //   }
-  //   return 0; // Giữ nguyên thứ tự nếu cả hai đều "pending" hoặc không
-  // });
+const ViewMatchDetailTeamAdhesion = ({ halfActions, view }) => {
+  const halfAction = {
+    id:1,
+    teamName: "Eagles United",
+    teamImage: "https://th.bing.com/th/id/R.282a436ecbac6c3e756a1160d0067660?rik=HTebDQ6%2bKRcJ2g&pid=ImgRaw&r=0", // Placeholder image link
+    teamMatchResult: "3-1",
+    halfActionTeam: [
+      {
+        id: 1,
+        scoreTime: "10:15",
+        halfName: "1",
+        scoreType: "Điểm cộng",
+        scorePoint: 2,
+        scoreDescription: "Cầu thủ A ghi bàn từ pha sút phạt.",
+        status: "accept",
+      },
+      {
+        id: 2,
+        scoreTime: "25:30",
+        halfName: "1",
+        scoreType: "Điểm trừ",
+        scorePoint: 1,
+        scoreDescription: "Lỗi việt vị của cầu thủ B.",
+        status: "cancel",
+      },
+      {
+        id: 3,
+        scoreTime: "40:05",
+        halfName: "2",
+        scoreType: "Điểm cộng",
+        scorePoint: 3,
+        scoreDescription: "Pha sút xa đẹp mắt từ cầu thủ C.",
+        status: "accept",
+      },
+      {
+        id: 4,
+        scoreTime: "55:20",
+        halfName: "2",
+        scoreType: "Điểm cộng",
+        scorePoint: 1,
+        scoreDescription: "Pha phạt góc dẫn đến bàn thắng của cầu thủ D.",
+        status: "pending",
+      },
+      {
+        id: 5,
+        scoreTime: "70:10",
+        halfName: "2",
+        scoreType: "Điểm trừ",
+        scorePoint: 2,
+        scoreDescription: "Lỗi phạm quy trong khu vực cấm địa.",
+        status: "cancel",
+      },
+    ],
+  };
 
   return (
     <div className="schedule_manager_body_item team">
@@ -80,7 +118,7 @@ const ViewMatchDetailTeamAdhesion = ({ halfAction, view }) => {
         <div className="view_action_body_table team">
           {halfAction?.halfActionTeam?.map((action, i) => (
             <div key={i} className="schedule_view_action_item data">
-              {idLoadAction == action.id ? (
+              {1 === action.id ? (
                 <img
                   className="action_confirm_load"
                   src="https://i.gifer.com/embedded/download/PG23.gif"

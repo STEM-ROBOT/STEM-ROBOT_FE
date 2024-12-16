@@ -363,8 +363,8 @@ const Header = () => {
           </div>
         )}
       </div>
-      {signIn === true && <SignIn setSignIn={setSignIn} />}
-      {signUp === true && <SignUp setSignUp={setSignUp} />}
+      {signIn === true && <SignIn setSignIn={setSignIn} setSignUp={setSignUp} />}
+      {signUp === true && <SignUp setSignUp={setSignUp} setSignIn={setSignIn} />}
     </div>
   );
 };
