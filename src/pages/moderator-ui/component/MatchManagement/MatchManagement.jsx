@@ -6,6 +6,7 @@ import { addTimeAssignMatch, getTeamAssignMatch } from '../../../../redux/action
 import { toast } from 'react-toastify';
 import { getActive } from '../../../../redux/actions/FormatAction';
 import LoadingComponent from '../../../system-ui/component/Loading/LoadingComponent';
+import CountdownPopup from '../CountdownPopup/CountdownPopup';
 
 const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
 
@@ -25,7 +26,7 @@ const MatchManagement = () => {
     const [isAssigned, setIsAssigned] = useState(false);
     const isAddSuccess = useSelector((state) => state.addTimeAssignMatch?.success);
     const loadingGet = useSelector((state) => state.getTeamAssignMatch.loading);
-
+    const [showPopup, setShowPopup] = useState(false);
 
 
     useEffect(() => {
@@ -51,9 +52,9 @@ const MatchManagement = () => {
             setFiledCount(clonedData?.locations?.length || 1);
             if (clonedData?.startTime) {
                 const date = new Date(clonedData.startTime);
-                date.setDate(date.getDate() + 1); 
-                
-                setStartDate(date.toISOString().split('T')[0]); 
+                date.setDate(date.getDate() + 1);
+
+                setStartDate(date.toISOString().split('T')[0]);
             }
         }
     }, [dataTeamMatch]);
@@ -182,6 +183,14 @@ const MatchManagement = () => {
     };
 
 
+    const handleAutoAssignWithPopup = () => {
+        setShowPopup(true);
+    };
+
+    const handleCountdownComplete = () => {
+        setShowPopup(false);
+        handleAutoAssign();
+    };
 
     const handleUpdate = (roundId, tableIndex, matchIndex, field, value) => {
         // Use deep cloning here to ensure immutability
@@ -232,9 +241,9 @@ const MatchManagement = () => {
             toast.error("Vui lòng sắp xếp trước khi lưu!");
             return;
         }
-    
+
         const { startDate, startTime, endTime, breakTimeMatch, breakTimeHaft, haftDuration, numberHaft } = config;
-    
+
         // Validation for configuration values
         if (!startDate) {
             toast.error("Ngày bắt đầu không được để trống!");
@@ -252,20 +261,20 @@ const MatchManagement = () => {
             toast.error("Thời gian và số hiệp phải lớn hơn 0!");
             return;
         }
-    
+
         const matchDuration = (numberHaft * haftDuration) + ((numberHaft - 1) * breakTimeHaft);
-    
+
         const convertMinutesToTimeSpan = (minutes) => {
             const hours = Math.floor(minutes / 60);
             const mins = minutes % 60;
             return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:00`;
         };
-    
+
         const convertTimeToTimeSpan = (time) => {
             const [hours, minutes] = time.split(':').map(Number);
             return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`;
         };
-    
+
         const mappedData = {
             timeOfMatch: convertMinutesToTimeSpan(matchDuration),
             timeBreak: convertMinutesToTimeSpan(breakTimeMatch),
@@ -277,10 +286,10 @@ const MatchManagement = () => {
             startTime: new Date(startDate).toISOString(),
             matchs: []
         };
-    
+
         let isValid = true;
         const matchesByLocation = {}; // To store matches grouped by location for validation
-    
+
         Object.keys(data).forEach((stageKey) => {
             const stage = data[stageKey];
             (stage.rounds || []).forEach((round) => {
@@ -291,20 +300,20 @@ const MatchManagement = () => {
                             isValid = false;
                             toast.error(`Trận đấu ${match.teamA} - ${match.teamB} có ngày nhỏ hơn ngày bắt đầu!`);
                         }
-    
+
                         // Group matches by location for same-location time overlap validation
                         const locationId = match.locationId;
                         if (!matchesByLocation[locationId]) {
                             matchesByLocation[locationId] = [];
                         }
-    
+
                         matchesByLocation[locationId].push({
                             matchId: match.matchId,
                             date: match.date,
                             time: match.time,
                             round: round.round,
                         });
-    
+
                         mappedData.matchs.push({
                             id: match.matchId,
                             startDate: match.date ? new Date(match.date).toISOString() : new Date().toISOString(),
@@ -316,16 +325,16 @@ const MatchManagement = () => {
                 });
             });
         });
-    
+
         // Validate matches within the same location for time overlap
         Object.keys(matchesByLocation).forEach((locationId) => {
             const matches = matchesByLocation[locationId];
             matches.sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`)); // Sort matches by date and time
-    
+
             for (let i = 0; i < matches.length - 1; i++) {
                 const currentMatchEndTime = addTime(matches[i].time, matchDuration);
                 const nextMatchStartTime = matches[i + 1].time;
-    
+
                 if (
                     matches[i].date === matches[i + 1].date &&
                     new Date(`${matches[i].date}T${currentMatchEndTime}`) > new Date(`${matches[i + 1].date}T${nextMatchStartTime}`)
@@ -337,7 +346,7 @@ const MatchManagement = () => {
                 }
             }
         });
-    
+
         // Validate that matches in later rounds don't start before matches in earlier rounds
         const allMatches = mappedData.matchs.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
         for (let i = 0; i < allMatches.length - 1; i++) {
@@ -346,17 +355,17 @@ const MatchManagement = () => {
                 toast.error("Trận đấu ở vòng sau không được diễn ra trước vòng trước!");
             }
         }
-    
+
         if (!isValid) {
             return; // Stop if validation fails
         }
-    
+
         console.log(mappedData);
-    
+
         // Dispatch the data to save
         dispatch(addTimeAssignMatch(competitionId, mappedData));
     };
-    
+
 
     const stageData = data[currentStage]?.rounds || [];
 
@@ -497,9 +506,10 @@ const MatchManagement = () => {
 
                                 </div>
                             </div>
-                            <button className="match-management-primary-button" onClick={handleAutoAssign}>
+                            <button className="match-management-primary-button" onClick={handleAutoAssignWithPopup}>
                                 Sắp xếp tự động
                             </button>
+
                         </div>
                     )}
 
@@ -621,6 +631,8 @@ const MatchManagement = () => {
                 </>
 
             }
+            {showPopup && <CountdownPopup onComplete={handleCountdownComplete} />}
+
 
         </div>
     );

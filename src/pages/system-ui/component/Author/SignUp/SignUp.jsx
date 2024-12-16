@@ -9,7 +9,7 @@ import api from "../../../../../config";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../../../../redux/actions/AuthenAction";
 
-const SignUp = ({ setSignUp }) => {
+const SignUp = ({ setSignUp,setSignIn }) => {
   const [googleInfo, setGoogleInfo] = useState(null);
   const [Email, SetEmail] = useState("");
   const [Password, SetPassword] = useState("");
@@ -49,7 +49,7 @@ const SignUp = ({ setSignUp }) => {
       image:
         "https://static.vecteezy.com/system/resources/previews/009/734/564/non_2x/default-avatar-profile-icon-of-social-media-user-vector.jpg",
     };
-    dispatch(registerUser(data, setSignUp));
+    dispatch(registerUser(data, setSignUp,setSignIn));
   };
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);

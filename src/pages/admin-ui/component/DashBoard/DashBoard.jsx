@@ -108,7 +108,13 @@ const Dashboard = () => {
         console.log("Error fetching tournament data:", error);
       });
   }, []);
-
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    }).format(amount);
+  };
+  
   return (
     <div className="dashboard_full_page_container">
       <div className="dashboard_full_page_title">Thống kê</div>
@@ -119,7 +125,7 @@ const Dashboard = () => {
           </div>
           <div>
             <h2>Doanh thu</h2>
-            <div>{revenueData}đ</div>
+            <div>{formatCurrency(revenueData)}</div>
           </div>
         </div>
 
