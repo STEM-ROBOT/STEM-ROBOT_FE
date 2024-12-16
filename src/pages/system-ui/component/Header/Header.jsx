@@ -46,7 +46,6 @@ const Header = () => {
   const InforAccountIDs = useSelector((state) => state.getAccountID);
   const isLogin = useSelector((state) => state.userLogin.success);
   const isAdd = useSelector((state) => state.ChangeInfor.loading)
-  console.log(isAdd)
   useEffect(() => {
     if (useRole === "AD") {
       navigate("/admin");

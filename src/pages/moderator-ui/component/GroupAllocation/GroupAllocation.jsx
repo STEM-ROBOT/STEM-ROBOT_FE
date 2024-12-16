@@ -6,6 +6,7 @@ import { AddTeamsTable, getTeamsTable } from '../../../../redux/actions/TeamActi
 import { useParams } from 'react-router-dom';
 import { getActive } from '../../../../redux/actions/FormatAction';
 import LoadingComponent from '../../../system-ui/component/Loading/LoadingComponent';
+import CountdownPopup from '../CountdownPopup/CountdownPopup';
 
 const GroupAllocation = () => {
     const { competitionId } = useParams();
@@ -28,6 +29,7 @@ const GroupAllocation = () => {
     const teamOptions = Array.from({ length: 6 }, (_, i) => Math.pow(2, i + 1));
     const tablesPerPage = 4;
     const totalPages = Math.ceil(tables.length / tablesPerPage);
+    const [showPopup, setShowPopup] = useState(false);
 
     useEffect(() => {
         dispatch(getTeamsTable(competitionId));
@@ -47,6 +49,17 @@ const GroupAllocation = () => {
         setRandomizeEnabled(data?.isTable)
         setTotalTeamsToNextRound(data?.numberTeamNextRound)
     }, [data, randomizeEnabled, data?.isTable]);
+
+    const handleRandomizeWithPopup = () => {
+        setShowPopup(true); // Show the countdown popup
+    };
+
+    const handleCountdownComplete = () => {
+        setShowPopup(false); // Hide the popup
+        randomizeGroups(teams, tables); // Call the randomize logic
+
+    };
+
 
     const randomizeGroups = (teams, tables) => {
         const shuffledTeams = [...teams].sort(() => Math.random() - 0.5);
@@ -185,10 +198,12 @@ const GroupAllocation = () => {
                         </div>
 
                         {!randomizeEnabled && (
-                            <button className="custom-randomize-btn" onClick={() => randomizeGroups(teams, tables)}>
+                            <button className="custom-randomize-btn" onClick={handleRandomizeWithPopup}>
                                 Chia đội ngẫu nhiên
                             </button>
                         )}
+                        {showPopup && <CountdownPopup onComplete={handleCountdownComplete} />}
+
 
                         {error && <div className="custom-error-message">{error}</div>}
 

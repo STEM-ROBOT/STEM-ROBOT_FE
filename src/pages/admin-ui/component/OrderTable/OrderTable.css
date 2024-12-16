@@ -59,13 +59,18 @@
 
 .order_table_main {
     width: 100%;
+    
     border-collapse: collapse;
     background-color: #fff;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
-
+.order_table_container_scroll{
+    max-height: 75vh;
+    overflow-y: auto;
+    border-radius: 8px;
+}
 .order_table_main th,
 .order_table_main td {
     padding: 15px;
