@@ -11,10 +11,10 @@ export const login = (user, navigate, setSignIn) => async (dispatch) => {
 
         const { data } = await api.post("/api/auth/login", user);
 
-        if (data.result.token) {
-            const token = jwtDecode(data.result.token);
+        if (data.token) {
+            const token = jwtDecode(data.token);
             console.log(token)
-            TokenService.setUser(data.result.token);
+            TokenService.setUser(data.token);
             TokenService.setUserId(token.Id);
             TokenService.setUserRole(token.role);
             TokenService.setUserName(token.unique_name);

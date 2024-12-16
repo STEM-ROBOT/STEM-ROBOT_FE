@@ -23,8 +23,13 @@ import GroupAllocation from '../pages/moderator-ui/component/GroupAllocation/Gro
 import PrivateRoute from './PrivateRoute';
 import ManageArena from '../pages/moderator-ui/component/ManageArena/ManageArena';
 import TeamRegister from '../pages/moderator-ui/component/TeamRegister/TeamRegister';
+import { Navigate } from 'react-router-dom';
 
 export const adminChildren = [
+     {
+        path: "",
+        element: <Navigate to="dashboard" />,
+      },
     { path: "dashboard", element: <DashBoard /> },
     { path: "manage-user", element: <CustomerTable /> },
     { path: "manage-order", element: <OrderTable /> },
