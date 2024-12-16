@@ -15,8 +15,12 @@ const ViewChartAndAction = ({ matchData, setShowPopup }) => {
   const [popupActive, setActive] = useState(false);
   const [loadApiConnectClient, setLoadApiConnectClient] = useState(true);
   const [scoreTeamDetailApi, setScoreTeamDetailApi] = useState([]);
+  const [AverageScoreApi, setAverageScoreApi] = useState({});
+
   const previousDataRef = useRef(null);
+  const previousAverageScoreDataRef = useRef(null);
   const hubConnectionRef = useRef(null);
+  const hubAverageScoreConnectionRef = useRef(null);
   const [timeCountDown, setTimeCountDown] = useState(null);
 
   const [timeLeft, setTimeLeft] = useState({
@@ -39,6 +43,17 @@ const ViewChartAndAction = ({ matchData, setShowPopup }) => {
         previousDataRef.current = data;
       }
     };
+    const handleDataData = (data) => {
+      console.log(data);
+      const dataString = JSON.stringify(data);
+      const previousAverageScoreDataRef = JSON.stringify(previousDataRef.current);
+
+      if (dataString !== previousAverageScoreDataRef) {
+        console.log(data);
+        setAverageScoreApi(data);
+        previousAverageScoreDataRef.current = data;
+      }
+    };
     const connectHubClient = () => {
       setLoadApiConnectClient(false);
       connectHub({
@@ -46,6 +61,12 @@ const ViewChartAndAction = ({ matchData, setShowPopup }) => {
         onDataReceived: handleData,
       }).then((hubConnection) => {
         hubConnectionRef.current = hubConnection;
+      });
+      connectHub({
+        client: `team-average-score/${teamId}`,
+        onDataReceived: handleDataData,
+      }).then((hubConnection) => {
+        hubAverageScoreConnectionRef.current = hubConnection;
       });
     };
     const connectClient = () => {
@@ -67,8 +88,12 @@ const ViewChartAndAction = ({ matchData, setShowPopup }) => {
             console.log(response.data);
             setScoreTeamDetailApi(response.data);
             previousDataRef.current = response.data;
+            if (hubConnectionRef.current) {
+              hubConnectionRef.current.stop();
+              hubConnectionRef.current = null;
+            }
           } else if (response.data === "notstarted") {
-            setNoPlayMatch(true);
+            // setNoPlayMatch(true);
             if (hubConnectionRef.current) {
               hubConnectionRef.current.stop();
               hubConnectionRef.current = null;
@@ -78,7 +103,39 @@ const ViewChartAndAction = ({ matchData, setShowPopup }) => {
           }
         })
         .catch((err) => {
-          console.log(err);
+          alert(err);
+        });
+        api
+        .get(
+          `/api/TeamMatch/teamMatch-statistical?teamId=${teamId}&matchId=${matchData.matchId}`
+        )
+        .then((response) => {
+          console.log(response.data);
+          if (response.data === "timeout") {
+            setLoadApiConnectClient(true);
+            if (hubAverageScoreConnectionRef.current) {
+              hubAverageScoreConnectionRef.current.stop();
+              hubAverageScoreConnectionRef.current = null;
+            }
+          } else if (response.data !== "notstarted") {
+            console.log(response.data);
+            setAverageScoreApi(response.data)
+            if (hubAverageScoreConnectionRef.current) {
+              hubAverageScoreConnectionRef.current.stop();
+              hubAverageScoreConnectionRef.current = null;
+            }
+          } else if (response.data === "notstarted") {
+            // setNoPlayMatch(true);
+            if (hubAverageScoreConnectionRef.current) {
+              hubAverageScoreConnectionRef.current.stop();
+              hubAverageScoreConnectionRef.current = null;
+            }
+          } else {
+            setTimeCountDown(response.data);
+          }
+        })
+        .catch((err) => {
+          alert(err);
         });
     };
 
@@ -91,8 +148,12 @@ const ViewChartAndAction = ({ matchData, setShowPopup }) => {
       if (hubConnectionRef.current) {
         hubConnectionRef.current.stop();
       }
+      if (hubAverageScoreConnectionRef.current) {
+        hubAverageScoreConnectionRef.current.stop();
+      }
     };
   }, [loadApiConnectClient]);
+
   useEffect(() => {
     if (timeCountDown != null) {
       if (hubConnectionRef.current) {
@@ -166,7 +227,7 @@ const ViewChartAndAction = ({ matchData, setShowPopup }) => {
             halfAction={scoreTeamDetailApi}
             view={"left"}
           />
-          <ChartPerformance />
+          <ChartPerformance data={AverageScoreApi} />
         </div>
       </div>
     </div>

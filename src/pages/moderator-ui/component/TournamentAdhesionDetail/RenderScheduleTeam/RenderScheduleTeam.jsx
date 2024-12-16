@@ -43,10 +43,13 @@ const RenderScheduleTeam = ({ week, scheduleData, setMatchView,setShowPopup }) =
     hourHeight;
   console.log(totalDayHeight);
   const ShowMatchCard = (match) => {
-    // if (match.status) {
+    const now = new Date();
+    const startTimeDate = new Date(match.startTime);
+    
+    if (startTimeDate < now) {
       setMatchView(match);
       setShowPopup(true);
-    // }
+    }
   };
   return (
     <div className="schedule_week">

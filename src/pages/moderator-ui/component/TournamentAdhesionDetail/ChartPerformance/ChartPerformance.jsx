@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import ReactApexChart from "react-apexcharts";
 
-const ChartPerformance = () => {
+const ChartPerformance = ({data}) => {
   const series = [50]; // Giá trị hiệu suất (%)
 
   const radialBarOptions = {
@@ -58,19 +58,22 @@ const ChartPerformance = () => {
 
   const matchTime = [
     1, 2, 3, 4, 5, 6, 7, 8, 9,
-    "10:30", 11, 12, 13, 14, 15,
-    
-    
+    10, 11, 12, 13, 14, 15,
+    16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+    26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+    36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+    46, 47, 48, 49, 50, 51, 52, 53, 54, 55,
+    56, 57, 58, 59, 60
   ]
   
   const positivePoints = [1, 0, 3, 1, 0, 10, 1, 2, 5, 3, 4, 0, 2, 6, 8]; // Thêm điểm cộng
   const negativePoints = [0, -1, 0, 0, -1, 0, -4, 0, -2, -3, -1, 0, -2, 0, -5]; // Thêm điểm trừ
 
   // Dữ liệu cho Recharts
-  const chartData = matchTime.map((time, index) => ({
+  const chartData = data?.time?.map((time, index) => ({
     time,
-    positive: positivePoints[index],
-    negative: negativePoints[index],
+    positive: data?.bonus[index],
+    negative: data?.minus[index],
   }));
 
   return (
@@ -127,21 +130,21 @@ const ChartPerformance = () => {
                 value,
                 `${name}`,
               ]}
-              labelFormatter={(label) => `Phút thứ ${label}`}
+              labelFormatter={(label) => `Trong Phút Thứ : ${label}`}
             />
             <Legend verticalAlign="top" height={36} />
             <Line
               type="monotone"
               dataKey="positive"
               stroke="#82ca9d"
-              name="Điểm cộng"
+              name="Trung Bình Điểm cộng"
               activeDot={{ r: 8 }}
             />
             <Line
               type="monotone"
               dataKey="negative"
               stroke="#ff6347"
-              name="Điểm trừ"
+              name="Trung Bình Điểm trừ"
             />
           </LineChart>
         </ResponsiveContainer>

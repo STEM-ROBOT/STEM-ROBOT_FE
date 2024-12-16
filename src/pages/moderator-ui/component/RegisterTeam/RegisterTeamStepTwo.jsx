@@ -170,7 +170,10 @@ const RegisterTeamStepTwo = ({ setRegisterTeam, teamInfo }) => {
                     {contestant.gender}
                   </div>
                   <div className="table_cell">
-                    {contestant.schoolName.split("SchoolName: ")[1].trim()}
+                    {contestant.schoolName
+                    // .split("SchoolName: ")[1].trim()
+                    }
+
                   </div>
                   <div className="table_cell">
                     {contestant.startTime.slice(0, 16).replace("T", " ")}
