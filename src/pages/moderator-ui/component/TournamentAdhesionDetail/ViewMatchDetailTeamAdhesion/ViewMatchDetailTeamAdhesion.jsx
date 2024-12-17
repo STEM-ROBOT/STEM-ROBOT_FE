@@ -3,61 +3,8 @@ import "./ViewMatchDetailTeamAdhesion.css";
 import { FaCheckCircle } from "react-icons/fa";
 import { ImCancelCircle } from "react-icons/im";
 import LoadingComponent from "../../../../system-ui/component/Loading/LoadingComponent";
-const ViewMatchDetailTeamAdhesion = ({ halfActions, view }) => {
-  const halfAction = {
-    id:1,
-    teamName: "Eagles United",
-    teamImage: "https://th.bing.com/th/id/R.282a436ecbac6c3e756a1160d0067660?rik=HTebDQ6%2bKRcJ2g&pid=ImgRaw&r=0", // Placeholder image link
-    teamMatchResult: "3-1",
-    halfActionTeam: [
-      {
-        id: 1,
-        scoreTime: "10:15",
-        halfName: "1",
-        scoreType: "Điểm cộng",
-        scorePoint: 2,
-        scoreDescription: "Cầu thủ A ghi bàn từ pha sút phạt.",
-        status: "accept",
-      },
-      {
-        id: 2,
-        scoreTime: "25:30",
-        halfName: "1",
-        scoreType: "Điểm trừ",
-        scorePoint: 1,
-        scoreDescription: "Lỗi việt vị của cầu thủ B.",
-        status: "cancel",
-      },
-      {
-        id: 3,
-        scoreTime: "40:05",
-        halfName: "2",
-        scoreType: "Điểm cộng",
-        scorePoint: 3,
-        scoreDescription: "Pha sút xa đẹp mắt từ cầu thủ C.",
-        status: "accept",
-      },
-      {
-        id: 4,
-        scoreTime: "55:20",
-        halfName: "2",
-        scoreType: "Điểm cộng",
-        scorePoint: 1,
-        scoreDescription: "Pha phạt góc dẫn đến bàn thắng của cầu thủ D.",
-        status: "pending",
-      },
-      {
-        id: 5,
-        scoreTime: "70:10",
-        halfName: "2",
-        scoreType: "Điểm trừ",
-        scorePoint: 2,
-        scoreDescription: "Lỗi phạm quy trong khu vực cấm địa.",
-        status: "cancel",
-      },
-    ],
-  };
-
+const ViewMatchDetailTeamAdhesion = ({ halfAction, view }) => {
+ 
   return (
     <div className="schedule_manager_body_item team">
       {view === "left" ? (

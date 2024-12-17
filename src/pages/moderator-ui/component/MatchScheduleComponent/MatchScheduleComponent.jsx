@@ -17,25 +17,28 @@ const MatchScheduleComponent = () => {
   const [optionViewMode, setOptionViewMode] = useState([]);
   const [optionViewModeDefault, setOptionViewModeDefault] = useState("TẤT");
   const [showMatchDetail, setShowMatchDetail] = useState(false);
+  const [LoadMatchData, setLoadMatchData] = useState(true);
   const [matchDetailData, setMatchDetailData] = useState();
   useEffect(() => {
-    api
-      .get(`${match_schedule_view + path.competitionId}`)
-      .then((response) => {
-        console.log(response.data);
-        setMatchApi(response.data);
-        setMatchView(response.data);
-        if (optionViewMode.length < 1) {
-          optionViewMode.push({ mode: "TẤT" });
-          for (let i = 0; i < response.data.length; i++) {
-            optionViewMode.push({ mode: response.data[i].round });
+    if (LoadMatchData) {
+      api
+        .get(`${match_schedule_view + path.competitionId}`)
+        .then((response) => {
+          console.log(response.data);
+          setMatchApi(response.data);
+          setMatchView(response.data);
+          if (optionViewMode.length < 1) {
+            optionViewMode.push({ mode: "TẤT" });
+            for (let i = 0; i < response.data.length; i++) {
+              optionViewMode.push({ mode: response.data[i].round });
+            }
           }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+        })
+        .catch((error) => {
+          alert("Đã xảy ra sự cố", error);
+        });
+    }
+  }, [LoadMatchData]);
   const CacuNumberMatch = () => {
     let numberMatch = 0;
     matchApi?.map((round) => {
@@ -127,9 +130,10 @@ const MatchScheduleComponent = () => {
                                 ? "win"
                                 : match.homeTeamResult === "Lose"
                                 ? "lose"
-                                :  match.homeTeamResult === "Draw"
+                                : match.homeTeamResult === "Draw"
                                 ? "draw"
-                                : ""}
+                                : ""
+                            }
                             }`}
                           >
                             {match.homeTeamResult === "Win"
@@ -173,7 +177,8 @@ const MatchScheduleComponent = () => {
                                 ? "lose"
                                 : match.awayTeamResult === "Draw"
                                 ? "draw"
-                                : ""}
+                                : ""
+                            }
                             }`}
                           >
                             {match.awayTeamResult === "Win"

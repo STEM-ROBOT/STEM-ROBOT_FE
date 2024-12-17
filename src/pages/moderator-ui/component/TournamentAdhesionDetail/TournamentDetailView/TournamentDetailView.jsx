@@ -23,7 +23,7 @@ const TournamentDetailView = () => {
   useEffect(() => {
     api.get(tournament_view + tournamentAdhesionId).then((response) => {
       setLeague(response.data.data);
-    });
+    }).catch((error) => {alert("Đã xảy ra sự cố",error)});;
   }, []);
 
   const renderRoutes = (routes) =>

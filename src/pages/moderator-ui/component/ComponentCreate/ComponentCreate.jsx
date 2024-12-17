@@ -104,7 +104,7 @@ const ComponentCreate = () => {
         navigate("/account/my-tournament");
       })
       .catch((error) => {
-        console.error("Lỗi khi tạo giải đấu:", error);
+       alert("Lỗi khi tạo giải đấu:", error);
       });
   };
 

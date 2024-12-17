@@ -27,6 +27,7 @@ const RegisterContestant = () => {
   const [signIn, setSignIn] = useState(false);
   const [signUp, setSignUp] = useState(false);
   const fetchedUserId = TokenService.getUserId();
+  const schoolName = TokenService.getSchoolName();
   const [NotRegistered, setNotRegistered] = useState(false);
   useEffect(() => {
     const loadApi = () => {
@@ -155,6 +156,7 @@ const RegisterContestant = () => {
     const data = {
       name: contestantName,
       email: email,
+      schoolName:schoolName,
       gender: gender,
       phone: phone,
       image: image,
@@ -323,7 +325,9 @@ const RegisterContestant = () => {
                       <div className="table_cell">{contestant.phone}</div>
                       <div className="table_cell">{contestant.gender}</div>
                       <div className="table_cell">
-                        {contestant.schoolName.split("SchoolName: ")[1].trim()}
+                        {contestant.schoolName
+                        // .split("SchoolName: ")[1].trim()
+                        }
                       </div>
                       <div className="table_cell">{contestant.startTime}</div>
                     </div>

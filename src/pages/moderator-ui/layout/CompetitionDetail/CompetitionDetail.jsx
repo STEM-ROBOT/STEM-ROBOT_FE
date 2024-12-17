@@ -47,7 +47,8 @@ const CompetitionDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentSubPath = location.pathname.split("/").pop();
-  const [showTeamWin, setShowTeamWin] = useState(true);
+  const [showTeamWin, setShowTeamWin] = useState(false);
+  const [teamWin, setTeamWin] = useState();
   useEffect(() => {
     api
       .get(
@@ -61,7 +62,7 @@ const CompetitionDetail = () => {
         setFormatId(formatId);
       })
       .catch((error) => {
-        console.log(error);
+        alert(error);
       });
 
     const targetPosition = 285;
@@ -84,7 +85,15 @@ const CompetitionDetail = () => {
 
     requestAnimationFrame(step);
   }, [path.competitionId]);
-  useEffect(() => {}, [true]);
+  useEffect(() => {
+    api.get(`/api/teams/competition/${path.competitionId}`).then((response) => {
+      console.log(response.data);
+      if (response.data) {
+        setTeamWin(response.data);
+        setShowTeamWin(true);
+      }
+    }).catch((error) => {alert("Đã xảy ra sự cố",error)});;
+  }, [true]);
   const renderRoutes = (routes) =>
     routes.map((route, index) => {
       return <Route key={index} path={route.path} element={route.element} />;
@@ -133,7 +142,9 @@ const CompetitionDetail = () => {
             </div>
           ))}
         </div>
-        {/* {showTeamWin && <HappyTeamWin  onClose={() => setShowTeamWin(false)}/>} */}
+        {showTeamWin && (
+          <HappyTeamWin data={teamWin} onClose={() => setShowTeamWin(false)} />
+        )}
         <div className="competition_detail_option">
           <Routes>{renderRoutes(competition_detail_router)}</Routes>
         </div>

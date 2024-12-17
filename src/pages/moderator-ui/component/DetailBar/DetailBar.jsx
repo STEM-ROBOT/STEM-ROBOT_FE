@@ -81,7 +81,7 @@ const DetailBar = ({ league, setTabActive, tabActive }) => {
                   padding: "0 5px",
                 }}
               >
-                {league?.createDate?.replace("T", " ").slice(0, -3)}'
+                {league?.createDate?.replace("T", " ").slice(0, -3)}
               </span>
             </div>
             <div
@@ -98,7 +98,7 @@ const DetailBar = ({ league, setTabActive, tabActive }) => {
                   padding: "0 5px",
                 }}
               >
-                {league?.phoneNumber}'
+                {league?.phoneNumber}
               </span>
             </div>
             <div className="bar_stats">

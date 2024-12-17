@@ -55,7 +55,7 @@ const Countdown = () => {
         setRegisterConfigApi(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        alert("Đã xảy ra sự cố", error);
       });
   }, []);
   useEffect(() => {

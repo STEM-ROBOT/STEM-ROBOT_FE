@@ -15,7 +15,7 @@ const ScoreRefereeMain = () => {
         `/api/competitions/score-competition?competitionID=${storedCompetitionId}`
       )
       .then((response) => {
-        const scoreCompetition= response.data.data.data.scoreCompetition
+        const scoreCompetition = response.data.data.data.scoreCompetition;
         console.log(scoreCompetition);
 
         if (listViewMode?.length < 1) {
@@ -26,6 +26,9 @@ const ScoreRefereeMain = () => {
             listViewMode.push({ mode: scoreCompetition[i].type });
           }
         }
+      })
+      .catch((error) => {
+        alert("Đã xảy ra sự cố", error);
       });
   }, []);
   const changeViewMode = (key) => {

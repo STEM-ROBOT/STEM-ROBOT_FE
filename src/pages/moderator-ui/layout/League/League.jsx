@@ -25,24 +25,34 @@ const League = () => {
 
   useEffect(() => {
     const leagueApi = () => {
+      const params = new URLSearchParams(); // Tạo đối tượng params để lọc linh hoạt
+      
+      if (search) params.append("name", search);
+      if (provinceCode) params.append("provinceCode", provinceCode);
+      if (level) params.append("level", level);
+      if (status) params.append("status", status);
+      if (gennerId) params.append("GenerId", gennerId);
+      params.append("page", page);
+      params.append("pageSize", pageSize);
+
+      const url = `${list_tournament_view}${params.toString()}`; // Kết hợp base url và params
+      
       api
-        .get(
-          list_tournament_view +
-            `name=${search}&provinceCode=${provinceCode}&status=${status}&GenerId=${gennerId}&page=${page}&pageSize=${pageSize}`
-        )
+        .get(url)
         .then((tournament) => {
           console.log(tournament.data.data);
           setLeagueData(tournament.data.data);
           setLoadApi(false);
         })
         .catch((error) => {
-          console.log(error);
+          console.log("Error fetching data:", error);
         });
     };
-    if (loadApi === true) {
+
+    if (loadApi) {
       leagueApi();
     }
-  }, [loadApi, page, pageSize]); // Đảm bảo load lại khi page hoặc pageSize thay đổi
+  }, [loadApi, page, pageSize, search, provinceCode, level, status, gennerId]); // Đảm bảo load lại khi page hoặc pageSize thay đổi
 
   useEffect(() => {
     const updatePageSize = () => {

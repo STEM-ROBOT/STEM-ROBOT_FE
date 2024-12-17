@@ -64,9 +64,7 @@ const CreateTournamentAdmin = () => {
           const result = response.data.data;
           setAreaData(result);
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => {alert("Đã xảy ra sự cố",error)});
     };
     if (tournamentLevel === "khu vực" || tournamentLevel == "tỉnh") {
       setProvince();
@@ -87,9 +85,7 @@ const CreateTournamentAdmin = () => {
           const result = response.data.data;
           setProvinceData(result);
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => {alert("Đã xảy ra sự cố",error)});
     };
     if (Provincetag == 2) {
       apiProvince();
@@ -174,7 +170,7 @@ const CreateTournamentAdmin = () => {
         navigate("/admin/tournaments-admin");
       })
       .catch((error) => {
-        console.error("Lỗi khi tạo giải đấu:", error);
+        alert("Lỗi khi tạo giải đấu:", error);
       });
   };
   return (
