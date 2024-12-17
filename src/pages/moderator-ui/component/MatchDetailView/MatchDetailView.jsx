@@ -9,7 +9,11 @@ import api from "../../../../config";
 import MatchProgess from "./MatchProgess";
 import Parameter from "../Parameter/Parameter";
 
-const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
+const MatchDetailView = ({
+  setShowMatchDetail,
+  matchData,
+  setLoadMatchData,
+}) => {
   const [activeTab, setActiveTab] = useState("score");
   const [popupActive, setActive] = useState(false);
   const [scoreTeamDetailApi, setScoreTeamDetailApi] = useState([]);
@@ -77,6 +81,7 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
         .then((response) => {
           console.log(response.data);
           if (response.data === "timeout") {
+           
             if (hubConnectionResultRef.current) {
               hubConnectionResultRef.current.stop();
               hubConnectionResultRef.current = null;
@@ -103,6 +108,7 @@ const MatchDetailView = ({ setShowMatchDetail, matchData }) => {
 
           if (response.data === "timeout") {
             setLoadApiConnectClient(true);
+            setLoadMatchData(true);
             if (hubConnectionRef.current) {
               hubConnectionRef.current.stop();
               hubConnectionRef.current = null;

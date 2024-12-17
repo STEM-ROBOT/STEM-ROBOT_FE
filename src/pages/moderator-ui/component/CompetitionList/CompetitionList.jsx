@@ -19,7 +19,7 @@ const CompetitionList = () => {
         setCompetitions(competition.data.data.data);
       })
       .catch((error) => {
-        console.log(error);
+        alert("Đã xảy ra sự cố", error);
       });
   }, []);
   const tagStatuses = (competition) => {

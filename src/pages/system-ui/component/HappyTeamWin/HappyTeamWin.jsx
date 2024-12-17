@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import "./HappyTeamWin.css";
 import { Fireworks } from "fireworks-js";
 
-const HappyTeamWin = ({ onClose }) => {
+const HappyTeamWin = ({ data,onClose }) => {
   const fireworksContainerRef = useRef(null);
 
   useEffect(() => {
@@ -51,16 +51,16 @@ const HappyTeamWin = ({ onClose }) => {
         Đóng
       </button>
       <div className="congratulation-message">
-        <h1>Chúc mừng nhà đương kim vô địch của giải đấu!</h1>
+        <h1>Chúc mừng nhà đương kim vô địch của nội dung thi đấu!</h1>
         <div className="winner-info">
           <img
-            src="https://via.placeholder.com/150"
+            src={data?.img}
             alt="Winner"
             className="winner-image"
           />
-          <h2 className="winner-name">Tên đội/Người thắng</h2>
+          <h2 className="winner-name">{data?.name}</h2>
         </div>
-      </div>
+      </div>   
     </div>
   );
 };

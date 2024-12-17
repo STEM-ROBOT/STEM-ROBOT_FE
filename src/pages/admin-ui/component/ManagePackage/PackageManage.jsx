@@ -23,14 +23,11 @@ const PackageManage = () => {
         } else {
           navigate(`/404error`);
         }
-
       })
       .catch((error) => {
-        console.log(error);
+        alert("Đã xảy ra sự cố", error);
       });
   }, []);
-
-
 
   const handleAddClick = () => {
     setSelectedPackage(null); // Clear selected package for adding new
@@ -49,12 +46,16 @@ const PackageManage = () => {
 
   const handleDeletePackage = (packageId) => {
     // Remove the deleted package from the list
-    setPackages((prevPackages) => prevPackages.filter((pkg) => pkg.id !== packageId));
+    setPackages((prevPackages) =>
+      prevPackages.filter((pkg) => pkg.id !== packageId)
+    );
   };
 
   const handleSavePackage = (updatedPackage) => {
     setPackages((prevPackages) => {
-      const packageIndex = prevPackages.findIndex((pkg) => pkg.id === updatedPackage.id);
+      const packageIndex = prevPackages.findIndex(
+        (pkg) => pkg.id === updatedPackage.id
+      );
       if (packageIndex >= 0) {
         const newPackages = [...prevPackages];
         newPackages[packageIndex] = updatedPackage;
@@ -78,7 +79,10 @@ const PackageManage = () => {
           />
         </div>
         <div className="package_manage_action_buttons">
-          <button className="package_manage_add_button" onClick={handleAddClick}>
+          <button
+            className="package_manage_add_button"
+            onClick={handleAddClick}
+          >
             + Gói đăng ký thi đấu
           </button>
         </div>
@@ -86,7 +90,6 @@ const PackageManage = () => {
       <div className="package_manage_container_wrapper">
         {packages.map((pkg) => (
           <div key={pkg.id} className="package_card_wrapper">
-
             <div className="package_card_content_wrapper">
               <h3 className="package_card_title_text">{pkg.name}</h3>
               <p>Số trận đấu: {pkg.maxMatch}</p>
@@ -95,7 +98,6 @@ const PackageManage = () => {
               <p>Số đội tối đa: {pkg.maxTeam}</p>
             </div>
             <div className="package_card_actions">
-
               <div
                 className="package_card_delete_icon"
                 onClick={() => handleDeleteClick(pkg)}

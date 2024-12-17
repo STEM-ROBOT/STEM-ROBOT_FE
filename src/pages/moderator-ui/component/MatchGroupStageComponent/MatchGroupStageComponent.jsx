@@ -15,9 +15,10 @@ const MatchGroupStageComponent = () => {
   const [matchApi, setMatchApi] = useState([]);
   const [matchView, setMatchView] = useState([]);
   const [showMatchDetail, setShowMatchDetail] = useState(false);
+  const [LoadMatchData, setLoadMatchData] = useState(true);
   const [matchDetailData, setMatchDetailData] = useState();
   useEffect(() => {
-    if (matchApi.length < 1) {
+    if (LoadMatchData) {
       api
         .get(`${match_group_stage_view + path.competitionId}`)
         .then((response) => {
@@ -43,12 +44,13 @@ const MatchGroupStageComponent = () => {
           });
 
           setMatchApi(response.data);
+          setLoadMatchData(false);
         })
         .catch((error) => {
-          console.log(error);
+          alert("Đã xảy ra sự cố", error);
         });
     }
-  }, [matchApi]);
+  }, [LoadMatchData]);
   const CacuNumberMatch = () => {
     let numberMatch = 0;
     matchApi?.map((group) => {
@@ -134,6 +136,7 @@ const MatchGroupStageComponent = () => {
         <MatchDetailView
           setShowMatchDetail={setShowMatchDetail}
           matchData={matchDetailData}
+          setLoadMatchData={setLoadMatchData}
         />
       )}
       <div className="schedule_match_layout_info">

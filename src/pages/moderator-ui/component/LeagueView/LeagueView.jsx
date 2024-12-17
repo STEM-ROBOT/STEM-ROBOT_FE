@@ -34,10 +34,15 @@ const LeagueView = ({ viewMode, league }) => {
   };
   const GoLeague = () => {
     if (league) {
-      api.put(update_viewer_filter + league.id).then((response) => {
-        console.log(response);
-        navigate(`${league.id}/`);
-      });
+      api
+        .put(update_viewer_filter + league.id)
+        .then((response) => {
+          console.log(response);
+          navigate(`${league.id}/`);
+        })
+        .catch((error) => {
+          alert("Đã xảy ra sự cố", error);
+        });
     } else {
       console.error("league is undefined or null");
     }
@@ -117,7 +122,7 @@ const LeagueView = ({ viewMode, league }) => {
               padding: "0 5px",
             }}
           >
-            {league.createDate.replace("T", " ").slice(0, -3)}'
+            {league.createDate.replace("T", " ").slice(0, -3)}
           </span>
         </div>
         <div className={`league_stats ${viewMode}`}>

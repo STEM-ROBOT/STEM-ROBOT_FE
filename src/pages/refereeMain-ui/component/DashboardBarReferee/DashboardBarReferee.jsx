@@ -45,6 +45,9 @@ const DashboardBarReferee = () => {
       .then((response) => {
         console.log(response);
         setCompetitionSchedule(response.data.data);
+      })
+      .catch((error) => {
+        alert("Đã xảy ra sự cố", error);
       });
   }, [storedCompetitionId]);
   const handleRuleClick = (key) => {

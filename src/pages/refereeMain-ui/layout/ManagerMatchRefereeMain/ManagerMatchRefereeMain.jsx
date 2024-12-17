@@ -67,6 +67,9 @@ const ManagerMatchRefereeMain = () => {
           } else {
             navigate(`/404error`);
           }
+        })
+        .catch((error) => {
+          alert("Đã xảy ra sự cố", error);
         });
     };
     if (matchDetail === null) {
@@ -322,6 +325,18 @@ const ManagerMatchRefereeMain = () => {
         const extraTimeEnd = new Date(matchEndTime.getTime() + 5 * 60 * 1000);
         if (isInExtraTime) {
           if (now > extraTimeEnd) {
+            api
+              .put(`/api/schedules/schedule-confirm?scheduleId=${schedule_Id}`)
+              .then((response) => {
+                console.log(response.data);
+                if (response.data.message == "success") {
+                  console.log(response.data.message);
+                  navigate("/");
+                }
+              })
+              .catch((error) => {
+                console.log("cập nhật lỗi", error);
+              });
             clearInterval(timer); // Dừng đếm ngược khi hết thời gian
             setIsInExtraTime(false); // Thoát trạng thái chờ
             setIsOutExtraTime(true); // Đánh dấu trận đấu kết thúc
@@ -642,7 +657,10 @@ const ManagerMatchRefereeMain = () => {
               </div>
             </div>
             <div className="match_body_detail">
-              <RandomTeamWinner teams={randomTeamData?.teamRanDom} teamMatchWinId= {randomTeamData.teamMatchWinId}/>
+              <RandomTeamWinner
+                teams={randomTeamData?.teamRanDom}
+                teamMatchWinId={randomTeamData.teamMatchWinId}
+              />
             </div>
           </div>
         </div>

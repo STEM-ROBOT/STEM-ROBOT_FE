@@ -19,7 +19,7 @@ const CompetitionPopup = ({
       console.log(response.data);
 
       setGame(response.data);
-    });
+    }).catch((error) => {alert("Đã xảy ra sự cố",error)});
   }, []);
   const CloseCompetitionPopup = () => {
     setShowCompetition(false);

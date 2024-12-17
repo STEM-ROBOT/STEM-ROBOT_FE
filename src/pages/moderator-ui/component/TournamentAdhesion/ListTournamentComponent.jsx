@@ -1,6 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ListTournamentComponent = ({ data }) => {
+    const navigate = useNavigate();
+  const tournamentAdhesionDetail = (id) => {
+    navigate("/tournament-adhesion/" + id);
+  };
   return (
     <>
       {data?.map((item, index) => (
