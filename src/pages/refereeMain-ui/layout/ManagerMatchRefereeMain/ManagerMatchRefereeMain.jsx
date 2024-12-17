@@ -48,6 +48,7 @@ const ManagerMatchRefereeMain = () => {
   const [extraTimeDisplay, setExtraTimeDisplay] = useState("00:00");
   const [radomTeam, setRadomTeam] = useState(false);
   const [randomTeamData, setRandomTeamData] = useState();
+  const [loadApi, setLoadApi] = useState(true);
   const [timeLeft, setTimeLeft] = useState({
     hours: 0,
     minutes: 0,
@@ -64,7 +65,9 @@ const ManagerMatchRefereeMain = () => {
             setMatchDetail(response.data);
 
             setLoadApiConnectClient(true);
+            setLoadApi(false);
           } else {
+            setLoadApi(false);
             navigate(`/404error`);
           }
         })

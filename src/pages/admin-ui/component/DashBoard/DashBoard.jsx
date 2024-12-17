@@ -129,7 +129,7 @@ const Dashboard = () => {
             <IoCartOutline className="fas fa-truck" />
           </div>
           <div>
-            <h2>Đơn hàng</h2>
+            <h2>Giao Dịch</h2>
             <p>{transactionsData?.length}</p>
           </div>
         </div>

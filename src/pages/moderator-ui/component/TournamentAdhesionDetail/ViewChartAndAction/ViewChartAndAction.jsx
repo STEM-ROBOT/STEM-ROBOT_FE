@@ -12,6 +12,7 @@ import ChartPerformance from "../ChartPerformance/ChartPerformance";
 const ViewChartAndAction = ({ matchData, setShowPopup }) => {
   const { teamId } = useParams();
   const storedImage = sessionStorage.getItem("ImageCompetition");
+  const formatId = sessionStorage.getItem("FormatIdCompetition");
   const [popupActive, setActive] = useState(false);
   const [loadApiConnectClient, setLoadApiConnectClient] = useState(true);
   const [scoreTeamDetailApi, setScoreTeamDetailApi] = useState([]);
@@ -46,7 +47,9 @@ const ViewChartAndAction = ({ matchData, setShowPopup }) => {
     const handleDataData = (data) => {
       console.log(data);
       const dataString = JSON.stringify(data);
-      const previousAverageScoreDataRef = JSON.stringify(previousDataRef.current);
+      const previousAverageScoreDataRef = JSON.stringify(
+        previousDataRef.current
+      );
 
       if (dataString !== previousAverageScoreDataRef) {
         console.log(data);
@@ -105,7 +108,7 @@ const ViewChartAndAction = ({ matchData, setShowPopup }) => {
         .catch((err) => {
           alert(err);
         });
-        api
+      api
         .get(
           `/api/TeamMatch/teamMatch-statistical?teamId=${teamId}&matchId=${matchData.matchId}`
         )
@@ -119,7 +122,7 @@ const ViewChartAndAction = ({ matchData, setShowPopup }) => {
             }
           } else if (response.data !== "notstarted") {
             console.log(response.data);
-            setAverageScoreApi(response.data)
+            setAverageScoreApi(response.data);
             if (hubAverageScoreConnectionRef.current) {
               hubAverageScoreConnectionRef.current.stop();
               hubAverageScoreConnectionRef.current = null;
@@ -227,7 +230,11 @@ const ViewChartAndAction = ({ matchData, setShowPopup }) => {
             halfAction={scoreTeamDetailApi}
             view={"left"}
           />
-          <ChartPerformance data={AverageScoreApi} />
+          <ChartPerformance
+            data={AverageScoreApi}
+            scoreData={scoreTeamDetailApi}
+            formatId={formatId}
+          />
         </div>
       </div>
     </div>

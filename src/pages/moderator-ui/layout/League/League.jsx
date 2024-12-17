@@ -9,6 +9,7 @@ import { Route, useNavigate } from "react-router-dom";
 import api from "../../../../config";
 import { list_tournament_view } from "../../api/ApiFlowView/ApiFlowView";
 import Pagination from "../../../system-ui/component/Pagination/Pagination";
+import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
 
 const League = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const League = () => {
   useEffect(() => {
     const leagueApi = () => {
       const params = new URLSearchParams(); // Tạo đối tượng params để lọc linh hoạt
-      
+
       if (search) params.append("name", search);
       if (provinceCode) params.append("provinceCode", provinceCode);
       if (level) params.append("level", level);
@@ -36,7 +37,7 @@ const League = () => {
       params.append("pageSize", pageSize);
 
       const url = `${list_tournament_view}${params.toString()}`; // Kết hợp base url và params
-      
+
       api
         .get(url)
         .then((tournament) => {
@@ -45,6 +46,7 @@ const League = () => {
           setLoadApi(false);
         })
         .catch((error) => {
+          setLoadApi(false);
           console.log("Error fetching data:", error);
         });
     };
@@ -82,7 +84,6 @@ const League = () => {
 
   return (
     <div className="league_container">
-      {/* Search and Filter section */}
       <SearchFilter
         setSearch={setSearch}
         setProvinceCode={setProvinceCode}
@@ -91,37 +92,44 @@ const League = () => {
         setLoadApi={setLoadApi}
         setLevel={setLevel}
       />
-      <div className="view_toggle">
-        <Pagination
-          currentPage={page}
-          totalPages={leagueData.totalPages}
-          onPageChange={handlePageChange}
-        />
-        <div className="btn_option">
-          <button
-            onClick={() => setViewMode("list")}
-            className={
-              viewMode === "list" ? "option_view active" : "option_view"
-            }
-          >
-            <IoListSharp className="icon_option_view" />
-          </button>
-          <button
-            onClick={() => setViewMode("grid")}
-            className={
-              viewMode === "grid" ? "option_view active" : "option_view"
-            }
-          >
-            <IoGrid className="icon_option_view" />
-          </button>
-        </div>
-      </div>
-      {/* View League - List View */}
-      <div className={`league_grid ${viewMode}`}>
-        {leagueData.tournamentRep?.map((leagues, i) => (
-          <LeagueView key={i} viewMode={viewMode} league={leagues} />
-        ))}
-      </div>
+      {loadApi ? (
+        <LoadingComponent position={"fixed"} />
+      ) : (
+        <>
+          <div className="view_toggle">
+            <Pagination
+              currentPage={page}
+              totalPages={leagueData.totalPages}
+              onPageChange={handlePageChange}
+            />
+            <div className="btn_option">
+              <button
+                onClick={() => setViewMode("list")}
+                className={
+                  viewMode === "list" ? "option_view active" : "option_view"
+                }
+              >
+                <IoListSharp className="icon_option_view" />
+              </button>
+              <button
+                onClick={() => setViewMode("grid")}
+                className={
+                  viewMode === "grid" ? "option_view active" : "option_view"
+                }
+              >
+                <IoGrid className="icon_option_view" />
+              </button>
+            </div>
+          </div>
+          {/* View League - List View */}
+          <div className={`league_grid ${viewMode}`}>
+            {leagueData.tournamentRep?.map((leagues, i) => (
+              <LeagueView key={i} viewMode={viewMode} league={leagues} />
+            ))}
+          </div>
+        </>
+      )}
+      {/* Search and Filter section */}
     </div>
   );
 };
