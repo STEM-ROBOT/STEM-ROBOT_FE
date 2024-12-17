@@ -24,29 +24,19 @@ const TournamentAdhesion = () => {
     }
   }, [Loading]);
 
-  const tournamentAdhesionDetail = (id) => {
-    navigate("/tournament-adhesion/" + id);
-  };
+
   return (
     <div className="tournament-adhesion">
       {/* <LoadingComponent /> */}
       <div className="tournament-adhesion-header">
         <h2 className="tournament-adhesion-title">Giải đấu đã tham gia</h2>
       </div>
-    <ListTournamentComponent data={data?.tournamentRep}/>
-
-      <div className="competition-pagination">
-        {/* <button className="pagination-item pagination-disabled">◄</button>
-                {[1, 2, 3, 4, 5].map((page) => (
-                    <button
-                        key={page}
-                        className={`pagination-item ${page === 1 ? "active" : ""}`}
-                    >
-                        {page}
-                    </button>
-                ))}
-                <button className="pagination-item">►</button> */}
+      <div>
+     { data?.tournamentRep.length > 0 &&  <ListTournamentComponent data={data?.tournamentRep}/>}    
       </div>
+   
+
+
     </div>
   );
 };

@@ -13,12 +13,11 @@ const TournamentSteps = () => {
                     <div className="step-content">
                         <h3 className="step-title">1. Tạo Giải</h3>
                         <ul className="step-list">
-                            <li>Hệ thuỵ sĩ</li>
-                            <li>Loại trực tiếp</li>
-                            <li>Đấu vòng tròn</li>
-                            <li>Chia bảng đấu</li>
-                            <li>Thể thức hỗn hợp</li>
-                            <li>Nhánh thắng & nhánh thua</li>
+                            <li>Thông tin giải đấu</li>
+                            <li>Chọn nội dung thi đấu</li>
+                            <li>Giới thiệu về giải đấu</li>
+                            <li>Hoàn tất</li>
+                          
                         </ul>
                     </div>
                 </div>
@@ -28,25 +27,29 @@ const TournamentSteps = () => {
                         <img src={robotImage} alt="Robot" className="robot-image" />
                     </div>
                     <div className="step-content">
-                        <h3 className="step-title">2. Tuỳ chỉnh giải đấu</h3>
+                        <h3 className="step-title">2. Tuỳ chỉnh nội dung thi đấu</h3>
                         <ul className="step-list">
-                            <li>Nhập điều lệ, hình và địa điểm</li>
-                            <li>Nhập thông tin của đội / vận động viên</li>
-                            <li>Mời người tham gia</li>
-                            <li>Lập lịch đấu</li>
-                            <li>Tuỳ chỉnh giai đoạn</li>
+                            <li>Chọn hình thức thi đấu / quy định / hạng mục tính điểm</li>
+                            <li>Cấu hình đội</li>
+                            <li>Cấu hình cặp đấu</li>
+                            <li>Thiết lập lịch đấu</li>
+                            <li>Phân công trọng tài</li>
+                            <li>Sắp xếp trọng tài vào trận</li>
+                            <li>Hoàn tất</li>
+                           
                         </ul>
                     </div>
                 </div>
 
                 <div className="tournament-step tournament-step-3">
                     <div className="step-content">
-                        <h3 className="step-title">3. Điều hành giải</h3>
+                        <h3 className="step-title">3. Điều hành trận đấu</h3>
                         <ul className="step-list">
-                            <li>Kích hoạt</li>
-                            <li>Nhập tỷ số</li>
-                            <li>Xem thống kê</li>
-                            <li>Chia sẻ với bạn bè</li>
+                            <li>Truy cập hệ thống</li>
+                            <li>Theo giỏi lịch trình</li>
+                            <li>Xác thực quyền điều hành</li>
+                            <li>Xử lí quá trình trận đấu</li>
+                            <li>Kết Thúc</li>
                         </ul>
                     </div>
                 </div>

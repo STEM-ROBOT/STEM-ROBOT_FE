@@ -9,9 +9,10 @@ import gearIcon from "/src/assets/images/service-reboticon.png";
 import image from "/src/assets/images/banner-sideshape.png";
 import image2 from "/src/assets/images/banner-sideshape2.png";
 import image3 from "/src/assets/images/banner-image.png";
+import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [showHeader, setShowHeader] = useState(false);
-
+ const navigate = useNavigate();
   // Function to handle scroll events
   useEffect(() => {
     const handleScroll = () => {
@@ -51,7 +52,7 @@ const Home = () => {
               </span>
             </div>
             <div className="cta-buttons">
-              <button className="styled-button">Tham gia</button>
+              <button className="styled-button" onClick={() =>navigate(`/league/create-tournament`)}>Tham gia</button>
             </div>
           </div>
           <div className="bottom-right-image-container">

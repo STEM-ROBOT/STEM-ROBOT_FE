@@ -21,7 +21,9 @@ const RegisterTeamStepTwo = ({ setRegisterTeam, teamInfo }) => {
       )
       .then((response) => {
         setContestant(response.data.data);
-      });
+      })  .catch((error) => {
+        alert("Đã xảy ra sự cố", error);
+      });;
   }, [league_id, competitionId]);
 
   const handleCheckboxChange = (id) => {
