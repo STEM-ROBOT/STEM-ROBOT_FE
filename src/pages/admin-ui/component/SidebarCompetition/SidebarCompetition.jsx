@@ -124,7 +124,7 @@ const SidebarCompetition = () => {
                 <HiOutlineLogin className="admin_head_btnLogOut" onClick={handleBack} />
                 {
                   !competitionInfo?.isActive && (
-                    <button className='admin_button_active' onClick={handleActive}>Active</button>
+                    <button className='admin_button_active' onClick={handleActive}>Kích hoạt</button>
                   )
                 }
 
