@@ -9,3 +9,42 @@
   background-color: #fff;
   padding: 0;
 }
+.view_avg_score {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 10px; /* Sửa lại dấu cách */
+
+  border-radius: 10px;
+}
+.view_avg_score_bonus {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  height: 190px;
+  background-color: #fcfcfcb2;
+  border-radius: 7px;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.view_avg_score_bonus_head {
+  font-weight: 700;
+  font-size: 24px;
+  color: #0d89c2;
+}
+.view_avg_score_bonus_view {
+  font-weight: 700;
+  font-size: 74px;
+  color: #0d89c2;
+}
+.view_avg_score_bonus_view.bo {
+  color: #13c20d;
+}
+.view_avg_score_bonus_view.mi {
+  color: #c20d0d;
+}

@@ -320,14 +320,14 @@ const MatchDetailView = ({
           >
             Điểm số
           </button>
-          <button
+          {/* <button
             className={`match-detail-tab-button ${
               activeTab === "stats" ? "active" : ""
             }`}
             onClick={() => handleTabChange("stats")}
           >
             Thông số
-          </button>
+          </button> */}
         </div>
 
         <div className="match-detail-content">

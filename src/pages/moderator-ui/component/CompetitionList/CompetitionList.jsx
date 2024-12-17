@@ -4,11 +4,12 @@ import { IoLogoGameControllerB } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../../../config";
 import { competitions_tournament } from "../../api/ApiFlowView/ApiFlowView";
+import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
 
 const CompetitionList = () => {
   const path = useParams();
   console.log(path);
-
+  const [loadApi, setLoadApi] = useState(true);
   const navigate = useNavigate();
   const [competitions, setCompetitions] = useState([]);
   useEffect(() => {
@@ -17,8 +18,10 @@ const CompetitionList = () => {
       .then((competition) => {
         console.log(competition);
         setCompetitions(competition.data.data.data);
+        setLoadApi(false);
       })
       .catch((error) => {
+        setLoadApi(false);
         alert("Đã xảy ra sự cố", error);
       });
   }, []);
@@ -71,36 +74,45 @@ const CompetitionList = () => {
   };
   return (
     <div className="competition_container">
-      <div className="introduction_header">
-        <IoLogoGameControllerB className="icon_competition" />
-        <span className="header_text">Nội dung thi đấu</span>
-      </div>
-      <div
-        className={
-          competitions.length >= 6 ? "competition_grid" : "competition_grid_1"
-        }
-      >
-        {competitions.map((competition) => (
-          <div
-            key={competition.id}
-            className="competition_item"
-            onClick={() => GoCompetition(competition)}
-          >
-            <div className={activeStatuses(competition)}>
-              {tagStatuses(competition)}
-            </div>
-            <img
-              src={competition.image}
-              alt={competition.name}
-              className="competition_image"
-            />
-
-            <div className="competition_name">
-              <div className="name">{competition.name}</div>
-            </div>
+      {loadApi ? (
+        <LoadingComponent />
+      ) : (
+        <>
+          {" "}
+          <div className="introduction_header">
+            <IoLogoGameControllerB className="icon_competition" />
+            <span className="header_text">Nội dung thi đấu</span>
           </div>
-        ))}
-      </div>
+          <div
+            className={
+              competitions.length >= 6
+                ? "competition_grid"
+                : "competition_grid_1"
+            }
+          >
+            {competitions.map((competition) => (
+              <div
+                key={competition.id}
+                className="competition_item"
+                onClick={() => GoCompetition(competition)}
+              >
+                <div className={activeStatuses(competition)}>
+                  {tagStatuses(competition)}
+                </div>
+                <img
+                  src={competition.image}
+                  alt={competition.name}
+                  className="competition_image"
+                />
+
+                <div className="competition_name">
+                  <div className="name">{competition.name}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };

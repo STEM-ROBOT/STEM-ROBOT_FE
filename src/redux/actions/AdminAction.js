@@ -77,7 +77,7 @@ export const addGenreAction = (genre) => async (dispatch) => {
   try {
     dispatch({ type: ADD_GENRE_REQUEST });
 
-    const { data } = await api.put(`/api/genres`,genre);
+    const { data } = await api.post(`/api/genres`,genre);
 
     dispatch({ type: ADD_GENRE_SUCCESS, payload: data });
     toast.success("Thêm thành công")

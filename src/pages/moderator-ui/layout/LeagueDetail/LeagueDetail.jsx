@@ -16,15 +16,24 @@ import TeamList from "../../component/TeamList/TeamList";
 import { league_detail } from "../../../../router/ModeratorRouter";
 import api from "../../../../config";
 import { tournament_view } from "../../api/ApiFlowView/ApiFlowView";
+import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
 
 const LeagueDetail = () => {
   const id = useParams();
   const [league, setLeague] = useState();
+  const [loadApi, setLoadApi] = useState(true);
   const [tabActive, setTabActive] = useState("competition");
   useEffect(() => {
-    api.get(tournament_view + id.league_id).then((response) => {
-      setLeague(response.data.data);
-    }).catch((error) => {alert("Đã xảy ra sự cố",error)});;
+    api
+      .get(tournament_view + id.league_id)
+      .then((response) => {
+        setLeague(response.data.data);
+        setLoadApi(false);
+      })
+      .catch((error) => {
+        setLoadApi(false);
+        alert("Đã xảy ra sự cố", error);
+      });
   }, []);
 
   const renderRoutes = (routes) =>
@@ -33,14 +42,20 @@ const LeagueDetail = () => {
     });
   return (
     <div className="league_detail_container">
-      <DetailBar
-        league={league}
-        tabActive={tabActive}
-        setTabActive={setTabActive}
-      />
-      <div className="league_detail_option">
-        <Routes>{renderRoutes(league_detail)}</Routes>
-      </div>
+      {loadApi ? (
+        <LoadingComponent position={"fixed"} />
+      ) : (
+        <>
+          <DetailBar
+            league={league}
+            tabActive={tabActive}
+            setTabActive={setTabActive}
+          />
+          <div className="league_detail_option">
+            <Routes>{renderRoutes(league_detail)}</Routes>
+          </div>
+        </>
+      )}
     </div>
   );
 };

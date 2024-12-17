@@ -11,6 +11,7 @@ import { IoLogoGameControllerB } from "react-icons/io";
 import "./CompetitionDetail.css";
 import api from "/src/config";
 import HappyTeamWin from "../../../system-ui/component/HappyTeamWin/HappyTeamWin";
+import LoadingComponent from "../../../system-ui/component/Loading/LoadingComponent";
 
 const allTabs = [
   {
@@ -46,6 +47,7 @@ const CompetitionDetail = () => {
   const path = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const [loadApi, setLoadApi] = useState(true);
   const currentSubPath = location.pathname.split("/").pop();
   const [showTeamWin, setShowTeamWin] = useState(false);
   const [teamWin, setTeamWin] = useState();
@@ -57,6 +59,7 @@ const CompetitionDetail = () => {
       .then((response) => {
         const { status, formatId, image, name } = response.data;
         sessionStorage.setItem("ImageCompetition", image);
+        sessionStorage.setItem("FormatIdCompetition", formatId);
         setName(name);
         setStatus(status);
         setFormatId(formatId);
@@ -86,14 +89,20 @@ const CompetitionDetail = () => {
     requestAnimationFrame(step);
   }, [path.competitionId]);
   useEffect(() => {
-    api.get(`/api/teams/competition/${path.competitionId}`).then((response) => {
-      console.log(response.data);
-      if (response.data) {
-        setTeamWin(response.data);
-        setShowTeamWin(true);
-      }
-    }).catch((error) => {alert("Đã xảy ra sự cố",error)});;
-  }, [true]);
+    api
+      .get(`/api/teams/competition/${path.competitionId}`)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data) {
+          setTeamWin(response.data);
+          setShowTeamWin(true);
+        }
+        setLoadApi(false);
+      })
+      .catch((error) => {
+        alert("Đã xảy ra sự cố", error);
+      });
+  }, [path.competitionId]);
   const renderRoutes = (routes) =>
     routes.map((route, index) => {
       return <Route key={index} path={route.path} element={route.element} />;
@@ -121,34 +130,43 @@ const CompetitionDetail = () => {
 
   return (
     <div className="competition_container">
-      <div className="introduction_header">
-        <IoLogoGameControllerB className="icon_competition" />
-        <span className="header_text">Nội dung thi đấu - {name}</span>
-      </div>
-      <div className="competition_detail_bar">
-        <div className="competition_detail_tab">
-          {filteredTabs.map((tab, i) => (
-            <div
-              key={i}
-              className={`competition_tab_item ${
-                currentSubPath === tab.path ? "active" : ""
-              }`}
-              onClick={() => handleTabClick(tab)}
-            >
-              {tab.name}
-              {currentSubPath === tab.path && (
-                <div className="competition_indicator"></div>
-              )}
+      {loadApi ? (
+        <LoadingComponent />
+      ) : (
+        <>
+          <div className="introduction_header">
+            <IoLogoGameControllerB className="icon_competition" />
+            <span className="header_text">Nội dung thi đấu - {name}</span>
+          </div>
+          <div className="competition_detail_bar">
+            <div className="competition_detail_tab">
+              {filteredTabs.map((tab, i) => (
+                <div
+                  key={i}
+                  className={`competition_tab_item ${
+                    currentSubPath === tab.path ? "active" : ""
+                  }`}
+                  onClick={() => handleTabClick(tab)}
+                >
+                  {tab.name}
+                  {currentSubPath === tab.path && (
+                    <div className="competition_indicator"></div>
+                  )}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        {showTeamWin && (
-          <HappyTeamWin data={teamWin} onClose={() => setShowTeamWin(false)} />
-        )}
-        <div className="competition_detail_option">
-          <Routes>{renderRoutes(competition_detail_router)}</Routes>
-        </div>
-      </div>
+            {showTeamWin && (
+              <HappyTeamWin
+                data={teamWin}
+                onClose={() => setShowTeamWin(false)}
+              />
+            )}
+            <div className="competition_detail_option">
+              <Routes>{renderRoutes(competition_detail_router)}</Routes>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
