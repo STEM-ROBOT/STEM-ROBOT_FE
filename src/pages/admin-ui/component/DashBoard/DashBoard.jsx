@@ -46,17 +46,20 @@ const Dashboard = () => {
       .catch((error) => {alert("Đã xảy ra sự cố",error)});
 
     api
-      .get("api/accounts")
+      .get("api/admin/list-account")
       .then((response) => {
-        setAccountsData(response.data.success.data);
+        console.log(response)
+        setAccountsData(response.data.data.data);
       })
       .catch((error) => {alert("Đã xảy ra sự cố",error)});
 
     api
-      .get("api/tournaments/list-tournament")
+      .get("api/tournaments/list-tournament-admin")
       .then((response) => {
-        if (response.data.data.data) {
-          setTournamentsData(response.data.data.data);
+        console.log(response.data.data)
+        if (response.data.data) {
+          
+          setTournamentsData(response.data.data);
         }
       })
       .catch((error) => {alert("Đã xảy ra sự cố",error)});
