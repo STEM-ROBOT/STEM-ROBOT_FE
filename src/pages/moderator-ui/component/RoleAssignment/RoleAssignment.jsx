@@ -77,34 +77,9 @@ const RoleAssignment = () => {
   }, [refereeList, chiefReferees, referees, simultaneousReferees, isAssign]);
 
   const handleRoleChange = (id, newRole) => {
-    const requiredChiefReferees = chiefReferees * simultaneousReferees;
-    const requiredRegularReferees = referees * simultaneousReferees;
-  
     const updatedList = updatedRefereeList.map((referee) =>
       referee.id === id ? { ...referee, role: newRole } : referee
     );
-  
-    const chiefRefereesAssigned = updatedList.filter(
-      (referee) => referee.role === "MRF"
-    ).length;
-    const regularRefereesAssigned = updatedList.filter(
-      (referee) => referee.role === "SRF"
-    ).length;
-  
-    if (chiefRefereesAssigned < requiredChiefReferees) {
-      toast.error(
-        `Không đủ số trọng tài chính! Cần ${requiredChiefReferees}, hiện tại chỉ có ${chiefRefereesAssigned}.`
-      );
-      return;
-    }
-  
-    if (regularRefereesAssigned < requiredRegularReferees) {
-      toast.error(
-        `Không đủ số trọng tài viên! Cần ${requiredRegularReferees}, hiện tại chỉ có ${regularRefereesAssigned}.`
-      );
-      return;
-    }
-  
     setUpdatedRefereeList(updatedList);
   };
   
@@ -112,21 +87,21 @@ const RoleAssignment = () => {
   const handleConfirm = () => {
     const requiredChiefReferees = chiefReferees * simultaneousReferees;
     const requiredRegularReferees = referees * simultaneousReferees;
-
+  
     const chiefRefereesAssigned = updatedRefereeList.filter(
-        (referee) => referee.role === "MRF" && referee.selected
+      (referee) => referee.role === "MRF" && referee.selected
     ).length;
-
+  
     const regularRefereesAssigned = updatedRefereeList.filter(
-        (referee) => referee.role === "SRF" && referee.selected
+      (referee) => referee.role === "SRF" && referee.selected
     ).length;
-
+  
     // Kiểm tra số lượng trọng tài chính
     if (chiefRefereesAssigned < requiredChiefReferees) {
-        toast.error(
-            `Không đủ số trọng tài chính! Yêu cầu ${requiredChiefReferees}, hiện tại chỉ chọn ${chiefRefereesAssigned}.`
-        );
-        return;
+      toast.error(
+        `Không đủ số trọng tài chính! Yêu cầu ${requiredChiefReferees}, hiện tại chỉ chọn ${chiefRefereesAssigned}.`
+      );
+      return;
     }
 
     // Kiểm tra số lượng trọng tài viên
