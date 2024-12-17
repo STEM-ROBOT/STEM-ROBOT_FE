@@ -26,19 +26,20 @@ import TeamRegister from '../pages/moderator-ui/component/TeamRegister/TeamRegis
 import { Navigate } from 'react-router-dom';
 
 export const adminChildren = [
-     {
-        path: "",
-        element: <Navigate to="dashboard" />,
-      },
-    { path: "dashboard", element: <DashBoard /> },
-    { path: "manage-user", element: <CustomerTable /> },
-    { path: "manage-order", element: <OrderTable /> },
-    { path: "manage-genre", element: <GerneManage /> },
-    { path: "manage-package", element: <PackageManage /> },
-    { path: "create-tournaments-admin", element: <CreateTournamentAdmin/> },
-    { path: "tournaments-admin", element: <ListTournamentAdmin/> },
-    { path: "tournament/:tournamentId/*", element: <ManageAdminTournament /> },   
+  {
+      path: "",
+      element: <Navigate to="dashboard" />,
+  },
+  { path: "dashboard", element: <PrivateRoute element={<DashBoard />} requiredRole="AD" /> },
+  { path: "manage-user", element: <PrivateRoute element={<CustomerTable />} requiredRole="AD" /> },
+  { path: "manage-order", element: <PrivateRoute element={<OrderTable />} requiredRole="AD" /> },
+  { path: "manage-genre", element: <PrivateRoute element={<GerneManage />} requiredRole="AD" /> },
+  { path: "manage-package", element: <PrivateRoute element={<PackageManage />} requiredRole="AD" /> },
+  { path: "create-tournaments-admin", element: <PrivateRoute element={<CreateTournamentAdmin />} requiredRole="AD" /> },
+  { path: "tournaments-admin", element: <PrivateRoute element={<ListTournamentAdmin />} requiredRole="AD" /> },
+  { path: "tournament/:tournamentId/*", element: <PrivateRoute element={<ManageAdminTournament />} requiredRole="AD" /> },
 ];
+
 
 // export const tournamentChildren = [
 //     { path: "format", element: <PrivateRoute element={<ConfigTournament />} requiredRole="MD" /> },
