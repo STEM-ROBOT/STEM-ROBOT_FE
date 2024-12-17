@@ -96,12 +96,12 @@ const PackageManage = () => {
             </div>
             <div className="package_card_actions">
 
-              <div
+              {/* <div
                 className="package_card_delete_icon"
                 onClick={() => handleDeleteClick(pkg)}
               >
                 <CiCircleRemove />
-              </div>
+              </div> */}
               <div
                 className="package_card_edit_icon"
                 onClick={() => handleEditClick(pkg)}
