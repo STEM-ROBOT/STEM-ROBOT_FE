@@ -36,27 +36,21 @@ const Dashboard = () => {
       .then((response) => {
         setRevenueData(response.data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {alert("Đã xảy ra sự cố",error)});
 
     api
       .get("api/orders")
       .then((response) => {
         setTransactionsData(response.data.data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {alert("Đã xảy ra sự cố",error)});
 
     api
       .get("api/accounts")
       .then((response) => {
         setAccountsData(response.data.success.data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {alert("Đã xảy ra sự cố",error)});
 
     api
       .get("api/tournaments/list-tournament")
@@ -65,16 +59,14 @@ const Dashboard = () => {
           setTournamentsData(response.data.data.data);
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {alert("Đã xảy ra sự cố",error)});
 
     api
       .get("api/orders/revenue-by-time")
       .then((response) => {
         // Ensure that response.data.data is defined before mapping
         if (response.data) {
-         console.log(response.data)
+      
           setRevenueByTimeData(response.data);
         } else {
           console.error(
@@ -84,7 +76,7 @@ const Dashboard = () => {
         }
       })
       .catch((error) => {
-        console.log("Error fetching monthly revenue:", error);
+        alert("Error fetching monthly revenue:", error);
       });
 
       api
@@ -105,7 +97,7 @@ const Dashboard = () => {
         }
       })
       .catch((error) => {
-        console.log("Error fetching tournament data:", error);
+       alert("Error fetching tournament data:", error);
       });
   }, []);
   const formatCurrency = (amount) => {

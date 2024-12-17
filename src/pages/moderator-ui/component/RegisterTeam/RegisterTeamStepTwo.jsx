@@ -21,7 +21,9 @@ const RegisterTeamStepTwo = ({ setRegisterTeam, teamInfo }) => {
       )
       .then((response) => {
         setContestant(response.data.data);
-      });
+      })  .catch((error) => {
+        alert("Đã xảy ra sự cố", error);
+      });;
   }, [league_id, competitionId]);
 
   const handleCheckboxChange = (id) => {
@@ -170,7 +172,10 @@ const RegisterTeamStepTwo = ({ setRegisterTeam, teamInfo }) => {
                     {contestant.gender}
                   </div>
                   <div className="table_cell">
-                    {contestant.schoolName.split("SchoolName: ")[1].trim()}
+                    {contestant.schoolName
+                    // .split("SchoolName: ")[1].trim()
+                    }
+
                   </div>
                   <div className="table_cell">
                     {contestant.startTime.slice(0, 16).replace("T", " ")}

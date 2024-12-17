@@ -67,7 +67,7 @@ const TeamAdhesionView = () => {
     });
 
   const handleTabClick = (tab) => {
-    navigate(`${tab.path}`);
+    // navigate(`${tab.path}`);
   };
 
   // Filter tabs based on status and formatId

@@ -29,7 +29,7 @@ const TeamList = ({ isPublic }) => {
         setTeamRegister(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        alert("Đã xảy ra sự cố", error);
       });
 
     const targetPosition = 285;
